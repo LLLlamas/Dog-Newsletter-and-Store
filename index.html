@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pup Notes from [Your Name] — Dog Care Updates &amp; Tips</title>
+  <meta name="description" content="Monthly dog-care updates, availability reminders, and helpful tips from a trusted neighborhood dog sitter. Subscribe for perks and early access to booking spots.">
+
+  <!-- Open Graph (for link sharing / social previews) -->
+  <meta property="og:title" content="Pup Notes from [Your Name]">
+  <meta property="og:description" content="Monthly dog-care updates, tips, and early booking access from a trusted local sitter.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://[YOUR-GITHUB-USERNAME].github.io/[REPO-NAME]/">
+  <!-- <meta property="og:image" content="./assets/og-image.jpg"> -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0; padding: 0;
+      background: #f5f0eb;
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #2d2d2d;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: #3b6b4b;
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+    }
+    .nav-brand {
+      font-family: Georgia, serif; font-size: 16px;
+      color: #fff; text-decoration: none; letter-spacing: .3px;
+      white-space: nowrap;
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-link {
+      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
+      color: #a8d5b0; text-decoration: none; letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-link.btn {
+      background: #fff; color: #3b6b4b;
+      padding: 7px 16px; border-radius: 4px;
+    }
+    .nav-link.btn:hover { background: #e8f3ec; color: #2f5a3d; }
+
+    /* ─── HERO ────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, #2f5a3d 0%, #3b6b4b 60%, #4a7d5a 100%);
+      padding: 72px 24px 80px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-family: Arial, sans-serif; font-size: 11px;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: #a8d5b0; margin: 0 0 16px;
+    }
+    .hero h1 {
+      font-family: Georgia, serif; font-size: 42px; font-weight: normal;
+      color: #fff; margin: 0 0 18px; line-height: 1.2;
+    }
+    .hero h1 span { font-style: italic; color: #c8e6cc; }
+    .hero-sub {
+      font-family: Georgia, serif; font-size: 18px; font-style: italic;
+      color: #c8e6cc; margin: 0 auto 36px; max-width: 480px; line-height: 1.6;
+    }
+
+    /* Subscribe form */
+    .subscribe-form {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 10px; max-width: 440px; margin: 0 auto;
+    }
+    .subscribe-form input[type="email"] {
+      flex: 1; min-width: 220px;
+      padding: 14px 18px; border: none; border-radius: 6px;
+      font-family: Georgia, serif; font-size: 15px; color: #2d2d2d;
+      outline: none;
+    }
+    .subscribe-form button {
+      background: #f5f0eb; color: #3b6b4b;
+      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
+      letter-spacing: .5px; text-transform: uppercase;
+      padding: 14px 24px; border: none; border-radius: 6px;
+      cursor: pointer; white-space: nowrap;
+      transition: background .15s;
+    }
+    .subscribe-form button:hover { background: #fff; }
+    .subscribe-note {
+      font-family: Arial, sans-serif; font-size: 11px;
+      color: #a8d5b0; margin: 14px 0 0; text-align: center;
+    }
+
+    /* ─── PERKS STRIP ──────────────────────────────────────── */
+    .perks-strip {
+      background: #fffdf9;
+      border-bottom: 1px solid #e8e3dc;
+      padding: 18px 32px;
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 0;
+    }
+    .perk-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 24px;
+      font-family: Arial, sans-serif; font-size: 13px; color: #555;
+      border-right: 1px solid #e0dbd4;
+    }
+    .perk-item:last-child { border-right: none; }
+    .perk-icon { font-size: 18px; }
+    .perk-text strong { color: #3b6b4b; }
+
+    /* ─── SECTIONS ─────────────────────────────────────────── */
+    .page-wrap { max-width: 920px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .section-label {
+      font-family: Arial, sans-serif; font-size: 11px; font-weight: bold;
+      letter-spacing: 2px; text-transform: uppercase; color: #3b6b4b;
+      margin: 0 0 8px;
+    }
+    .section-title {
+      font-family: Georgia, serif; font-size: 26px; font-weight: normal;
+      color: #1a1a1a; margin: 0 0 32px; line-height: 1.3;
+    }
+    hr.divider {
+      border: none; border-top: 1px solid #e0dbd4; margin: 56px 0;
+    }
+
+    /* ─── WHAT'S INSIDE ──────────────────────────────────── */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px; margin-bottom: 0;
+    }
+    .pillar-card {
+      background: #fffdf9; border-radius: 8px;
+      padding: 24px 22px;
+      border: 1px solid #e8e3dc;
+    }
+    .pillar-icon { font-size: 26px; margin-bottom: 12px; }
+    .pillar-title {
+      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
+      color: #3b6b4b; margin: 0 0 8px; letter-spacing: .3px;
+    }
+    .pillar-desc {
+      font-family: Georgia, serif; font-size: 14px;
+      color: #666; line-height: 1.6; margin: 0;
+    }
+
+    /* ─── LATEST ISSUE ───────────────────────────────────── */
+    .issue-preview {
+      background: #fffdf9; border-radius: 8px;
+      border: 1px solid #e8e3dc;
+      overflow: hidden;
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 0;
+    }
+    .issue-preview-aside {
+      background: #3b6b4b;
+      padding: 32px 28px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .issue-aside-label {
+      font-family: Arial, sans-serif; font-size: 10px;
+      letter-spacing: 2px; text-transform: uppercase; color: #a8d5b0;
+      margin: 0 0 10px;
+    }
+    .issue-aside-title {
+      font-family: Georgia, serif; font-size: 20px; font-weight: normal;
+      color: #fff; line-height: 1.35; margin: 0 0 auto;
+    }
+    .issue-aside-date {
+      font-family: Arial, sans-serif; font-size: 12px;
+      color: #7aac8a; margin-top: 28px;
+    }
+    .issue-preview-body { padding: 32px 32px; }
+    .issue-preview-body p {
+      font-family: Georgia, serif; font-size: 15px;
+      color: #444; line-height: 1.7; margin: 0 0 16px;
+    }
+    .issue-preview-body p:last-child { margin-bottom: 0; }
+    .issue-read-link {
+      display: inline-block; margin-top: 20px;
+      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
+      color: #3b6b4b; text-decoration: none; letter-spacing: .3px;
+    }
+    .issue-read-link:hover { text-decoration: underline; }
+
+    /* Archive list */
+    .archive-list {
+      list-style: none; padding: 0; margin: 24px 0 0;
+      display: flex; flex-wrap: wrap; gap: 12px;
+    }
+    .archive-list li a {
+      display: inline-block;
+      font-family: Arial, sans-serif; font-size: 13px;
+      color: #3b6b4b; text-decoration: none;
+      background: #e8f3ec; border-radius: 4px;
+      padding: 6px 14px;
+    }
+    .archive-list li a:hover { background: #c8e6cc; }
+
+    /* ─── TESTIMONIALS ────────────────────────────────────── */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .testimonial-card {
+      background: #fffdf9; border-radius: 8px;
+      border: 1px solid #e8e3dc;
+      padding: 24px 24px 20px;
+    }
+    .testimonial-quote {
+      font-family: Georgia, serif; font-size: 15px; font-style: italic;
+      color: #444; line-height: 1.7; margin: 0 0 16px;
+    }
+    .testimonial-quote::before { content: '\201C'; }
+    .testimonial-quote::after  { content: '\201D'; }
+    .testimonial-author {
+      font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
+      color: #3b6b4b; letter-spacing: .3px; margin: 0;
+    }
+    .testimonial-dog {
+      font-family: Georgia, serif; font-size: 12px;
+      color: #999; font-style: italic; margin: 2px 0 0;
+    }
+
+    /* ─── PHOTO STRIP ─────────────────────────────────────── */
+    .photo-strip {
+      display: flex; gap: 12px; overflow-x: auto;
+      padding-bottom: 8px; scrollbar-width: thin;
+    }
+    .photo-strip-item {
+      flex: 0 0 160px; height: 160px;
+      background: #e8f3ec; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      color: #7aac8a; border: 1px solid #d0e8d8;
+      font-family: Arial, sans-serif;
+    }
+    /* When real images are added, use:
+       .photo-strip-item img { width:100%; height:100%; object-fit:cover; border-radius:8px; } */
+
+    /* ─── STORE TEASER ───────────────────────────────────── */
+    .store-teaser {
+      background: #3b6b4b; border-radius: 8px;
+      padding: 40px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 32px; flex-wrap: wrap;
+    }
+    .store-teaser-text h3 {
+      font-family: Georgia, serif; font-size: 22px; font-weight: normal;
+      color: #fff; margin: 0 0 10px; line-height: 1.3;
+    }
+    .store-teaser-text p {
+      font-family: Georgia, serif; font-size: 15px; font-style: italic;
+      color: #c8e6cc; margin: 0; line-height: 1.6; max-width: 380px;
+    }
+    .btn-white {
+      display: inline-block; background: #fff; color: #3b6b4b;
+      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
+      letter-spacing: .5px; text-transform: uppercase;
+      padding: 13px 26px; border-radius: 6px; text-decoration: none;
+      white-space: nowrap; transition: background .15s;
+    }
+    .btn-white:hover { background: #f0f7f2; }
+
+    /* ─── COUPON SECTION ──────────────────────────────────── */
+    .coupon-section {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+    .coupon-card {
+      background: #fffdf9; border-radius: 8px;
+      border: 2px dashed #a8d5b0;
+      padding: 28px 28px;
+    }
+    .coupon-tag {
+      font-family: Arial, sans-serif; font-size: 10px; font-weight: bold;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: #3b6b4b; margin: 0 0 10px;
+    }
+    .coupon-code {
+      font-family: 'Courier New', monospace; font-size: 26px; font-weight: bold;
+      color: #1a1a1a; letter-spacing: 3px; margin: 0 0 10px;
+      background: #e8f3ec; display: inline-block;
+      padding: 6px 16px; border-radius: 4px;
+    }
+    .coupon-desc {
+      font-family: Georgia, serif; font-size: 14px;
+      color: #555; line-height: 1.6; margin: 10px 0 0;
+    }
+    .coupon-fine {
+      font-family: Arial, sans-serif; font-size: 11px;
+      color: #999; margin: 10px 0 0; line-height: 1.5;
+    }
+
+    /* ─── SHARE ───────────────────────────────────────────── */
+    .share-row {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .share-label {
+      font-family: Arial, sans-serif; font-size: 13px;
+      font-weight: bold; color: #3b6b4b; letter-spacing: .3px;
+    }
+    .share-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: Arial, sans-serif; font-size: 13px;
+      text-decoration: none; padding: 8px 16px; border-radius: 4px;
+      border: 1.5px solid #c8d8cc; color: #555;
+      background: #fffdf9; cursor: pointer;
+      transition: border-color .15s, color .15s;
+    }
+    .share-btn:hover { border-color: #3b6b4b; color: #3b6b4b; }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: #2a4e37;
+      padding: 36px 32px;
+      text-align: center;
+    }
+    footer p {
+      font-family: Arial, sans-serif; font-size: 12px;
+      color: #7aac8a; margin: 0 0 6px; line-height: 1.7;
+    }
+    footer p:last-child { margin: 0; }
+    footer a { color: #a8d5b0; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 30px; }
+      nav { padding: 12px 16px; }
+      .nav-links { gap: 14px; }
+      .issue-preview { grid-template-columns: 1fr; }
+      .issue-preview-aside { padding: 24px; }
+      .store-teaser { padding: 28px 24px; }
+      .coupon-section { grid-template-columns: 1fr; }
+      .perk-item { border-right: none; border-bottom: 1px solid #e0dbd4; }
+      .perk-item:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ──────────────────────────────────────────────────── -->
+<nav>
+  <a href="index.html" class="nav-brand">Pup Notes &#x2022; [Your Name]</a>
+  <div class="nav-links">
+    <a href="store.html" class="nav-link">Shop</a>
+    <a href="#archive" class="nav-link">Past Issues</a>
+    <a href="#subscribe" class="nav-link btn">Subscribe</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ──────────────────────────────────────────────────── -->
+<section class="hero" id="subscribe">
+  <p class="hero-eyebrow">Monthly Dog-Care Updates</p>
+  <h1>Pup Notes<br><span>from [Your Name]</span></h1>
+  <p class="hero-sub">Availability openings, helpful dog tips, and small perks for repeat clients — once a month, always worth reading.</p>
+
+  <!-- Replace action URL with your Mailchimp / beehiiv subscribe URL -->
+  <form class="subscribe-form" action="#" method="post">
+    <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+    <button type="submit">Subscribe Free</button>
+  </form>
+  <p class="subscribe-note">No spam. Unsubscribe anytime by replying "unsubscribe."</p>
+</section>
+
+<!-- ─── PERKS STRIP ───────────────────────────────────────────── -->
+<div class="perks-strip">
+  <div class="perk-item">
+    <span class="perk-icon">&#128276;</span>
+    <span class="perk-text"><strong>First notice</strong> on new booking spots</span>
+  </div>
+  <div class="perk-item">
+    <span class="perk-icon">&#128054;</span>
+    <span class="perk-text"><strong>Monthly dog tips</strong> from real experience</span>
+  </div>
+  <div class="perk-item">
+    <span class="perk-icon">&#127381;</span>
+    <span class="perk-text"><strong>Subscriber coupon</strong> — use code PUPS10</span>
+  </div>
+  <div class="perk-item">
+    <span class="perk-icon">&#128722;</span>
+    <span class="perk-text"><strong>Dog care picks</strong> in the <a href="store.html" style="color:#3b6b4b;">shop</a></span>
+  </div>
+</div>
+
+<!-- ─── MAIN ──────────────────────────────────────────────────── -->
+<div class="page-wrap">
+
+  <!-- WHAT'S INSIDE -->
+  <p class="section-label">What You'll Get</p>
+  <h2 class="section-title">Simple updates. Real value.</h2>
+  <div class="pillars">
+    <div class="pillar-card">
+      <div class="pillar-icon">&#128197;</div>
+      <p class="pillar-title">Availability Updates</p>
+      <p class="pillar-desc">Know when spots open before anyone else — great for holiday weekends and busy seasons.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon">&#128161;</div>
+      <p class="pillar-title">Dog Tips</p>
+      <p class="pillar-desc">One practical tip each month — paw care, enrichment, travel prep, seasonal reminders.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon">&#127881;</div>
+      <p class="pillar-title">Repeat Client Perks</p>
+      <p class="pillar-desc">Loyalty discounts, locked-in rates, and referral thank-yous — for clients who stick around.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon">&#128247;</div>
+      <p class="pillar-title">Dog Pics &amp; Updates</p>
+      <p class="pillar-desc">Occasional updates from recent stays — with client permission, of course.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- LATEST ISSUE -->
+  <p class="section-label">Latest Issue</p>
+  <h2 class="section-title">April 2026</h2>
+
+  <div class="issue-preview">
+    <div class="issue-preview-aside">
+      <div>
+        <p class="issue-aside-label">Pup Notes</p>
+        <h3 class="issue-aside-title">Spring openings + a quick tip for warmer-weather walks</h3>
+      </div>
+      <p class="issue-aside-date">April 2026 &bull; Issue 01</p>
+    </div>
+    <div class="issue-preview-body">
+      <p>Spring spots are opening up for weekends and weekday drop-ins through April and into May. If you have travel or a busy stretch coming up, it's a good time to reach out early.</p>
+      <p>This month's tip: as pavement heats up, aim for morning or evening walks. A quick test — if the sidewalk is too hot for the back of your hand for five seconds, it's too hot for paws.</p>
+      <p>Subscribers also get first notice on newly opened spots before they're shared anywhere else.</p>
+      <a class="issue-read-link" href="monthly-issue-01.html">Read the full issue &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Archive -->
+  <ul class="archive-list" id="archive">
+    <li><a href="monthly-issue-01.html">April 2026 &rarr;</a></li>
+    <!-- Add new issues here each month: <li><a href="monthly-issue-02.html">May 2026 &rarr;</a></li> -->
+  </ul>
+
+  <hr class="divider">
+
+  <!-- PHOTO STRIP -->
+  <p class="section-label">Recent Pups</p>
+  <h2 class="section-title">Dogs I've had the pleasure of caring for</h2>
+
+  <div class="photo-strip">
+    <!--
+      To add real photos:
+      <div class="photo-strip-item"><img src="./assets/dog-01.jpg" alt="[Dog Name]"></div>
+
+      Until then, placeholders:
+    -->
+    <div class="photo-strip-item" title="Add a photo here">&#128054;</div>
+    <div class="photo-strip-item" title="Add a photo here">&#128054;</div>
+    <div class="photo-strip-item" title="Add a photo here">&#128054;</div>
+    <div class="photo-strip-item" title="Add a photo here">&#128054;</div>
+    <div class="photo-strip-item" title="Add a photo here">&#128054;</div>
+    <div class="photo-strip-item" title="Add a photo here">&#128054;</div>
+  </div>
+  <p style="font-family:Arial,sans-serif;font-size:12px;color:#aaa;margin:12px 0 0;">
+    &#x2022; Photos shared with client permission only.
+  </p>
+
+  <hr class="divider">
+
+  <!-- TESTIMONIALS -->
+  <p class="section-label">What Clients Say</p>
+  <h2 class="section-title">Kind words from happy owners</h2>
+
+  <div class="testimonial-grid">
+    <!-- REPLACE with real client quotes -->
+    <div class="testimonial-card">
+      <p class="testimonial-quote">We felt completely at ease leaving [Dog Name] for the weekend. The photo updates made our trip so much more relaxing.</p>
+      <p class="testimonial-author">[Client Name]</p>
+      <p class="testimonial-dog">Owner of [Dog Name]</p>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-quote">I love that I hear about openings before they're gone. [Your Name] always takes such good care of our pup.</p>
+      <p class="testimonial-author">[Client Name]</p>
+      <p class="testimonial-dog">Owner of [Dog Name]</p>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-quote">Referred two neighbors already. Completely reliable, and the newsletter is actually fun to read.</p>
+      <p class="testimonial-author">[Client Name]</p>
+      <p class="testimonial-dog">Owner of [Dog Name]</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- STORE TEASER -->
+  <div class="store-teaser">
+    <div class="store-teaser-text">
+      <h3>Dog-tested gear worth having</h3>
+      <p>Products I genuinely recommend — from enrichment toys to travel essentials. Use code SHOP10 for 10% off your next booking when you order.</p>
+    </div>
+    <a href="store.html" class="btn-white">Browse the Shop &rarr;</a>
+  </div>
+
+  <hr class="divider">
+
+  <!-- COUPONS -->
+  <p class="section-label">Subscriber Perks</p>
+  <h2 class="section-title">A small thank-you for staying connected</h2>
+
+  <div class="coupon-section">
+    <div class="coupon-card">
+      <p class="coupon-tag">Newsletter Perk</p>
+      <div class="coupon-code">PUPS10</div>
+      <p class="coupon-desc">Get <strong>10% off your next dog-sitting booking</strong> when you subscribe. Mention this code when you reach out on Rover.</p>
+      <p class="coupon-fine">Valid for returning clients. One use per client. Cannot be combined with other offers. Applied as a rate adjustment on Rover.</p>
+    </div>
+    <div class="coupon-card">
+      <p class="coupon-tag">Shop Perk</p>
+      <div class="coupon-code">SHOP10</div>
+      <p class="coupon-desc">Order anything from the <a href="store.html" style="color:#3b6b4b;">dog care shop</a> and get <strong>10% off your next booking</strong>. Mention this code when you reach out.</p>
+      <p class="coupon-fine">Valid for new and returning clients. One use per client. Cannot be combined with other offers.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SHARE -->
+  <p class="section-label">Know a Dog Owner?</p>
+  <h2 class="section-title">Share this with a friend</h2>
+  <p style="font-family:Georgia,serif;font-size:16px;color:#555;line-height:1.7;margin:0 0 24px;max-width:520px;">
+    If you know someone who needs a reliable sitter, send them this page. Referrals are the biggest compliment — and there's a perk in it for you.
+  </p>
+
+  <div class="share-row">
+    <span class="share-label">Share:</span>
+    <button class="share-btn" onclick="shareNative()" aria-label="Share this page">
+      &#8679; Share this page
+    </button>
+    <a class="share-btn"
+       href="https://twitter.com/intent/tweet?text=Check+out+Pup+Notes+from+%5BYour+Name%5D+%E2%80%94+great+dog+sitter+and+monthly+tips+for+dog+owners&url=https%3A%2F%2F%5BYOUR-SITE%5D"
+       target="_blank" rel="noopener">
+      &#x1D54F; Post on X
+    </a>
+    <a class="share-btn"
+       href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F%5BYOUR-SITE%5D"
+       target="_blank" rel="noopener">
+      f Share on Facebook
+    </a>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<!-- ─── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <p>Pup Notes from [Your Name] &bull; Trusted dog care &bull; [Your City]</p>
+  <p>All active Rover bookings are handled through <a href="https://www.rover.com" target="_blank" rel="noopener">Rover.com</a> per their Terms of Service.</p>
+  <p style="margin-top:10px;">
+    <a href="store.html">Shop</a> &bull;
+    <a href="monthly-issue-01.html">Latest Issue</a> &bull;
+    <a href="#subscribe">Subscribe</a>
+  </p>
+  <p style="margin-top:10px; color:#4a7a5a;">
+    &copy; 2026 [Your Name]. All rights reserved.
+  </p>
+</footer>
+
+<script>
+  // Native share API (shows OS share sheet on mobile, falls back on desktop)
+  function shareNative() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Pup Notes from [Your Name]',
+        text: 'Great dog sitter with a monthly newsletter — check it out.',
+        url: window.location.href
+      }).catch(() => {});
+    } else {
+      // Fallback: copy URL to clipboard
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Link copied to clipboard!');
+      }).catch(() => {
+        prompt('Copy this link:', window.location.href);
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
