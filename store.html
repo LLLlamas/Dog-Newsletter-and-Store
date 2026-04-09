@@ -3,235 +3,205 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Security -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+
   <title>Curated Top Picks — Dogs &amp; Llamas</title>
-  <meta name="description" content="Trusted dog gear picks from a professional sitter — beds, chew toys, healthy food, fetch toys, and grooming essentials, curated by real experience.">
+  <meta name="description" content="Trusted dog gear picks from a professional sitter — filtered by your dog's size, age, and habits. Every pick is earned, nothing is filler.">
   <meta property="og:title" content="Curated Top Picks — Dogs &amp; Llamas">
-  <meta property="og:description" content="Gear I actually use and recommend — tested on real dogs.">
+  <meta property="og:description" content="Gear tested across real dogs. Filter by size, age, or activity.">
   <meta property="og:type" content="website">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0; padding: 0;
-      background: #f5f0eb;
-      font-family: Georgia, 'Times New Roman', serif;
-      color: #2d2d2d;
-    }
+    body { margin: 0; padding: 0; background: #f5f0eb; font-family: Georgia, 'Times New Roman', serif; color: #2d2d2d; }
 
-    /* ── NAV ───────────────────────────────────────────────── */
+    /* ── NAV ────────────────────────────────────────── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: #3b6b4b;
-      padding: 0 32px; height: 56px;
+      background: #3b6b4b; padding: 0 32px; height: 56px;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-    .nav-brand {
-      font-family: Georgia, serif; font-size: 17px; font-style: italic;
-      color: #fff; text-decoration: none;
-    }
-    .nav-brand span { font-style: normal; opacity: .6; margin: 0 4px; }
+    .nav-brand { font-family: Georgia, serif; font-size: 17px; font-style: italic; color: #fff; text-decoration: none; }
+    .nav-brand span { font-style: normal; opacity: .55; margin: 0 3px; }
     .nav-links { display: flex; gap: 20px; align-items: center; }
     .nav-link {
       font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
-      color: #a8d5b0; text-decoration: none; letter-spacing: .8px;
-      text-transform: uppercase; transition: color .15s;
+      color: #a8d5b0; text-decoration: none; letter-spacing: .7px; text-transform: uppercase; transition: color .14s;
     }
     .nav-link:hover { color: #fff; }
     .nav-cta {
-      background: #fff; color: #3b6b4b;
-      padding: 7px 18px; border-radius: 4px;
+      background: #fff; color: #3b6b4b; padding: 7px 18px; border-radius: 4px;
       font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
-      letter-spacing: .5px; text-transform: uppercase; text-decoration: none;
+      letter-spacing: .5px; text-transform: uppercase; text-decoration: none; transition: background .14s;
     }
     .nav-cta:hover { background: #e8f3ec; }
 
-    /* ── AFFILIATE BAR ──────────────────────────────────────── */
+    /* ── AFFILIATE NOTICE ───────────────────────────── */
     .affiliate-bar {
       background: #fffdf9; border-bottom: 1px solid #e8e3dc;
-      padding: 9px 32px; text-align: center;
+      padding: 10px 24px; text-align: center;
       font-family: Arial, sans-serif; font-size: 12px; color: #999; line-height: 1.5;
     }
+    .affiliate-bar a { color: #3b6b4b; text-decoration: none; }
+    .affiliate-bar a:hover { text-decoration: underline; }
 
-    /* ── HERO ───────────────────────────────────────────────── */
+    /* ── HERO ───────────────────────────────────────── */
     .hero {
-      background: linear-gradient(150deg, #2a4e37 0%, #3b6b4b 55%, #4a7d5a 100%);
-      padding: 52px 24px 48px; text-align: center;
+      background: linear-gradient(150deg, #253f2e 0%, #3b6b4b 55%, #4a7d5a 100%);
+      padding: 48px 24px 44px; text-align: center;
     }
-    .hero-eyebrow {
-      font-family: Arial, sans-serif; font-size: 11px;
-      letter-spacing: 2.5px; text-transform: uppercase; color: #a8d5b0; margin: 0 0 12px;
-    }
-    .hero h1 {
-      font-family: Georgia, serif; font-size: 38px; font-weight: normal;
-      color: #fff; margin: 0 0 12px; line-height: 1.2;
-    }
-    .hero p {
-      font-family: Georgia, serif; font-size: 16px; font-style: italic;
-      color: #c8e6cc; margin: 0 auto; max-width: 460px; line-height: 1.65;
-    }
+    .hero-eyebrow { font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: #a8d5b0; margin: 0 0 12px; }
+    .hero h1 { font-family: Georgia, serif; font-size: 36px; font-weight: normal; color: #fff; margin: 0 0 12px; line-height: 1.2; }
+    .hero p { font-family: Georgia, serif; font-size: 16px; font-style: italic; color: #c8e6cc; margin: 0 auto; max-width: 460px; line-height: 1.65; }
 
-    /* ── COUPON BAR ─────────────────────────────────────────── */
+    /* ── COUPON BAR ─────────────────────────────────── */
     .coupon-bar {
       background: #e8f3ec; border-bottom: 1px solid #c8e6cc;
-      padding: 13px 32px; text-align: center;
-      font-family: Arial, sans-serif; font-size: 13px; color: #2d5a38; line-height: 1.5;
+      padding: 12px 24px; text-align: center;
+      font-family: Arial, sans-serif; font-size: 13px; color: #2d5a38;
     }
     .coupon-bar .code {
       background: #3b6b4b; color: #fff;
       padding: 2px 10px; border-radius: 3px;
-      font-family: 'Courier New', monospace; font-size: 13px; letter-spacing: 2px;
-      margin: 0 3px;
+      font-family: 'Courier New', monospace; font-size: 13px; letter-spacing: 2px; margin: 0 3px;
     }
 
-    /* ── CATEGORY NAV (sticky below nav) ────────────────────── */
-    .cat-nav {
-      position: sticky; top: 56px; z-index: 90;
+    /* ── PERSONAL PICK ──────────────────────────────── */
+    /*
+      ╔══════════════════════════════════════════════════╗
+      ║  PERSONAL PICK — UPDATE MONTHLY                 ║
+      ║  To hide: add  style="display:none"  to the     ║
+      ║  section tag below.                             ║
+      ╚══════════════════════════════════════════════════╝
+    */
+    .personal-pick {
+      background: #fffdf9; border-left: 4px solid #3b6b4b;
+      border-radius: 0 8px 8px 0; padding: 24px 28px;
+      display: flex; align-items: flex-start; gap: 20px; flex-wrap: wrap;
+      box-shadow: 0 2px 12px rgba(59,107,75,.09);
+    }
+    .pp-paw { font-size: 32px; flex-shrink: 0; line-height: 1; }
+    .pp-content { flex: 1; min-width: 220px; }
+    .pp-label {
+      font-family: Arial, sans-serif; font-size: 10px; font-weight: bold;
+      letter-spacing: 2px; text-transform: uppercase; color: #3b6b4b; margin: 0 0 6px;
+    }
+    .pp-title { font-family: Georgia, serif; font-size: 18px; font-weight: normal; color: #1a1a1a; margin: 0 0 8px; line-height: 1.3; }
+    .pp-reason { font-family: Georgia, serif; font-size: 14px; font-style: italic; color: #555; line-height: 1.65; margin: 0; }
+    .pp-cta {
+      display: inline-block; margin-top: 14px;
+      background: #f0a500; color: #1a1a1a;
+      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
+      text-decoration: none; padding: 10px 22px; border-radius: 5px;
+      transition: background .14s; white-space: nowrap;
+    }
+    .pp-cta:hover { background: #e09500; }
+
+    /* ── FILTER BAR ─────────────────────────────────── */
+    .filter-wrap {
       background: #fffdf9; border-bottom: 1px solid #e8e3dc;
-      padding: 10px 24px;
-      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      padding: 12px 24px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
     }
-    .cat-link {
+    .filter-header {
+      font-family: Arial, sans-serif; font-size: 11px; font-weight: bold;
+      letter-spacing: 1.5px; text-transform: uppercase; color: #888;
+    }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
+    .filter-btn {
       font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
-      text-decoration: none; color: #3b6b4b;
-      padding: 7px 16px; border-radius: 99px;
-      border: 1.5px solid #c8e6cc; white-space: nowrap;
-      transition: background .12s, color .12s, border-color .12s;
+      cursor: pointer; padding: 7px 16px; border-radius: 99px;
+      border: 1.5px solid #c8e6cc; background: #fffdf9; color: #3b6b4b;
+      white-space: nowrap; transition: background .12s, color .12s, border-color .12s;
     }
-    .cat-link:hover { background: #3b6b4b; color: #fff; border-color: #3b6b4b; }
+    .filter-btn:hover { background: #e8f3ec; border-color: #3b6b4b; }
+    .filter-btn.active { background: #3b6b4b; color: #fff; border-color: #3b6b4b; }
+    .filter-count {
+      font-family: Arial, sans-serif; font-size: 12px; color: #aaa;
+    }
 
-    /* ── PAGE WRAP ──────────────────────────────────────────── */
-    .page-wrap { max-width: 940px; margin: 0 auto; padding: 52px 24px 80px; }
+    /* ── PAGE WRAP ──────────────────────────────────── */
+    .page-wrap { max-width: 940px; margin: 0 auto; padding: 44px 24px 80px; }
 
-    /* ── SITTER NOTE ─────────────────────────────────────────── */
+    /* ── SITTER NOTE ────────────────────────────────── */
     .sitter-note {
-      background: #fffdf9; border-radius: 8px;
-      border: 1px solid #e8e3dc; padding: 24px 28px;
-      display: flex; gap: 18px; align-items: flex-start;
-      margin-bottom: 52px;
+      background: #fffdf9; border-radius: 8px; border: 1px solid #e8e3dc;
+      padding: 22px 26px; display: flex; gap: 16px; align-items: flex-start; margin-bottom: 44px;
     }
-    .sitter-note-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
-    .sitter-note-text h3 {
-      font-family: Georgia, serif; font-size: 17px; font-weight: normal;
-      color: #1a1a1a; margin: 0 0 6px;
-    }
-    .sitter-note-text p {
-      font-family: Georgia, serif; font-size: 14px; font-style: italic;
-      color: #666; line-height: 1.7; margin: 0;
-    }
+    .sitter-note-icon { font-size: 26px; flex-shrink: 0; line-height: 1; }
+    .sitter-note-text h3 { font-family: Georgia, serif; font-size: 17px; font-weight: normal; color: #1a1a1a; margin: 0 0 5px; }
+    .sitter-note-text p { font-family: Georgia, serif; font-size: 14px; font-style: italic; color: #666; line-height: 1.7; margin: 0; }
 
-    /* ── CATEGORY SECTIONS ──────────────────────────────────── */
-    .cat-section { margin-bottom: 60px; }
+    /* ── CATEGORY SECTIONS ──────────────────────────── */
+    .cat-section { margin-bottom: 56px; }
+    .cat-section.hidden { display: none; }
     .cat-header {
-      display: flex; align-items: center; gap: 12px;
-      border-bottom: 2px solid #3b6b4b;
-      padding-bottom: 12px; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 2px solid #3b6b4b; padding-bottom: 12px; margin-bottom: 22px;
     }
-    .cat-header-icon { font-size: 20px; }
-    .cat-title {
-      font-family: Georgia, serif; font-size: 20px; font-weight: normal;
-      color: #1a1a1a; margin: 0;
-    }
-    .cat-desc {
-      font-family: Georgia, serif; font-size: 13.5px; font-style: italic;
-      color: #888; margin: 0 0 auto;
-    }
+    .cat-icon { font-size: 20px; }
+    .cat-title { font-family: Georgia, serif; font-size: 20px; font-weight: normal; color: #1a1a1a; margin: 0; }
+    .cat-sub { font-family: Georgia, serif; font-size: 13px; font-style: italic; color: #aaa; margin-left: auto; }
 
-    /* ── PRODUCT GRID ───────────────────────────────────────── */
-    .product-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
-      gap: 20px;
-    }
+    /* ── PRODUCT GRID ───────────────────────────────── */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(272px, 1fr)); gap: 18px; }
 
-    /* Product card */
     .product-card {
-      background: #fffdf9; border-radius: 10px;
-      border: 1px solid #e8e3dc;
-      display: flex; flex-direction: column;
-      overflow: hidden;
-      transition: box-shadow .18s, transform .18s;
+      background: #fffdf9; border-radius: 10px; border: 1px solid #e8e3dc;
+      display: flex; flex-direction: column; overflow: hidden;
+      transition: box-shadow .16s, transform .16s;
     }
-    .product-card:hover {
-      box-shadow: 0 6px 22px rgba(0,0,0,.1);
-      transform: translateY(-2px);
-    }
+    .product-card:hover { box-shadow: 0 6px 22px rgba(0,0,0,.1); transform: translateY(-2px); }
+    .product-card.hidden { display: none; }
 
-    /* Image / emoji area */
+    /* Icon / image area */
     .product-img {
-      height: 120px; background: #edf6f0;
+      height: 116px; background: #edf6f0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 50px; border-bottom: 1px solid #dff0e4;
+      font-size: 48px; border-bottom: 1px solid #dff0e4;
       position: relative;
     }
-    /* Uncomment and adapt when adding real product images:
-    .product-img img {
-      width: 100%; height: 100%; object-fit: contain;
-      padding: 12px;
-    } */
-
-    /* Sitter's Pick badge */
+    /* Badge */
     .badge {
       position: absolute; top: 10px; right: 10px;
       font-family: Arial, sans-serif; font-size: 10px; font-weight: bold;
-      letter-spacing: .5px; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 99px;
-      white-space: nowrap;
+      letter-spacing: .4px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 99px; white-space: nowrap;
     }
-    .badge-pick { background: #3b6b4b; color: #fff; }
-    .badge-popular { background: #f0a500; color: #fff; }
-    .badge-value  { background: #6b8f3b; color: #fff; }
+    .badge-pick     { background: #3b6b4b; color: #fff; }
+    .badge-popular  { background: #f0a500; color: #fff; }
+    .badge-value    { background: #6b8f3b; color: #fff; }
 
-    /* Card body */
-    .product-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
-    .product-brand {
+    /* Body */
+    .product-body { padding: 17px 19px 19px; flex: 1; display: flex; flex-direction: column; }
+    .product-brand { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; color: #bbb; margin: 0 0 4px; }
+    .product-name  { font-family: Georgia, serif; font-size: 16px; font-weight: normal; color: #1a1a1a; margin: 0 0 9px; line-height: 1.35; }
+    .product-desc  { font-family: Georgia, serif; font-size: 13.5px; color: #555; line-height: 1.65; margin: 0; flex: 1; }
+
+    /* Why it works */
+    .product-why { margin: 11px 0 0; padding: 9px 13px; background: #f0f7f2; border-left: 3px solid #3b6b4b; border-radius: 0 4px 4px 0; }
+    .product-why-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; color: #3b6b4b; margin: 0 0 3px; }
+    .product-why p { font-family: Arial, sans-serif; font-size: 12px; color: #4a6b52; line-height: 1.55; margin: 0; }
+
+    /* Best-for filter tags row */
+    .product-tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0 0; }
+    .product-tag {
       font-family: Arial, sans-serif; font-size: 10px; font-weight: bold;
-      letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; margin: 0 0 5px;
-    }
-    .product-name {
-      font-family: Georgia, serif; font-size: 16px; font-weight: normal;
-      color: #1a1a1a; margin: 0 0 10px; line-height: 1.35;
-    }
-    .product-desc {
-      font-family: Georgia, serif; font-size: 13.5px;
-      color: #555; line-height: 1.65; margin: 0; flex: 1;
+      letter-spacing: .4px; text-transform: uppercase;
+      background: #e8f3ec; color: #3b6b4b;
+      padding: 3px 9px; border-radius: 3px;
     }
 
-    /* "Why it works" highlight */
-    .product-why {
-      margin: 12px 0 0; padding: 10px 14px;
-      background: #f0f7f2; border-left: 3px solid #3b6b4b;
-      border-radius: 0 4px 4px 0;
-    }
-    .product-why-label {
-      font-family: Arial, sans-serif; font-size: 10px; font-weight: bold;
-      letter-spacing: 1.5px; text-transform: uppercase; color: #3b6b4b; margin: 0 0 3px;
-    }
-    .product-why p {
-      font-family: Arial, sans-serif; font-size: 12px;
-      color: #4a6b52; line-height: 1.55; margin: 0;
-    }
-
-    /* "Best for" tag */
-    .best-for {
-      display: inline-block; margin: 10px 0 0;
-      font-family: Arial, sans-serif; font-size: 11px;
-      color: #3b6b4b; background: #e8f3ec;
-      padding: 3px 10px; border-radius: 3px; letter-spacing: .3px;
-    }
-
-    /* Card footer */
-    .product-footer {
-      margin-top: 16px; padding-top: 14px;
-      border-top: 1px solid #eee;
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    }
-    .product-price {
-      font-family: Arial, sans-serif; font-size: 12px; color: #999;
-    }
+    /* Footer */
+    .product-footer { margin-top: 14px; padding-top: 13px; border-top: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .product-price { font-family: Arial, sans-serif; font-size: 12px; color: #aaa; }
     .product-price em { font-style: normal; font-weight: bold; color: #2d2d2d; }
-    .product-reviews {
-      font-family: Arial, sans-serif; font-size: 11px; color: #bbb;
-    }
+    .product-stat  { font-family: Arial, sans-serif; font-size: 11px; color: #ccc; }
 
     /* Amazon CTA */
     .btn-amazon {
@@ -239,670 +209,865 @@
       background: #f0a500; color: #1a1a1a;
       font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
       text-decoration: none; text-align: center;
-      padding: 11px 16px; border-radius: 5px;
-      transition: background .15s;
-      letter-spacing: .3px;
+      padding: 11px 16px; border-radius: 5px; transition: background .14s;
     }
     .btn-amazon:hover { background: #e09500; }
 
-    /* ── SHARE & SUBSCRIBE ──────────────────────────────────── */
-    .share-row {
-      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-      margin: 40px 0 48px;
+    /* Empty state */
+    .empty-state {
+      display: none; text-align: center; padding: 48px 24px;
     }
-    .share-label {
-      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; color: #3b6b4b;
+    .empty-state.show { display: block; }
+    .empty-state p { font-family: Georgia, serif; font-size: 17px; color: #aaa; font-style: italic; }
+    .empty-state button {
+      margin-top: 14px; background: #3b6b4b; color: #fff;
+      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
+      padding: 10px 22px; border: none; border-radius: 5px; cursor: pointer;
     }
+
+    /* ── SHARE & SUBSCRIBE ──────────────────────────── */
+    .share-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 40px 0 48px; }
+    .share-label { font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; color: #3b6b4b; }
     .share-btn {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: Arial, sans-serif; font-size: 13px;
       text-decoration: none; padding: 8px 16px; border-radius: 4px;
       border: 1.5px solid #c8d8cc; color: #555;
-      background: #fffdf9; cursor: pointer; transition: border-color .15s, color .15s;
+      background: #fffdf9; cursor: pointer; transition: border-color .14s, color .14s;
     }
     .share-btn:hover { border-color: #3b6b4b; color: #3b6b4b; }
 
-    .subscribe-banner {
-      background: #3b6b4b; border-radius: 8px;
-      padding: 36px 40px; text-align: center;
-    }
-    .subscribe-banner h2 {
-      font-family: Georgia, serif; font-size: 22px; font-weight: normal;
-      color: #fff; margin: 0 0 10px;
-    }
-    .subscribe-banner p {
-      font-family: Georgia, serif; font-size: 15px; font-style: italic;
-      color: #c8e6cc; margin: 0 0 22px; line-height: 1.6;
-    }
-    .subscribe-form {
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: 8px; max-width: 400px; margin: 0 auto;
-    }
+    .subscribe-banner { background: #3b6b4b; border-radius: 8px; padding: 36px 40px; text-align: center; }
+    .subscribe-banner h2 { font-family: Georgia, serif; font-size: 22px; font-weight: normal; color: #fff; margin: 0 0 10px; }
+    .subscribe-banner p { font-family: Georgia, serif; font-size: 15px; font-style: italic; color: #c8e6cc; margin: 0 0 22px; line-height: 1.6; }
+    .subscribe-form { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 400px; margin: 0 auto; }
     .subscribe-form input[type="email"] {
-      flex: 1; min-width: 190px;
-      padding: 12px 16px; border: none; border-radius: 5px;
+      flex: 1; min-width: 190px; padding: 12px 16px; border: none; border-radius: 5px;
       font-family: Georgia, serif; font-size: 15px; color: #2d2d2d; outline: none;
     }
+    .subscribe-form input[type="email"]:focus { outline: 2px solid #a8d5b0; }
     .subscribe-form button {
       background: #f5f0eb; color: #3b6b4b;
       font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
       letter-spacing: .5px; text-transform: uppercase;
-      padding: 12px 22px; border: none; border-radius: 5px; cursor: pointer;
-      transition: background .15s;
+      padding: 12px 22px; border: none; border-radius: 5px; cursor: pointer; transition: background .14s;
     }
     .subscribe-form button:hover { background: #fff; }
-    .subscribe-note {
-      font-family: Arial, sans-serif; font-size: 11px; color: #a8d5b0; margin: 12px 0 0;
-    }
+    .subscribe-note { font-family: Arial, sans-serif; font-size: 11px; color: #a8d5b0; margin: 12px 0 0; }
 
-    /* ── FOOTER ─────────────────────────────────────────────── */
-    footer {
-      background: #2a4e37; padding: 32px; text-align: center;
+    /* ── TOAST ──────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #2a4e37; color: #fff; font-family: Arial, sans-serif; font-size: 14px;
+      padding: 12px 24px; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,.2);
+      opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none; z-index: 999; white-space: nowrap;
     }
-    footer p {
-      font-family: Arial, sans-serif; font-size: 12px;
-      color: #7aac8a; margin: 0 0 5px; line-height: 1.7;
-    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    footer { background: #2a4e37; padding: 32px; text-align: center; }
+    footer p { font-family: Arial, sans-serif; font-size: 12px; color: #7aac8a; margin: 0 0 5px; line-height: 1.7; }
     footer a { color: #a8d5b0; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+    .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,.07); margin: 14px 0; }
 
-    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    /* ── RESPONSIVE ─────────────────────────────────── */
     @media (max-width: 640px) {
-      .hero h1 { font-size: 28px; }
       nav { padding: 0 16px; }
-      .cat-nav { padding: 8px 16px; top: 56px; }
+      .nav-links { gap: 10px; }
+      .hero h1 { font-size: 28px; }
       .subscribe-banner { padding: 28px 20px; }
       .sitter-note { flex-direction: column; }
+      .personal-pick { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
+<div id="toast" role="status" aria-live="polite"></div>
+
 <!-- ── NAV ──────────────────────────────────────────────────── -->
 <nav>
   <a href="index.html" class="nav-brand">Dogs <span>&amp;</span> Llamas</a>
   <div class="nav-links">
-    <a href="index.html" class="nav-link">Newsletter</a>
+    <a href="index.html#the-dogs" class="nav-link">The Dogs</a>
     <a href="index.html#subscribe" class="nav-cta">Subscribe</a>
   </div>
 </nav>
 
-<!-- ── AFFILIATE BAR ─────────────────────────────────────────── -->
-<div class="affiliate-bar">
-  Some links on this page are Amazon affiliate links — I may earn a small commission if you buy through them, at no extra cost to you. I only recommend products I'd genuinely suggest in person.
+<!-- ── AFFILIATE NOTICE ──────────────────────────────────────── -->
+<div class="affiliate-bar" role="note">
+  <strong>Heads up:</strong> Some links on this page are Amazon affiliate links.
+  If you buy through them I may earn a small commission at no extra cost to you.
+  I only recommend products I'd genuinely suggest in person.
+  <a href="https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers"
+     target="_blank" rel="noopener noreferrer">FTC disclosure info</a>.
 </div>
 
 <!-- ── HERO ──────────────────────────────────────────────────── -->
-<section class="hero">
+<section class="hero" aria-label="Curated Top Picks">
   <p class="hero-eyebrow">Curated Top Picks</p>
   <h1>Gear worth having</h1>
-  <p>Tested across dozens of dogs. Every pick here has earned its place — nothing is filler.</p>
+  <p>Tested across dozens of dogs. Filter by your dog's size, age, or activity below — every pick earns its place.</p>
 </section>
 
 <!-- ── COUPON BAR ─────────────────────────────────────────────── -->
-<div class="coupon-bar">
-  &#127381;&nbsp; Shop here, then mention code <span class="code">SHOP10</span> on Rover for <strong>10% off your next booking</strong>.
+<div class="coupon-bar" role="note">
+  &#127381;&nbsp; Shop here, then mention code <span class="code">SHOP10</span> on Rover for
+  <strong>10% off your next booking</strong>.
 </div>
 
-<!-- ── CATEGORY NAV ───────────────────────────────────────────── -->
-<div class="cat-nav">
-  <a href="#beds-crates" class="cat-link">&#128009;&nbsp; Beds &amp; Crates</a>
-  <a href="#chew-toys"   class="cat-link">&#129454;&nbsp; Chew Toys</a>
-  <a href="#food"        class="cat-link">&#127859;&nbsp; Healthy Food</a>
-  <a href="#fetch"       class="cat-link">&#127936;&nbsp; Fetch &amp; Play</a>
-  <a href="#wipes"       class="cat-link">&#129529;&nbsp; Wipes &amp; Towels</a>
+<!-- ── FILTER BAR ─────────────────────────────────────────────── -->
+<div class="filter-wrap" role="search" aria-label="Filter products by dog profile">
+  <p class="filter-header">Find the right pick for your dog</p>
+  <div class="filter-pills" role="group" aria-label="Filter options">
+    <button class="filter-btn active" data-filter="all"     type="button">All Picks</button>
+    <button class="filter-btn"        data-filter="small"   type="button">&#128054; Small Dogs</button>
+    <button class="filter-btn"        data-filter="medium"  type="button">&#128054; Medium Dogs</button>
+    <button class="filter-btn"        data-filter="large"   type="button">&#128054; Large Dogs</button>
+    <button class="filter-btn"        data-filter="puppy"   type="button">&#128021; Puppies</button>
+    <button class="filter-btn"        data-filter="teething" type="button">&#129454; Teething</button>
+    <button class="filter-btn"        data-filter="chewing"  type="button">&#9881; Chewing</button>
+    <button class="filter-btn"        data-filter="fetch"    type="button">&#127944; Fetch &amp; Play</button>
+    <button class="filter-btn"        data-filter="sleeping" type="button">&#128564; Sleeping &amp; Rest</button>
+    <button class="filter-btn"        data-filter="sensitive" type="button">&#127806; Sensitive Skin</button>
+  </div>
+  <p class="filter-count" id="filter-count" aria-live="polite">15 picks</p>
 </div>
 
 <!-- ── MAIN ──────────────────────────────────────────────────── -->
 <div class="page-wrap">
 
-  <!-- Sitter note -->
-  <div class="sitter-note">
-    <span class="sitter-note-icon">&#128054;</span>
+  <!-- SITTER NOTE -->
+  <div class="sitter-note" role="note">
+    <span class="sitter-note-icon" aria-hidden="true">&#128054;</span>
     <div class="sitter-note-text">
       <h3>A note from [First Name] Llamas</h3>
-      <p>I've cared for a lot of dogs — big ones, anxious ones, power chewers, seniors, puppies. These are the products I see make a real difference. If something stops earning its place, I swap it out. When you see "Sitter's Pick for…", that's a personal recommendation for a specific dog type I've worked with.</p>
+      <p>I've cared for a lot of dogs — big ones, anxious ones, power chewers, seniors, puppies.
+         These are the products I see make a real difference. If something stops earning its place, I swap it out.
+         Use the filters above to find what fits your dog specifically.</p>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════════════════════
-       BEDS & CRATES
-       ══════════════════════════════════════════════════════════ -->
-  <section class="cat-section" id="beds-crates">
+  <!-- ══════════════════════════════════════════════════════
+       PERSONAL PICK — EDIT THIS SECTION MONTHLY
+       To hide it: add  style="display:none"  to the <section> tag.
+       ══════════════════════════════════════════════════════ -->
+  <section class="personal-pick" id="personal-pick" aria-label="Personal recommendation" style="margin-bottom:44px;">
+    <span class="pp-paw" aria-hidden="true">&#128054;</span>
+    <div class="pp-content">
+      <p class="pp-label">Personally Recommended &bull; This Month</p>
+      <!-- ── EDIT: dog name, product name, reason, and Amazon link below ── -->
+      <h2 class="pp-title">For Harley &mdash; Big Barker 7&Prime; Orthopedic Bed</h2>
+      <p class="pp-reason">
+        Harley's flat-face structure means extra weight lands on his chest and joints when he sleeps —
+        French Bulldogs feel this more than most breeds. The Big Barker's therapeutic foam keeps that
+        pressure distributed, and I noticed he settled in faster and stayed more relaxed through the night.
+        If Harley doesn't have one of these already, it's the one thing I'd pick first.
+      </p>
+      <!-- AFFILIATE LINK: replace href with your amzn.to link when ready -->
+      <a class="pp-cta"
+         href="https://www.amazon.com/Big-Barker-7-Inch-Pillow-Orthopedic/dp/B009G9Y5UC"
+         target="_blank" rel="noopener noreferrer sponsored">
+        View on Amazon &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- Empty state (shown by JS when no products match a filter) -->
+  <div class="empty-state" id="empty-state" role="status">
+    <p>No picks match that filter yet — more coming soon.</p>
+    <button type="button" id="reset-filter-btn">Show all picks</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       CATEGORY: BEDS & CRATES
+       ══════════════════════════════════════ -->
+  <section class="cat-section" id="cat-beds" aria-labelledby="cat-beds-title">
     <div class="cat-header">
-      <span class="cat-header-icon">&#128009;</span>
-      <h2 class="cat-title">Beds &amp; Crates</h2>
-      <span class="cat-desc">3 picks &bull; Support, safety &amp; sleep quality</span>
+      <span class="cat-icon" aria-hidden="true">&#128009;</span>
+      <h2 class="cat-title" id="cat-beds-title">Beds &amp; Crates</h2>
+      <span class="cat-sub">Support, safety &amp; sleep quality</span>
     </div>
     <div class="product-grid">
 
-      <!-- 1. Big Barker Orthopedic Bed -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Big Barker | tags: large sleeping senior -->
+      <article class="product-card" data-tags="large sleeping senior" aria-label="Big Barker Orthopedic Bed">
+        <div class="product-img" aria-hidden="true">
           &#128719;
           <span class="badge badge-pick">Sitter's Pick &bull; Large Breeds</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Big Barker</p>
-          <h3 class="product-name">7" Orthopedic Dog Bed with Headrest</h3>
-          <p class="product-desc">Seven inches of therapeutic foam that holds its shape — backed by a 10-year guarantee. Washable microsuede cover, elevated headrest, and made in the USA. Vet-recommended for large breeds and seniors.</p>
+          <h3 class="product-name">7&Prime; Orthopedic Dog Bed with Headrest</h3>
+          <p class="product-desc">Seven inches of therapeutic foam with a 10-year no-flatten guarantee. Washable microsuede cover, elevated headrest, vet-recommended for large breeds and seniors. Made in the USA.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Heavy dogs compress cheap foam in weeks. Big Barker's foam is clinically tested to retain support — important for hips and joints in larger breeds over time.</p>
+            <p>Heavy dogs compress cheap foam in weeks. Big Barker is clinically tested to retain support long-term — important for hips and joints in larger breeds. Especially good for flat-faced dogs like Harley.</p>
           </div>
-          <span class="best-for">&#128054; Great for Harley &bull; French Bulldogs &bull; Large breeds</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">Large</span>
+            <span class="product-tag">Sleeping</span>
+            <span class="product-tag">Seniors</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$149–$239</em></span>
-            <span class="product-reviews">10-yr warranty</span>
+            <span class="product-stat">10-yr warranty</span>
           </div>
-          <!--
-            AFFILIATE LINK: Replace the href with your amzn.to link, e.g.:
-            href="https://amzn.to/XXXXXXX"
-            Current direct link: amazon.com/dp/B009G9Y5UC
-          -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B009G9Y5UC -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Big-Barker-7-Inch-Pillow-Orthopedic/dp/B009G9Y5UC"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 2. MidWest iCrate -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- MidWest iCrate | tags: small medium large puppy all -->
+      <article class="product-card" data-tags="small medium large puppy sleeping all" aria-label="MidWest iCrate">
+        <div class="product-img" aria-hidden="true">
           &#128274;
           <span class="badge badge-value">Best Value</span>
         </div>
         <div class="product-body">
           <p class="product-brand">MidWest Homes for Pets</p>
-          <h3 class="product-name">iCrate Single Door Folding Metal Dog Crate (42")</h3>
-          <p class="product-desc">The most widely-used starter crate for good reason. Folds completely flat, includes a divider panel that grows with your dog, and a slide-out leak-proof tray. Available in multiple sizes.</p>
+          <h3 class="product-name">iCrate Single Door Folding Metal Dog Crate (42&Prime;)</h3>
+          <p class="product-desc">The most widely used starter crate. Folds flat, includes a divider panel that grows with your dog, and has a slide-out leak-proof tray. Available in six sizes from XS to XXL.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>The divider panel is the key feature — it lets you right-size the crate as a puppy grows without buying multiple crates, which keeps crate training effective and on track.</p>
+            <p>The divider panel is the key feature — it lets you right-size the crate as a puppy grows without buying a new one. A properly sized crate makes training faster and keeps the crate feeling den-like.</p>
           </div>
-          <span class="best-for">&#128054; Any breed &bull; Puppies &bull; Travel</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">All Sizes</span>
+            <span class="product-tag">Puppies</span>
+            <span class="product-tag">Travel</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$45–$85</em></span>
-            <span class="product-reviews">Multi-size</span>
+            <span class="product-stat">6 sizes</span>
           </div>
-          <!--
-            AFFILIATE LINK: Replace href with your amzn.to link
-            Current direct link: amazon.com/dp/B000OX64P8 (42")
-          -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B000OX64P8 -->
           <a class="btn-amazon"
              href="https://www.amazon.com/MidWest-Folding-Divider-Protecting-Leak-Proof/dp/B000OX64P8"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 3. Diggs Snooz Crate Pad -->
-      <div class="product-card">
-        <div class="product-img">&#128167;</div>
+      <!-- Diggs Snooz Pad | tags: small medium large puppy sleeping all -->
+      <article class="product-card" data-tags="small medium large puppy sleeping all" aria-label="Diggs Snooz Crate Pad">
+        <div class="product-img" aria-hidden="true">&#128167;</div>
         <div class="product-body">
           <p class="product-brand">Diggs</p>
           <h3 class="product-name">Snooz Crate Pad — Memory Foam</h3>
-          <p class="product-desc">A proper memory foam crate pad with a soft removable cover that's machine washable and a water-resistant backing so accidents don't reach the foam. Makes any crate feel like a den.</p>
+          <p class="product-desc">Memory foam base, soft removable cover that's machine washable, and a water-resistant backing so accidents don't soak through. Turns any crate floor into a proper den.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Hard crate floors cause restlessness and poor sleep. A comfortable pad dramatically reduces anxiety during boarding — dogs settle faster and stay calmer throughout the stay.</p>
+            <p>Hard crate floors cause restlessness and poor sleep. A comfortable pad dramatically reduces anxiety during boarding — dogs settle faster and stay calmer through the stay.</p>
           </div>
-          <span class="best-for">&#128054; All breeds &bull; Puppies &bull; Seniors</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">All Sizes</span>
+            <span class="product-tag">Sleeping</span>
+            <span class="product-tag">Puppies</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$45–$65</em></span>
-            <span class="product-reviews">Machine washable</span>
+            <span class="product-stat">Washable</span>
           </div>
-          <!--
-            AFFILIATE LINK: Replace href with your amzn.to link
-            Current direct link: amazon.com search (add specific ASIN when available)
-          -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link -->
           <a class="btn-amazon"
              href="https://www.amazon.com/s?k=Diggs+Snooz+Dog+Crate+Pad+Memory+Foam"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       CHEW TOYS
-       ══════════════════════════════════════════════════════════ -->
-  <section class="cat-section" id="chew-toys">
+  <!-- ══════════════════════════════════════
+       CATEGORY: CHEW TOYS
+       ══════════════════════════════════════ -->
+  <section class="cat-section" id="cat-chew" aria-labelledby="cat-chew-title">
     <div class="cat-header">
-      <span class="cat-header-icon">&#129454;</span>
-      <h2 class="cat-title">Chew Toys</h2>
-      <span class="cat-desc">3 picks &bull; Dental health, boredom &amp; anxiety relief</span>
+      <span class="cat-icon" aria-hidden="true">&#129454;</span>
+      <h2 class="cat-title" id="cat-chew-title">Chew Toys</h2>
+      <span class="cat-sub">Dental health, boredom &amp; anxiety relief</span>
     </div>
     <div class="product-grid">
 
-      <!-- 1. KONG Classic -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- KONG Classic | tags: small medium large puppy teething chewing all -->
+      <article class="product-card" data-tags="small medium large puppy teething chewing all" aria-label="KONG Classic">
+        <div class="product-img" aria-hidden="true">
           &#129354;
           <span class="badge badge-popular">100K+ Reviews</span>
         </div>
         <div class="product-body">
           <p class="product-brand">KONG</p>
           <h3 class="product-name">Classic Stuffable Dog Toy</h3>
-          <p class="product-desc">The most reviewed dog toy on Amazon for good reason — durable natural rubber, hollow center for stuffing with peanut butter or kibble, and an erratic bounce that keeps dogs engaged. Vet and trainer #1 recommendation worldwide.</p>
+          <p class="product-desc">The most reviewed dog toy on Amazon. Durable natural rubber, hollow center for stuffing with peanut butter or kibble, erratic bounce. Vet and trainer #1 recommendation worldwide for 40+ years.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>A stuffed, frozen KONG can occupy a dog for 30+ minutes and is the single most effective tool for managing separation anxiety. I recommend every owner have at least two.</p>
+            <p>A stuffed, frozen KONG occupies a dog for 30+ minutes and is the single most effective tool I know for managing separation anxiety. Every client household should have at least two.</p>
           </div>
-          <span class="best-for">&#128054; All breeds &bull; Separation anxiety &bull; Boredom</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">All Sizes</span>
+            <span class="product-tag">Puppies</span>
+            <span class="product-tag">Teething</span>
+            <span class="product-tag">Chewing</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$14–$22</em></span>
-            <span class="product-reviews">100,000+ reviews</span>
+            <span class="product-stat">100,000+ reviews</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link | ASIN: B0002AR0I8 -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B0002AR0I8 -->
           <a class="btn-amazon"
              href="https://www.amazon.com/KONG-Classic-Durable-Natural-Rubber/dp/B0002AR0I8"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 2. Benebone Wishbone -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Benebone Wishbone | tags: medium large teething chewing -->
+      <article class="product-card" data-tags="medium large teething chewing" aria-label="Benebone Wishbone">
+        <div class="product-img" aria-hidden="true">
           &#128585;
           <span class="badge badge-pick">Sitter's Pick &bull; Aggressive Chewers</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Benebone</p>
           <h3 class="product-name">Wishbone Durable Chew Toy — Real Bacon</h3>
-          <p class="product-desc">Infused with real bacon flavor throughout — not a coating — so it stays enticing as long as the toy lasts. The curved wishbone shape lets dogs grip it with their paws, which is a natural, satisfying position for chewing. Made in USA.</p>
+          <p class="product-desc">Infused with real bacon flavor throughout — not a coating — so it stays enticing long-term. The curved shape lets dogs grip it with their paws, which is a natural, satisfying chewing position. Made in USA.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Dogs who have something satisfying to chew are far less likely to redirect to furniture, baseboards, or shoes. The lasting flavor keeps them focused on this, not your stuff.</p>
+            <p>Dogs who have something satisfying to chew are far less likely to redirect to furniture or shoes. The lasting flavor keeps them focused, and the nylon stands up to strong jaws.</p>
           </div>
-          <span class="best-for">&#128054; Aggressive chewers &bull; Medium &amp; large breeds</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">Medium</span>
+            <span class="product-tag">Large</span>
+            <span class="product-tag">Teething</span>
+            <span class="product-tag">Chewing</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$11–$18</em></span>
-            <span class="product-reviews">Made in USA</span>
+            <span class="product-stat">Made in USA</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link | ASIN: B00CPDWT2M -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B00CPDWT2M -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Benebone-Wishbone-Durable-Aggressive-Chewers/dp/B00CPDWT2M"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 3. West Paw Hurley -->
-      <div class="product-card">
-        <div class="product-img">&#127774;</div>
+      <!-- West Paw Hurley | tags: small medium large chewing -->
+      <article class="product-card" data-tags="small medium large chewing" aria-label="West Paw Hurley">
+        <div class="product-img" aria-hidden="true">&#127774;</div>
         <div class="product-body">
           <p class="product-brand">West Paw</p>
           <h3 class="product-name">Zogoflex Hurley Chew Toy</h3>
-          <p class="product-desc">100% non-toxic, BPA-free rubber made in the USA. Floats, bounces unpredictably, and is dishwasher-safe. West Paw replaces it for free if your dog destroys it — that's how confident they are in the material.</p>
+          <p class="product-desc">100% non-toxic, BPA-free rubber made in the USA. Floats, bounces unpredictably, dishwasher-safe. West Paw replaces it free if your dog destroys it — that's how confident they are in the material.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Non-toxic material matters more than most owners realize — dogs ingest small amounts from anything they chew over time. The lifetime replacement guarantee makes this completely worry-free.</p>
+            <p>Non-toxic material matters — dogs ingest small amounts from anything they chew. The lifetime replacement guarantee makes this completely worry-free for any power chewer.</p>
           </div>
-          <span class="best-for">&#128054; All breeds &bull; Water dogs &bull; Power chewers</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">All Sizes</span>
+            <span class="product-tag">Chewing</span>
+            <span class="product-tag">Water</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$13–$21</em></span>
-            <span class="product-reviews">Lifetime guarantee</span>
+            <span class="product-stat">Lifetime guarantee</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link -->
           <a class="btn-amazon"
              href="https://www.amazon.com/s?k=West+Paw+Zogoflex+Hurley+Dog+Toy"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       HEALTHY FOOD
-       ══════════════════════════════════════════════════════════ -->
-  <section class="cat-section" id="food">
+  <!-- ══════════════════════════════════════
+       CATEGORY: HEALTHY FOOD
+       ══════════════════════════════════════ -->
+  <section class="cat-section" id="cat-food" aria-labelledby="cat-food-title">
     <div class="cat-header">
-      <span class="cat-header-icon">&#127859;</span>
-      <h2 class="cat-title">Healthy Food</h2>
-      <span class="cat-desc">3 picks &bull; Vet-recognized formulas, real ingredients</span>
+      <span class="cat-icon" aria-hidden="true">&#127859;</span>
+      <h2 class="cat-title" id="cat-food-title">Healthy Food</h2>
+      <span class="cat-sub">Vet-recognized formulas, real ingredients</span>
     </div>
     <div class="product-grid">
 
-      <!-- 1. Blue Buffalo -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Blue Buffalo | tags: medium large adult -->
+      <article class="product-card" data-tags="medium large adult" aria-label="Blue Buffalo Life Protection">
+        <div class="product-img" aria-hidden="true">
           &#127857;
           <span class="badge badge-popular">Most Popular</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Blue Buffalo</p>
-          <h3 class="product-name">Life Protection Formula — Chicken &amp; Brown Rice</h3>
-          <p class="product-desc">Real deboned chicken as the first ingredient. No corn, wheat, or soy. Includes LifeSource Bits — a cold-formed blend of antioxidants and vitamins developed with veterinary nutritionists. Glucosamine added for joint support.</p>
+          <h3 class="product-name">Life Protection — Chicken &amp; Brown Rice (30 lb)</h3>
+          <p class="product-desc">Real deboned chicken as the first ingredient. No corn, wheat, or soy. LifeSource Bits add a cold-formed antioxidant blend developed with veterinary nutritionists. Glucosamine included for joint support.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Brown rice is highly digestible and less likely to spike blood sugar than corn-based fillers. The added glucosamine is genuinely useful long-term for any breed, not just seniors.</p>
+            <p>Brown rice is highly digestible and avoids the blood sugar spikes common with corn-based fillers. Added glucosamine is genuinely useful for any breed long-term — not just seniors.</p>
           </div>
-          <span class="best-for">&#128054; Adult dogs &bull; All breeds &bull; Joint support</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">Medium</span>
+            <span class="product-tag">Large</span>
+            <span class="product-tag">Adult</span>
+            <span class="product-tag">Joint Support</span>
+          </div>
           <div class="product-footer">
-            <span class="product-price">~<em>$55–$75 / 30lb</em></span>
-            <span class="product-reviews">No corn / wheat / soy</span>
+            <span class="product-price">~<em>$55–$75 / 30 lb</em></span>
+            <span class="product-stat">No corn/wheat/soy</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link | ASIN: B0009YWKUA -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B0009YWKUA -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Blue-Buffalo-Protection-Formula-Adult/dp/B0009YWKUA"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 2. Purina Pro Plan Sensitive -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Purina Pro Plan Sensitive | tags: medium large sensitive adult -->
+      <article class="product-card" data-tags="medium large sensitive adult" aria-label="Purina Pro Plan Sensitive">
+        <div class="product-img" aria-hidden="true">
           &#129424;
           <span class="badge badge-pick">Sitter's Pick &bull; Sensitive Skin</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Purina Pro Plan</p>
           <h3 class="product-name">Sensitive Skin &amp; Stomach — Salmon &amp; Rice</h3>
-          <p class="product-desc">Salmon as the primary protein with oat meal for easy digestibility. Live probiotics for digestive balance, omega-6 fatty acids for coat health. One of the most frequently recommended formulas by veterinarians in the US.</p>
+          <p class="product-desc">Salmon as the primary protein with oat meal for easy digestion. Live probiotics for gut balance, omega-6 fatty acids for coat health. One of the most frequently recommended formulas by US veterinarians.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Itchy skin, loose stools, and excessive licking are often diet-related. Salmon is a less common protein that can help rule out chicken allergies, and the probiotic inclusion supports consistency between environments — useful when dogs are boarding.</p>
+            <p>Itchy skin, loose stools, and paw licking are often diet-related. Salmon helps rule out chicken allergies, and the probiotics support gut consistency across environments — useful for dogs who board.</p>
           </div>
-          <span class="best-for">&#128054; Sensitive dogs &bull; Itchy skin &bull; Digestive issues</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">Medium</span>
+            <span class="product-tag">Large</span>
+            <span class="product-tag">Sensitive Skin</span>
+            <span class="product-tag">Digestive Issues</span>
+          </div>
           <div class="product-footer">
-            <span class="product-price">~<em>$60–$85 / 30lb</em></span>
-            <span class="product-reviews">Vet recommended</span>
+            <span class="product-price">~<em>$60–$85 / 30 lb</em></span>
+            <span class="product-stat">Vet recommended</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link | ASIN: B01EY9KQ2Y -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B01EY9KQ2Y -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Purina-Pro-Plan-Sensitive-Stomach/dp/B01EY9KQ2Y"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 3. Wellness CORE -->
-      <div class="product-card">
-        <div class="product-img">&#129311;</div>
+      <!-- Wellness CORE | tags: medium large adult active -->
+      <article class="product-card" data-tags="medium large adult active" aria-label="Wellness CORE Grain-Free">
+        <div class="product-img" aria-hidden="true">&#129311;</div>
         <div class="product-body">
           <p class="product-brand">Wellness CORE</p>
           <h3 class="product-name">Grain-Free Turkey &amp; Chicken Formula</h3>
-          <p class="product-desc">Turkey and chicken as the first two ingredients. High-protein, grain-free with flaxseed for omega fatty acids, added probiotics, and no artificial preservatives, colors, or flavors. Built for active dogs with higher energy demands.</p>
+          <p class="product-desc">Turkey and chicken as the first two ingredients. High-protein grain-free with flaxseed for omega fatty acids, added probiotics, and no artificial preservatives or colors. Built for active dogs.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Active and athletic dogs need more protein density than standard formulas provide. Grain-free also removes the most common dietary irritants, and the probiotic blend helps dogs maintain gut health through transitions and travel.</p>
+            <p>Active and athletic dogs need more protein density than standard formulas. Grain-free removes the most common dietary irritants, and the probiotic blend helps dogs maintain gut health through diet transitions and travel.</p>
           </div>
-          <span class="best-for">&#128054; Active dogs &bull; Athletic breeds &bull; Grain sensitivity</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">Medium</span>
+            <span class="product-tag">Large</span>
+            <span class="product-tag">Active Dogs</span>
+            <span class="product-tag">Grain-Free</span>
+          </div>
           <div class="product-footer">
-            <span class="product-price">~<em>$65–$90 / 26lb</em></span>
-            <span class="product-reviews">High protein</span>
+            <span class="product-price">~<em>$65–$90 / 26 lb</em></span>
+            <span class="product-stat">High protein</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link -->
           <a class="btn-amazon"
              href="https://www.amazon.com/s?k=Wellness+CORE+Grain+Free+Turkey+Chicken+Dog+Food"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       FETCH & PLAY
-       ══════════════════════════════════════════════════════════ -->
-  <section class="cat-section" id="fetch">
+  <!-- ══════════════════════════════════════
+       CATEGORY: FETCH & PLAY
+       ══════════════════════════════════════ -->
+  <section class="cat-section" id="cat-fetch" aria-labelledby="cat-fetch-title">
     <div class="cat-header">
-      <span class="cat-header-icon">&#127936;</span>
-      <h2 class="cat-title">Fetch &amp; Play</h2>
-      <span class="cat-desc">3 picks &bull; Exercise, engagement &amp; safer teeth</span>
+      <span class="cat-icon" aria-hidden="true">&#127936;</span>
+      <h2 class="cat-title" id="cat-fetch-title">Fetch &amp; Play</h2>
+      <span class="cat-sub">Exercise, engagement &amp; safer teeth</span>
     </div>
     <div class="product-grid">
 
-      <!-- 1. Chuckit Ultra Ball -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Chuckit Ultra Ball | tags: small medium large fetch -->
+      <article class="product-card" data-tags="small medium large fetch" aria-label="Chuckit Ultra Ball">
+        <div class="product-img" aria-hidden="true">
           &#127944;
           <span class="badge badge-popular">Best Seller</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Chuckit!</p>
           <h3 class="product-name">Ultra Ball — High-Bounce Fetch Ball</h3>
-          <p class="product-desc">Twice as durable as a standard tennis ball. High-bounce natural rubber, textured surface for easy pickup, floats for water fetch. Works with any Chuckit! launcher. Available in small through large.</p>
+          <p class="product-desc">Twice as durable as a standard tennis ball. High-bounce natural rubber, textured for easy pickup, floats in water. Works with any Chuckit! launcher. Available in small through large.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Regular tennis ball fuzz acts like sandpaper on tooth enamel over repeated fetch sessions. The Ultra Ball's smooth rubber is significantly gentler on teeth while giving the same chase and retrieve experience dogs love.</p>
+            <p>Regular tennis ball fuzz acts like sandpaper on tooth enamel over repeated fetch. The Ultra Ball's smooth rubber is significantly gentler while giving the same chase-and-retrieve experience.</p>
           </div>
-          <span class="best-for">&#128054; All fetch dogs &bull; Water play &bull; Teeth-safe</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">All Sizes</span>
+            <span class="product-tag">Fetch</span>
+            <span class="product-tag">Water Play</span>
+            <span class="product-tag">Teeth-Safe</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$9–$15</em></span>
-            <span class="product-reviews">2x more durable than tennis</span>
+            <span class="product-stat">2x tennis ball durability</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link | ASIN: B00UNLOWK0 -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B00UNLOWK0 -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Chuckit-Ultra-Squeaker-Ball-Medium/dp/B00UNLOWK0"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 2. Chuckit Sport 26L Launcher -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Chuckit 26L | tags: large fetch active -->
+      <article class="product-card" data-tags="large fetch active" aria-label="Chuckit Sport 26L Launcher">
+        <div class="product-img" aria-hidden="true">
           &#129351;
           <span class="badge badge-pick">Sitter's Pick &bull; High-Energy Dogs</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Chuckit!</p>
           <h3 class="product-name">Sport 26L Ball Launcher — Large Dogs</h3>
-          <p class="product-desc">Throws a large ball 2–3× farther than you can by hand, with a slim ergonomic handle and hands-free ball pickup so you never touch a slobbery ball. Includes a 3" large ball. Designed for dogs 60–100 lbs.</p>
+          <p class="product-desc">Throws 2–3× farther than by hand, slim ergonomic handle, hands-free ball pickup. Includes a 3&Prime; large ball. Designed for dogs 60–100 lbs.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>High-energy dogs need distance and repetition. A launcher effectively doubles or triples the exercise a dog gets per session — a 20-minute throw with this wears out a dog that would otherwise need an hour-long walk.</p>
+            <p>High-energy dogs need more distance and repetition than most owners can provide unaided. 20 minutes with this launcher gives the same exercise as an hour-long walk for a high-drive large dog.</p>
           </div>
-          <span class="best-for">&#128054; Large breeds &bull; High-energy dogs &bull; 60–100 lbs</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">Large</span>
+            <span class="product-tag">Fetch</span>
+            <span class="product-tag">High Energy</span>
+            <span class="product-tag">60–100 lbs</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$13–$20</em></span>
-            <span class="product-reviews">Includes large ball</span>
+            <span class="product-stat">Ball included</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link | ASIN: B001B4TV1I -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B001B4TV1I -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Chuckit-Sport-26L-Ball-Launcher/dp/B001B4TV1I"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 3. West Paw Zisc -->
-      <div class="product-card">
-        <div class="product-img">&#127950;</div>
+      <!-- West Paw Zisc | tags: medium large fetch active -->
+      <article class="product-card" data-tags="medium large fetch active" aria-label="West Paw Zisc Frisbee">
+        <div class="product-img" aria-hidden="true">&#127950;</div>
         <div class="product-body">
           <p class="product-brand">West Paw</p>
-          <h3 class="product-name">Zogoflex Zisc Flying Disc — Large 8.5"</h3>
-          <p class="product-desc">A soft, flexible frisbee that flexes on impact — won't chip teeth or cut gums on a hard mid-air catch. Floats for water fetch, dishwasher-safe, 100% non-toxic. Made in USA, guaranteed or replaced free.</p>
+          <h3 class="product-name">Zogoflex Zisc Flying Disc — Large 8.5&Prime;</h3>
+          <p class="product-desc">Soft, flexible frisbee that bends on impact — won't chip teeth or cut gums. Floats for water fetch, dishwasher-safe, 100% non-toxic, made in USA. Replaced free if your dog destroys it.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Hard plastic frisbees chip teeth and cut gums — more common than owners realize. The Zisc's flexible edge bends on catch, making it dramatically safer for regular play, especially with dogs who leap for catches.</p>
+            <p>Hard plastic frisbees chip teeth and cut gums — more common than owners realize. The Zisc's flexible edge bends on catch, making it dramatically safer for disc dogs who leap for mid-air catches.</p>
           </div>
-          <span class="best-for">&#128054; Disc dogs &bull; Water play &bull; Catching breeds</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">Medium</span>
+            <span class="product-tag">Large</span>
+            <span class="product-tag">Fetch</span>
+            <span class="product-tag">Water</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$14–$22</em></span>
-            <span class="product-reviews">Non-toxic &bull; Floats</span>
+            <span class="product-stat">Non-toxic &bull; Floats</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link | ASIN: B004A7X29U -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B004A7X29U -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Zogoflex-Frisbee-Flying-Aerodynamic-Puppy/dp/B004A7X29U"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       WIPES & TOWELS
-       ══════════════════════════════════════════════════════════ -->
-  <section class="cat-section" id="wipes">
+  <!-- ══════════════════════════════════════
+       CATEGORY: WIPES & TOWELS
+       ══════════════════════════════════════ -->
+  <section class="cat-section" id="cat-wipes" aria-labelledby="cat-wipes-title">
     <div class="cat-header">
-      <span class="cat-header-icon">&#129529;</span>
-      <h2 class="cat-title">Wipes &amp; Towels</h2>
-      <span class="cat-desc">3 picks &bull; After-walk hygiene &amp; quick drying</span>
+      <span class="cat-icon" aria-hidden="true">&#129529;</span>
+      <h2 class="cat-title" id="cat-wipes-title">Wipes &amp; Towels</h2>
+      <span class="cat-sub">After-walk hygiene &amp; quick drying</span>
     </div>
     <div class="product-grid">
 
-      <!-- 1. Earth Rated Wipes -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Earth Rated Wipes | tags: small medium large puppy sensitive all -->
+      <article class="product-card" data-tags="small medium large puppy sensitive all" aria-label="Earth Rated Pet Wipes">
+        <div class="product-img" aria-hidden="true">
           &#129529;
           <span class="badge badge-popular">#1 in Grooming Wipes</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Earth Rated</p>
-          <h3 class="product-name">Pet Wipes — Hypoallergenic, Unscented, 100 Count</h3>
-          <p class="product-desc">The #1 bestseller in dog grooming wipes on Amazon. Thick 8"×8" wipes — unscented, hypoallergenic, and free of alcohol and parabens. USDA-certified 98% biobased material. Safe for paws, face, coat, and body.</p>
+          <h3 class="product-name">Pet Wipes — Unscented, Hypoallergenic, 100 Count</h3>
+          <p class="product-desc">Amazon's #1 bestseller in dog grooming wipes. Thick 8&Prime;×8&Prime; wipes, unscented, alcohol-free, paraben-free. USDA-certified 98% biobased. Safe for paws, face, coat, and body.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Dogs track allergens, pollen, and pesticides in on their paws after every single walk. A wipe at the door removes that before it spreads through the house — and significantly reduces paw licking, which is often a hidden allergy symptom.</p>
+            <p>Dogs track allergens, pollen, and pesticides in on their paws every single walk. Wiping at the door removes that before it spreads through the house — and reduces paw licking, which is often a hidden allergy symptom.</p>
           </div>
-          <span class="best-for">&#128054; All dogs &bull; Sensitive skin &bull; After every walk</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">All Sizes</span>
+            <span class="product-tag">Puppies</span>
+            <span class="product-tag">Sensitive Skin</span>
+            <span class="product-tag">Daily Use</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$10–$14</em></span>
-            <span class="product-reviews">Amazon #1 Best Seller</span>
+            <span class="product-stat">Amazon #1 Best Seller</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link | ASIN: B07NHL31CC -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B07NHL31CC -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Earth-Rated-USDA-Certified-Hypoallergenic/dp/B07NHL31CC"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 2. Puomue Microfiber Towel -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Puomue Towel | tags: small medium large puppy all -->
+      <article class="product-card" data-tags="small medium large puppy all" aria-label="Puomue Microfiber Drying Towel">
+        <div class="product-img" aria-hidden="true">
           &#128700;
           <span class="badge badge-value">Best Value</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Puomue</p>
-          <h3 class="product-name">Microfiber Dog Drying Towel — 2 Pack (40"×24")</h3>
-          <p class="product-desc">Ultra-fine microfiber that absorbs up to 6× its own weight in water. Dries a wet dog in roughly half the time of a regular bath towel. Machine washable, quick-drying between uses, and soft enough for sensitive skin.</p>
+          <h3 class="product-name">Microfiber Dog Drying Towel — 2 Pack (40&Prime;×24&Prime;)</h3>
+          <p class="product-desc">Absorbs up to 6× its weight in water. Dries a wet dog in half the time of a regular bath towel. Machine washable, quick-drying between uses, soft enough for sensitive skin.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>A dog left wet after rain or a bath is prone to skin irritation and "wet dog" smell from bacterial growth in the coat. Fast drying is more important than most owners realize — especially for thick double-coat breeds.</p>
+            <p>A dog left wet after rain or a bath is prone to skin irritation and odor from bacterial growth in the coat. Fast drying matters more than most owners realize — especially for double-coat breeds.</p>
           </div>
-          <span class="best-for">&#128054; All breeds &bull; Post-bath &bull; Rainy walks</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">All Sizes</span>
+            <span class="product-tag">Post-Bath</span>
+            <span class="product-tag">Rainy Walks</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$14–$20 (2-pack)</em></span>
-            <span class="product-reviews">6x absorbency</span>
+            <span class="product-stat">6× absorbency</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Puomue-Microfiber-Absorbent-Grooming-Supplies/dp/B0BY57YF6B"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
-      <!-- 3. Sweet Paws Portable Paw Towel -->
-      <div class="product-card">
-        <div class="product-img">
+      <!-- Sweet Paws Portable Towel | tags: small medium large all -->
+      <article class="product-card" data-tags="small medium large all" aria-label="Sweet Paws Portable Paw Towel">
+        <div class="product-img" aria-hidden="true">
           &#128116;
           <span class="badge badge-pick">Sitter's Pick &bull; Walk Essential</span>
         </div>
         <div class="product-body">
           <p class="product-brand">Sweet Paws</p>
           <h3 class="product-name">Portable Paw Towel — Clips to Leash</h3>
-          <p class="product-desc">Compact microfiber towel that clips directly onto a leash, bag, or belt loop in a silicone case. Pull it out after a muddy walk and wipe paws before they hit the floor. Small enough to forget it's there — until you need it.</p>
+          <p class="product-desc">Compact microfiber towel in a silicone case that clips to a leash or bag. Pull it out after a muddy walk and wipe paws before they hit the floor. Small enough that you forget it's there until you need it.</p>
           <div class="product-why">
             <p class="product-why-label">Why it works</p>
-            <p>Muddy paws at the door is the #1 post-walk complaint I hear. Having a towel attached to the leash means you'll actually use it every single time — not just when you remember to grab something from the closet.</p>
+            <p>Muddy paws at the door is the #1 post-walk complaint I hear from clients. A towel clipped to the leash means you'll actually use it every time — not just when you remembered to grab one on the way out.</p>
           </div>
-          <span class="best-for">&#128054; All dogs &bull; Muddy walks &bull; Apartments</span>
+          <div class="product-tags" aria-label="Best for:">
+            <span class="product-tag">All Sizes</span>
+            <span class="product-tag">Muddy Walks</span>
+            <span class="product-tag">Apartments</span>
+          </div>
           <div class="product-footer">
             <span class="product-price">~<em>$12–$16</em></span>
-            <span class="product-reviews">Clips to leash</span>
+            <span class="product-stat">Clips to leash</span>
           </div>
-          <!-- AFFILIATE LINK: Replace href with your amzn.to link -->
+          <!-- AFFILIATE LINK: replace href with your amzn.to link -->
           <a class="btn-amazon"
              href="https://www.amazon.com/Sweet-Paws-Microfiber-Portable-Towels/dp/B0B1W4J45G"
-             target="_blank" rel="noopener sponsored">
+             target="_blank" rel="noopener noreferrer sponsored">
             View on Amazon &rarr;
           </a>
         </div>
-      </div>
+      </article>
 
     </div>
   </section>
 
-  <!-- SHARE -->
+  <!-- SHARE ROW -->
   <div class="share-row">
     <span class="share-label">Share this page:</span>
-    <button class="share-btn" onclick="shareNative()">&#8679; Share</button>
+    <button class="share-btn" id="share-store-btn" type="button">&#8679; Share</button>
     <a class="share-btn"
        href="https://twitter.com/intent/tweet?text=Good+dog+gear+picks+curated+by+a+trusted+local+sitter&url=https%3A%2F%2F[YOUR-SITE]%2Fstore.html"
-       target="_blank" rel="noopener">&#x1D54F; Post on X</a>
+       target="_blank" rel="noopener noreferrer">&#x1D54F; Post on X</a>
     <a class="share-btn"
        href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F[YOUR-SITE]%2Fstore.html"
-       target="_blank" rel="noopener">f Facebook</a>
+       target="_blank" rel="noopener noreferrer">f Facebook</a>
   </div>
 
   <!-- SUBSCRIBE BANNER -->
-  <div class="subscribe-banner" id="newsletter">
+  <div class="subscribe-banner" id="newsletter" aria-label="Subscribe to newsletter">
     <h2>Get the Dogs &amp; Llamas newsletter</h2>
     <p>Monthly availability updates, dog tips, and repeat-client perks — free, once a month.</p>
-    <form class="subscribe-form" action="#" method="post">
-      <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+    <form class="subscribe-form" id="store-subscribe-form" action="#" method="post" novalidate>
+      <input type="email" name="email" id="store-email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address">
       <button type="submit">Subscribe</button>
     </form>
-    <p class="subscribe-note">No spam. Unsubscribe anytime by replying "unsubscribe."</p>
+    <p class="subscribe-note">No spam. Unsubscribe anytime. See our <a href="privacy.html" style="color:#a8d5b0;">privacy policy</a>.</p>
   </div>
 
 </div><!-- /page-wrap -->
 
-<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<!-- ── FOOTER ────────────────────────────────────────────────── -->
 <footer>
   <p>Dogs &amp; Llamas &bull; [First Name] Llamas &bull; [Your City]</p>
-  <p>Some links on this page are Amazon affiliate links. I earn a small commission on qualifying purchases at no extra cost to you. I only recommend products I'd genuinely suggest to a client in person.</p>
-  <p>All active Rover bookings are handled through <a href="https://www.rover.com" target="_blank" rel="noopener">Rover.com</a>.</p>
-  <p style="margin-top:10px;">
+  <p>
+    Some links are Amazon affiliate links. I earn a small commission on qualifying purchases at no extra cost to you.
+    Only products I'd genuinely suggest in person.
+  </p>
+  <p>All active Rover bookings are handled through
+     <a href="https://www.rover.com" target="_blank" rel="noopener noreferrer">Rover.com</a>.
+  </p>
+  <hr class="footer-divider">
+  <p>
     <a href="index.html">Newsletter</a> &bull;
-    <a href="index.html#subscribe">Subscribe</a>
+    <a href="index.html#subscribe">Subscribe</a> &bull;
+    <a href="privacy.html">Privacy Policy</a>
   </p>
   <p style="margin-top:10px;color:#4a7a5a;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
 </footer>
 
 <script>
-  function shareNative() {
+  /* ══ FILTER SYSTEM ══════════════════════════════════════════ */
+  (function () {
+    var cards    = document.querySelectorAll('.product-card');
+    var sections = document.querySelectorAll('.cat-section');
+    var btns     = document.querySelectorAll('.filter-btn');
+    var countEl  = document.getElementById('filter-count');
+    var emptyEl  = document.getElementById('empty-state');
+    var active   = 'all';
+
+    function applyFilter(filter) {
+      active = filter;
+      var visible = 0;
+
+      // Show / hide cards
+      cards.forEach(function (card) {
+        var tags = card.getAttribute('data-tags') || '';
+        var show = (filter === 'all') || tags.split(' ').indexOf(filter) !== -1;
+        card.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+
+      // Hide empty category sections
+      sections.forEach(function (sec) {
+        var hasVisible = sec.querySelectorAll('.product-card:not(.hidden)').length > 0;
+        sec.classList.toggle('hidden', !hasVisible);
+      });
+
+      // Update count label
+      var label = filter === 'all'
+        ? visible + ' picks'
+        : visible + (visible === 1 ? ' pick' : ' picks') + ' for ' + getLabelFor(filter);
+      countEl.textContent = label;
+
+      // Empty state
+      emptyEl.classList.toggle('show', visible === 0);
+    }
+
+    function getLabelFor(f) {
+      var map = {
+        small: 'small dogs', medium: 'medium dogs', large: 'large dogs',
+        puppy: 'puppies', teething: 'teething', chewing: 'chewing',
+        fetch: 'fetch & play', sleeping: 'sleeping & rest', sensitive: 'sensitive skin',
+        active: 'active dogs', adult: 'adults'
+      };
+      return map[f] || f;
+    }
+
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        applyFilter(btn.getAttribute('data-filter'));
+      });
+    });
+
+    // Reset button in empty state
+    document.getElementById('reset-filter-btn').addEventListener('click', function () {
+      btns.forEach(function (b) { b.classList.remove('active'); });
+      document.querySelector('[data-filter="all"]').classList.add('active');
+      applyFilter('all');
+    });
+  }());
+
+  /* ══ SHARE BUTTON ═══════════════════════════════════════════ */
+  document.getElementById('share-store-btn').addEventListener('click', function () {
     if (navigator.share) {
       navigator.share({
         title: 'Curated Top Picks — Dogs & Llamas',
         text: 'Good dog gear picks curated by a trusted local sitter.',
         url: window.location.href
-      }).catch(() => {});
+      }).catch(function () {});
     } else {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        alert('Link copied to clipboard!');
-      }).catch(() => { prompt('Copy this link:', window.location.href); });
+      navigator.clipboard.writeText(window.location.href).then(function () {
+        showToast('Link copied!');
+      }).catch(function () {
+        prompt('Copy this link:', window.location.href);
+      });
     }
+  });
+
+  /* ══ SUBSCRIBE FORM ═════════════════════════════════════════ */
+  document.getElementById('store-subscribe-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('store-email').value.trim();
+    if (!email) return;
+    showToast('Thanks! You\'re subscribed. &#128054;');
+    this.reset();
+    // TODO: POST to Mailchimp / beehiiv when live
+  });
+
+  /* ══ TOAST ══════════════════════════════════════════════════ */
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.innerHTML = msg;
+    t.classList.add('show');
+    setTimeout(function () { t.classList.remove('show'); }, 3200);
   }
 </script>
 

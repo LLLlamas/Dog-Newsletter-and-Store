@@ -1,0 +1,17 @@
+/*
+  # Security headers for all pages
+  # Works on Netlify and Cloudflare Pages — GitHub Pages does NOT support custom headers.
+  # If deploying to GitHub Pages only, these are already mitigated via meta tags in the HTML.
+
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://m.media-amazon.com https://images-na.ssl-images-amazon.com; connect-src 'self'; frame-ancestors 'none'
+
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/media/*
+  Cache-Control: public, max-age=2592000, immutable

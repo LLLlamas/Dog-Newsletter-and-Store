@@ -7,9 +7,9 @@
 
   <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║        PUP NOTES — MONTHLY NEWSLETTER TEMPLATE              ║
-  ║        Update the MONTHLY CONFIG block below each month.    ║
-  ║        Everything else stays the same.                      ║
+  ║      DOGS & LLAMAS — MONTHLY NEWSLETTER TEMPLATE            ║
+  ║      Update the MONTHLY CONFIG block below each month.      ║
+  ║      Everything else stays the same.                        ║
   ╚══════════════════════════════════════════════════════════════╝
 
   HOW TO USE THIS TEMPLATE EACH MONTH
@@ -69,6 +69,18 @@
     PRODUCT_NOTE:       Worth having before a stay — cuts down on loose fur dramatically.
     PRODUCT_LINK:       https://www.amazon.com/s?k=Furminator+Deshedding+Tool&tag=[YOUR-AFFILIATE-TAG]
     PRODUCT_IS_AFFILIATE: yes   ← change to "no" to hide the disclosure line
+  -->
+
+  <!-- OPTIONAL: PERSONALIZED DOG PICK (one specific client's dog — delete if not using) -->
+  <!--
+    DOG_PICK_CLIENT_NAME:   Sarah
+    DOG_PICK_DOG_NAME:      Biscuit
+    DOG_PICK_PRODUCT_NAME:  Big Barker 7″ Orthopedic Bed
+    DOG_PICK_PRODUCT_LINK:  https://amzn.to/XXXXX   ← replace with your affiliate link
+    DOG_PICK_REASON:        Biscuit's been on her joints a lot during our walks — an orthopedic
+                            bed like this keeps pressure off her hips overnight and most large
+                            breeds genuinely feel the difference within a week.
+    DOG_PICK_IS_AFFILIATE:  yes   ← change to "no" to hide the disclosure line
   -->
 
   <!-- ══════════════════════════════════════════════════════
@@ -173,6 +185,58 @@
                   line-height:1.7;color:#2d2d2d;">
           [DOG_TIP]   <!-- ← EDIT -->
         </p>
+
+        <!-- ╔══════════════════════════════════════════════════════╗
+             ║  OPTIONAL: PERSONALIZED DOG PICK                    ║
+             ║  One specific product, for one specific dog.        ║
+             ║  Send a version of this email to that client only,  ║
+             ║  or include it in a general issue when relevant.    ║
+             ║                                                     ║
+             ║  HOW TO USE:                                        ║
+             ║  1. Uncomment this block (remove the <!-- and -->)  ║
+             ║  2. Fill in DOG_PICK_* values from config above     ║
+             ║  3. Make it genuinely personal — 1–2 sentences why  ║
+             ║     THIS product makes sense for THIS specific dog  ║
+             ║  4. To hide it entirely: leave it commented out     ║
+             ╚══════════════════════════════════════════════════════╝ -->
+        <!--
+        <table border="0" cellpadding="0" cellspacing="0" width="100%"
+               style="margin:0 0 32px;">
+          <tr>
+            <td style="background-color:#f0f7f2;border-radius:8px;padding:20px 24px;
+                       border-left:4px solid #3b6b4b;">
+              <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:10px;
+                        font-weight:bold;letter-spacing:2px;text-transform:uppercase;
+                        color:#3b6b4b;">
+                Just for [DOG_PICK_DOG_NAME]   ← EDIT
+              </p>
+              <p style="margin:0 0 10px;font-family:Georgia,serif;font-size:17px;
+                        font-weight:bold;color:#1a1a1a;line-height:1.4;">
+                [DOG_PICK_PRODUCT_NAME]   ← EDIT
+              </p>
+              <p class="body-text"
+                 style="margin:0 0 14px;font-family:Georgia,serif;font-size:15px;
+                        line-height:1.7;color:#444;">
+                [DOG_PICK_REASON]   ← EDIT: why this product makes sense for this specific dog
+              </p>
+              <a href="[DOG_PICK_PRODUCT_LINK]"   ← EDIT
+                 target="_blank" rel="noopener noreferrer sponsored"
+                 style="display:inline-block;background-color:#3b6b4b;color:#ffffff;
+                        font-family:Arial,sans-serif;font-size:13px;font-weight:bold;
+                        text-decoration:none;padding:9px 20px;border-radius:4px;
+                        letter-spacing:0.5px;">
+                See it on Amazon &rarr;
+              </a>
+              Affiliate disclosure — only show if DOG_PICK_IS_AFFILIATE = yes:
+              <p style="margin:10px 0 0;font-family:Arial,sans-serif;font-size:11px;
+                        color:#aaa;font-style:italic;">
+                Paid link — I may earn a small commission if you buy through this link,
+                at no extra cost to you.
+              </p>
+            </td>
+          </tr>
+        </table>
+        -->
 
         <!-- ── SECTION: Loyalty Perk ─────────────────────────────── -->
         <p class="section-label"
@@ -380,6 +444,9 @@
   ║  [ ] Preheader text updated (top of body)                   ║
   ║  [ ] Optional sections (photo / testimonial / product)      ║
   ║      either filled in OR deleted                            ║
+  ║  [ ] Personalized Dog Pick section: either filled in +      ║
+  ║      uncommented, OR still commented out if not using       ║
+  ║  [ ] DOG_PICK affiliate link replaced with amzn.to link     ║
   ║  [ ] Coupon code still reads PUPS10                         ║
   ║  [ ] Shop link points to your live GitHub Pages URL         ║
   ║  [ ] Tested in Mailchimp / beehiiv preview                  ║

@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dogs &amp; Llamas — Dog Care Updates &amp; Curated Picks</title>
-  <meta name="description" content="Monthly dog-care updates, early booking access, and curated product picks from a trusted neighborhood sitter. Subscribe for perks.">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <!-- Open Graph -->
+  <!-- Security -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+
+  <title>Dogs &amp; Llamas — Dog Care Updates &amp; Curated Picks</title>
+  <meta name="description" content="Monthly dog-care updates, early booking access, and trusted product picks from a professional dog sitter. Subscribe free.">
+
+  <!-- Open Graph — swap in your real URL + a photo path for rich previews when sharing -->
   <meta property="og:title" content="Dogs &amp; Llamas">
-  <meta property="og:description" content="Monthly dog-care updates, tips, and early booking access from a trusted local sitter.">
+  <meta property="og:description" content="Monthly dog-care updates, honest tips, and early booking access from a trusted local sitter.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://[YOUR-GITHUB-USERNAME].github.io/[REPO-NAME]/">
-  <!-- Add a real OG image here for rich link previews when sharing:
-  <meta property="og:image" content="https://[YOUR-SITE]/media/Turbo sleeping.JPG"> -->
+  <meta property="og:image" content="https://[YOUR-GITHUB-USERNAME].github.io/[REPO-NAME]/media/Turbo%20Outside.jpg">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -24,44 +29,43 @@
       color: #2d2d2d;
     }
 
-    /* ── NAV ───────────────────────────────────────────────── */
+    /* ── NAV ─────────────────────────────────────────── */
     nav {
       position: sticky; top: 0; z-index: 100;
       background: #3b6b4b;
-      padding: 0 32px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 56px;
+      padding: 0 32px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
     .nav-brand {
       font-family: Georgia, serif; font-size: 17px; font-style: italic;
-      color: #fff; text-decoration: none; letter-spacing: .2px;
-      white-space: nowrap;
+      color: #fff; text-decoration: none; white-space: nowrap;
     }
-    .nav-brand span { font-style: normal; opacity: .6; margin: 0 4px; }
+    .nav-brand span { font-style: normal; opacity: .55; margin: 0 3px; }
     .nav-links { display: flex; gap: 20px; align-items: center; }
     .nav-link {
       font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
-      color: #a8d5b0; text-decoration: none; letter-spacing: .8px;
-      text-transform: uppercase; transition: color .15s;
+      color: #a8d5b0; text-decoration: none; letter-spacing: .7px;
+      text-transform: uppercase; transition: color .14s;
+      white-space: nowrap;
     }
     .nav-link:hover { color: #fff; }
     .nav-cta {
-      background: #fff; color: #3b6b4b !important;
+      background: #fff; color: #3b6b4b;
       padding: 7px 18px; border-radius: 4px;
       font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
       letter-spacing: .5px; text-transform: uppercase; text-decoration: none;
-      transition: background .15s;
+      transition: background .14s;
     }
     .nav-cta:hover { background: #e8f3ec; }
 
-    /* ── HERO ──────────────────────────────────────────────── */
+    /* ── HERO ────────────────────────────────────────── */
     .hero {
-      background: linear-gradient(150deg, #2a4e37 0%, #3b6b4b 55%, #4a7d5a 100%);
-      padding: 64px 32px 68px;
+      background: linear-gradient(150deg, #253f2e 0%, #3b6b4b 55%, #4a7d5a 100%);
+      padding: 60px 32px 68px;
     }
     .hero-inner {
-      max-width: 820px; margin: 0 auto;
-      display: flex; align-items: center; gap: 48px;
+      max-width: 840px; margin: 0 auto;
+      display: flex; align-items: center; gap: 52px;
     }
     .hero-content { flex: 1; min-width: 0; }
     .hero-eyebrow {
@@ -70,78 +74,75 @@
       color: #a8d5b0; margin: 0 0 14px;
     }
     .hero-title {
-      font-family: Georgia, serif; font-size: 46px; font-weight: normal;
-      color: #fff; margin: 0 0 6px; line-height: 1.15; letter-spacing: -.5px;
+      font-family: Georgia, serif; font-size: 48px; font-weight: normal;
+      color: #fff; margin: 0 0 5px; line-height: 1.1; letter-spacing: -.5px;
     }
-    .hero-title em { font-style: italic; color: #c8e6cc; }
+    .hero-title em { font-style: italic; color: #b8dfc0; }
     .hero-byline {
       font-family: Arial, sans-serif; font-size: 12px;
-      color: #7aac8a; letter-spacing: 1px; text-transform: uppercase;
-      margin: 0 0 18px;
+      color: #7aac8a; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 20px;
     }
     .hero-sub {
       font-family: Georgia, serif; font-size: 17px; font-style: italic;
       color: #c8e6cc; margin: 0 0 32px; line-height: 1.65; max-width: 400px;
     }
+
     /* Subscribe form */
-    .subscribe-form {
-      display: flex; flex-wrap: wrap; gap: 8px; max-width: 400px;
-    }
+    .subscribe-form { display: flex; flex-wrap: wrap; gap: 8px; max-width: 400px; }
     .subscribe-form input[type="email"] {
       flex: 1; min-width: 190px;
       padding: 13px 16px; border: none; border-radius: 5px;
       font-family: Georgia, serif; font-size: 15px; color: #2d2d2d; outline: none;
     }
+    .subscribe-form input[type="email"]:focus { outline: 2px solid #a8d5b0; }
     .subscribe-form button {
       background: #f5f0eb; color: #3b6b4b;
       font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
       letter-spacing: .8px; text-transform: uppercase;
       padding: 13px 22px; border: none; border-radius: 5px; cursor: pointer;
-      white-space: nowrap; transition: background .15s;
+      white-space: nowrap; transition: background .14s;
     }
     .subscribe-form button:hover { background: #fff; }
-    .subscribe-note {
-      font-family: Arial, sans-serif; font-size: 11px;
-      color: #7aac8a; margin: 10px 0 0;
-    }
+    .subscribe-note { font-family: Arial, sans-serif; font-size: 11px; color: #7aac8a; margin: 10px 0 0; }
 
-    /* Hero dog photo */
-    .hero-photo-wrap { flex: 0 0 220px; }
-    .hero-photo {
-      width: 220px; height: 220px;
+    /* Hero photo cluster */
+    .hero-photos { flex: 0 0 auto; display: flex; gap: 10px; align-items: flex-end; }
+    .hero-photo-main {
+      width: 180px; height: 220px;
       object-fit: cover; object-position: center top;
-      border-radius: 50%;
-      border: 4px solid rgba(255,255,255,.2);
-      box-shadow: 0 8px 32px rgba(0,0,0,.25);
+      border-radius: 12px;
+      border: 3px solid rgba(255,255,255,.18);
+      box-shadow: 0 10px 36px rgba(0,0,0,.3);
       display: block;
     }
-    .hero-photo-cap {
-      font-family: Arial, sans-serif; font-size: 11px;
-      color: #7aac8a; text-align: center; margin: 10px 0 0;
-      letter-spacing: .5px;
+    .hero-photo-secondary {
+      width: 110px; height: 160px;
+      object-fit: cover; object-position: center top;
+      border-radius: 10px;
+      border: 3px solid rgba(255,255,255,.14);
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+      display: block;
     }
 
-    /* ── PERKS STRIP ───────────────────────────────────────── */
+    /* ── PERKS STRIP ─────────────────────────────────── */
     .perks-strip {
-      background: #fffdf9;
-      border-bottom: 1px solid #e8e3dc;
-      padding: 0 32px;
+      background: #fffdf9; border-bottom: 1px solid #e8e3dc;
+      padding: 0 24px;
       display: flex; flex-wrap: wrap; justify-content: center;
     }
     .perk-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 14px 20px;
+      display: flex; align-items: center; gap: 9px;
+      padding: 13px 20px;
       font-family: Arial, sans-serif; font-size: 13px; color: #555;
       border-right: 1px solid #ece8e2;
     }
     .perk-item:last-child { border-right: none; }
-    .perk-icon { font-size: 16px; }
+    .perk-icon { font-size: 15px; }
     .perk-item a { color: #3b6b4b; text-decoration: none; font-weight: bold; }
     .perk-item a:hover { text-decoration: underline; }
 
-    /* ── PAGE WRAP ──────────────────────────────────────────── */
+    /* ── PAGE WRAP ───────────────────────────────────── */
     .page-wrap { max-width: 920px; margin: 0 auto; padding: 60px 24px 80px; }
-
     .section-label {
       font-family: Arial, sans-serif; font-size: 11px; font-weight: bold;
       letter-spacing: 2px; text-transform: uppercase; color: #3b6b4b; margin: 0 0 8px;
@@ -152,34 +153,27 @@
     }
     hr.divider { border: none; border-top: 1px solid #e0dbd4; margin: 56px 0; }
 
-    /* ── WHAT'S INSIDE ─────────────────────────────────────── */
-    .pillars {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
-      gap: 16px;
-    }
+    /* ── PILLARS ─────────────────────────────────────── */
+    .pillars { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
     .pillar-card {
       background: #fffdf9; border-radius: 8px;
       padding: 22px 20px; border: 1px solid #e8e3dc;
     }
-    .pillar-icon { font-size: 24px; margin-bottom: 10px; }
+    .pillar-icon { font-size: 22px; margin-bottom: 10px; }
     .pillar-title {
       font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
-      color: #3b6b4b; margin: 0 0 6px; letter-spacing: .3px;
+      color: #3b6b4b; margin: 0 0 6px;
     }
-    .pillar-desc {
-      font-family: Georgia, serif; font-size: 13.5px;
-      color: #666; line-height: 1.6; margin: 0;
-    }
+    .pillar-desc { font-family: Georgia, serif; font-size: 13.5px; color: #666; line-height: 1.6; margin: 0; }
 
-    /* ── LATEST ISSUE ──────────────────────────────────────── */
+    /* ── LATEST ISSUE ────────────────────────────────── */
     .issue-preview {
       background: #fffdf9; border-radius: 8px;
       border: 1px solid #e8e3dc; overflow: hidden;
-      display: grid; grid-template-columns: 200px 1fr;
+      display: grid; grid-template-columns: 190px 1fr;
     }
     .issue-aside {
-      background: #3b6b4b;
-      padding: 28px 24px;
+      background: #3b6b4b; padding: 28px 22px;
       display: flex; flex-direction: column; justify-content: space-between;
     }
     .issue-aside-eyebrow {
@@ -190,15 +184,9 @@
       font-family: Georgia, serif; font-size: 18px; font-weight: normal;
       color: #fff; line-height: 1.35; margin: 0 0 auto;
     }
-    .issue-aside-date {
-      font-family: Arial, sans-serif; font-size: 11px;
-      color: #7aac8a; margin-top: 24px;
-    }
-    .issue-body { padding: 28px 32px; }
-    .issue-body p {
-      font-family: Georgia, serif; font-size: 15px;
-      color: #444; line-height: 1.7; margin: 0 0 14px;
-    }
+    .issue-aside-date { font-family: Arial, sans-serif; font-size: 11px; color: #7aac8a; margin-top: 24px; }
+    .issue-body { padding: 28px 30px; }
+    .issue-body p { font-family: Georgia, serif; font-size: 15px; color: #444; line-height: 1.7; margin: 0 0 13px; }
     .issue-body p:last-child { margin: 0; }
     .issue-read-link {
       display: inline-block; margin-top: 18px;
@@ -207,62 +195,56 @@
     }
     .issue-read-link:hover { text-decoration: underline; }
 
-    /* Archive */
-    .archive-list {
-      list-style: none; padding: 0; margin: 20px 0 0;
-      display: flex; flex-wrap: wrap; gap: 10px;
-    }
+    /* Archive pills */
+    .archive-list { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
     .archive-list li a {
-      font-family: Arial, sans-serif; font-size: 13px;
-      color: #3b6b4b; text-decoration: none;
-      background: #e8f3ec; border-radius: 4px; padding: 6px 14px;
-      display: inline-block; transition: background .12s;
+      font-family: Arial, sans-serif; font-size: 13px; color: #3b6b4b;
+      text-decoration: none; background: #e8f3ec; border-radius: 4px;
+      padding: 6px 14px; display: inline-block; transition: background .12s;
     }
     .archive-list li a:hover { background: #c8e6cc; }
 
-    /* ── PHOTO STRIP ─────────────────────────────────────── */
-    .photo-strip {
-      display: flex; gap: 12px;
-      overflow-x: auto; padding-bottom: 6px;
-      scrollbar-width: thin; scrollbar-color: #c8e6cc #f5f0eb;
+    /* ── DOGS PHOTO GRID ─────────────────────────────── */
+    .dogs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: 14px;
     }
-    .photo-strip-item {
-      flex: 0 0 158px; height: 158px;
-      border-radius: 10px; overflow: hidden;
-      position: relative;
+    .dog-card {
+      background: #fffdf9; border-radius: 12px;
+      overflow: hidden; border: 1px solid #e8e3dc;
+      transition: box-shadow .16s, transform .16s;
     }
-    .photo-strip-item img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center;
+    .dog-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.1); transform: translateY(-2px); }
+    .dog-card-photo {
+      width: 100%; height: 180px;
+      object-fit: cover; object-position: center top;
       display: block;
     }
-    .photo-strip-placeholder {
-      flex: 0 0 158px; height: 158px;
-      background: #e8f3ec; border-radius: 10px;
-      border: 1px solid #d0e8d8;
+    .dog-card-placeholder {
+      width: 100%; height: 180px;
+      background: #e8f3ec;
       display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 6px;
+      align-items: center; justify-content: center; gap: 6px;
     }
-    .photo-strip-placeholder .ph-icon { font-size: 32px; }
-    .photo-strip-placeholder .ph-name {
-      font-family: Arial, sans-serif; font-size: 12px;
-      color: #7aac8a; font-weight: bold; letter-spacing: .3px;
+    .ph-icon { font-size: 34px; }
+    .ph-note { font-family: Arial, sans-serif; font-size: 10px; color: #aac8b2; }
+    .dog-card-name {
+      padding: 10px 12px 11px;
+      font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
+      color: #3b6b4b; text-align: center; letter-spacing: .3px;
     }
-    .photo-strip-placeholder .ph-note {
-      font-family: Arial, sans-serif; font-size: 10px;
-      color: #aac8b2; text-align: center; padding: 0 8px;
+    .dog-card-note {
+      font-family: Georgia, serif; font-size: 11px; font-style: italic;
+      color: #aaa; padding: 0 10px 10px; text-align: center;
+      display: block; margin-top: -4px;
     }
-    .photo-caption {
-      font-family: Arial, sans-serif; font-size: 11px;
-      color: #aaa; margin: 10px 0 0;
+    .photo-legal {
+      font-family: Arial, sans-serif; font-size: 11px; color: #bbb; margin: 14px 0 0;
     }
 
-    /* ── TESTIMONIALS ──────────────────────────────────────── */
-    .testimonial-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-    }
+    /* ── TESTIMONIALS ────────────────────────────────── */
+    .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
     .testimonial-card {
       background: #fffdf9; border-radius: 8px;
       border: 1px solid #e8e3dc; padding: 22px 22px 18px;
@@ -273,19 +255,12 @@
     }
     .testimonial-quote::before { content: '\201C'; }
     .testimonial-quote::after  { content: '\201D'; }
-    .testimonial-author {
-      font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;
-      color: #3b6b4b; margin: 0;
-    }
-    .testimonial-dog {
-      font-family: Georgia, serif; font-size: 12px;
-      color: #aaa; font-style: italic; margin: 2px 0 0;
-    }
+    .testimonial-author { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #3b6b4b; margin: 0; }
+    .testimonial-dog { font-family: Georgia, serif; font-size: 12px; color: #aaa; font-style: italic; margin: 2px 0 0; }
 
-    /* ── STORE TEASER ──────────────────────────────────────── */
+    /* ── STORE TEASER ────────────────────────────────── */
     .store-teaser {
-      background: #3b6b4b; border-radius: 8px;
-      padding: 36px 40px;
+      background: #3b6b4b; border-radius: 8px; padding: 36px 40px;
       display: flex; align-items: center; justify-content: space-between;
       gap: 28px; flex-wrap: wrap;
     }
@@ -302,11 +277,11 @@
       font-family: Arial, sans-serif; font-size: 13px; font-weight: bold;
       letter-spacing: .5px; text-transform: uppercase;
       padding: 13px 28px; border-radius: 5px; text-decoration: none;
-      white-space: nowrap; transition: background .15s;
+      white-space: nowrap; transition: background .14s;
     }
     .btn-white:hover { background: #e8f3ec; }
 
-    /* ── COUPONS ───────────────────────────────────────────── */
+    /* ── COUPONS ─────────────────────────────────────── */
     .coupon-section { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .coupon-card {
       background: #fffdf9; border-radius: 8px;
@@ -317,79 +292,82 @@
       letter-spacing: 2px; text-transform: uppercase; color: #3b6b4b; margin: 0 0 10px;
     }
     .coupon-code {
-      font-family: 'Courier New', monospace; font-size: 24px; font-weight: bold;
+      font-family: 'Courier New', monospace; font-size: 22px; font-weight: bold;
       color: #1a1a1a; letter-spacing: 3px;
       background: #e8f3ec; display: inline-block;
-      padding: 5px 14px; border-radius: 4px; margin-bottom: 10px;
+      padding: 5px 14px; border-radius: 4px; margin-bottom: 8px;
     }
-    .coupon-desc {
-      font-family: Georgia, serif; font-size: 14px;
-      color: #555; line-height: 1.6; margin: 8px 0 0;
-    }
-    .coupon-fine {
-      font-family: Arial, sans-serif; font-size: 11px;
-      color: #bbb; margin: 8px 0 0; line-height: 1.5;
-    }
+    .coupon-desc { font-family: Georgia, serif; font-size: 14px; color: #555; line-height: 1.6; margin: 6px 0 0; }
+    .coupon-fine { font-family: Arial, sans-serif; font-size: 11px; color: #bbb; margin: 6px 0 0; line-height: 1.5; }
 
-    /* ── SHARE ─────────────────────────────────────────────── */
+    /* ── SHARE ───────────────────────────────────────── */
     .share-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .share-label {
-      font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; color: #3b6b4b;
-    }
+    .share-label { font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; color: #3b6b4b; }
     .share-btn {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: Arial, sans-serif; font-size: 13px;
       text-decoration: none; padding: 8px 16px; border-radius: 4px;
       border: 1.5px solid #c8d8cc; color: #555;
-      background: #fffdf9; cursor: pointer; transition: border-color .15s, color .15s;
+      background: #fffdf9; cursor: pointer; transition: border-color .14s, color .14s;
     }
     .share-btn:hover { border-color: #3b6b4b; color: #3b6b4b; }
 
-    /* ── FOOTER ─────────────────────────────────────────────── */
-    footer {
-      background: #2a4e37; padding: 32px;
-      text-align: center;
+    /* ── TOAST ───────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #2a4e37; color: #fff;
+      font-family: Arial, sans-serif; font-size: 14px;
+      padding: 12px 24px; border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+      opacity: 0; transition: opacity .3s, transform .3s;
+      pointer-events: none; z-index: 999; white-space: nowrap;
     }
-    footer p {
-      font-family: Arial, sans-serif; font-size: 12px;
-      color: #7aac8a; margin: 0 0 5px; line-height: 1.7;
-    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer { background: #2a4e37; padding: 36px 32px; text-align: center; }
+    footer p { font-family: Arial, sans-serif; font-size: 12px; color: #7aac8a; margin: 0 0 5px; line-height: 1.7; }
     footer a { color: #a8d5b0; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+    .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,.07); margin: 16px 0; }
 
-    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    /* ── RESPONSIVE ──────────────────────────────────── */
     @media (max-width: 720px) {
-      .hero-inner { flex-direction: column; text-align: center; gap: 32px; }
-      .hero-title { font-size: 34px; }
+      .hero-inner { flex-direction: column; text-align: center; gap: 28px; }
+      .hero-title { font-size: 36px; }
       .hero-sub { max-width: 100%; }
       .subscribe-form { justify-content: center; }
-      .hero-photo-wrap { order: -1; }
-      .hero-photo { width: 180px; height: 180px; }
+      .hero-photos { order: -1; justify-content: center; }
+      .hero-photo-main { width: 150px; height: 185px; }
+      .hero-photo-secondary { width: 95px; height: 140px; }
       nav { padding: 0 16px; }
       .nav-links { gap: 12px; }
       .issue-preview { grid-template-columns: 1fr; }
-      .store-teaser { padding: 28px 24px; }
+      .store-teaser { padding: 28px 22px; }
       .coupon-section { grid-template-columns: 1fr; }
-      .perks-strip { flex-direction: column; align-items: center; padding: 0 16px; }
-      .perk-item { border-right: none; border-bottom: 1px solid #ece8e2; width: 100%; }
+      .perks-strip { padding: 0 16px; }
+      .perk-item { border-right: none; border-bottom: 1px solid #ece8e2; width: 100%; justify-content: center; }
       .perk-item:last-child { border-bottom: none; }
+      .dogs-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
     }
   </style>
 </head>
 <body>
 
-<!-- ── NAV ───────────────────────────────────────────────────── -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ── NAV ──────────────────────────────────────────────────── -->
 <nav>
   <a href="index.html" class="nav-brand">Dogs <span>&amp;</span> Llamas</a>
   <div class="nav-links">
-    <a href="store.html" class="nav-link">Curated Top Picks</a>
-    <a href="#archive" class="nav-link">Past Issues</a>
+    <a href="store.html" class="nav-link">Curated Picks</a>
+    <a href="#the-dogs" class="nav-link">The Dogs</a>
     <a href="#subscribe" class="nav-cta">Subscribe</a>
   </div>
 </nav>
 
-<!-- ── HERO ───────────────────────────────────────────────────── -->
-<section class="hero" id="subscribe">
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section class="hero" id="subscribe" aria-label="Subscribe to Dogs &amp; Llamas">
   <div class="hero-inner">
 
     <div class="hero-content">
@@ -398,49 +376,58 @@
       <p class="hero-byline">by [First Name] Llamas</p>
       <p class="hero-sub">Availability openings, honest dog tips, and small perks for repeat clients — once a month, always personal.</p>
 
-      <!-- Replace action with your Mailchimp / beehiiv subscribe URL -->
-      <form class="subscribe-form" action="#" method="post">
-        <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+      <!-- Connect action to your Mailchimp / beehiiv subscribe URL when ready -->
+      <form class="subscribe-form" id="subscribe-form" action="#" method="post" novalidate>
+        <input type="email" name="email" id="email-input"
+               placeholder="your@email.com" required
+               autocomplete="email"
+               aria-label="Email address">
         <button type="submit">Subscribe Free</button>
       </form>
-      <p class="subscribe-note">No spam. Unsubscribe anytime by replying "unsubscribe."</p>
+      <p class="subscribe-note">No spam. Unsubscribe anytime. See our <a href="privacy.html" style="color:#a8d5b0;">privacy policy</a>.</p>
     </div>
 
-    <div class="hero-photo-wrap">
-      <img
-        src="./media/Turbo sleeping.JPG"
-        alt="Turbo, one of our regulars"
-        class="hero-photo">
-      <p class="hero-photo-cap">Turbo &#128054;</p>
+    <!-- Hero photo cluster — Turbo Outside (main) + Troy (secondary) -->
+    <div class="hero-photos" aria-hidden="true">
+      <img src="./media/Turbo Outside.jpg"
+           alt="Turbo enjoying the outdoors"
+           class="hero-photo-main"
+           width="180" height="220"
+           loading="eager">
+      <img src="./media/Troy.jpg"
+           alt="Troy the Husky"
+           class="hero-photo-secondary"
+           width="110" height="160"
+           loading="eager">
     </div>
 
   </div>
 </section>
 
-<!-- ── PERKS STRIP ────────────────────────────────────────────── -->
-<div class="perks-strip">
-  <div class="perk-item">
-    <span class="perk-icon">&#128276;</span>
+<!-- ── PERKS STRIP ───────────────────────────────────────────── -->
+<div class="perks-strip" role="list">
+  <div class="perk-item" role="listitem">
+    <span class="perk-icon" aria-hidden="true">&#128276;</span>
     <span><strong>First notice</strong> on new booking spots</span>
   </div>
-  <div class="perk-item">
-    <span class="perk-icon">&#128054;</span>
+  <div class="perk-item" role="listitem">
+    <span class="perk-icon" aria-hidden="true">&#128054;</span>
     <span><strong>Monthly dog tips</strong> from real experience</span>
   </div>
-  <div class="perk-item">
-    <span class="perk-icon">&#127381;</span>
+  <div class="perk-item" role="listitem">
+    <span class="perk-icon" aria-hidden="true">&#127381;</span>
     <span>Subscriber code <strong>PUPS10</strong> — 10% off your next sit</span>
   </div>
-  <div class="perk-item">
-    <span class="perk-icon">&#9733;</span>
+  <div class="perk-item" role="listitem">
+    <span class="perk-icon" aria-hidden="true">&#9733;</span>
     <span><a href="store.html">Curated Top Picks</a> for your dog</span>
   </div>
 </div>
 
-<!-- ── MAIN ───────────────────────────────────────────────────── -->
-<div class="page-wrap">
+<!-- ── MAIN ─────────────────────────────────────────────────── -->
+<main class="page-wrap">
 
-  <!-- WHAT'S INSIDE -->
+  <!-- WHAT YOU GET -->
   <p class="section-label">What You'll Get</p>
   <h2 class="section-title">Simple updates. Real value.</h2>
   <div class="pillars">
@@ -457,12 +444,12 @@
     <div class="pillar-card">
       <div class="pillar-icon">&#127881;</div>
       <p class="pillar-title">Repeat Client Perks</p>
-      <p class="pillar-desc">Loyalty discounts and referral thank-yous — for clients who stick around.</p>
+      <p class="pillar-desc">Loyalty discounts and referral thank-yous — for clients who keep coming back.</p>
     </div>
     <div class="pillar-card">
       <div class="pillar-icon">&#128247;</div>
       <p class="pillar-title">Dog Pics</p>
-      <p class="pillar-desc">Occasional updates and photos from recent stays — with permission, always.</p>
+      <p class="pillar-desc">Updates and photos from recent stays — with permission, always.</p>
     </div>
   </div>
 
@@ -482,81 +469,107 @@
     </div>
     <div class="issue-body">
       <p>Spring spots are opening up for weekends and drop-ins through April into May. If you have travel or a busy stretch coming up, it's a good time to reach out early.</p>
-      <p>This month's tip: pavement heats fast in spring. The five-second hand test — if you can't hold the back of your hand on the sidewalk for five seconds, it's too hot for paws.</p>
+      <p>This month's tip: pavement heats fast in spring. The five-second hand test — if you can't hold the back of your hand on the sidewalk comfortably, it's too hot for paws.</p>
       <p>Subscribers get first notice on newly opened spots before they're shared anywhere else.</p>
       <a class="issue-read-link" href="monthly-issue-01.html">Read the full issue &rarr;</a>
     </div>
   </div>
 
-  <ul class="archive-list" id="archive">
+  <ul class="archive-list" aria-label="Past issues">
     <li><a href="monthly-issue-01.html">April 2026 &rarr;</a></li>
-    <!-- Add here monthly: <li><a href="monthly-issue-02.html">May 2026 &rarr;</a></li> -->
+    <!-- Add each month: <li><a href="monthly-issue-02.html">May 2026 &rarr;</a></li> -->
   </ul>
 
   <hr class="divider">
 
-  <!-- PHOTO STRIP -->
-  <p class="section-label">The Dogs</p>
-  <h2 class="section-title">Some of the pups I've had the pleasure of caring for</h2>
+  <!-- THE DOGS -->
+  <section id="the-dogs" aria-labelledby="dogs-heading">
+    <p class="section-label">The Dogs</p>
+    <h2 class="section-title" id="dogs-heading">Pups I've had the pleasure of caring for</h2>
 
-  <div class="photo-strip">
+    <div class="dogs-grid">
 
-    <!-- Turbo — real photo -->
-    <div class="photo-strip-item">
-      <img src="./media/Turbo sleeping.JPG" alt="Turbo">
+      <!-- Turbo — outside photo -->
+      <div class="dog-card">
+        <img src="./media/Turbo Outside.jpg"
+             alt="Turbo the merle Australian Shepherd playing outside"
+             class="dog-card-photo"
+             loading="lazy" width="148" height="180">
+        <p class="dog-card-name">Turbo</p>
+        <span class="dog-card-note">Australian Shepherd</span>
+      </div>
+
+      <!-- Turbo — sleeping -->
+      <div class="dog-card">
+        <img src="./media/Turbo sleeping.JPG"
+             alt="Turbo napping on the floor"
+             class="dog-card-photo"
+             loading="lazy" width="148" height="180">
+        <p class="dog-card-name">Turbo</p>
+        <span class="dog-card-note">Nap time &#128564;</span>
+      </div>
+
+      <!-- Troy -->
+      <div class="dog-card">
+        <img src="./media/Troy.jpg"
+             alt="Troy the Husky with striking blue eyes"
+             class="dog-card-photo"
+             loading="lazy" width="148" height="180">
+        <p class="dog-card-name">Troy</p>
+        <span class="dog-card-note">Husky</span>
+      </div>
+
+      <!-- Dakota — with sitter -->
+      <div class="dog-card">
+        <img src="./media/Dakota and me.JPG"
+             alt="Dakota the Sheltie with [First Name]"
+             class="dog-card-photo"
+             loading="lazy" width="148" height="180">
+        <p class="dog-card-name">Dakota</p>
+        <span class="dog-card-note">Sheltie</span>
+      </div>
+
+      <!-- Ace — DNG, needs conversion -->
+      <div class="dog-card">
+        <div class="dog-card-placeholder" aria-hidden="true">
+          <span class="ph-icon">&#128054;</span>
+          <span class="ph-note">Photo coming soon</span>
+        </div>
+        <p class="dog-card-name">Ace</p>
+      </div>
+
+      <!-- Mango — DNG, needs conversion -->
+      <div class="dog-card">
+        <div class="dog-card-placeholder" aria-hidden="true">
+          <span class="ph-icon">&#128054;</span>
+          <span class="ph-note">Photo coming soon</span>
+        </div>
+        <p class="dog-card-name">Mango</p>
+      </div>
+
+      <!-- Harley — no photo yet -->
+      <div class="dog-card">
+        <div class="dog-card-placeholder" aria-hidden="true">
+          <span class="ph-icon">&#128054;</span>
+          <span class="ph-note">Photo coming soon</span>
+        </div>
+        <p class="dog-card-name">Harley</p>
+        <span class="dog-card-note">French Bulldog</span>
+      </div>
+
     </div>
 
     <!--
-      To add Ace, Mango, Teddy, Troy:
-      1. Convert their .DNG files to .JPG using Google Photos, Apple Photos,
-         or a free tool like cloudconvert.com
-      2. Convert Troy.HEIC to .JPG the same way
-      3. Add them to the /media folder
-      4. Uncomment the blocks below
-
-      <div class="photo-strip-item">
-        <img src="./media/Ace.jpg" alt="Ace">
-      </div>
-      <div class="photo-strip-item">
-        <img src="./media/Mango Outside.jpg" alt="Mango">
-      </div>
-      <div class="photo-strip-item">
-        <img src="./media/Teddy.jpg" alt="Teddy">
-      </div>
-      <div class="photo-strip-item">
-        <img src="./media/Troy.jpg" alt="Troy">
-      </div>
+      To activate Ace and Mango when ready:
+      1. Convert Ace.DNG and Mango Outside.DNG → .jpg
+         Free at: cloudconvert.com (no install needed)
+      2. Place the .jpg files in /media
+      3. Replace the placeholder div with:
+         <img src="./media/Ace.jpg" alt="Ace" class="dog-card-photo" loading="lazy">
     -->
 
-    <!-- Placeholders until photos are converted -->
-    <div class="photo-strip-placeholder">
-      <span class="ph-icon">&#128054;</span>
-      <span class="ph-name">Ace</span>
-      <span class="ph-note">Photo coming soon</span>
-    </div>
-    <div class="photo-strip-placeholder">
-      <span class="ph-icon">&#128054;</span>
-      <span class="ph-name">Mango</span>
-      <span class="ph-note">Photo coming soon</span>
-    </div>
-    <div class="photo-strip-placeholder">
-      <span class="ph-icon">&#128054;</span>
-      <span class="ph-name">Teddy</span>
-      <span class="ph-note">Photo coming soon</span>
-    </div>
-    <div class="photo-strip-placeholder">
-      <span class="ph-icon">&#128054;</span>
-      <span class="ph-name">Troy</span>
-      <span class="ph-note">Photo coming soon</span>
-    </div>
-    <div class="photo-strip-placeholder">
-      <span class="ph-icon">&#128054;</span>
-      <span class="ph-name">Harley</span>
-      <span class="ph-note">Photo coming soon</span>
-    </div>
-
-  </div>
-  <p class="photo-caption">&#x2022; Photos shared with client permission only.</p>
+    <p class="photo-legal">&#x2022; Photos shared with client permission only. Photos of sitter shared with consent.</p>
+  </section>
 
   <hr class="divider">
 
@@ -564,9 +577,9 @@
   <p class="section-label">What Clients Say</p>
   <h2 class="section-title">Kind words from happy owners</h2>
   <div class="testimonial-grid">
-    <!-- Replace with real client quotes — get permission first -->
+    <!-- Replace with real client quotes — get written permission first -->
     <div class="testimonial-card">
-      <p class="testimonial-quote">We always feel completely at ease leaving [Dog Name]. The photo updates made our whole trip more relaxing.</p>
+      <p class="testimonial-quote">We always feel completely at ease leaving [Dog Name]. The photo updates made our whole trip so much more relaxing.</p>
       <p class="testimonial-author">[Client Name]</p>
       <p class="testimonial-dog">Owner of [Dog Name]</p>
     </div>
@@ -585,10 +598,10 @@
   <hr class="divider">
 
   <!-- STORE TEASER -->
-  <div class="store-teaser">
+  <div class="store-teaser" role="complementary" aria-label="Shop teaser">
     <div class="store-teaser-text">
       <h3>Curated Top Picks</h3>
-      <p>Products I genuinely recommend — tested across real dogs. Use code SHOP10 when booking for 10% off your next sit.</p>
+      <p>Gear I genuinely recommend — tested across real dogs. Use code SHOP10 when booking for 10% off your next sit.</p>
     </div>
     <a href="store.html" class="btn-white">Browse Picks &rarr;</a>
   </div>
@@ -603,19 +616,19 @@
       <p class="coupon-tag">Newsletter Perk</p>
       <div class="coupon-code">PUPS10</div>
       <p class="coupon-desc">Subscribers get <strong>10% off their next dog-sitting booking</strong>. Mention this code when you reach out on Rover.</p>
-      <p class="coupon-fine">For returning clients. One use per client. Cannot be combined.</p>
+      <p class="coupon-fine">Returning clients. One use per client. Cannot be combined with other offers.</p>
     </div>
     <div class="coupon-card">
       <p class="coupon-tag">Shop Perk</p>
       <div class="coupon-code">SHOP10</div>
       <p class="coupon-desc">Order from <a href="store.html" style="color:#3b6b4b;font-weight:bold;">Curated Top Picks</a> and get <strong>10% off your next booking</strong>. Mention this code on Rover.</p>
-      <p class="coupon-fine">New and returning clients. One use per client. Cannot be combined.</p>
+      <p class="coupon-fine">New and returning clients. One use per client. Cannot be combined with other offers.</p>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- SHARE -->
+  <!-- SHARE / REFER -->
   <p class="section-label">Know a Dog Owner?</p>
   <h2 class="section-title">Pass it along</h2>
   <p style="font-family:Georgia,serif;font-size:16px;color:#555;line-height:1.7;margin:0 0 22px;max-width:500px;">
@@ -623,43 +636,72 @@
   </p>
   <div class="share-row">
     <span class="share-label">Share:</span>
-    <button class="share-btn" onclick="shareNative()">&#8679; Share this page</button>
+    <button class="share-btn" id="share-native-btn" type="button">&#8679; Share this page</button>
     <a class="share-btn"
        href="https://twitter.com/intent/tweet?text=Great+dog+sitter+%E2%80%94+Dogs+%26+Llamas+newsletter+%26+picks&url=https%3A%2F%2F[YOUR-SITE]"
-       target="_blank" rel="noopener">&#x1D54F; Post on X</a>
+       target="_blank" rel="noopener noreferrer">&#x1D54F; Post on X</a>
     <a class="share-btn"
        href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F[YOUR-SITE]"
-       target="_blank" rel="noopener">f Facebook</a>
+       target="_blank" rel="noopener noreferrer">f Facebook</a>
   </div>
 
-</div><!-- /page-wrap -->
+</main>
 
-<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<!-- ── FOOTER ────────────────────────────────────────────────── -->
 <footer>
   <p>Dogs &amp; Llamas &bull; [First Name] Llamas &bull; [Your City]</p>
-  <p>All active Rover bookings are handled through <a href="https://www.rover.com" target="_blank" rel="noopener">Rover.com</a> per their Terms of Service.</p>
-  <p style="margin-top:10px;">
+  <p>All active Rover bookings are handled through
+     <a href="https://www.rover.com" target="_blank" rel="noopener noreferrer">Rover.com</a>
+     in accordance with their Terms of Service.</p>
+  <hr class="footer-divider">
+  <p>
     <a href="store.html">Curated Top Picks</a> &bull;
     <a href="monthly-issue-01.html">Latest Issue</a> &bull;
-    <a href="#subscribe">Subscribe</a>
+    <a href="#subscribe">Subscribe</a> &bull;
+    <a href="privacy.html">Privacy Policy</a>
   </p>
   <p style="margin-top:10px;color:#4a7a5a;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
 </footer>
 
 <script>
-  function shareNative() {
+  /* ── Subscribe form ──────────────────────────────────────── */
+  // When you're ready to connect Mailchimp / beehiiv:
+  // 1. Replace action="#" in the form with your embed action URL
+  // 2. Remove or update the submit handler below
+  document.getElementById('subscribe-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('email-input').value.trim();
+    if (!email) return;
+    showToast('Thanks! You\'re subscribed. &#128054;');
+    this.reset();
+    // TODO: POST to Mailchimp / beehiiv when live
+  });
+
+  /* ── Share button ────────────────────────────────────────── */
+  document.getElementById('share-native-btn').addEventListener('click', function () {
     if (navigator.share) {
       navigator.share({
         title: 'Dogs & Llamas',
-        text: 'Monthly dog-care newsletter and curated picks from a trusted local sitter.',
+        text: 'Monthly dog-care newsletter and trusted product picks from a local sitter.',
         url: window.location.href
-      }).catch(() => {});
+      }).catch(function () {});
     } else {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        alert('Link copied to clipboard!');
-      }).catch(() => { prompt('Copy this link:', window.location.href); });
+      navigator.clipboard.writeText(window.location.href).then(function () {
+        showToast('Link copied to clipboard!');
+      }).catch(function () {
+        prompt('Copy this link:', window.location.href);
+      });
     }
+  });
+
+  /* ── Toast helper ────────────────────────────────────────── */
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.innerHTML = msg;
+    t.classList.add('show');
+    setTimeout(function () { t.classList.remove('show'); }, 3200);
   }
 </script>
+
 </body>
 </html>
