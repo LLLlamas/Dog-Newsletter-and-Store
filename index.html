@@ -557,6 +557,87 @@
     }
     .btn-primary:hover { background: #c07a24; transform: translateY(-2px); color: #fff; }
 
+    .btn-secondary {
+      display: inline-block;
+      background: transparent; color: #fff;
+      font-family: var(--font-body); font-size: 14px; font-weight: 600;
+      letter-spacing: .4px; padding: 11px 26px;
+      border: 1.5px solid rgba(255,255,255,.5);
+      border-radius: var(--radius-full); text-decoration: none;
+      white-space: nowrap; transition: background .15s, border-color .15s, transform .15s;
+      flex-shrink: 0;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,.1); border-color: #fff; transform: translateY(-2px); color: #fff; }
+
+    .hero-cta-row {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    /* ── BOTTOM SUBSCRIBE SECTION ─────────────────── */
+    .subscribe-bottom {
+      margin-top: 56px;
+      padding: 48px 44px;
+      background: linear-gradient(135deg, #0A1E3D 0%, #1B4F8C 60%, #2B6CB0 100%);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .subscribe-bottom::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    .subscribe-bottom > * { position: relative; }
+    .subscribe-bottom-eyebrow {
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--amber-light); margin: 0 0 12px;
+    }
+    .subscribe-bottom h2 {
+      font-family: var(--font-head); font-size: 32px; font-weight: 600;
+      color: #fff; margin: 0 0 10px; letter-spacing: -.3px;
+    }
+    .subscribe-bottom p {
+      font-family: var(--font-body); font-size: 15px;
+      color: rgba(255,255,255,.82); margin: 0 auto 26px;
+      max-width: 460px; line-height: 1.7;
+    }
+    .subscribe-bottom-form {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 10px; max-width: 460px; margin: 0 auto;
+    }
+    .subscribe-bottom-form input[type="email"] {
+      flex: 1; min-width: 200px; padding: 14px 20px;
+      background: rgba(255,255,255,.94);
+      border: none; border-radius: var(--radius-full);
+      font-family: var(--font-body); font-size: 15px; color: var(--text);
+      outline: none; transition: box-shadow .15s;
+    }
+    .subscribe-bottom-form input[type="email"]:focus { box-shadow: 0 0 0 3px rgba(212,160,23,.5); }
+    .subscribe-bottom-form button {
+      background: var(--amber); color: #fff; border: none;
+      font-family: var(--font-body); font-size: 14px; font-weight: 600;
+      letter-spacing: .4px; padding: 14px 30px;
+      border-radius: var(--radius-full); cursor: pointer;
+      transition: background .15s, transform .15s;
+    }
+    .subscribe-bottom-form button:hover { background: #b8880f; transform: translateY(-1px); }
+    .subscribe-bottom-note {
+      font-family: var(--font-body); font-size: 12px;
+      color: rgba(255,255,255,.5); margin: 14px 0 0;
+    }
+    .subscribe-bottom-note a { color: rgba(255,255,255,.7); }
+    @media (max-width: 640px) {
+      .subscribe-bottom { padding: 36px 24px; margin-top: 40px; }
+      .subscribe-bottom h2 { font-size: 26px; }
+      .subscribe-bottom-form { flex-direction: column; }
+      .subscribe-bottom-form input, .subscribe-bottom-form button { width: 100%; }
+    }
+
     /* ── COUPONS ─────────────────────────────────── */
     .coupon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .coupon-card {
@@ -813,23 +894,20 @@
 </nav>
 <div id="dal-live-region" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);"></div>
 
-<!-- ── HERO ─────────────────────────────────────────────────── -->
-<section class="hero" id="subscribe" aria-label="Subscribe to Dogs &amp; Llamas">
+<!-- ── HERO (no longer contains the subscribe form — moved to bottom) ── -->
+<section class="hero" id="top" aria-label="Dogs &amp; Llamas newsletter">
   <div class="hero-inner">
 
     <div class="hero-content">
       <p class="hero-eyebrow">Monthly Dog-Care Updates</p>
       <h1 class="hero-title">Dogs <span class="amp">&amp;</span> Llamas</h1>
       <p class="hero-byline">by Lorenzo &amp; Catalina Llamas &bull; Rover Star Sitters</p>
-      <p class="hero-sub">Availability openings, honest dog tips, and small perks for repeat clients — once a month, always personal.</p>
+      <p class="hero-sub">Availability openings, honest dog tips, and small perks for repeat clients &mdash; once a month, always personal. Scroll down for this month's issue, or subscribe free at the bottom.</p>
 
-      <form class="hero-form" id="subscribe-form" action="#" method="post" novalidate>
-        <input type="email" name="email" id="email-input"
-               placeholder="your@email.com" required
-               autocomplete="email" aria-label="Email address">
-        <button type="submit">Subscribe Free</button>
-      </form>
-      <p class="hero-note">No spam. Unsubscribe anytime. <a href="privacy.html">Privacy policy</a>.</p>
+      <div class="hero-cta-row">
+        <a href="#latest" class="btn-primary">Read this month &rarr;</a>
+        <a href="#subscribe" class="btn-secondary">Subscribe free</a>
+      </div>
     </div>
 
     <div class="hero-photos" aria-hidden="true">
@@ -904,7 +982,7 @@
   <hr class="divider">
 
   <!-- LATEST ISSUE — text swaps via data-dal-slot when logged in with a matching dog -->
-  <div class="reveal">
+  <div class="reveal" id="latest">
     <p class="section-eyebrow">Latest Issue</p>
     <h2 class="section-title">April 2026</h2>
   </div>
@@ -1114,6 +1192,22 @@
        href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F[YOUR-SITE]"
        target="_blank" rel="noopener noreferrer">f Facebook</a>
   </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SUBSCRIBE FREE — moved here from the hero (late April 10 session)
+       ══════════════════════════════════════════════════════ -->
+  <section class="subscribe-bottom reveal" id="subscribe" aria-label="Subscribe to Dogs &amp; Llamas">
+    <p class="subscribe-bottom-eyebrow">Join the Newsletter</p>
+    <h2>Get Dogs &amp; Llamas, free</h2>
+    <p>Monthly availability updates, one honest dog-care tip, and repeat-client perks. Once a month, always personal.</p>
+    <form class="subscribe-bottom-form" id="subscribe-form" action="#" method="post" novalidate>
+      <input type="email" name="email" id="email-input"
+             placeholder="your@email.com" required
+             autocomplete="email" aria-label="Email address">
+      <button type="submit">Subscribe Free</button>
+    </form>
+    <p class="subscribe-bottom-note">No spam. Unsubscribe anytime. <a href="privacy.html">Privacy policy</a>.</p>
+  </section>
 
 </main>
 

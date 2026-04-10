@@ -323,7 +323,12 @@
     var btn   = document.getElementById('dal-personalize-btn');
     var strip = document.getElementById('dal-login-strip');
 
+    /* Keep the login strip VISIBLE in all states — its inner content
+       switches between the input (logged out) and a welcome label (logged in)
+       via body.dal-personalized CSS. */
+
     if (sub && sub.username) {
+      /* Legacy nav-button (still supported if present) */
       if (btn) {
         var label = btn.querySelector('.dal-btn-label');
         if (label) label.textContent = sub.username;
@@ -332,7 +337,20 @@
       }
       document.body.classList.add('dal-personalized');
       document.body.setAttribute('data-dal-user', sub.username);
-      if (strip) strip.style.display = 'none';
+
+      /* Populate the welcome label inside the strip */
+      if (strip) {
+        var unameEl = strip.querySelector('.dal-login-username-txt');
+        var dogEl   = strip.querySelector('.dal-login-dog-txt');
+        if (unameEl) unameEl.textContent = sub.username;
+        if (dogEl) {
+          if (sub.dogName) {
+            dogEl.textContent = ' \u2014 ' + (sub.dogEmoji || '\uD83D\uDC3E') + ' ' + sub.dogName;
+          } else {
+            dogEl.textContent = '';
+          }
+        }
+      }
 
       document.querySelectorAll('.dal-personal-only').forEach(function (el) {
         el.style.display = '';
@@ -346,7 +364,6 @@
       document.body.classList.remove('dal-personalized');
       document.body.removeAttribute('data-dal-user');
       restoreOriginalContent();
-      if (strip) strip.style.display = '';
       document.querySelectorAll('.dal-personal-only').forEach(function (el) {
         el.style.display = 'none';
       });
@@ -387,18 +404,38 @@
       '.dal-login-strip{background:#E4F0FB;border-bottom:1px solid #CCDAEF;padding:9px 18px;font-family:"DM Sans",system-ui,sans-serif;font-size:13px;color:#1B4F8C}',
       '.dal-login-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}',
       '.dal-login-icon{font-size:16px;flex-shrink:0}',
+
+      /* State wrappers — toggled via body.dal-personalized */
+      '.dal-state{display:none;flex:1;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}',
+      'body:not(.dal-personalized) #dal-login-strip .dal-state-out{display:flex}',
+      'body.dal-personalized #dal-login-strip .dal-state-in{display:flex}',
+
       '.dal-login-label{font-weight:500;flex-shrink:0}',
       '.dal-login-input{flex:1;min-width:180px;padding:7px 14px;border:1px solid #CCDAEF;border-radius:99px;background:#fff;font-family:inherit;font-size:13px;color:#1A1D26;outline:none;transition:border-color .14s,box-shadow .14s}',
       '.dal-login-input:focus{border-color:#2B6CB0;box-shadow:0 0 0 2px rgba(43,108,176,.22)}',
+
       '.dal-login-btn{background:#D4A017;color:#fff;border:none;border-radius:99px;padding:7px 18px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;letter-spacing:.3px;transition:background .14s,transform .14s}',
       '.dal-login-btn:hover{background:#b8880f;transform:translateY(-1px)}',
       '.dal-login-btn:disabled{opacity:.6;cursor:default;transform:none}',
-      '.dal-login-close{background:none;border:none;color:#8C94B0;font-size:22px;line-height:1;cursor:pointer;padding:0 6px;flex-shrink:0;transition:color .14s}',
-      '.dal-login-close:hover{color:#4C5470}',
+
+      /* Logged-in welcome label */
+      '.dal-login-welcome{font-size:13px;color:#1B4F8C}',
+      '.dal-login-welcome strong{font-weight:600}',
+      '.dal-login-username-txt{font-weight:700;color:#1B4F8C}',
+      '.dal-login-dog-txt{color:#D4A017;font-weight:600}',
+
+      /* Reset / View generic button (always visible — TEMPORARY for testing) */
+      '.dal-reset-btn{background:transparent;color:#4C5470;border:1px solid #CCDAEF;border-radius:99px;padding:7px 14px;font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .14s,border-color .14s,color .14s}',
+      '.dal-reset-btn:hover{background:#fff;border-color:#8C94B0;color:#1A1D26}',
+      '.dal-reset-btn::before{content:"\u21BB";margin-right:5px;display:inline-block;font-size:13px}',
+
       '.dal-login-msg{max-width:1100px;margin:6px auto 0;font-size:12px;min-height:1px;display:none;text-align:center}',
       '.dal-login-msg.dal-err{display:block;color:#B33A3A}',
       '.dal-login-msg.dal-ok{display:block;color:#1B4F8C;font-weight:500}',
-      '@media(max-width:640px){.dal-login-label{display:none}.dal-login-input{font-size:12px;padding:6px 12px;min-width:140px}.dal-login-strip{padding:8px 12px}}',
+
+      '@media(max-width:720px){.dal-login-label{display:none}.dal-login-input{font-size:12px;padding:6px 12px;min-width:120px}.dal-login-strip{padding:8px 12px}.dal-reset-btn::before{margin-right:3px}}',
+      '@media(max-width:480px){.dal-login-welcome{font-size:12px}.dal-reset-btn{font-size:10.5px;padding:6px 10px}}',
+
       /* Personal-only elements */
       '.dal-personal-only{display:none}',
       'body.dal-personalized .dal-personal-only{display:block}',
@@ -424,14 +461,32 @@
     strip.innerHTML = [
       '<div class="dal-login-inner">',
         '<span class="dal-login-icon" aria-hidden="true">\uD83D\uDC3E</span>',
-        '<span class="dal-login-label">Already subscribed?</span>',
-        '<input type="text" id="dal-login-input" class="dal-login-input" ',
-               'placeholder="your username or email" autocomplete="off" ',
-               'autocapitalize="off" spellcheck="false" ',
-               'aria-label="Your username or email">',
-        '<button type="button" id="dal-login-btn" class="dal-login-btn">Unlock</button>',
-        '<button type="button" id="dal-login-close" class="dal-login-close" ',
-                'aria-label="Dismiss login bar" title="Dismiss">&times;</button>',
+
+        /* ─── Logged-OUT state: input + Unlock ─── */
+        '<div class="dal-state dal-state-out">',
+          '<span class="dal-login-label">Enter your code for a personalized version:</span>',
+          '<input type="text" id="dal-login-input" class="dal-login-input" ',
+                 'placeholder="your code, email, or username" autocomplete="off" ',
+                 'autocapitalize="off" spellcheck="false" ',
+                 'aria-label="Your code, email, or username">',
+          '<button type="button" id="dal-login-btn" class="dal-login-btn">Unlock</button>',
+        '</div>',
+
+        /* ─── Logged-IN state: welcome label ─── */
+        '<div class="dal-state dal-state-in">',
+          '<span class="dal-login-welcome">',
+            '<strong>Personalized for</strong> ',
+            '<span class="dal-login-username-txt">\u2014</span>',
+            '<span class="dal-login-dog-txt"></span>',
+          '</span>',
+        '</div>',
+
+        /* ─── Always visible: reset / view generic ─── */
+        /* TEMPORARY testing button — remove when ready to ship. */
+        '<button type="button" id="dal-reset-btn" class="dal-reset-btn" ',
+                'title="Clear your session and view the generic newsletter">',
+          'View generic info',
+        '</button>',
       '</div>',
       '<div class="dal-login-msg" id="dal-login-msg" role="status" aria-live="polite"></div>'
     ].join('');
@@ -440,7 +495,7 @@
 
     var input = document.getElementById('dal-login-input');
     var btn   = document.getElementById('dal-login-btn');
-    var close = document.getElementById('dal-login-close');
+    var reset = document.getElementById('dal-reset-btn');
     var msg   = document.getElementById('dal-login-msg');
 
     function showMsg(text, isError) {
@@ -449,47 +504,57 @@
       msg.className = 'dal-login-msg ' + (isError ? 'dal-err' : 'dal-ok');
     }
 
+    function clearMsg(delay) {
+      setTimeout(function () {
+        if (msg) { msg.textContent = ''; msg.className = 'dal-login-msg'; }
+      }, delay || 2500);
+    }
+
     function doLogin() {
       var key = (input.value || '').trim();
-      if (!key) { showMsg('Please enter your username or email.', true); return; }
+      if (!key) { showMsg('Please enter your code, email, or username.', true); return; }
       showMsg('Checking\u2026', false);
       btn.disabled = true;
       DAL.loginWithKey(key)
         .then(function (data) {
-          showMsg('Welcome back, ' + data.username + '! Loading your picks\u2026', false);
+          showMsg('Welcome back, ' + data.username + '! Loading your view\u2026', false);
           setTimeout(function () {
             btn.disabled = false;
             DAL.initPersonalizeButton();
-          }, 450);
+            input.value = '';
+            clearMsg(1800);
+          }, 400);
         })
         .catch(function (err) {
           btn.disabled = false;
           var m = err.message || 'Error';
           if (m === 'Not found') {
-            showMsg('No subscriber found. Try subscribing first.', true);
+            showMsg('No subscriber found. Try subscribing at the bottom first.', true);
           } else if (m === 'Supabase not configured') {
-            showMsg('Login system not yet connected. Try DAL.devLoginAs("turbo") in console for a demo.', true);
+            showMsg('Login not connected yet. Try DAL.devLoginAs("turbo") in the browser console.', true);
           } else {
             showMsg('Error: ' + m, true);
           }
+          clearMsg(4000);
         });
+    }
+
+    function doReset() {
+      var sub = DAL.getSubscriber();
+      if (sub) {
+        DAL.clearSubscriber();
+        showMsg('Switched to generic view.', false);
+      } else {
+        showMsg('Already viewing the generic version.', false);
+      }
+      clearMsg(2200);
     }
 
     btn.addEventListener('click', doLogin);
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); doLogin(); }
     });
-    close.addEventListener('click', function () {
-      strip.style.display = 'none';
-      try { sessionStorage.setItem('dal_strip_dismissed', '1'); } catch (e) {}
-    });
-
-    /* Respect session dismissal */
-    try {
-      if (sessionStorage.getItem('dal_strip_dismissed') === '1') {
-        strip.style.display = 'none';
-      }
-    } catch (e) {}
+    reset.addEventListener('click', doReset);
   }
 
   /* ══════════════════════════════════════════════════════════════

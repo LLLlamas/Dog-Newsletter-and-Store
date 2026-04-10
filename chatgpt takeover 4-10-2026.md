@@ -771,3 +771,35 @@ Subscribe forms currently `preventDefault` + toast. Replace `action="#"` with Ma
 57. Sign up for Brevo / MailerLite / Beehiiv and import subscribers for actual email sending
 
 *Next: test the login flow with Turbo / Troy, add more dog profiles as clients come in, and wire the monthly issue page with slot attributes too.*
+
+---
+
+## 19. Changes — late April 10 session 3 (login strip UX + subscribe-to-bottom)
+
+### Login strip — always visible, state-aware
+58. **Removed the × dismiss button.** The login strip now stays visible on every page, every state — by design, so visitors always have a clear way to toggle between personalized and generic views (especially useful for testing).
+59. **New placeholder copy**: "Enter your code for a personalized version" (was "Already subscribed?")
+60. **Input placeholder**: "your code, email, or username" (was "your username or email")
+61. **State-aware inner layout** via two wrapper divs `.dal-state-out` / `.dal-state-in` — CSS swaps between them based on `body.dal-personalized`:
+    - Logged out: `[🐾]  Enter your code for a personalized version: [input] [Unlock] [View generic info]`
+    - Logged in:  `[🐾]  Personalized for [username] — 🐕 [Dog name]  [View generic info]`
+62. **New "View generic info" reset button** — always visible, TEMPORARY testing button (remove when ready to ship). Calls `DAL.clearSubscriber()` which removes the localStorage entry, restores all `[data-dal-slot]` originals, re-runs `initPersonalizeButton()`. When pressed with no active subscriber, shows a friendly "Already viewing the generic version" message.
+63. **Updated `initPersonalizeButton`**: no longer hides the strip when logged in — only toggles the body class. Populates `.dal-login-username-txt` and `.dal-login-dog-txt` inside the strip when logged in so the user sees their status.
+
+### index.html — Subscribe section moved to bottom
+64. **Subscribe form removed from hero.** The hero now shows: eyebrow → title → byline → sub-copy → two CTAs (`Read this month →` linking to `#latest`, `Subscribe free` linking to `#subscribe` at the bottom).
+65. **New `.subscribe-bottom` section** added just before `</main>` with:
+    - Navy gradient background (matches site hero style)
+    - "Join the Newsletter" eyebrow + "Get Dogs & Llamas, free" headline
+    - Email input + Subscribe Free button (same form id + name so the existing JS handler still works)
+    - Privacy policy link
+    - Full responsive stacking on ≤640px
+66. **Hero `id="subscribe"` moved to the bottom section.** The nav "Subscribe" CTA and any `#subscribe` anchor now scrolls to the new bottom section. The hero got `id="top"` as a cleanup.
+67. **New `id="latest"`** added to the "Latest Issue" heading so the hero's first CTA scrolls there.
+68. **New `.btn-secondary` + `.hero-cta-row` CSS** added to index.html style block.
+69. Orphaned `.hero-form` / `.hero-note` CSS left in place as dead code (harmless; no elements reference it).
+
+### Dog profile display in the strip
+70. When logged in with a matched dog, the strip now shows: `Personalized for janedoe — 🐕 Turbo` — a concise always-visible confirmation that replaces the old in-nav badge pattern (the nav badge is still present as a fallback but visually redundant now).
+
+*All behavior tested end-to-end in a Node stub: `devLoginAs('troy')` + `clearSubscriber()` cycle works cleanly. CSS is injected as a single `<style>` tag so no per-page edits needed.*
