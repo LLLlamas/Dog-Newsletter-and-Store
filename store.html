@@ -285,6 +285,18 @@
     .pick-item:last-child { margin-bottom: 0; }
     .pick-item:hover { box-shadow: 0 6px 22px rgba(27,79,140,.16); }
 
+    /* Personalized pick — gold accent so it stands out */
+    .pick-item-personal {
+      border-left-color: var(--yellow);
+      background: linear-gradient(135deg, var(--yellow-pale) 0%, var(--surface) 60%);
+      box-shadow: 0 3px 12px rgba(212,160,23,.18);
+    }
+    .pick-item-personal .pick-item-dog { color: var(--yellow); }
+    .pick-item-personal .pick-item-thumb {
+      background: var(--yellow-pale);
+      border: 1px solid rgba(212,160,23,.3);
+    }
+
     .pick-item-thumb {
       flex-shrink: 0; width: 50px; height: 50px;
       border-radius: 6px; overflow: hidden;
@@ -1133,6 +1145,21 @@
 
       <div class="picks-inner" id="picks-inner">
 
+        <!-- ═══════════════════════════════════════════════════
+             PERSONALIZED PICK — only visible when logged in with a
+             matched dog profile. Content swaps via data-dal-slot.
+             ═══════════════════════════════════════════════════ -->
+        <div class="pick-item dal-dog-only pick-item-personal">
+          <div class="pick-item-thumb" aria-hidden="true">
+            <span data-dal-slot="emoji">&#128062;</span>
+          </div>
+          <div class="pick-item-info">
+            <span class="pick-item-dog" data-dal-slot="pick-label">Your pick</span>
+            <span class="pick-item-name" data-dal-slot="pick-name">Loading&hellip;</span>
+            <p class="pick-item-reason" data-dal-slot="pick-reason">Loading your personal pick&hellip;</p>
+          </div>
+        </div>
+
         <!-- ── PICK 1: Harley (no photo yet) ── -->
         <!-- To add photo: replace the emoji div with <img class="pick-item-thumb" src="./media/Harley.jpg" ...> -->
         <div class="pick-item">
@@ -1338,13 +1365,21 @@
     e.preventDefault();
     var email = document.getElementById('store-email').value.trim();
     if (!email) return;
-    if (typeof DAL !== 'undefined') {
-      var sub = DAL.handleSubscribe(email);
-      showToast('\uD83D\uDC3E Welcome, ' + sub.username + '! Your discount code: ' + sub.discountCode);
+    var form = this;
+    if (typeof DAL !== 'undefined' && DAL.handleSubscribe) {
+      showToast('Subscribing\u2026');
+      DAL.handleSubscribe(email)
+        .then(function (sub) {
+          showToast('\uD83D\uDC3E Welcome, ' + sub.username + '! Your code: ' + sub.discountCode);
+          form.reset();
+        })
+        .catch(function (err) {
+          showToast('Sorry \u2014 ' + (err.message || 'something went wrong'));
+        });
     } else {
       showToast('Thanks! You\u2019re subscribed. \uD83D\uDC36');
+      form.reset();
     }
-    this.reset();
   });
 
   /* ══ TOAST ══════════════════════════════════════════════════ */

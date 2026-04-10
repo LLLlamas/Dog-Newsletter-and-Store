@@ -391,6 +391,61 @@
       background: #d4ead8; border-color: var(--green-light);
     }
 
+    /* ── PERSONALIZED TIPS (logged-in subscribers only) ── */
+    .personal-tips {
+      margin-top: 40px;
+      padding: 32px 30px;
+      background: linear-gradient(135deg, #0A1E3D 0%, #1B4F8C 100%);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .personal-tips::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    .personal-tips > * { position: relative; }
+    .personal-tips .section-eyebrow {
+      color: var(--amber-light);
+    }
+    .personal-tips .section-title {
+      color: #fff; margin-bottom: 22px;
+    }
+    .personal-tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .personal-tip {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-sm);
+      padding: 18px 18px 18px 22px;
+      position: relative;
+    }
+    .personal-tip-num {
+      position: absolute; top: -10px; left: 14px;
+      font-family: var(--font-head);
+      font-size: 13px; font-weight: 600;
+      background: var(--amber);
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      letter-spacing: 1px;
+    }
+    .personal-tip p {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: rgba(255,255,255,.88);
+      line-height: 1.65;
+      margin: 6px 0 0;
+    }
+
     /* ── DOGS GRID ───────────────────────────────── */
     .dogs-grid {
       display: grid;
@@ -848,7 +903,7 @@
 
   <hr class="divider">
 
-  <!-- LATEST ISSUE -->
+  <!-- LATEST ISSUE — text swaps via data-dal-slot when logged in with a matching dog -->
   <div class="reveal">
     <p class="section-eyebrow">Latest Issue</p>
     <h2 class="section-title">April 2026</h2>
@@ -858,14 +913,14 @@
     <div class="issue-aside">
       <div>
         <p class="issue-aside-eyebrow">Dogs &amp; Llamas</p>
-        <h3 class="issue-aside-title">Spring openings + a tip for warmer-weather walks</h3>
+        <h3 class="issue-aside-title" data-dal-slot="issue-title">Spring openings + a tip for warmer-weather walks</h3>
       </div>
       <p class="issue-aside-date">April 2026 &bull; Issue 01</p>
     </div>
     <div class="issue-body">
-      <p>Spring spots are opening up for weekends and drop-ins through April into May. If you have travel or a busy stretch coming up, it's a good time to reach out early.</p>
-      <p>This month's tip: pavement heats fast in spring. The five-second hand test — if you can't hold the back of your hand on the sidewalk comfortably, it's too hot for paws.</p>
-      <p>Subscribers get first notice on newly opened spots before they're shared anywhere else.</p>
+      <p data-dal-slot="issue-body-1">Spring spots are opening up for weekends and drop-ins through April into May. If you have travel or a busy stretch coming up, it's a good time to reach out early.</p>
+      <p data-dal-slot="issue-body-2">This month's tip: pavement heats fast in spring. The five-second hand test — if you can't hold the back of your hand on the sidewalk comfortably, it's too hot for paws.</p>
+      <p data-dal-slot="issue-body-3">Subscribers get first notice on newly opened spots before they're shared anywhere else.</p>
       <a class="issue-read-link" href="monthly-issue-01.html">Read the full issue &rarr;</a>
     </div>
   </div>
@@ -874,6 +929,29 @@
     <li><a href="monthly-issue-01.html">April 2026 &rarr;</a></li>
     <!-- Add each month: <li><a href="monthly-issue-02.html">May 2026 &rarr;</a></li> -->
   </ul>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PERSONALIZED TIPS SECTION — only shows when logged in with a matched dog
+       Content slots populate from DAL.DOG_CONTENT[dogName] in dal-subscriber.js
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="dal-dog-only personal-tips reveal" aria-label="Personalized tips">
+    <p class="section-eyebrow" data-dal-slot="tip-eyebrow">Your Top Tips</p>
+    <h2 class="section-title" data-dal-slot="tip-title">This month's tips, just for you</h2>
+    <div class="personal-tips-grid">
+      <div class="personal-tip">
+        <span class="personal-tip-num">01</span>
+        <p data-dal-slot="tip-1">Loading your personal tip&hellip;</p>
+      </div>
+      <div class="personal-tip">
+        <span class="personal-tip-num">02</span>
+        <p data-dal-slot="tip-2">Loading your personal tip&hellip;</p>
+      </div>
+      <div class="personal-tip">
+        <span class="personal-tip-num">03</span>
+        <p data-dal-slot="tip-3">Loading your personal tip&hellip;</p>
+      </div>
+    </div>
+  </section>
 
   <hr class="divider">
 
@@ -1081,13 +1159,21 @@
     e.preventDefault();
     var email = document.getElementById('email-input').value.trim();
     if (!email) return;
-    if (typeof DAL !== 'undefined') {
-      var sub = DAL.handleSubscribe(email);
-      showToast('\uD83D\uDC3E Welcome, ' + sub.username + '! Your discount code: ' + sub.discountCode);
+    var form = this;
+    if (typeof DAL !== 'undefined' && DAL.handleSubscribe) {
+      showToast('Subscribing\u2026');
+      DAL.handleSubscribe(email)
+        .then(function (sub) {
+          showToast('\uD83D\uDC3E Welcome, ' + sub.username + '! Your code: ' + sub.discountCode);
+          form.reset();
+        })
+        .catch(function (err) {
+          showToast('Sorry \u2014 ' + (err.message || 'something went wrong'));
+        });
     } else {
       showToast('Thanks! You\u2019re subscribed. \uD83D\uDC36');
+      form.reset();
     }
-    this.reset();
   });
 
   /* ── Share button ────────────────────────────────────────── */

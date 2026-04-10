@@ -53,7 +53,8 @@ Six public pages:
 ├── dogsitter_newsletter_project_brief.md
 ├── chatgpt takeover 4-9-2026.md  ← Original handoff
 ├── chatgpt takeover 4-10-2026.md ← THIS FILE (latest)
-├── dal-subscriber.js             ← Shared subscriber/personalization system (NEW)
+├── dal-subscriber.js             ← Subscriber / login / personalization system v2.0
+├── supabase-schema.sql           ← Run this in Supabase SQL Editor to create tables + RPC + seed data
 └── media/
     ├── Turbo Outside.jpg         ← Hero main, store pick 2, dogs grid
     ├── Turbo sleeping.JPG        ← Gallery
@@ -385,48 +386,128 @@ Shared email styling:
 
 ---
 
-## 9. Subscriber & Personalization System (`dal-subscriber.js`)
+## 9. Subscriber, Login & Personalization (`dal-subscriber.js` v2.0)
 
 ### Overview
 
-A zero-backend localStorage-based subscriber system shipping in **v1 (April 2026)**. Supabase can replace localStorage in v2 for cross-device sync.
+A Supabase-backed subscriber system with:
+1. **Subscribe** — derives username from email prefix, saves to Supabase + localStorage
+2. **Login / Unlock** — auto-injected login strip below every nav lets returning visitors re-enter their email or username to unlock personalized view
+3. **Content personalization** — elements with `data-dal-slot="key"` are text-swapped with dog-specific content from the built-in `DOG_CONTENT` object
+4. **Dev helper** — `DAL.devLoginAs('turbo')` in console for local testing without hitting Supabase
 
-### How it works
+### Supabase setup (one-time)
 
-1. User enters email in any subscribe form → calls `DAL.handleSubscribe(email)`
-2. **Username** = email prefix before `@`, stripped to `[a-z0-9]` and lowercased
-   - `jane.doe@gmail.com` → `janedoe`
-3. **Discount code** = username uppercased (e.g., `JANEDOE`) — Lorenzo & Catalina apply it manually on Rover
-4. Data stored in `localStorage['dal_subscriber']` as JSON: `{ email, username, discountCode, dogName, subscribedAt }`
-5. On every page load, `DAL.initPersonalizeButton()` reads localStorage and shows/hides the `🐾 [username]` nav button
-6. Clicking the nav button toggles `.dal-personalized` on `<body>` and `.dal-active` on the button
-7. Elements with class `.dal-personal-only` are shown/hidden by the toggle
-8. `store.html` has a `.dal-welcome-bar` that populates with username + discount code when personalized
+1. Dashboard: https://supabase.com/dashboard/project/nizvndjuzyblsewobkru
+2. Settings → API → copy **Project URL** and **anon public** key
+3. Paste the anon key into `CONFIG.supabaseAnonKey` in `dal-subscriber.js`
+4. SQL Editor → New Query → paste contents of `supabase-schema.sql` → Run
+5. Two seeded rows exist immediately: Turbo (`lorenzoleollamas@gmail.com`) and Troy (`ltl924@gmail.com`)
 
-### Mailchimp setup
+### Database schema
 
-In `dal-subscriber.js`, set:
+One table `public.subscribers`:
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | uuid | primary key |
+| `email` | text | unique, lowercased |
+| `username` | text | unique, derived from email prefix |
+| `dog_name` | text | optional; "Turbo", "Troy", etc. |
+| `dog_breed` | text | optional |
+| `dog_size` | text | optional |
+| `dog_traits` | text[] | optional array |
+| `dog_emoji` | text | optional |
+| `created_at` | timestamptz | auto |
+
+Two Postgres RPC functions exposed to anon:
+- `dal_subscribe(p_email text)` — inserts or returns existing row
+- `dal_lookup(p_key text)` — finds a row by email OR username
+
+RLS is enabled with **zero policies on the table itself**, so the anon key can only call the two RPCs. No direct SELECT on the subscribers list is possible from the client.
+
+### Built-in dog profiles
+
+In `dal-subscriber.js`:
+
 ```javascript
-var CONFIG = {
-  mailchimpUrl: 'https://yoursite.us1.list-manage.com/subscribe/post?u=XXXX&id=XXXX'
+var DOG_CONTENT = {
+  turbo: {
+    name: 'Turbo',
+    'hero-title': "Turbo's Corner",
+    'issue-title': "April 2026 — Agility & Food Puzzles",
+    'tip-1': "Turbo is food-motivated — use freeze-dried liver...",
+    'pick-name': "Chuckit! Sport 26L Launcher",
+    /* ...more slots */
+  },
+  troy: { /* husky-specific content */ }
 };
 ```
-Get this URL from Mailchimp → Audience → Signup forms → Embedded forms → copy the `form action` URL.
 
-### Upgrading to Supabase (v2)
+To add a new dog:
+1. Add an entry to `DOG_CONTENT`
+2. Run `insert into public.subscribers ...` in Supabase SQL Editor with matching `dog_name`
+3. The site picks it up automatically next page load
 
-1. Create a `subscribers` table: `{ id, email, username, dog_name, subscribed_at }`
-2. Add Supabase JS SDK: `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>`
-3. Replace `safeSet/safeGet` calls in `dal-subscriber.js` with `supabase.from('subscribers').insert/select`
-4. For personalized picks: add a `dog_profiles` table mapped to `username` and query picks accordingly
+### Client API
 
-### CSS hooks
+```javascript
+DAL.handleSubscribe(email)      // Promise → creates/returns subscriber
+DAL.loginWithKey(emailOrUser)   // Promise → finds existing subscriber
+DAL.getSubscriber()             // sync → returns cached subscriber or null
+DAL.clearSubscriber()           // sync → logout (clears localStorage + restores content)
+DAL.devLoginAs('turbo'|'troy')  // sync → local test helper (no Supabase needed)
+DAL.initPersonalizeButton()     // sync → re-applies nav button state
+DAL.onPersonalizeBtnClick()     // toggle personalized view on/off
+DAL.personalizeContent()        // sync → swaps [data-dal-slot] elements
+```
+
+### Content slot system
+
+Any element with `data-dal-slot="key"` gets its `textContent` replaced when a matched dog profile is active. Original content is preserved in `data-dal-original` and restored on logout/toggle-off.
+
+Currently wired slots:
+- **index.html**: `issue-title`, `issue-body-1/2/3`, `tip-eyebrow`, `tip-title`, `tip-1/2/3`
+- **store.html**: `emoji`, `pick-label`, `pick-name`, `pick-reason` (in personalized pick card)
+
+### CSS visibility hooks (auto-injected by the script)
 
 ```css
-/* Always available for personalization: */
+.dal-personal-only { display: none; }
 body.dal-personalized .dal-personal-only { display: block; }
-button.dal-personalize-btn.dal-active { background: rgba(212,160,23,.38); color: #fff; }
+
+.dal-dog-only { display: none; }
+body.dal-personalized.dal-has-dog .dal-dog-only { display: block; }
 ```
+
+- `.dal-personal-only` — shows for **any** logged-in subscriber (e.g., the store welcome bar)
+- `.dal-dog-only` — shows **only** when the subscriber has a matched dog profile (e.g., Turbo's tips section, personalized pick card)
+
+### Login strip (auto-injected below nav on every page)
+
+The script auto-injects a blue strip between `<nav>` and the rest of the page:
+
+```
+🐾 Already subscribed?  [ your username or email ]  [ Unlock ]  ×
+```
+
+- On submit: calls `DAL.loginWithKey(key)` → on success, hides the strip, shows the personalize button, populates content slots
+- Dismissible per-session via the × button
+- Hides automatically when the user is already logged in
+
+### Email sending (Mailchimp is no longer free)
+
+Recommended free alternatives for actually sending newsletters:
+
+| Service | Free tier | Best for |
+|---|---|---|
+| **Brevo** (Sendinblue) | 300 emails/day, **unlimited contacts** | Best overall — has API + embedded forms + transactional |
+| **MailerLite** | 1,000 subs, 12,000 emails/mo | Prettiest drag-drop editor |
+| **Beehiiv** | 2,500 subs free | Creator-focused, great analytics |
+| **EmailOctopus** | 2,500 subs, 10k emails/mo | Cheapest paid upgrade |
+| **Buttondown** | 100 subs free | Developer-friendly, Markdown-based |
+
+Recommended: **Brevo**. Export subscribers CSV from Supabase → import into Brevo → send using your blue/yellow email templates.
 
 ---
 
@@ -436,7 +517,7 @@ Honor-based. The username-derived code is automatically generated; `SHOP10` is s
 
 | Code | Trigger | Discount |
 |---|---|---|
-| `[username]` | Subscribes to newsletter (auto-generated from email) | Personal code — apply on Rover at booking |
+| `[USERNAME]` | Subscribes to newsletter (auto-generated from email) | Personal code — apply on Rover at booking |
 | `SHOP10` | Purchases via store affiliate link | 10% off next sit (new + returning) |
 
 ---
@@ -488,7 +569,9 @@ All product links use direct Amazon URLs with real ASINs. Replace with personal 
 - [ ] Change schedule admin PIN from `1234`
 - [ ] Replace testimonial placeholders with real client quotes
 - [ ] Convert `Ace.DNG`, `Mango Outside.DNG`, `Teddy.DNG` to JPG
-- [ ] **Connect Mailchimp**: set `CONFIG.mailchimpUrl` in `dal-subscriber.js` (see §9)
+- [ ] **Run `supabase-schema.sql`** in Supabase SQL Editor
+- [ ] **Paste Supabase anon key** into `dal-subscriber.js` → `CONFIG.supabaseAnonKey`
+- [ ] Sign up for **Brevo** (or alternative) and import any existing subscribers
 - [ ] Replace Amazon URLs with personal amzn.to links
 - [ ] Add couple portrait for about page
 - [ ] Confirm Catalina's credential status and adjust badges if needed
@@ -624,4 +707,67 @@ Subscribe forms currently `preventDefault` + toast. Replace `action="#"` with Ma
 36. Both subscribe forms now call `DAL.handleSubscribe(email)` and show a toast: *"🐾 Welcome, [username]! Your discount code: [CODE]"*
 
 *All 6 pages updated. `dal-subscriber.js` created. Handoff doc renumbered (sections 9–17).*
-*Next: connect Mailchimp URL in dal-subscriber.js, then optionally add Supabase for cross-device sync.*
+
+---
+
+## 18. Changes — late April 10 session 2 (Supabase + login + content personalization)
+
+### Email service switch
+37. **Mailchimp → Supabase + Brevo.** Mailchimp no longer offers a free tier. `dal-subscriber.js` was rebuilt around Supabase for data, with Brevo (or MailerLite / Beehiiv) recommended for actually sending newsletters. Mailchimp iframe code removed.
+
+### Supabase integration
+38. **`supabase-schema.sql` created** — single SQL file you paste into Supabase → SQL Editor → Run. Creates:
+    - `public.subscribers` table (email, username, dog profile columns)
+    - `dal_subscribe(email)` RPC function — public insert-or-return
+    - `dal_lookup(key)` RPC function — public lookup by email or username
+    - Row-level security: RLS enabled, no policies → anon has zero direct table access
+    - Seeded rows: Turbo (`lorenzoleollamas@gmail.com`) and Troy (`ltl924@gmail.com`)
+39. **`dal-subscriber.js` v2.0** — full rewrite:
+    - Added `rpc()` helper (fetch-based, no SDK bloat)
+    - `handleSubscribe()` now calls Supabase `dal_subscribe` RPC, falls back to localStorage-only if unavailable
+    - New `DAL.loginWithKey(email|username)` → calls `dal_lookup` RPC
+    - `normalizeRow()` maps snake_case Supabase rows to camelCase JS objects
+    - Supabase project URL pre-filled; user only needs to paste the anon key
+
+### Login / Unlock strip (all 6 pages, auto-injected)
+40. A pale blue strip appears below every page's nav when NOT logged in:
+    > 🐾 Already subscribed?  [your username or email]  [Unlock]  ×
+41. Fully auto-injected by `dal-subscriber.js` — no HTML changes needed on individual pages
+42. On submit → calls `DAL.loginWithKey()` → Supabase RPC → if matched, hides strip, shows personalize button, swaps content slots
+43. Dismissible per-session via ×; CSS also auto-injected as a `<style>` tag into `<head>`
+
+### Content personalization via `[data-dal-slot]`
+44. New text-swap system: any element with `data-dal-slot="key"` gets replaced with the matching value from `DAL.DOG_CONTENT[dogName]`
+45. Original content preserved in `data-dal-original` attribute → restored on logout/toggle-off
+46. Two built-in dog profiles shipped:
+    - **Turbo** (mini Australian Shepherd): food, agility, outdoors, barking
+    - **Troy** (husky): endurance, blow-coat, cold-weather, double-coat
+47. Each profile defines ~12 slot values: hero-title, issue-title, 3× issue-body, tip-eyebrow, tip-title, 3× tip, pick-label, pick-name, pick-reason, emoji
+
+### index.html — personalized content slots
+48. **Latest Issue card** — title + 3 body paragraphs now carry `data-dal-slot` attributes; swap to dog-specific content when logged in
+49. **New "Personal Tips" section** added between Latest Issue and Recent Dogs grid
+    - Class `.dal-dog-only` — completely hidden unless the subscriber has a matched dog profile
+    - Dark navy gradient card with 3 numbered tip boxes
+    - Each tip box has a `data-dal-slot="tip-1/2/3"` paragraph
+
+### store.html — personalized pick card
+50. New `.pick-item.pick-item-personal.dal-dog-only` card at the top of the picks sidebar
+    - Gold-accented (yellow left border + gradient background) to distinguish from generic picks
+    - Content slots: emoji, pick-label, pick-name, pick-reason
+    - Only visible when a matched dog profile is active
+
+### Dev helper
+51. `DAL.devLoginAs('turbo' | 'troy')` — run in browser console to activate a dog profile locally for testing, even before Supabase is configured. Useful for previewing what subscribers will see.
+
+### CSS scope helpers (injected with login strip styles)
+52. `.dal-personal-only` → shown for any logged-in subscriber
+53. `.dal-dog-only` → shown only when `body.dal-has-dog` (matched profile)
+54. `body[data-dal-dog="turbo"]` and `body[data-dal-dog="troy"]` attributes set for future CSS-only dog-specific styling
+
+### What still needs a human
+55. Paste Supabase anon key into `CONFIG.supabaseAnonKey`
+56. Run `supabase-schema.sql` in the Supabase SQL Editor
+57. Sign up for Brevo / MailerLite / Beehiiv and import subscribers for actual email sending
+
+*Next: test the login flow with Turbo / Troy, add more dog profiles as clients come in, and wire the monthly issue page with slot attributes too.*
