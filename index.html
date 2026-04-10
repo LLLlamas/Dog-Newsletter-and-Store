@@ -458,21 +458,60 @@
       overflow: hidden;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border);
-      transition: box-shadow .18s, transform .18s;
+      transition: transform .45s cubic-bezier(.2,.9,.3,1.05),
+                  box-shadow .45s ease,
+                  border-color .35s ease;
       cursor: default;
+      position: relative;
+      isolation: isolate;
     }
-    .dog-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px) rotate(.5deg); }
-    .dog-card-photo {
+    /* Photo wrapper handles the zoom — needs overflow:hidden */
+    .dog-card-photo-wrap {
+      position: relative;
       width: 100%; height: 184px;
+      overflow: hidden;
+      background: var(--bg-2);
+    }
+    /* Diagonal "shine" sweep on hover */
+    .dog-card-photo-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(115deg,
+                    rgba(255,255,255,0) 28%,
+                    rgba(255,255,255,.35) 50%,
+                    rgba(255,255,255,0) 72%);
+      transform: translateX(-120%);
+      transition: transform .9s cubic-bezier(.2,.85,.25,1);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .dog-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--yellow-light);
+      box-shadow:
+        0 18px 38px rgba(27,79,140,.22),
+        0 0 0 2px rgba(212,160,23,.55);
+    }
+    .dog-card:hover .dog-card-photo-wrap::after { transform: translateX(120%); }
+    .dog-card-photo {
+      width: 100%; height: 100%;
       object-fit: cover; object-position: center top;
       display: block;
+      transition: transform .55s cubic-bezier(.2,.85,.25,1),
+                  filter .45s ease;
+    }
+    .dog-card:hover .dog-card-photo {
+      transform: scale(1.09);
+      filter: saturate(1.15) contrast(1.04);
     }
     .dog-card-placeholder {
-      width: 100%; height: 184px;
+      width: 100%; height: 100%;
       background: var(--bg-2);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 8px;
+      transition: transform .55s cubic-bezier(.2,.85,.25,1);
     }
+    .dog-card:hover .dog-card-placeholder { transform: scale(1.06); }
     .ph-icon { font-size: 36px; opacity: .5; }
     .ph-note { font-family: var(--font-body); font-size: 11px; color: var(--text-3); }
     .dog-card-footer { padding: 11px 14px 13px; }
@@ -786,9 +825,7 @@
       animation: dal-pulse 2.4s ease-out 2;
     }
     .dal-pop { animation: dal-pop .42s cubic-bezier(.34,1.56,.64,1); }
-    /* dog-card hover: gentle paw lift */
-    .dog-card:hover .dog-card-photo,
-    .dog-card:hover .ph-icon { animation: dal-paw-walk .6s ease-in-out; }
+    /* dog-card hover effect lives on .dog-card-photo-wrap (zoom + shine sweep). */
     /* Perk icon bounce on hover */
     .perk-item:hover .perk-icon { animation: dal-paw-walk .55s ease-in-out; }
     /* Coupon code subtle wiggle on hover */
@@ -1043,9 +1080,11 @@
     <div class="dogs-grid">
 
       <div class="dog-card reveal reveal-d1">
-        <img src="./media/Turbo Outside.jpg"
-             alt="Turbo the merle Australian Shepherd playing outside"
-             class="dog-card-photo" loading="lazy" width="148" height="184">
+        <div class="dog-card-photo-wrap">
+          <img src="./media/Turbo Outside.jpg"
+               alt="Turbo the merle Australian Shepherd playing outside"
+               class="dog-card-photo" loading="lazy" width="148" height="184">
+        </div>
         <div class="dog-card-footer">
           <p class="dog-card-name">Turbo</p>
           <p class="dog-card-note">Australian Shepherd</p>
@@ -1053,9 +1092,11 @@
       </div>
 
       <div class="dog-card reveal reveal-d2">
-        <img src="./media/Troy.jpg"
-             alt="Troy the Husky with striking blue eyes"
-             class="dog-card-photo" loading="lazy" width="148" height="184">
+        <div class="dog-card-photo-wrap">
+          <img src="./media/Troy.jpg"
+               alt="Troy the Husky with striking blue eyes"
+               class="dog-card-photo" loading="lazy" width="148" height="184">
+        </div>
         <div class="dog-card-footer">
           <p class="dog-card-name">Troy</p>
           <p class="dog-card-note">Husky</p>
@@ -1063,9 +1104,11 @@
       </div>
 
       <div class="dog-card reveal reveal-d4">
-        <img src="./media/Dakota and me.JPG"
-             alt="Dakota the Sheltie with Lorenzo"
-             class="dog-card-photo" loading="lazy" width="148" height="184">
+        <div class="dog-card-photo-wrap">
+          <img src="./media/Dakota and me.JPG"
+               alt="Dakota the Sheltie with Lorenzo"
+               class="dog-card-photo" loading="lazy" width="148" height="184">
+        </div>
         <div class="dog-card-footer">
           <p class="dog-card-name">Dakota</p>
           <p class="dog-card-note">Sheltie</p>
@@ -1073,9 +1116,11 @@
       </div>
 
       <div class="dog-card reveal reveal-d1">
-        <div class="dog-card-placeholder" aria-hidden="true">
-          <span class="ph-icon">&#128054;</span>
-          <span class="ph-note">Photo coming soon</span>
+        <div class="dog-card-photo-wrap">
+          <div class="dog-card-placeholder" aria-hidden="true">
+            <span class="ph-icon">&#128054;</span>
+            <span class="ph-note">Photo coming soon</span>
+          </div>
         </div>
         <div class="dog-card-footer">
           <p class="dog-card-name">Ace</p>
@@ -1083,9 +1128,11 @@
       </div>
 
       <div class="dog-card reveal reveal-d2">
-        <div class="dog-card-placeholder" aria-hidden="true">
-          <span class="ph-icon">&#128054;</span>
-          <span class="ph-note">Photo coming soon</span>
+        <div class="dog-card-photo-wrap">
+          <div class="dog-card-placeholder" aria-hidden="true">
+            <span class="ph-icon">&#128054;</span>
+            <span class="ph-note">Photo coming soon</span>
+          </div>
         </div>
         <div class="dog-card-footer">
           <p class="dog-card-name">Mango</p>
@@ -1093,9 +1140,11 @@
       </div>
 
       <div class="dog-card reveal reveal-d3">
-        <div class="dog-card-placeholder" aria-hidden="true">
-          <span class="ph-icon">&#128054;</span>
-          <span class="ph-note">Photo coming soon</span>
+        <div class="dog-card-photo-wrap">
+          <div class="dog-card-placeholder" aria-hidden="true">
+            <span class="ph-icon">&#128054;</span>
+            <span class="ph-note">Photo coming soon</span>
+          </div>
         </div>
         <div class="dog-card-footer">
           <p class="dog-card-name">Harley</p>

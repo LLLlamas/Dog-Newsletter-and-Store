@@ -201,13 +201,27 @@ on conflict (email) do update set
 create table if not exists public.availability (
   day        date primary key,
   status     text not null check (status in ('available','booked','unavailable')),
+  dog_name   text,
+  drop_off   time,
+  pick_up    time,
+  notes      text,
   updated_at timestamptz default now()
 );
 
-comment on table public.availability is 'Owner-managed availability calendar — public read, PIN-gated write';
+-- If you ran an earlier version of this file, add the new columns:
+alter table public.availability add column if not exists dog_name text;
+alter table public.availability add column if not exists drop_off time;
+alter table public.availability add column if not exists pick_up  time;
+alter table public.availability add column if not exists notes    text;
+
+comment on table public.availability is 'Owner-managed availability calendar — public read, PIN-gated write. Booking days carry dog_name + drop_off + pick_up.';
 
 alter table public.availability enable row level security;
 -- Zero policies on the table itself — all access via SECURITY DEFINER RPCs.
+
+-- Drop older versions of the RPCs so the new signatures replace cleanly
+drop function if exists public.dal_get_availability(date, date);
+drop function if exists public.dal_set_availability(text, date, text);
 
 -- ── 7a. READ FUNCTION ──────────────────────────────────────────────
 -- Returns all availability rows in [p_from, p_to]. Anon-callable.
@@ -215,13 +229,17 @@ create or replace function public.dal_get_availability(p_from date, p_to date)
 returns table (
   day        date,
   status     text,
+  dog_name   text,
+  drop_off   time,
+  pick_up    time,
+  notes      text,
   updated_at timestamptz
 )
 language sql
 security definer
 set search_path = public
 as $$
-  select a.day, a.status, a.updated_at
+  select a.day, a.status, a.dog_name, a.drop_off, a.pick_up, a.notes, a.updated_at
   from public.availability a
   where a.day between p_from and p_to;
 $$;
@@ -232,9 +250,13 @@ comment on function public.dal_get_availability(date, date) is 'Public read of t
 -- Upserts a single day. Requires the admin PIN.
 -- ⚠ Change '1234' to your real PIN before applying!
 create or replace function public.dal_set_availability(
-  p_pin    text,
-  p_date   date,
-  p_status text
+  p_pin      text,
+  p_date     date,
+  p_status   text,
+  p_dog_name text default null,
+  p_drop_off time default null,
+  p_pick_up  time default null,
+  p_notes    text default null
 )
 returns public.availability
 language plpgsql
@@ -252,10 +274,14 @@ begin
     raise exception 'Invalid status: %', p_status;
   end if;
 
-  insert into public.availability (day, status, updated_at)
-  values (p_date, p_status, now())
+  insert into public.availability (day, status, dog_name, drop_off, pick_up, notes, updated_at)
+  values (p_date, p_status, p_dog_name, p_drop_off, p_pick_up, p_notes, now())
   on conflict (day) do update
     set status     = excluded.status,
+        dog_name   = excluded.dog_name,
+        drop_off   = excluded.drop_off,
+        pick_up    = excluded.pick_up,
+        notes      = excluded.notes,
         updated_at = now()
   returning * into v_row;
 
@@ -263,7 +289,7 @@ begin
 end;
 $$;
 
-comment on function public.dal_set_availability(text, date, text) is 'Owner write — requires admin PIN. Upserts a single day.';
+comment on function public.dal_set_availability(text, date, text, text, time, time, text) is 'Owner write — requires admin PIN. Upserts a single day with optional booking details.';
 
 -- ── 7c. PIN VERIFY (used by client to validate before showing edit UI) ─
 create or replace function public.dal_verify_admin_pin(p_pin text)
@@ -282,10 +308,10 @@ $$;
 comment on function public.dal_verify_admin_pin(text) is 'Returns true if the supplied PIN matches the owner PIN';
 
 -- ── 7d. GRANTS ─────────────────────────────────────────────────────
-revoke all   on table public.availability                                from anon, authenticated;
-grant  execute on function public.dal_get_availability(date, date)       to   anon, authenticated;
-grant  execute on function public.dal_set_availability(text, date, text) to   anon, authenticated;
-grant  execute on function public.dal_verify_admin_pin(text)             to   anon, authenticated;
+revoke all   on table public.availability                                                       from anon, authenticated;
+grant  execute on function public.dal_get_availability(date, date)                              to   anon, authenticated;
+grant  execute on function public.dal_set_availability(text, date, text, text, time, time, text) to   anon, authenticated;
+grant  execute on function public.dal_verify_admin_pin(text)                                    to   anon, authenticated;
 
 
 -- ═══════════════════════════════════════════════════════════════════

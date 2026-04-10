@@ -153,10 +153,9 @@
     .legend-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 13px; color: var(--text-2); }
     .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
     .legend-dot.available   { background: var(--blue); }
-    .legend-dot.booked      { background: #E8EAF4; border: 1px solid var(--border); }
-    .legend-dot.unavailable { background: var(--bg-2); border: 1px solid var(--border); }
-    .legend-dot.today       { background: var(--yellow); }
-    .legend-dot.past        { background: var(--bg-2); border: 1px solid var(--border); }
+    .legend-dot.boarding    { background: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%); }
+    .legend-dot.today       { background: var(--yellow); border: 2px solid var(--yellow); box-shadow: 0 0 0 2px #fff inset; }
+    .legend-dot.past        { background: #B8C0D2; }
 
     /* ── CALENDAR CONTAINER ──────────────────────── */
     .calendar-months { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
@@ -190,11 +189,26 @@
       position: relative;
     }
     .cal-day.empty { pointer-events: none; }
-    .cal-day.past  { color: var(--text-3); background: transparent; }
+    .cal-day.past  { color: #5A6378; background: #B8C0D2; cursor: not-allowed; }
     .cal-day.available { background: var(--blue); color: #fff; font-weight: 600; cursor: pointer; }
     .cal-day.available:hover { transform: scale(1.12); }
-    .cal-day.booked { background: #E8EAF4; color: var(--text-3); text-decoration: line-through; cursor: not-allowed; }
-    .cal-day.unavailable { background: var(--bg-2); color: var(--border); cursor: not-allowed; }
+    /* Booked-for-boarding: gold accent so it pops next to blue available days */
+    .cal-day.booked {
+      background: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%);
+      color: #fff; font-weight: 700; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(180,132,15,.32);
+    }
+    .cal-day.booked::before {
+      content: '\1F436'; /* dog face */
+      position: absolute; top: -4px; right: -4px;
+      font-size: 10px;
+      background: #fff; border-radius: 50%;
+      width: 15px; height: 15px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,.18);
+      z-index: 1;
+    }
+    .cal-day.unavailable { background: var(--bg-2); color: var(--border); cursor: pointer; }
     .cal-day.today-ring::after {
       content: ''; position: absolute; inset: -2px;
       border: 2px solid var(--yellow); border-radius: 50%;
@@ -261,6 +275,19 @@
     .btn-modal-ok:hover { background: var(--blue-mid); }
     .modal-error { font-family: var(--font-body); font-size: 12px; color: #c0392b; margin: -6px 0 10px; display: none; }
     .modal-error.show { display: block; }
+
+    /* Booking modal extras */
+    .booking-label {
+      display: block; font-family: var(--font-body); font-size: 11px;
+      font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--blue); margin: 6px 0 4px;
+    }
+    .booking-time-row { display: flex; gap: 10px; }
+    .booking-time-row > div { flex: 1; }
+    .booking-time-row input[type="time"] { margin-bottom: 4px; }
+    #booking-modal .modal { max-width: 380px; }
+    #booking-modal .modal h3 { margin-bottom: 4px; }
+    #booking-modal .modal p { margin-bottom: 14px; }
 
     .admin-instructions {
       background: var(--yellow-pale); border: 1px solid #f0d580; border-radius: var(--radius-md);
@@ -415,7 +442,7 @@
 
 <!-- ADMIN MODE BANNER -->
 <div class="admin-banner" id="admin-banner">
-  &#9998; Admin Mode — Click a date to mark it Available, then again to mark it Booked. Changes save to Supabase.
+  &#9998; Admin Mode — Click grey to make Available, click Available to add a Boarding (dog + times). Saves to Supabase.
 </div>
 
 <!-- ── NAV ──────────────────────────────────────────── -->
@@ -453,7 +480,7 @@
 
   <!-- ADMIN INSTRUCTIONS (only visible in admin mode) -->
   <div class="admin-instructions" id="admin-instructions">
-    <p><strong>Admin mode is active.</strong> Click any future date to cycle: Unavailable &rarr; Available &rarr; Booked &rarr; Unavailable.</p>
+    <p><strong>Admin mode is active.</strong> Click a grey day to mark it <strong>Available</strong>. Click an available day to enter dog name + drop-off / pick-up times and turn it into a <strong>Booking</strong>. Click a booking to clear it.</p>
     <p>Changes sync to Supabase and are visible to everyone immediately.</p>
     <button class="btn-admin-exit" id="exit-admin-btn">Exit admin mode</button>
   </div>
@@ -463,8 +490,7 @@
   <h2 class="section-title">Open Dates</h2>
   <div class="legend">
     <div class="legend-item"><div class="legend-dot available"></div> Available</div>
-    <div class="legend-item"><div class="legend-dot booked"></div> Booked</div>
-    <div class="legend-item"><div class="legend-dot unavailable"></div> Unavailable</div>
+    <div class="legend-item"><div class="legend-dot boarding"></div> Booked for boarding</div>
     <div class="legend-item"><div class="legend-dot today"></div> Today</div>
     <div class="legend-item"><div class="legend-dot past"></div> Past</div>
   </div>
@@ -541,6 +567,35 @@
   </div>
 </div>
 
+<!-- BOOKING MODAL — captures dog name, drop-off, pick-up -->
+<div class="modal-overlay" id="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
+  <div class="modal">
+    <h3 id="booking-modal-title">Mark as Boarding</h3>
+    <p id="booking-modal-sub">Enter the dog and timing details.</p>
+
+    <label class="booking-label" for="booking-dog">Dog's name</label>
+    <input type="text" id="booking-dog" placeholder="e.g. Turbo" maxlength="40" autocomplete="off">
+
+    <div class="booking-time-row">
+      <div>
+        <label class="booking-label" for="booking-dropoff">Drop-off</label>
+        <input type="time" id="booking-dropoff">
+      </div>
+      <div>
+        <label class="booking-label" for="booking-pickup">Pick-up</label>
+        <input type="time" id="booking-pickup">
+      </div>
+    </div>
+
+    <p class="modal-error" id="booking-error">Please enter at least the dog's name.</p>
+
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" id="booking-cancel-btn">Cancel</button>
+      <button class="btn-modal-ok" id="booking-save-btn">Save booking</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ════════════════════════════════════════════════════════
    DOGS & LLAMAS — SCHEDULE PAGE JS
@@ -575,21 +630,35 @@
   }
   function saveSchedule(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
 
-  /* Default state for unset future days = 'unavailable'.
-     Lorenzo & Catalina mark days available by clicking them in admin mode. */
-  function getStatus(key) {
-    if (isPast(key)) return 'past';
-    return getSchedule()[key] || 'unavailable';
+  /* Each schedule value is now an OBJECT:
+       { status: 'available'|'booked'|'unavailable',
+         dogName: string|null,
+         dropOff: 'HH:MM'|null,
+         pickUp:  'HH:MM'|null }
+     Older string-shaped entries are auto-migrated on read. */
+  function normalizeEntry(v) {
+    if (!v) return { status: 'unavailable', dogName: null, dropOff: null, pickUp: null };
+    if (typeof v === 'string') return { status: v, dogName: null, dropOff: null, pickUp: null };
+    return {
+      status:  v.status  || 'unavailable',
+      dogName: v.dogName || null,
+      dropOff: v.dropOff || null,
+      pickUp:  v.pickUp  || null
+    };
   }
 
-  /* Cycle order starts from grey: unavailable → available → booked → unavailable */
-  function cycleStatus(key) {
+  function getEntry(key) {
+    if (isPast(key)) return { status: 'past', dogName: null, dropOff: null, pickUp: null };
+    return normalizeEntry(getSchedule()[key]);
+  }
+
+  function getStatus(key) { return getEntry(key).status; }
+
+  function setEntry(key, entry) {
     var s = getSchedule();
-    var cur = s[key] || 'unavailable';
-    var next = { unavailable: 'available', available: 'booked', booked: 'unavailable' };
-    s[key] = next[cur];
+    s[key] = entry;
     saveSchedule(s);
-    return s[key];
+    return entry;
   }
 
   /* ── Cloud sync (Supabase) ─────────────────── */
@@ -606,6 +675,12 @@
     };
   }
 
+  /* Strip seconds from HH:MM:SS Postgres time → 'HH:MM' for the input field */
+  function trimTime(t) {
+    if (!t) return null;
+    return String(t).slice(0, 5);
+  }
+
   function cloudFetchAvailability() {
     var s = supa();
     if (!s) return Promise.resolve(false);
@@ -620,7 +695,14 @@
       if (!rows) return false;
       var map = getSchedule();
       /* Replace cloud-tracked dates from the server (cloud is authoritative) */
-      rows.forEach(function (row) { map[row.day] = row.status; });
+      rows.forEach(function (row) {
+        map[row.day] = {
+          status:  row.status,
+          dogName: row.dog_name || null,
+          dropOff: trimTime(row.drop_off),
+          pickUp:  trimTime(row.pick_up)
+        };
+      });
       saveSchedule(map);
       return true;
     }).catch(function (err) {
@@ -629,13 +711,20 @@
     });
   }
 
-  function cloudWriteAvailability(key, status) {
+  function cloudWriteAvailability(key, entry) {
     var s = supa();
     if (!s || !ADMIN_PIN_MEM) return Promise.resolve(false);
     return fetch(s.url + '/rest/v1/rpc/dal_set_availability', {
       method:  'POST',
       headers: supaHeaders(s),
-      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_date: key, p_status: status })
+      body: JSON.stringify({
+        p_pin:      ADMIN_PIN_MEM,
+        p_date:     key,
+        p_status:   entry.status,
+        p_dog_name: entry.dogName || null,
+        p_drop_off: entry.dropOff || null,
+        p_pick_up:  entry.pickUp  || null
+      })
     }).then(function (r) { return r.ok; })
       .catch(function () { return false; });
   }
@@ -705,12 +794,9 @@
       (function(d) {
         var key = toKey(year, month, d);
         var cell = document.createElement('div');
-        var status = getStatus(key);
-        cell.className = 'cal-day ' + status;
-        if (isToday(key)) cell.classList.add('today-ring');
+        applyCellState(cell, key);
         cell.textContent = d;
         cell.setAttribute('data-key', key);
-        cell.setAttribute('title', status === 'available' ? 'Available' : status === 'booked' ? 'Booked' : status === 'past' ? 'Past' : 'Unavailable');
 
         cell.addEventListener('click', function() {
           /* Bounce feedback on every click (even view-only) */
@@ -723,19 +809,20 @@
           }
           if (!document.body.classList.contains('admin-mode')) return;
           if (isPast(key)) return;
-          var newStatus = cycleStatus(key);
-          cell.className = 'cal-day ' + newStatus;
-          if (isToday(key)) cell.classList.add('today-ring');
-          cell.setAttribute('title', newStatus);
 
-          /* Push to cloud — non-blocking. Falls back to local-only if offline. */
-          cloudWriteAvailability(key, newStatus).then(function (ok) {
-            if (ok) {
-              showToast('Saved: ' + key + ' \u2192 ' + newStatus);
-            } else {
-              showToast('\u26A0 Saved locally only — cloud sync failed');
+          var entry = getEntry(key);
+          if (entry.status === 'unavailable') {
+            /* unavailable → available (no modal) */
+            commitEntry(key, cell, { status: 'available', dogName: null, dropOff: null, pickUp: null });
+          } else if (entry.status === 'available') {
+            /* available → open booking modal to enter dog details */
+            openBookingModal(key, cell, entry);
+          } else if (entry.status === 'booked') {
+            /* booked → click to clear back to unavailable */
+            if (confirm('Clear the booking for ' + key + '?')) {
+              commitEntry(key, cell, { status: 'unavailable', dogName: null, dropOff: null, pickUp: null });
             }
-          });
+          }
         });
         grid.appendChild(cell);
       }(day));
@@ -744,6 +831,101 @@
     wrap.appendChild(grid);
     return wrap;
   }
+
+  /* ── Cell state + commit helpers ────────────── */
+  function applyCellState(cell, key) {
+    var entry = getEntry(key);
+    cell.className = 'cal-day ' + entry.status;
+    if (isToday(key)) cell.classList.add('today-ring');
+
+    var label;
+    if (entry.status === 'past')         label = 'Past';
+    else if (entry.status === 'available')   label = 'Available';
+    else if (entry.status === 'unavailable') label = 'Unavailable';
+    else if (entry.status === 'booked') {
+      label = 'Booked for boarding';
+      if (entry.dogName) label += ' \u2014 ' + entry.dogName;
+      if (entry.dropOff || entry.pickUp) {
+        label += ' (' + (entry.dropOff || '?') + ' \u2192 ' + (entry.pickUp || '?') + ')';
+      }
+    }
+    cell.setAttribute('title', label);
+  }
+
+  function commitEntry(key, cell, entry) {
+    setEntry(key, entry);
+    applyCellState(cell, key);
+
+    cloudWriteAvailability(key, entry).then(function (ok) {
+      if (ok) {
+        var msg = entry.status === 'booked'
+          ? 'Booked: ' + key + (entry.dogName ? ' \u2014 ' + entry.dogName : '')
+          : 'Saved: ' + key + ' \u2192 ' + entry.status;
+        showToast(msg);
+      } else {
+        showToast('\u26A0 Saved locally only \u2014 cloud sync failed');
+      }
+    });
+  }
+
+  /* ── Booking modal ──────────────────────────── */
+  var bookingModal      = document.getElementById('booking-modal');
+  var bookingDateLabel  = document.getElementById('booking-modal-sub');
+  var bookingDogInput   = document.getElementById('booking-dog');
+  var bookingDropoff    = document.getElementById('booking-dropoff');
+  var bookingPickup     = document.getElementById('booking-pickup');
+  var bookingError      = document.getElementById('booking-error');
+  var bookingSaveBtn    = document.getElementById('booking-save-btn');
+  var bookingCancelBtn  = document.getElementById('booking-cancel-btn');
+
+  var bookingCtx = { key: null, cell: null };
+
+  function openBookingModal(key, cell, prefill) {
+    bookingCtx.key = key;
+    bookingCtx.cell = cell;
+    bookingDateLabel.textContent = 'Enter the dog and timing for ' + key + '.';
+    bookingDogInput.value = (prefill && prefill.dogName) || '';
+    bookingDropoff.value  = (prefill && prefill.dropOff) || '08:00';
+    bookingPickup.value   = (prefill && prefill.pickUp)  || '17:00';
+    bookingError.classList.remove('show');
+    bookingModal.classList.add('open');
+    setTimeout(function () { bookingDogInput.focus(); }, 80);
+  }
+
+  function closeBookingModal() {
+    bookingModal.classList.remove('open');
+    bookingCtx.key = null;
+    bookingCtx.cell = null;
+  }
+
+  function saveBooking() {
+    var name = bookingDogInput.value.trim();
+    if (!name) {
+      bookingError.textContent = "Please enter the dog's name.";
+      bookingError.classList.add('show');
+      bookingDogInput.focus();
+      return;
+    }
+    var entry = {
+      status:  'booked',
+      dogName: name,
+      dropOff: bookingDropoff.value || null,
+      pickUp:  bookingPickup.value  || null
+    };
+    commitEntry(bookingCtx.key, bookingCtx.cell, entry);
+    closeBookingModal();
+  }
+
+  bookingSaveBtn.addEventListener('click', saveBooking);
+  bookingCancelBtn.addEventListener('click', closeBookingModal);
+  bookingModal.addEventListener('click', function (e) {
+    if (e.target === bookingModal) closeBookingModal();
+  });
+  [bookingDogInput, bookingDropoff, bookingPickup].forEach(function (el) {
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); saveBooking(); }
+    });
+  });
 
   /* ── Admin auth ──────────────────────────────── */
   var adminFab    = document.getElementById('admin-fab');
