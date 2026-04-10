@@ -22,23 +22,23 @@
   <style>
     /* ── DESIGN TOKENS ───────────────────────────── */
     :root {
-      --bg:          #F9F5EF;
-      --bg-2:        #F0EAE0;
+      --bg:          #F2F5FB;
+      --bg-2:        #E4EAFA;
       --surface:     #FFFFFF;
-      --green:       #2C5F3F;
-      --green-mid:   #3A7A54;
-      --green-light: #8DB897;
-      --green-pale:  #EAF3ED;
-      --amber:       #D4872A;
-      --amber-light: #F5C878;
-      --amber-pale:  #FDF3E0;
-      --text:        #1C1C19;
-      --text-2:      #5A5A52;
-      --text-3:      #9A9A90;
-      --border:      #DDD6C8;
-      --shadow-sm:   0 2px 8px rgba(44,95,63,.08);
-      --shadow-md:   0 6px 24px rgba(44,95,63,.12);
-      --shadow-lg:   0 12px 40px rgba(44,95,63,.14);
+      --green:       #1B4F8C;
+      --green-mid:   #2B6CB0;
+      --green-light: #6BA3D6;
+      --green-pale:  #E4F0FB;
+      --amber:       #D4A017;
+      --amber-light: #F5CC4A;
+      --amber-pale:  #FEF9E7;
+      --text:        #1A1D26;
+      --text-2:      #4C5470;
+      --text-3:      #8C94B0;
+      --border:      #CCDAEF;
+      --shadow-sm:   0 2px 8px rgba(27,79,140,.08);
+      --shadow-md:   0 6px 24px rgba(27,79,140,.12);
+      --shadow-lg:   0 12px 40px rgba(27,79,140,.16);
       --radius-sm:   8px;
       --radius-md:   14px;
       --radius-lg:   20px;
@@ -134,12 +134,17 @@
       margin-left: 6px;
     }
     .nav-cta:hover { background: #c07a24; transform: translateY(-1px); }
+    .nav-toggle {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,.85); font-size: 22px; padding: 4px 8px; line-height: 1;
+    }
 
     /* ── HERO ────────────────────────────────────── */
     .hero {
       background:
-        radial-gradient(ellipse at 65% 40%, rgba(141,184,151,.18) 0%, transparent 60%),
-        linear-gradient(150deg, #1a3828 0%, #2C5F3F 50%, #3A7A54 100%);
+        radial-gradient(ellipse at 65% 40%, rgba(107,163,214,.2) 0%, transparent 60%),
+        linear-gradient(150deg, #0A1E3D 0%, #1B4F8C 55%, #2B6CB0 100%);
       padding: 72px 36px 80px;
       overflow: hidden;
       position: relative;
@@ -558,7 +563,7 @@
 
     /* ── FOOTER ──────────────────────────────────── */
     footer {
-      background: #182f22;
+      background: #081529;
       padding: 44px 36px 36px;
       text-align: center;
     }
@@ -587,41 +592,109 @@
     }
     .footer-links a:hover { color: #fff; }
 
+    /* ── ACCESSIBILITY ───────────────────────────── */
+    :focus-visible {
+      outline: 3px solid var(--yellow-light);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    }
+    .skip-link {
+      position: absolute; left: -9999px; top: 0; z-index: 9999;
+      background: var(--yellow); color: var(--text);
+      padding: 12px 18px; font-family: var(--font-body); font-weight: 600;
+      text-decoration: none; border-radius: 0 0 8px 0;
+    }
+    .skip-link:focus { left: 0; }
+
     /* ── RESPONSIVE ──────────────────────────────── */
-    @media (max-width: 720px) {
+
+    /* Tablet — shrink hero, tighten grids */
+    @media (max-width: 960px) {
+      nav { padding: 0 24px; }
+      .hero { padding: 60px 28px 68px; }
+      .hero-inner { gap: 36px; }
+      .hero-title { font-size: 54px; }
+      .dogs-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .pillars { grid-template-columns: repeat(2, 1fr); }
+      .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Mobile — hamburger, stacked hero */
+    @media (max-width: 820px) {
       nav { padding: 0 18px; height: 56px; }
-      .nav-link { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute; top: 56px; left: 0; right: 0;
+        background: #1B4F8C;
+        flex-direction: column;
+        padding: 10px 18px 16px; gap: 2px;
+        border-bottom: 2px solid rgba(255,255,255,.1);
+        z-index: 199;
+      }
+      .nav-links.open { display: flex; }
+      .nav-link { display: block; padding: 10px 14px; border-radius: 8px; width: 100%; }
+      .nav-cta { margin: 8px 0 0; text-align: center; display: block; }
       .hero { padding: 50px 20px 60px; }
       .hero-inner { flex-direction: column; gap: 32px; text-align: center; }
-      .hero-title { font-size: 38px; }
+      .hero-title { font-size: 44px; }
       .hero-sub { max-width: 100%; }
-      .hero-form { justify-content: center; }
+      .hero-form { justify-content: center; flex-wrap: wrap; }
       .hero-photos { order: -1; justify-content: center; }
-      .hero-photo-main { width: 140px; height: 174px; }
-      .hero-photo-secondary { width: 86px; height: 128px; }
-      .perks-strip { padding: 0 16px; }
+      .hero-photo-main { width: 150px; height: 184px; }
+      .hero-photo-secondary { width: 92px; height: 138px; }
+      .perks-strip { flex-direction: column; padding: 0 16px; }
       .perk-item { border-right: none; border-bottom: 1px solid var(--border); width: 100%; justify-content: center; }
       .perk-item:last-child { border-bottom: none; }
       .page-wrap { padding: 48px 20px 72px; }
       .issue-preview { grid-template-columns: 1fr; }
-      .store-teaser { padding: 28px 24px; }
+      .store-teaser { padding: 28px 24px; flex-direction: column; text-align: center; gap: 18px; }
       .coupon-grid { grid-template-columns: 1fr; }
+      .pillars { grid-template-columns: 1fr 1fr; gap: 14px; }
       .dogs-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+      .testimonial-grid { grid-template-columns: 1fr; }
+      .share-row { flex-direction: column; align-items: stretch; }
+      .share-btn { text-align: center; }
       footer { padding: 36px 20px 28px; }
+      .footer-links { gap: 14px 18px; }
+    }
+
+    /* Small mobile — single-col + tighter type */
+    @media (max-width: 480px) {
+      .hero-title { font-size: 36px; }
+      .hero-eyebrow { font-size: 10px; }
+      .hero-form { flex-direction: column; }
+      .hero-form input, .hero-form button { width: 100%; }
+      .pillars { grid-template-columns: 1fr; }
+      .section-title { font-size: 24px; }
+      .dogs-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to main content</a>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <!-- ── NAV ──────────────────────────────────────────────────── -->
 <nav>
   <a href="index.html" class="nav-brand">Dogs <span class="amp">&amp;</span> Llamas</a>
-  <div class="nav-links">
-    <a href="#our-dogs"  class="nav-link">Our Recent Dogs</a>
-    <a href="store.html" class="nav-link">Curated Picks</a>
-    <a href="#subscribe" class="nav-cta">Subscribe</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="nav-links">
+    <a href="schedule.html" class="nav-link">Schedule</a>
+    <a href="gallery.html"  class="nav-link">Gallery</a>
+    <a href="about.html"    class="nav-link">About</a>
+    <a href="store.html"    class="nav-link">Shop</a>
+    <a href="#subscribe"    class="nav-cta">Subscribe</a>
   </div>
 </nav>
 
@@ -632,7 +705,7 @@
     <div class="hero-content">
       <p class="hero-eyebrow">Monthly Dog-Care Updates</p>
       <h1 class="hero-title">Dogs <span class="amp">&amp;</span> Llamas</h1>
-      <p class="hero-byline">by [First Name] Llamas</p>
+      <p class="hero-byline">by Lorenzo Llamas &bull; Rover Star Sitter</p>
       <p class="hero-sub">Availability openings, honest dog tips, and small perks for repeat clients — once a month, always personal.</p>
 
       <form class="hero-form" id="subscribe-form" action="#" method="post" novalidate>
@@ -683,7 +756,7 @@
 </div>
 
 <!-- ── MAIN ─────────────────────────────────────────────────── -->
-<main class="page-wrap">
+<main class="page-wrap" id="main">
 
   <!-- WHAT YOU GET -->
   <div class="reveal">
@@ -764,16 +837,6 @@
       </div>
 
       <div class="dog-card reveal reveal-d2">
-        <img src="./media/Turbo sleeping.JPG"
-             alt="Turbo napping on the floor"
-             class="dog-card-photo" loading="lazy" width="148" height="184">
-        <div class="dog-card-footer">
-          <p class="dog-card-name">Turbo</p>
-          <p class="dog-card-note">Nap time &#128564;</p>
-        </div>
-      </div>
-
-      <div class="dog-card reveal reveal-d3">
         <img src="./media/Troy.jpg"
              alt="Troy the Husky with striking blue eyes"
              class="dog-card-photo" loading="lazy" width="148" height="184">
@@ -785,7 +848,7 @@
 
       <div class="dog-card reveal reveal-d4">
         <img src="./media/Dakota and me.JPG"
-             alt="Dakota the Sheltie with [First Name]"
+             alt="Dakota the Sheltie with Lorenzo"
              class="dog-card-photo" loading="lazy" width="148" height="184">
         <div class="dog-card-footer">
           <p class="dog-card-name">Dakota</p>
@@ -849,7 +912,7 @@
       <p class="testimonial-dog">Owner of [Dog Name]</p>
     </div>
     <div class="testimonial-card reveal reveal-d2">
-      <p class="testimonial-quote">I love that I hear about openings before they're gone. [First Name] always takes such good care of our pup.</p>
+      <p class="testimonial-quote">I love that I hear about openings before they're gone. Lorenzo always takes such good care of our pup.</p>
       <p class="testimonial-author">[Client Name]</p>
       <p class="testimonial-dog">Owner of [Dog Name]</p>
     </div>
@@ -919,15 +982,17 @@
 <!-- ── FOOTER ────────────────────────────────────────────────── -->
 <footer>
   <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
-  <p>[First Name] Llamas &bull; [Your City]</p>
+  <p>Lorenzo Llamas &bull; Rover Star Sitter</p>
   <p>All active Rover bookings are handled through
      <a href="https://www.rover.com" target="_blank" rel="noopener noreferrer">Rover.com</a>
      in accordance with their Terms of Service.</p>
   <div class="footer-links">
-    <a href="store.html">Curated Top Picks</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="about.html">About</a>
+    <a href="store.html">Shop</a>
     <a href="monthly-issue-01.html">Latest Issue</a>
-    <a href="#subscribe">Subscribe</a>
-    <a href="privacy.html">Privacy Policy</a>
+    <a href="privacy.html">Privacy</a>
   </div>
   <p style="margin-top:16px;color:rgba(255,255,255,.2);font-size:11.5px;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
 </footer>
@@ -985,6 +1050,13 @@
     t.classList.add('show');
     setTimeout(function () { t.classList.remove('show'); }, 3200);
   }
+
+  /* ── Nav toggle ─────────────────────────────────────── */
+  document.getElementById('nav-toggle').addEventListener('click', function () {
+    var links = document.getElementById('nav-links');
+    var open = links.classList.toggle('open');
+    this.setAttribute('aria-expanded', String(open));
+  });
 </script>
 
 </body>

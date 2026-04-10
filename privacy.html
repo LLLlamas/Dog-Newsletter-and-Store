@@ -6,228 +6,253 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
-  <title>Privacy Policy — Dogs &amp; Llamas</title>
+  <title>Privacy Policy &mdash; Dogs &amp; Llamas</title>
+  <meta name="description" content="Privacy policy for Dogs &amp; Llamas &mdash; Lorenzo Llamas, Rover Star Sitter. What data we collect, how it&rsquo;s used, and how to opt out.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --bg:          #F2F5FB;
+      --bg-2:        #E4EAFA;
+      --surface:     #FFFFFF;
+      --blue:        #1B4F8C;
+      --blue-mid:    #2B6CB0;
+      --blue-light:  #6BA3D6;
+      --blue-pale:   #E4F0FB;
+      --yellow:      #D4A017;
+      --yellow-light:#F5CC4A;
+      --yellow-pale: #FEF9E7;
+      --text:        #1A1D26;
+      --text-2:      #4C5470;
+      --text-3:      #8C94B0;
+      --border:      #CCDAEF;
+      --shadow-sm:   0 2px 8px rgba(27,79,140,.08);
+      --shadow-md:   0 6px 24px rgba(27,79,140,.12);
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   20px;
+      --radius-full: 99px;
+      --font-head:   'Playfair Display', Georgia, serif;
+      --font-body:   'DM Sans', system-ui, sans-serif;
+      --nav-h:       62px;
+    }
+
     *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; padding: 0; background: var(--bg); font-family: var(--font-body); color: var(--text); -webkit-font-smoothing: antialiased; }
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: #f5f0eb;
-      font-family: Georgia, 'Times New Roman', serif;
-      color: #2d2d2d;
-    }
+    /* ── NAV (shared pattern) ───────────────────── */
+    nav { position: sticky; top: 0; z-index: 200; height: var(--nav-h); background: var(--blue); padding: 0 36px; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: 0 2px 12px rgba(0,0,0,.18); }
+    .nav-brand { font-family: var(--font-head); font-style: italic; font-size: 19px; color: #fff; text-decoration: none; flex-shrink: 0; }
+    .nav-brand .amp { color: var(--yellow-light); font-style: normal; margin: 0 2px; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-link { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: rgba(255,255,255,.75); text-decoration: none; letter-spacing: .3px; padding: 6px 10px; border-radius: var(--radius-full); transition: background .15s, color .15s; white-space: nowrap; }
+    .nav-link:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .nav-link.active { background: rgba(255,255,255,.18); color: #fff; }
+    .nav-cta { font-family: var(--font-body); font-size: 13px; font-weight: 600; background: var(--yellow); color: #fff; text-decoration: none; padding: 8px 20px; border-radius: var(--radius-full); letter-spacing: .3px; transition: background .15s; white-space: nowrap; margin-left: 6px; }
+    .nav-cta:hover { background: #b88a12; }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; color: rgba(255,255,255,.85); font-size: 22px; padding: 4px 8px; line-height: 1; }
 
-    /* NAV */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: #3b6b4b;
-      padding: 0 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
+    /* ── HEADER STRIP ───────────────────────────── */
+    .header-strip {
+      background: linear-gradient(150deg, #0A1E3D 0%, #1B4F8C 55%, #2B6CB0 100%);
+      color: #fff; padding: 56px 36px 44px; text-align: center;
+      position: relative; overflow: hidden;
     }
-    .nav-brand {
-      font-family: Georgia, serif;
-      font-size: 17px;
-      color: #fff;
-      text-decoration: none;
-      font-weight: normal;
-      letter-spacing: 0.3px;
-    }
-    .nav-links { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; }
-    .nav-links a {
-      font-family: Arial, sans-serif;
-      font-size: 13px;
-      color: #c8e6cc;
-      text-decoration: none;
-      letter-spacing: 0.4px;
-      transition: color 0.18s;
-    }
-    .nav-links a:hover { color: #fff; }
+    .header-strip::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
+    .eyebrow { position: relative; font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--yellow-light); margin: 0 0 10px; }
+    .header-strip h1 { position: relative; font-family: var(--font-head); font-size: 42px; font-weight: 400; font-style: italic; color: #fff; margin: 0 0 8px; line-height: 1.15; }
+    .updated { position: relative; font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.55); margin: 0; letter-spacing: .4px; }
 
-    /* PAGE */
-    .page-wrap {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 60px 24px 80px;
+    /* ── PAGE BODY ──────────────────────────────── */
+    .page-wrap { max-width: 720px; margin: 0 auto; padding: 56px 28px 80px; }
+    .page-wrap p {
+      font-family: var(--font-body); font-size: 15.5px; line-height: 1.78;
+      color: var(--text-2); margin: 0 0 18px;
     }
+    .page-wrap h2 {
+      font-family: var(--font-body); font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--blue);
+      margin: 42px 0 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .page-wrap h2::after { content: ''; flex: 0 0 28px; height: 2px; background: var(--yellow); border-radius: 2px; }
+    .page-wrap ul { padding-left: 22px; margin: 0 0 18px; }
+    .page-wrap li { font-family: var(--font-body); font-size: 15.5px; line-height: 1.78; color: var(--text-2); margin-bottom: 6px; }
+    .page-wrap a { color: var(--blue-mid); text-decoration: none; border-bottom: 1px solid var(--blue-light); }
+    .page-wrap a:hover { color: var(--blue); border-bottom-color: var(--blue); }
+    .page-wrap code { background: var(--blue-pale); color: var(--blue); padding: 2px 8px; border-radius: 4px; font-size: 13.5px; }
+    .page-wrap strong { color: var(--text); font-weight: 600; }
 
-    .eyebrow {
-      font-family: Arial, sans-serif;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #3b6b4b;
-      margin: 0 0 10px;
+    .intro-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 4px solid var(--yellow);
+      border-radius: var(--radius-md); padding: 22px 26px;
+      box-shadow: var(--shadow-sm); margin-bottom: 36px;
     }
+    .intro-card p { margin: 0; color: var(--text); font-size: 15.5px; font-family: var(--font-head); font-style: italic; line-height: 1.7; }
 
-    h1 {
-      font-family: Georgia, serif;
-      font-size: 30px;
-      font-weight: normal;
-      color: #1a1a1a;
-      margin: 0 0 6px;
-      line-height: 1.3;
-    }
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 48px 0 32px; }
+    .note { font-family: var(--font-body); font-size: 13px; color: var(--text-3); line-height: 1.7; }
 
-    .updated {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      color: #999;
-      margin: 0 0 48px;
-    }
+    /* ── FOOTER ─────────────────────────────────── */
+    footer { background: #081529; padding: 44px 36px 36px; text-align: center; }
+    .footer-brand { font-family: var(--font-head); font-size: 22px; font-style: italic; color: rgba(255,255,255,.9); margin: 0 0 16px; }
+    .footer-brand .amp { color: var(--yellow-light); font-style: normal; }
+    footer p { font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.4); margin: 0 0 5px; line-height: 1.7; }
+    footer a { color: rgba(255,255,255,.6); text-decoration: none; border-bottom: none; }
+    footer a:hover { color: #fff; text-decoration: underline; }
+    .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); }
+    .footer-links a { font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.5); transition: color .14s; }
+    .footer-links a:hover { color: #fff; }
 
-    h2 {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #3b6b4b;
-      margin: 40px 0 10px;
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 720px) {
+      nav { padding: 0 18px; height: 56px; }
+      .nav-toggle { display: block; }
+      .nav-links { display: none; position: absolute; top: 56px; left: 0; right: 0; background: #1B4F8C; flex-direction: column; padding: 10px 18px 16px; gap: 2px; border-bottom: 2px solid rgba(255,255,255,.1); z-index: 199; }
+      .nav-links.open { display: flex; }
+      .nav-link { display: block; padding: 10px 14px; border-radius: 8px; width: 100%; }
+      .nav-cta { margin: 8px 0 0; text-align: center; display: block; }
+      .header-strip { padding: 44px 20px 36px; }
+      .header-strip h1 { font-size: 32px; }
+      .page-wrap { padding: 40px 18px 60px; }
+      .page-wrap p, .page-wrap li { font-size: 15px; }
+      .intro-card { padding: 18px 20px; }
+      footer { padding: 36px 20px 28px; }
     }
-
-    p {
-      font-family: Georgia, serif;
-      font-size: 16px;
-      line-height: 1.75;
-      color: #3a3a3a;
-      margin: 0 0 18px;
+    @media (max-width: 420px) {
+      .header-strip h1 { font-size: 28px; }
     }
-
-    ul {
-      padding-left: 20px;
-      margin: 0 0 18px;
-    }
-    ul li {
-      font-family: Georgia, serif;
-      font-size: 16px;
-      line-height: 1.75;
-      color: #3a3a3a;
-      margin-bottom: 6px;
-    }
-
-    a { color: #3b6b4b; }
-    a:hover { text-decoration: underline; }
-
-    .divider {
-      border: none;
-      border-top: 1px solid #e0dbd4;
-      margin: 48px 0;
-    }
-
-    /* FOOTER */
-    footer {
-      background: #2a2a2a;
-      padding: 28px 24px;
-      text-align: center;
-    }
-    footer p {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      color: #888;
-      margin: 0 0 6px;
-      line-height: 1.6;
-    }
-    footer p:last-child { margin: 0; }
-    footer a { color: #a8d5b0; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
-  <nav aria-label="Site navigation">
-    <a href="./index.html" class="nav-brand">Dogs &amp; Llamas</a>
-    <ul class="nav-links">
-      <li><a href="./index.html">Newsletter</a></li>
-      <li><a href="./store.html">Curated Top Picks</a></li>
-    </ul>
-  </nav>
+<!-- ── NAV ───────────────────────────────────────────── -->
+<nav>
+  <a href="index.html" class="nav-brand">Dogs <span class="amp">&amp;</span> Llamas</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="nav-links">
+    <a href="schedule.html" class="nav-link">Schedule</a>
+    <a href="gallery.html"  class="nav-link">Gallery</a>
+    <a href="about.html"    class="nav-link">About</a>
+    <a href="store.html"    class="nav-link">Shop</a>
+    <a href="index.html#subscribe" class="nav-cta">Subscribe</a>
+  </div>
+</nav>
 
-  <main class="page-wrap">
+<!-- ── HEADER ────────────────────────────────────────── -->
+<header class="header-strip">
+  <p class="eyebrow">Legal</p>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: April 2026</p>
+</header>
 
-    <p class="eyebrow">Legal</p>
-    <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: April 2026</p>
+<!-- ── BODY ──────────────────────────────────────────── -->
+<main class="page-wrap">
 
-    <p>
-      Dogs &amp; Llamas is a personal dog-sitting newsletter and product resource run by
-      one person. This page explains what information is collected, how it's used, and how
-      you can opt out at any time.
-    </p>
+  <div class="intro-card">
+    <p>Dogs &amp; Llamas is a personal dog-sitting newsletter and product resource run by one person &mdash; Lorenzo Llamas. This page explains what information is collected, how it&rsquo;s used, and how you can opt out any time.</p>
+  </div>
 
-    <h2>Information Collected</h2>
-    <p>
-      If you subscribe to the newsletter, your email address is stored with the email
-      platform used to send it (e.g., Mailchimp or beehiiv). No other personal data
-      is collected by this website.
-    </p>
-    <p>
-      This site does not use tracking pixels, analytics scripts, advertising cookies, or
-      any third-party trackers. There are no cookies set by this site directly.
-    </p>
+  <h2>Information Collected</h2>
+  <p>
+    If you subscribe to the newsletter, your email address is stored with the email
+    platform used to send it (e.g., Mailchimp or beehiiv). No other personal data
+    is collected by this website.
+  </p>
+  <p>
+    This site does not use tracking pixels, analytics scripts, advertising cookies, or
+    any third-party trackers. There are no cookies set by this site directly. The
+    schedule page stores your admin preferences in your own browser&rsquo;s
+    <code>localStorage</code> only &mdash; nothing is sent off your device.
+  </p>
 
-    <h2>How Your Email Is Used</h2>
-    <ul>
-      <li>To send the Dogs &amp; Llamas newsletter (monthly at most)</li>
-      <li>To notify you of availability openings before they're shared elsewhere</li>
-      <li>To share occasional subscriber perks and dog-care tips</li>
-    </ul>
-    <p>Your email is never sold, shared with advertisers, or used for any other purpose.</p>
+  <h2>How Your Email Is Used</h2>
+  <ul>
+    <li>To send the Dogs &amp; Llamas newsletter (monthly at most)</li>
+    <li>To notify you of availability openings before they&rsquo;re shared elsewhere</li>
+    <li>To share occasional subscriber perks and dog-care tips</li>
+  </ul>
+  <p>Your email is never sold, shared with advertisers, or used for any other purpose.</p>
 
-    <h2>Affiliate Links</h2>
-    <p>
-      The <a href="./store.html">Curated Top Picks</a> page contains Amazon affiliate
-      links. If you click a link and make a purchase, this site may earn a small
-      commission at no extra cost to you. This is disclosed on every page that contains
-      affiliate links.
-    </p>
-    <p>
-      Clicking an affiliate link will take you to Amazon's website, which has its own
-      privacy policy and may set its own cookies. Dogs &amp; Llamas has no control over
-      Amazon's data practices.
-    </p>
+  <h2>Affiliate Links</h2>
+  <p>
+    The <a href="store.html">Curated Top Picks</a> page contains Amazon affiliate
+    links. If you click a link and make a purchase, this site may earn a small
+    commission at no extra cost to you. This is disclosed on every page that contains
+    affiliate links.
+  </p>
+  <p>
+    Clicking an affiliate link will take you to Amazon&rsquo;s website, which has its own
+    privacy policy and may set its own cookies. Dogs &amp; Llamas has no control over
+    Amazon&rsquo;s data practices.
+  </p>
 
-    <h2>Unsubscribing</h2>
-    <p>
-      You can unsubscribe from the newsletter at any time by replying to any email with
-      the word "unsubscribe." Your address will be removed promptly.
-    </p>
+  <h2>Rover Bookings</h2>
+  <p>
+    All dog-sitting bookings are handled through Rover.com and governed by
+    <a href="https://www.rover.com/terms/" target="_blank" rel="noopener noreferrer">Rover&rsquo;s Terms of Service</a>
+    and <a href="https://www.rover.com/privacy-statement/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+    Dogs &amp; Llamas does not store booking, payment, or review data &mdash; all of that
+    lives on Rover.
+  </p>
 
-    <h2>External Links</h2>
-    <p>
-      Links to Amazon and other external sites open in a new tab with
-      <code>rel="noopener noreferrer"</code> set for your security. This site is not
-      responsible for the content or privacy practices of external sites.
-    </p>
+  <h2>Unsubscribing</h2>
+  <p>
+    You can unsubscribe from the newsletter at any time by replying to any email with
+    the word &ldquo;unsubscribe,&rdquo; or by clicking the unsubscribe link in the footer of
+    any newsletter. Your address will be removed promptly.
+  </p>
 
-    <h2>Contact</h2>
-    <p>
-      Questions about this privacy policy? Reply to any newsletter email or reach out on
-      Rover directly. <!-- ← EDIT: add Rover profile link or contact method if desired -->
-    </p>
+  <h2>External Links</h2>
+  <p>
+    Links to Amazon, Rover, and other external sites open in a new tab with
+    <code>rel="noopener noreferrer"</code> set for your security. This site is not
+    responsible for the content or privacy practices of external sites.
+  </p>
 
-    <hr class="divider">
+  <h2>Contact</h2>
+  <p>
+    Questions about this privacy policy? Reach out on
+    <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">my Rover profile</a>
+    or reply to any newsletter email.
+  </p>
 
-    <p style="font-size:14px; color:#999; font-family:Arial,sans-serif; line-height:1.6;">
-      This is a personal, non-commercial newsletter. No legal boilerplate was generated
-      by AI or auto-filled — this policy reflects actual practices.
-    </p>
+  <hr class="divider">
 
-  </main>
+  <p class="note">
+    This is a personal, non-commercial newsletter. No legal boilerplate was generated
+    by AI or auto-filled &mdash; this policy reflects actual practices.
+  </p>
 
-  <footer>
-    <p>&copy; 2026 Dogs &amp; Llamas &mdash; [First Name] Llamas</p>
-    <p>
-      <a href="./index.html">Newsletter</a> &nbsp;&bull;&nbsp;
-      <a href="./store.html">Curated Top Picks</a> &nbsp;&bull;&nbsp;
-      <a href="./privacy.html">Privacy</a>
-    </p>
-  </footer>
+</main>
+
+<!-- ── FOOTER ───────────────────────────────────────── -->
+<footer>
+  <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
+  <p>Lorenzo Llamas &bull; Rover Star Sitter</p>
+  <p>All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a>.</p>
+  <div class="footer-links">
+    <a href="index.html">Newsletter</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="about.html">About</a>
+    <a href="store.html">Shop</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+  <p style="margin-top:16px;color:rgba(255,255,255,.2);font-size:11.5px;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('nav-toggle').addEventListener('click', function () {
+    var links = document.getElementById('nav-links');
+    var open = links.classList.toggle('open');
+    this.setAttribute('aria-expanded', String(open));
+  });
+</script>
 
 </body>
 </html>

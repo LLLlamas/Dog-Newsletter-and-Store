@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Schedule &amp; Availability — Dogs &amp; Llamas</title>
+  <meta name="description" content="Check Lorenzo Llamas's availability for dog boarding, drop-in visits, and dog walking. Book through Rover.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:          #F2F5FB;
+      --bg-2:        #E4EAFA;
+      --surface:     #FFFFFF;
+      --blue:        #1B4F8C;
+      --blue-mid:    #2B6CB0;
+      --blue-light:  #6BA3D6;
+      --blue-pale:   #E4F0FB;
+      --yellow:      #D4A017;
+      --yellow-light:#F5CC4A;
+      --yellow-pale: #FEF9E7;
+      --available:   #1B4F8C;
+      --booked:      #8C94B0;
+      --unavail:     #E8EAF0;
+      --today-ring:  #D4A017;
+      --text:        #1A1D26;
+      --text-2:      #4C5470;
+      --text-3:      #8C94B0;
+      --border:      #CCDAEF;
+      --shadow-sm:   0 2px 8px rgba(27,79,140,.08);
+      --shadow-md:   0 6px 24px rgba(27,79,140,.12);
+      --shadow-lg:   0 12px 40px rgba(27,79,140,.16);
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   20px;
+      --radius-full: 99px;
+      --font-head:   'Playfair Display', Georgia, serif;
+      --font-body:   'DM Sans', system-ui, sans-serif;
+      --nav-h:       62px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; padding: 0; background: var(--bg); font-family: var(--font-body); color: var(--text); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      height: var(--nav-h); background: var(--blue);
+      padding: 0 36px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.18);
+    }
+    .nav-brand { font-family: var(--font-head); font-style: italic; font-size: 19px; color: #fff; text-decoration: none; flex-shrink: 0; }
+    .nav-brand .amp { color: var(--yellow-light); font-style: normal; margin: 0 2px; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-link { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: rgba(255,255,255,.75); text-decoration: none; letter-spacing: .3px; padding: 6px 10px; border-radius: var(--radius-full); transition: background .15s, color .15s; white-space: nowrap; }
+    .nav-link:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .nav-link.active { background: rgba(255,255,255,.18); color: #fff; }
+    .nav-cta { font-family: var(--font-body); font-size: 13px; font-weight: 600; background: var(--yellow); color: #fff; text-decoration: none; padding: 8px 20px; border-radius: var(--radius-full); letter-spacing: .3px; transition: background .15s; white-space: nowrap; margin-left: 6px; }
+    .nav-cta:hover { background: #b88a12; }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; color: rgba(255,255,255,.85); font-size: 22px; padding: 4px 8px; line-height: 1; }
+
+    /* ── HERO ────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(150deg, #0A1E3D 0%, #1B4F8C 55%, #2B6CB0 100%);
+      padding: 44px 36px 40px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 24px 24px; pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--yellow-light); margin: 0 0 12px; }
+    .hero h1 { font-family: var(--font-head); font-size: 32px; font-weight: 400; font-style: italic; color: #fff; margin: 0 0 12px; line-height: 1.2; }
+    .hero p { font-family: var(--font-head); font-size: 16px; font-style: italic; color: rgba(255,255,255,.75); margin: 0 auto; max-width: 440px; line-height: 1.65; }
+
+    /* ── PAGE ────────────────────────────────────── */
+    .page-wrap { max-width: 900px; margin: 0 auto; padding: 48px 28px 96px; }
+
+    /* ── SECTION HEADERS ─────────────────────────── */
+    .section-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--blue-mid); margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+    .section-eyebrow::after { content: ''; flex: 0 0 32px; height: 2px; background: var(--yellow); border-radius: 2px; }
+    .section-title { font-family: var(--font-head); font-size: 28px; font-weight: 400; color: var(--text); margin: 0 0 28px; line-height: 1.25; }
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+
+    /* ── SERVICES ────────────────────────────────── */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 52px; }
+    .service-card {
+      background: var(--surface); border-radius: var(--radius-md);
+      border: 1px solid var(--border); padding: 24px 22px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .18s, transform .18s;
+    }
+    .service-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .service-icon { font-size: 28px; margin-bottom: 12px; }
+    .service-name { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: .6px; margin: 0 0 6px; }
+    .service-desc { font-family: var(--font-body); font-size: 14px; color: var(--text-2); line-height: 1.6; margin: 0 0 12px; }
+    .service-price { font-family: var(--font-head); font-size: 20px; font-weight: 600; color: var(--text); margin: 0 0 2px; }
+    .service-price-note { font-family: var(--font-body); font-size: 11px; color: var(--text-3); }
+
+    /* ── LEGEND ──────────────────────────────────── */
+    .legend { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 13px; color: var(--text-2); }
+    .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+    .legend-dot.available { background: var(--blue); }
+    .legend-dot.booked    { background: #C8CEDE; border: 1px solid var(--border); }
+    .legend-dot.today     { background: var(--yellow); }
+    .legend-dot.past      { background: var(--bg-2); border: 1px solid var(--border); }
+
+    /* ── CALENDAR CONTAINER ──────────────────────── */
+    .calendar-months { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+
+    .cal-month {
+      background: var(--surface); border-radius: var(--radius-md);
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .cal-month-header {
+      background: var(--blue); padding: 14px 18px;
+      font-family: var(--font-head); font-style: italic; font-size: 17px;
+      color: #fff; text-align: center;
+    }
+    .cal-weekdays {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      background: var(--blue-pale);
+      border-bottom: 1px solid var(--border);
+    }
+    .cal-weekday {
+      text-align: center; padding: 6px 2px;
+      font-family: var(--font-body); font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px; color: var(--blue-mid);
+    }
+    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); padding: 8px; gap: 3px; }
+    .cal-day {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; font-family: var(--font-body); font-size: 13px;
+      font-weight: 500; cursor: default; user-select: none;
+      transition: transform .12s;
+      position: relative;
+    }
+    .cal-day.empty { pointer-events: none; }
+    .cal-day.past  { color: var(--text-3); background: transparent; }
+    .cal-day.available { background: var(--blue); color: #fff; font-weight: 600; cursor: pointer; }
+    .cal-day.available:hover { transform: scale(1.12); }
+    .cal-day.booked { background: #E8EAF4; color: var(--text-3); text-decoration: line-through; cursor: not-allowed; }
+    .cal-day.unavailable { background: var(--bg-2); color: var(--border); cursor: not-allowed; }
+    .cal-day.today-ring::after {
+      content: ''; position: absolute; inset: -2px;
+      border: 2px solid var(--yellow); border-radius: 50%;
+    }
+
+    /* Admin editable */
+    body.admin-mode .cal-day.available,
+    body.admin-mode .cal-day.booked,
+    body.admin-mode .cal-day.unavailable {
+      cursor: pointer;
+    }
+    body.admin-mode .cal-day:not(.empty):not(.past):hover { transform: scale(1.12); box-shadow: 0 0 0 2px var(--yellow); }
+    .admin-banner { display: none; background: var(--yellow); color: var(--text); font-family: var(--font-body); font-size: 13px; font-weight: 600; text-align: center; padding: 8px 20px; }
+    body.admin-mode .admin-banner { display: block; }
+
+    /* ── BOOK CTA ─────────────────────────────────── */
+    .book-section {
+      background: var(--blue); border-radius: var(--radius-lg);
+      padding: 40px 44px; text-align: center; margin-top: 48px;
+      box-shadow: var(--shadow-lg);
+    }
+    .book-section h2 { font-family: var(--font-head); font-size: 26px; font-weight: 400; font-style: italic; color: #fff; margin: 0 0 12px; }
+    .book-section p { font-family: var(--font-head); font-size: 15px; font-style: italic; color: rgba(255,255,255,.75); margin: 0 0 24px; line-height: 1.65; max-width: 460px; margin-left: auto; margin-right: auto; }
+    .btn-book {
+      display: inline-block; background: var(--yellow); color: var(--text);
+      font-family: var(--font-body); font-size: 15px; font-weight: 700;
+      text-decoration: none; padding: 14px 36px; border-radius: var(--radius-full);
+      letter-spacing: .3px; transition: background .15s, transform .15s;
+    }
+    .btn-book:hover { background: var(--yellow-light); transform: translateY(-2px); color: var(--text); }
+    .book-note { font-family: var(--font-body); font-size: 12px; color: rgba(255,255,255,.45); margin: 14px 0 0; }
+
+    /* ── ADMIN PANEL ─────────────────────────────── */
+    .admin-fab {
+      position: fixed; bottom: 28px; right: 28px; z-index: 300;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--surface); border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; color: var(--text-3);
+      transition: color .15s, border-color .15s;
+    }
+    .admin-fab:hover { color: var(--blue); border-color: var(--blue); }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,30,61,.5); z-index: 400; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: var(--radius-lg);
+      padding: 32px 32px 28px; max-width: 360px; width: 90%;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal h3 { font-family: var(--font-head); font-size: 20px; font-weight: 400; color: var(--text); margin: 0 0 8px; }
+    .modal p  { font-family: var(--font-body); font-size: 14px; color: var(--text-2); margin: 0 0 20px; line-height: 1.6; }
+    .modal input {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 15px; color: var(--text); outline: none;
+      transition: border-color .15s; margin-bottom: 12px;
+    }
+    .modal input:focus { border-color: var(--blue); }
+    .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
+    .btn-modal-cancel { background: none; border: 1.5px solid var(--border); color: var(--text-2); font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: var(--radius-full); cursor: pointer; transition: border-color .14s; }
+    .btn-modal-cancel:hover { border-color: var(--blue-mid); color: var(--text); }
+    .btn-modal-ok { background: var(--blue); color: #fff; border: none; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: var(--radius-full); cursor: pointer; transition: background .14s; }
+    .btn-modal-ok:hover { background: var(--blue-mid); }
+    .modal-error { font-family: var(--font-body); font-size: 12px; color: #c0392b; margin: -6px 0 10px; display: none; }
+    .modal-error.show { display: block; }
+
+    .admin-instructions {
+      background: var(--yellow-pale); border: 1px solid #f0d580; border-radius: var(--radius-md);
+      padding: 16px 20px; margin-bottom: 28px; display: none;
+    }
+    body.admin-mode .admin-instructions { display: block; }
+    .admin-instructions p { font-family: var(--font-body); font-size: 13.5px; color: #7a6010; margin: 0 0 6px; line-height: 1.6; }
+    .admin-instructions p:last-child { margin: 0; }
+    .admin-instructions strong { color: var(--text); }
+    .btn-admin-exit { background: none; border: none; font-family: var(--font-body); font-size: 13px; color: var(--blue); cursor: pointer; text-decoration: underline; padding: 0; margin-top: 8px; }
+
+    /* ── TOAST ───────────────────────────────────── */
+    #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--blue); color: #fff; font-family: var(--font-body); font-size: 14px; font-weight: 500; padding: 12px 26px; border-radius: var(--radius-full); box-shadow: var(--shadow-lg); opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer { background: #081529; padding: 44px 36px 36px; text-align: center; }
+    .footer-brand { font-family: var(--font-head); font-size: 22px; font-style: italic; color: rgba(255,255,255,.9); margin: 0 0 16px; }
+    .footer-brand .amp { color: var(--yellow-light); font-style: normal; }
+    footer p { font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.4); margin: 0 0 5px; line-height: 1.7; }
+    footer a { color: rgba(255,255,255,.6); text-decoration: none; }
+    footer a:hover { color: #fff; text-decoration: underline; }
+    .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); }
+    .footer-links a { font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.5); transition: color .14s; }
+    .footer-links a:hover { color: #fff; text-decoration: none; }
+
+    /* ── ACCESSIBILITY ───────────────────────────── */
+    :focus-visible {
+      outline: 3px solid var(--yellow-light);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────── */
+
+    /* Tablet */
+    @media (max-width: 960px) {
+      nav { padding: 0 24px; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .calendar-months { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Mobile */
+    @media (max-width: 820px) {
+      nav { padding: 0 18px; height: 56px; }
+      .nav-toggle { display: block; }
+      .nav-links { display: none; position: absolute; top: 56px; left: 0; right: 0; background: #1B4F8C; flex-direction: column; padding: 10px 18px 16px; gap: 2px; border-bottom: 2px solid rgba(255,255,255,.1); z-index: 199; }
+      .nav-links.open { display: flex; }
+      .nav-link { display: block; padding: 10px 14px; border-radius: 8px; width: 100%; }
+      .nav-cta { margin: 8px 0 0; text-align: center; display: block; }
+      .hero { padding: 36px 20px 32px; }
+      .page-wrap { padding: 32px 16px 72px; }
+      .book-section { padding: 32px 22px; }
+      .calendar-months { grid-template-columns: 1fr; gap: 16px; }
+      .services-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      footer { padding: 36px 20px 28px; }
+    }
+
+    /* Small mobile */
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .cal-day { font-size: 12px; }
+      .hero h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ADMIN MODE BANNER -->
+<div class="admin-banner" id="admin-banner">
+  &#9998; Admin Mode — Click any future date to change its status. Changes are saved automatically.
+</div>
+
+<!-- ── NAV ──────────────────────────────────────────── -->
+<nav>
+  <a href="index.html" class="nav-brand">Dogs <span class="amp">&amp;</span> Llamas</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="nav-links">
+    <a href="schedule.html" class="nav-link active">Schedule</a>
+    <a href="gallery.html"  class="nav-link">Gallery</a>
+    <a href="about.html"    class="nav-link">About</a>
+    <a href="store.html"    class="nav-link">Shop</a>
+    <a href="index.html#subscribe" class="nav-cta">Subscribe</a>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Availability</p>
+    <h1>Check My Schedule</h1>
+    <p>See what dates are open and request a booking through Rover — I'll confirm within 24 hours.</p>
+  </div>
+</section>
+
+<!-- ── MAIN ──────────────────────────────────────────── -->
+<div class="page-wrap">
+
+  <!-- SERVICES -->
+  <p class="section-eyebrow">What I Offer</p>
+  <h2 class="section-title">Services &amp; Rates</h2>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-icon">🏡</div>
+      <p class="service-name">Dog Boarding</p>
+      <p class="service-desc">Your dog stays at my home overnight. Full attention, regular walks, and updates throughout.</p>
+      <p class="service-price">$[RATE]<span style="font-size:14px;font-weight:400;color:var(--text-2)">/night</span></p>
+      <p class="service-price-note">Rate set on your Rover profile — update there</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🚶</div>
+      <p class="service-name">Drop-In Visits</p>
+      <p class="service-desc">I come to your home for a 30-minute visit — feeding, play, potty break, and a photo update.</p>
+      <p class="service-price">$[RATE]<span style="font-size:14px;font-weight:400;color:var(--text-2)">/visit</span></p>
+      <p class="service-price-note">Rate set on your Rover profile — update there</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🦮</div>
+      <p class="service-name">Dog Walking</p>
+      <p class="service-desc">A 30–60 minute walk in your neighborhood. GPS-tracked, real-time updates via Rover.</p>
+      <p class="service-price">$[RATE]<span style="font-size:14px;font-weight:400;color:var(--text-2)">/walk</span></p>
+      <p class="service-price-note">Rate set on your Rover profile — update there</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🏠</div>
+      <p class="service-name">House Sitting</p>
+      <p class="service-desc">I stay at your home overnight so your dog sleeps in their own space. Great for anxious dogs.</p>
+      <p class="service-price">$[RATE]<span style="font-size:14px;font-weight:400;color:var(--text-2)">/night</span></p>
+      <p class="service-price-note">Rate set on your Rover profile — update there</p>
+    </div>
+
+  </div>
+
+  <!-- ADMIN INSTRUCTIONS (only visible in admin mode) -->
+  <div class="admin-instructions" id="admin-instructions">
+    <p><strong>Admin mode is active.</strong> Click any future date to cycle through: Available → Booked → Unavailable → Available.</p>
+    <p>Changes save automatically to this browser. To sync across devices, share the exported JSON (feature coming soon).</p>
+    <button class="btn-admin-exit" id="exit-admin-btn">Exit admin mode</button>
+  </div>
+
+  <!-- LEGEND -->
+  <p class="section-eyebrow">Availability Calendar</p>
+  <h2 class="section-title">Open Dates</h2>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot available"></div> Available</div>
+    <div class="legend-item"><div class="legend-dot booked"></div> Booked</div>
+    <div class="legend-item"><div class="legend-dot today"></div> Today</div>
+    <div class="legend-item"><div class="legend-dot past"></div> Past</div>
+  </div>
+
+  <!-- CALENDAR (rendered by JS) -->
+  <div class="calendar-months" id="calendar-months"></div>
+
+  <!-- BOOK CTA -->
+  <div class="book-section">
+    <h2>Ready to book?</h2>
+    <p>All bookings go through Rover — it handles payment, insurance, and messaging in one place. Just click below to request your dates.</p>
+    <a class="btn-book" href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">
+      Request a Booking on Rover &#8599;
+    </a>
+    <p class="book-note">Rover provides $25K vet coverage and 24/7 support on every booking.</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
+  <p>Lorenzo Llamas &bull; All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a></p>
+  <div class="footer-links">
+    <a href="index.html">Newsletter</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="about.html">About</a>
+    <a href="store.html">Shop</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+  <p style="margin-top:16px;color:rgba(255,255,255,.2);font-size:11.5px;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
+</footer>
+
+<!-- ADMIN FAB -->
+<button class="admin-fab" id="admin-fab" title="Sitter login" aria-label="Admin settings">&#9965;</button>
+
+<!-- ADMIN PIN MODAL -->
+<div class="modal-overlay" id="pin-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <h3 id="modal-title">Sitter Access</h3>
+    <p>Enter your 4-digit PIN to edit the calendar.</p>
+    <input type="password" id="pin-input" maxlength="4" placeholder="••••" autocomplete="off" aria-label="PIN">
+    <p class="modal-error" id="pin-error">Incorrect PIN. Try again.</p>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" id="modal-cancel-btn">Cancel</button>
+      <button class="btn-modal-ok" id="modal-ok-btn">Enter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   DOGS & LLAMAS — SCHEDULE PAGE JS
+   Storage keys:
+     dal_schedule    → { "YYYY-MM-DD": "available"|"booked"|"unavailable" }
+     dal_admin_pin   → hashed pin string
+   ════════════════════════════════════════════════════════ */
+
+  var STORAGE_KEY  = 'dal_schedule';
+  var PIN_KEY      = 'dal_admin_pin';
+  var DEFAULT_PIN  = '1234';   // ← CHANGE THIS after first login
+  var MONTHS_AHEAD = 3;
+
+  /* ── Helpers ─────────────────────────────────── */
+  function padZ(n) { return String(n).padStart(2,'0'); }
+  function toKey(y,m,d) { return y+'-'+padZ(m+1)+'-'+padZ(d); }
+  function today() { var d = new Date(); return toKey(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function isPast(key) { return key < today(); }
+  function isToday(key) { return key === today(); }
+
+  function hashPin(pin) {
+    /* Simple reversible hash — good enough for localStorage; not cryptographic */
+    var h = 0;
+    for (var i = 0; i < pin.length; i++) { h = (h * 31 + pin.charCodeAt(i)) & 0xFFFFFFFF; }
+    return 'dal_' + h.toString(16);
+  }
+
+  function getSchedule() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return {}; }
+  }
+  function saveSchedule(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+
+  function getStatus(key) {
+    if (isPast(key)) return 'past';
+    return getSchedule()[key] || 'available';
+  }
+
+  function cycleStatus(key) {
+    var s = getSchedule();
+    var cur = s[key] || 'available';
+    var next = { available: 'booked', booked: 'unavailable', unavailable: 'available' };
+    s[key] = next[cur];
+    saveSchedule(s);
+    return s[key];
+  }
+
+  /* ── Calendar rendering ──────────────────────── */
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+  function renderCalendars() {
+    var container = document.getElementById('calendar-months');
+    container.innerHTML = '';
+    var now = new Date();
+    for (var m = 0; m < MONTHS_AHEAD; m++) {
+      var d = new Date(now.getFullYear(), now.getMonth() + m, 1);
+      container.appendChild(buildMonth(d.getFullYear(), d.getMonth()));
+    }
+  }
+
+  function buildMonth(year, month) {
+    var wrap = document.createElement('div');
+    wrap.className = 'cal-month';
+
+    /* Header */
+    var hdr = document.createElement('div');
+    hdr.className = 'cal-month-header';
+    hdr.textContent = MONTHS[month] + ' ' + year;
+    wrap.appendChild(hdr);
+
+    /* Weekday labels */
+    var wdRow = document.createElement('div');
+    wdRow.className = 'cal-weekdays';
+    DAYS.forEach(function(d) {
+      var wd = document.createElement('div');
+      wd.className = 'cal-weekday';
+      wd.textContent = d;
+      wdRow.appendChild(wd);
+    });
+    wrap.appendChild(wdRow);
+
+    /* Days grid */
+    var grid = document.createElement('div');
+    grid.className = 'cal-days';
+    var firstDay = new Date(year, month, 1).getDay();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (var i = 0; i < firstDay; i++) {
+      var blank = document.createElement('div');
+      blank.className = 'cal-day empty';
+      grid.appendChild(blank);
+    }
+
+    for (var day = 1; day <= daysInMonth; day++) {
+      (function(d) {
+        var key = toKey(year, month, d);
+        var cell = document.createElement('div');
+        var status = getStatus(key);
+        cell.className = 'cal-day ' + status;
+        if (isToday(key)) cell.classList.add('today-ring');
+        cell.textContent = d;
+        cell.setAttribute('data-key', key);
+        cell.setAttribute('title', status === 'available' ? 'Available' : status === 'booked' ? 'Booked' : status === 'past' ? 'Past' : 'Unavailable');
+
+        cell.addEventListener('click', function() {
+          if (!document.body.classList.contains('admin-mode')) return;
+          if (isPast(key)) return;
+          var newStatus = cycleStatus(key);
+          cell.className = 'cal-day ' + newStatus;
+          if (isToday(key)) cell.classList.add('today-ring');
+          cell.setAttribute('title', newStatus);
+          showToast('Day marked as ' + newStatus);
+        });
+        grid.appendChild(cell);
+      }(day));
+    }
+
+    wrap.appendChild(grid);
+    return wrap;
+  }
+
+  /* ── Admin auth ──────────────────────────────── */
+  var adminFab    = document.getElementById('admin-fab');
+  var pinModal    = document.getElementById('pin-modal');
+  var pinInput    = document.getElementById('pin-input');
+  var pinError    = document.getElementById('pin-error');
+  var modalOk     = document.getElementById('modal-ok-btn');
+  var modalCancel = document.getElementById('modal-cancel-btn');
+  var exitAdmin   = document.getElementById('exit-admin-btn');
+
+  function getPin() { return localStorage.getItem(PIN_KEY) || hashPin(DEFAULT_PIN); }
+
+  adminFab.addEventListener('click', function() {
+    if (document.body.classList.contains('admin-mode')) { return; }
+    pinInput.value = '';
+    pinError.classList.remove('show');
+    pinModal.classList.add('open');
+    setTimeout(function() { pinInput.focus(); }, 80);
+  });
+
+  function tryPin() {
+    var entered = pinInput.value.trim();
+    if (hashPin(entered) === getPin()) {
+      pinModal.classList.remove('open');
+      document.body.classList.add('admin-mode');
+      adminFab.textContent = '✓';
+      adminFab.style.background = '#1B4F8C';
+      adminFab.style.color = '#fff';
+      showToast('Admin mode active — click days to edit');
+    } else {
+      pinError.classList.add('show');
+      pinInput.value = '';
+      pinInput.focus();
+    }
+  }
+
+  modalOk.addEventListener('click', tryPin);
+  pinInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryPin(); });
+  modalCancel.addEventListener('click', function() { pinModal.classList.remove('open'); });
+  pinModal.addEventListener('click', function(e) { if (e.target === pinModal) pinModal.classList.remove('open'); });
+
+  exitAdmin.addEventListener('click', function() {
+    document.body.classList.remove('admin-mode');
+    adminFab.textContent = '⚙';
+    adminFab.style.background = '';
+    adminFab.style.color = '';
+  });
+
+  /* ── Nav toggle ──────────────────────────────── */
+  document.getElementById('nav-toggle').addEventListener('click', function() {
+    var links = document.getElementById('nav-links');
+    var open = links.classList.toggle('open');
+    this.setAttribute('aria-expanded', String(open));
+  });
+
+  /* ── Toast ───────────────────────────────────── */
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3000);
+  }
+
+  /* ── Init ────────────────────────────────────── */
+  renderCalendars();
+</script>
+
+</body>
+</html>
