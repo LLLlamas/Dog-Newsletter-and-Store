@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Schedule &amp; Availability — Dogs &amp; Llamas</title>
-  <meta name="description" content="Check Lorenzo Llamas's availability for dog boarding, drop-in visits, and dog walking. Book through Rover.">
+  <meta name="description" content="Check Lorenzo Llamas's availability for dog boarding, drop-in visits, and dog walking. Request a booking directly with us.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -289,6 +289,90 @@
     #booking-modal .modal h3 { margin-bottom: 4px; }
     #booking-modal .modal p { margin-bottom: 14px; }
 
+    /* ── REQUEST MODAL (visitor-facing) ──────────── */
+    #request-modal .modal {
+      max-width: 460px; max-height: 92vh; overflow-y: auto;
+      padding: 28px 28px 24px;
+    }
+    #request-modal .modal h3 { font-size: 22px; margin-bottom: 4px; }
+    #request-modal .modal p.req-sub { font-family: var(--font-body); font-size: 13.5px; color: var(--text-2); margin: 0 0 16px; }
+    .req-row { display: flex; gap: 10px; }
+    .req-row > div { flex: 1; }
+    #request-modal select,
+    #request-modal textarea,
+    #request-modal input {
+      width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 14px;
+      color: var(--text); outline: none; transition: border-color .15s; margin-bottom: 8px;
+      background: #fff;
+    }
+    #request-modal textarea { resize: vertical; min-height: 64px; }
+    #request-modal select:focus,
+    #request-modal textarea:focus,
+    #request-modal input:focus { border-color: var(--blue); }
+    #request-modal .booking-label { margin-top: 6px; }
+    #request-modal .modal-error { font-size: 12.5px; color: #c0392b; margin: 6px 0 8px; display: none; }
+    #request-modal .modal-error.show { display: block; }
+    #request-modal .req-success {
+      display: none; text-align: center; padding: 8px 4px 4px;
+    }
+    #request-modal .req-success.show { display: block; }
+    #request-modal .req-success-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--blue-pale); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; margin: 0 auto 14px; font-weight: 700;
+    }
+    #request-modal .req-success h4 { font-family: var(--font-head); font-size: 20px; margin: 0 0 8px; color: var(--text); }
+    #request-modal .req-success p { font-family: var(--font-body); font-size: 14px; color: var(--text-2); line-height: 1.6; margin: 0 0 18px; }
+
+    /* ── ADMIN PENDING REQUESTS PANEL ────────────── */
+    .admin-requests {
+      display: none; background: var(--surface);
+      border: 1px solid var(--border); border-left: 4px solid var(--yellow);
+      border-radius: var(--radius-md); box-shadow: var(--shadow-sm);
+      padding: 22px 24px; margin-bottom: 32px;
+    }
+    body.admin-mode .admin-requests { display: block; }
+    .admin-requests h3 {
+      font-family: var(--font-head); font-size: 20px; font-weight: 600;
+      color: var(--text); margin: 0 0 4px;
+    }
+    .admin-requests .req-count {
+      font-family: var(--font-body); font-size: 12px; color: var(--text-3);
+      margin: 0 0 16px;
+    }
+    .req-list { display: flex; flex-direction: column; gap: 12px; }
+    .req-card {
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 14px 16px; background: var(--blue-pale);
+    }
+    .req-card-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 6px;
+    }
+    .req-card-dog { font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--text); margin: 0; }
+    .req-card-svc {
+      font-family: var(--font-body); font-size: 10.5px; font-weight: 700;
+      letter-spacing: .5px; text-transform: uppercase; color: var(--blue);
+      background: #fff; padding: 3px 9px; border-radius: var(--radius-full);
+    }
+    .req-card-line { font-family: var(--font-body); font-size: 13px; color: var(--text-2); margin: 2px 0; line-height: 1.5; }
+    .req-card-line strong { color: var(--text); font-weight: 600; }
+    .req-card-notes { font-family: var(--font-body); font-size: 12.5px; color: var(--text-2); font-style: italic; margin: 6px 0 0; }
+    .req-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .btn-req-approve, .btn-req-decline {
+      flex: 1; font-family: var(--font-body); font-size: 13px; font-weight: 600;
+      padding: 9px 14px; border-radius: var(--radius-full); border: none;
+      cursor: pointer; transition: background .14s, transform .14s;
+    }
+    .btn-req-approve { background: var(--blue); color: #fff; }
+    .btn-req-approve:hover { background: var(--blue-mid); }
+    .btn-req-decline { background: #fff; color: var(--text-2); border: 1.5px solid var(--border); }
+    .btn-req-decline:hover { border-color: #c0392b; color: #c0392b; }
+    .btn-req-approve:disabled, .btn-req-decline:disabled { opacity: .55; cursor: wait; }
+    .req-empty { font-family: var(--font-body); font-size: 13px; color: var(--text-3); font-style: italic; }
+
     .admin-instructions {
       background: var(--yellow-pale); border: 1px solid #f0d580; border-radius: var(--radius-md);
       padding: 16px 20px; margin-bottom: 28px; display: none;
@@ -471,7 +555,7 @@
   <div class="hero-inner">
     <p class="hero-eyebrow">Availability</p>
     <h1>Check Our Schedule</h1>
-    <p>See what dates are open, then pick the service you need. Book through Rover &mdash; we&rsquo;ll confirm within 24 hours.</p>
+    <p>See what dates are open, then send a booking request &mdash; we handle everything in-house and confirm within 24 hours.</p>
   </div>
 </section>
 
@@ -483,6 +567,13 @@
     <p><strong>Admin mode is active.</strong> Click a grey day to mark it <strong>Available</strong>. Click an available day to enter dog name + drop-off / pick-up times and turn it into a <strong>Booking</strong>. Click a booking to clear it.</p>
     <p>Changes sync to Supabase and are visible to everyone immediately.</p>
     <button class="btn-admin-exit" id="exit-admin-btn">Exit admin mode</button>
+  </div>
+
+  <!-- ADMIN: PENDING BOOKING REQUESTS (only visible in admin mode) -->
+  <div class="admin-requests" id="admin-requests">
+    <h3>Pending booking requests</h3>
+    <p class="req-count" id="req-count">Loading&hellip;</p>
+    <div class="req-list" id="req-list"></div>
   </div>
 
   <!-- CALENDAR FIRST -->
@@ -527,10 +618,11 @@
   <!-- BOOK CTA -->
   <div class="book-section">
     <h2>Ready to book?</h2>
-    <p>All bookings go through Rover &mdash; it handles payment, messaging, and insurance in one place. Click below to request your dates.</p>
-    <a class="btn-book" href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">
-      Request a Booking on Rover &#8599;
-    </a>
+    <p>Send a booking request directly to Lorenzo. You&rsquo;ll get an email back within 24 hours confirming the dates.</p>
+    <button class="btn-book" id="open-request-btn" type="button">
+      Request a Booking &rarr;
+    </button>
+    <p class="book-note">No account needed &middot; payment handled after approval</p>
   </div>
 
 </div>
@@ -538,7 +630,7 @@
 <!-- FOOTER -->
 <footer>
   <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
-  <p>Lorenzo &amp; Catalina Llamas &bull; All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a></p>
+  <p>Lorenzo &amp; Catalina Llamas &bull; All bookings handled in-house</p>
   <div class="footer-links">
     <a href="index.html">Newsletter</a>
     <a href="schedule.html">Schedule</a>
@@ -549,6 +641,83 @@
   </div>
   <p style="margin-top:16px;color:rgba(255,255,255,.2);font-size:11.5px;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
 </footer>
+
+<!-- ── VISITOR BOOKING REQUEST MODAL ─────────────────── -->
+<div class="modal-overlay" id="request-modal" role="dialog" aria-modal="true" aria-labelledby="request-modal-title">
+  <div class="modal">
+    <div id="request-form-wrap">
+      <h3 id="request-modal-title">Request a Booking</h3>
+      <p class="req-sub">Lorenzo will email you back within 24 hours to confirm.</p>
+
+      <label class="booking-label" for="req-service">Service</label>
+      <select id="req-service">
+        <option value="boarding">&#127969; Dog Boarding (overnight, in our home)</option>
+        <option value="daycare">&#9728; Doggy Day Care (full day)</option>
+        <option value="dropin">&#128100; Drop-In Visit (in your home)</option>
+        <option value="walking">&#129445; Dog Walking</option>
+        <option value="housesitting">&#127968; House Sitting (in your home)</option>
+      </select>
+
+      <div class="req-row">
+        <div>
+          <label class="booking-label" for="req-start">Start date</label>
+          <input type="date" id="req-start">
+        </div>
+        <div>
+          <label class="booking-label" for="req-end">End date</label>
+          <input type="date" id="req-end">
+        </div>
+      </div>
+
+      <div class="req-row">
+        <div>
+          <label class="booking-label" for="req-dropoff">Drop-off time</label>
+          <input type="time" id="req-dropoff" value="08:00">
+        </div>
+        <div>
+          <label class="booking-label" for="req-pickup">Pick-up time</label>
+          <input type="time" id="req-pickup" value="17:00">
+        </div>
+      </div>
+
+      <label class="booking-label" for="req-dog">Dog's name</label>
+      <input type="text" id="req-dog" placeholder="e.g. Turbo" maxlength="40" autocomplete="off">
+
+      <label class="booking-label" for="req-name">Your name</label>
+      <input type="text" id="req-name" placeholder="Jane Doe" maxlength="80" autocomplete="name">
+
+      <div class="req-row">
+        <div>
+          <label class="booking-label" for="req-email">Email</label>
+          <input type="email" id="req-email" placeholder="you@example.com" maxlength="120" autocomplete="email">
+        </div>
+        <div>
+          <label class="booking-label" for="req-phone">Phone (optional)</label>
+          <input type="tel" id="req-phone" placeholder="555-555-1234" maxlength="32" autocomplete="tel">
+        </div>
+      </div>
+
+      <label class="booking-label" for="req-notes">Notes (optional)</label>
+      <textarea id="req-notes" placeholder="Anything Lorenzo should know — feeding times, meds, quirks…" maxlength="800"></textarea>
+
+      <p class="modal-error" id="req-error"></p>
+
+      <div class="modal-btns">
+        <button class="btn-modal-cancel" id="req-cancel-btn" type="button">Cancel</button>
+        <button class="btn-modal-ok" id="req-submit-btn" type="button">Send request</button>
+      </div>
+    </div>
+
+    <div class="req-success" id="req-success">
+      <div class="req-success-icon">&#10003;</div>
+      <h4>Request sent!</h4>
+      <p>Lorenzo will email you back within 24 hours. Check your inbox (and spam folder, just in case).</p>
+      <div class="modal-btns" style="justify-content:center">
+        <button class="btn-modal-ok" id="req-done-btn" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ADMIN FAB -->
 <button class="admin-fab" id="admin-fab" title="Sitter login" aria-label="Admin settings">&#9965;</button>
@@ -952,6 +1121,8 @@
     adminFab.style.background = '#1B4F8C';
     adminFab.style.color = '#fff';
     showToast('Admin mode active \u2014 click days to edit');
+    /* Pull pending booking requests so the panel populates */
+    loadPendingRequests();
   }
 
   function rejectPin() {
@@ -1079,6 +1250,229 @@
     detailDesc.textContent = s.desc;
     serviceDetail.classList.add('show');
   });
+
+  /* ── Visitor booking request modal ───────────── */
+  var requestModal     = document.getElementById('request-modal');
+  var openRequestBtn   = document.getElementById('open-request-btn');
+  var reqCancelBtn     = document.getElementById('req-cancel-btn');
+  var reqSubmitBtn     = document.getElementById('req-submit-btn');
+  var reqDoneBtn       = document.getElementById('req-done-btn');
+  var reqFormWrap      = document.getElementById('request-form-wrap');
+  var reqSuccess       = document.getElementById('req-success');
+  var reqError         = document.getElementById('req-error');
+  var reqService       = document.getElementById('req-service');
+  var reqStart         = document.getElementById('req-start');
+  var reqEnd           = document.getElementById('req-end');
+  var reqDropoff       = document.getElementById('req-dropoff');
+  var reqPickup        = document.getElementById('req-pickup');
+  var reqDog           = document.getElementById('req-dog');
+  var reqName          = document.getElementById('req-name');
+  var reqEmail         = document.getElementById('req-email');
+  var reqPhone         = document.getElementById('req-phone');
+  var reqNotes         = document.getElementById('req-notes');
+
+  function openRequestModal() {
+    /* Default to today / tomorrow */
+    var t = today();
+    var d = new Date(); d.setDate(d.getDate() + 1);
+    var tomorrow = toKey(d.getFullYear(), d.getMonth(), d.getDate());
+    reqStart.min = t;
+    reqEnd.min   = t;
+    if (!reqStart.value) reqStart.value = t;
+    if (!reqEnd.value)   reqEnd.value   = tomorrow;
+    reqError.classList.remove('show');
+    reqFormWrap.style.display = 'block';
+    reqSuccess.classList.remove('show');
+    requestModal.classList.add('open');
+    setTimeout(function () { reqService.focus(); }, 80);
+  }
+  function closeRequestModal() { requestModal.classList.remove('open'); }
+
+  function showReqError(msg) {
+    reqError.textContent = msg;
+    reqError.classList.add('show');
+  }
+
+  function isEmailish(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
+
+  function submitBookingRequest() {
+    reqError.classList.remove('show');
+    var service = reqService.value;
+    var start   = reqStart.value;
+    var end     = reqEnd.value;
+    var dog     = reqDog.value.trim();
+    var name    = reqName.value.trim();
+    var email   = reqEmail.value.trim();
+    var phone   = reqPhone.value.trim();
+    var notes   = reqNotes.value.trim();
+    var dOff    = reqDropoff.value || null;
+    var pUp     = reqPickup.value  || null;
+
+    if (!service)             return showReqError('Pick a service.');
+    if (!start || !end)       return showReqError('Pick a start and end date.');
+    if (end < start)          return showReqError('End date must be on or after start date.');
+    if (start < today())      return showReqError('Start date can\u2019t be in the past.');
+    if (!dog)                 return showReqError('Enter your dog\u2019s name.');
+    if (!name)                return showReqError('Enter your name.');
+    if (!isEmailish(email))   return showReqError('Enter a valid email address.');
+
+    var s = supa();
+    if (!s) return showReqError('Booking is offline right now \u2014 please try again later.');
+
+    reqSubmitBtn.disabled = true;
+    reqSubmitBtn.textContent = 'Sending\u2026';
+
+    fetch(s.url + '/rest/v1/rpc/dal_create_booking_request', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({
+        p_service:      service,
+        p_client_name:  name,
+        p_client_email: email,
+        p_client_phone: phone || null,
+        p_dog_name:     dog,
+        p_start_date:   start,
+        p_end_date:     end,
+        p_drop_off:     dOff,
+        p_pick_up:      pUp,
+        p_notes:        notes || null
+      })
+    }).then(function (r) {
+      reqSubmitBtn.disabled = false;
+      reqSubmitBtn.textContent = 'Send request';
+      if (!r.ok) {
+        return r.text().then(function (txt) {
+          showReqError('Couldn\u2019t send (' + r.status + '). ' + (txt.slice(0,80) || ''));
+        });
+      }
+      reqFormWrap.style.display = 'none';
+      reqSuccess.classList.add('show');
+      /* Clear sensitive form values for next time */
+      reqDog.value = ''; reqNotes.value = '';
+    }).catch(function (err) {
+      reqSubmitBtn.disabled = false;
+      reqSubmitBtn.textContent = 'Send request';
+      showReqError('Network error. Please try again.');
+      console.warn('[booking] submit error:', err);
+    });
+  }
+
+  if (openRequestBtn) openRequestBtn.addEventListener('click', openRequestModal);
+  reqCancelBtn.addEventListener('click', closeRequestModal);
+  reqDoneBtn.addEventListener('click', closeRequestModal);
+  reqSubmitBtn.addEventListener('click', submitBookingRequest);
+  requestModal.addEventListener('click', function (e) {
+    if (e.target === requestModal) closeRequestModal();
+  });
+  /* Keep end >= start automatically */
+  reqStart.addEventListener('change', function () {
+    reqEnd.min = reqStart.value;
+    if (reqEnd.value && reqEnd.value < reqStart.value) reqEnd.value = reqStart.value;
+  });
+
+  /* ── Admin pending requests panel ────────────── */
+  var adminRequests = document.getElementById('admin-requests');
+  var reqList       = document.getElementById('req-list');
+  var reqCount      = document.getElementById('req-count');
+
+  function loadPendingRequests() {
+    var s = supa();
+    if (!s || !ADMIN_PIN_MEM) return;
+    reqCount.textContent = 'Loading\u2026';
+    reqList.innerHTML = '';
+    fetch(s.url + '/rest/v1/rpc/dal_list_booking_requests', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_status: 'pending' })
+    }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (rows) {
+        if (!rows) {
+          reqCount.textContent = 'Couldn\u2019t load requests.';
+          return;
+        }
+        renderPendingRequests(rows);
+      })
+      .catch(function () {
+        reqCount.textContent = 'Couldn\u2019t load requests.';
+      });
+  }
+
+  function renderPendingRequests(rows) {
+    reqList.innerHTML = '';
+    if (!rows.length) {
+      reqCount.textContent = 'No pending requests.';
+      return;
+    }
+    reqCount.textContent = rows.length + ' pending';
+    rows.forEach(function (row) {
+      reqList.appendChild(buildRequestCard(row));
+    });
+  }
+
+  function fmtTime(t) { return t ? String(t).slice(0,5) : '?'; }
+  function escHtml(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+  }); }
+
+  function buildRequestCard(row) {
+    var card = document.createElement('div');
+    card.className = 'req-card';
+    var range = row.start_date === row.end_date
+      ? row.start_date
+      : row.start_date + ' \u2192 ' + row.end_date;
+    card.innerHTML =
+      '<div class="req-card-head">' +
+        '<p class="req-card-dog">' + escHtml(row.dog_name) + '</p>' +
+        '<span class="req-card-svc">' + escHtml(row.service) + '</span>' +
+      '</div>' +
+      '<p class="req-card-line"><strong>Dates:</strong> ' + escHtml(range) + ' (' + fmtTime(row.drop_off) + ' \u2192 ' + fmtTime(row.pick_up) + ')</p>' +
+      '<p class="req-card-line"><strong>Client:</strong> ' + escHtml(row.client_name) + ' &middot; <a href="mailto:' + escHtml(row.client_email) + '">' + escHtml(row.client_email) + '</a>' +
+        (row.client_phone ? ' &middot; ' + escHtml(row.client_phone) : '') + '</p>' +
+      (row.notes ? '<p class="req-card-notes">\u201C' + escHtml(row.notes) + '\u201D</p>' : '') +
+      '<div class="req-card-actions">' +
+        '<button class="btn-req-approve" type="button">Approve</button>' +
+        '<button class="btn-req-decline" type="button">Decline</button>' +
+      '</div>';
+    var btnApprove = card.querySelector('.btn-req-approve');
+    var btnDecline = card.querySelector('.btn-req-decline');
+    btnApprove.addEventListener('click', function () { decideRequest(row.id, 'approve', card); });
+    btnDecline.addEventListener('click', function () {
+      if (!confirm('Decline this request from ' + row.client_name + '?')) return;
+      decideRequest(row.id, 'decline', card);
+    });
+    return card;
+  }
+
+  function decideRequest(id, action, card) {
+    var s = supa();
+    if (!s || !ADMIN_PIN_MEM) return;
+    var btns = card.querySelectorAll('button');
+    btns.forEach(function (b) { b.disabled = true; });
+    fetch(s.url + '/rest/v1/rpc/dal_decide_booking_request', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_id: id, p_action: action })
+    }).then(function (r) { return r.ok; })
+      .then(function (ok) {
+        if (!ok) {
+          btns.forEach(function (b) { b.disabled = false; });
+          showToast('\u26A0 Couldn\u2019t ' + action + ' request');
+          return;
+        }
+        showToast(action === 'approve' ? 'Approved \u2014 calendar updated' : 'Request declined');
+        card.remove();
+        if (!reqList.children.length) reqCount.textContent = 'No pending requests.';
+        else reqCount.textContent = reqList.children.length + ' pending';
+        if (action === 'approve') {
+          /* Re-pull the calendar so the newly booked dates render */
+          cloudFetchAvailability().then(function (ok2) { if (ok2) renderCalendars(); });
+        }
+      })
+      .catch(function () {
+        btns.forEach(function (b) { b.disabled = false; });
+        showToast('\u26A0 Network error');
+      });
+  }
 
   /* ── Init ────────────────────────────────────── */
   /* Initial paint from localStorage cache (instant) */
