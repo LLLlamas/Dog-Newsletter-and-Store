@@ -494,22 +494,50 @@ grant  execute on function public.dal_decide_booking_request(text, uuid, text)  
 
 
 -- ═══════════════════════════════════════════════════════════════════
--- 9. EMAIL NOTIFICATIONS  (Brevo via pg_net trigger)
+-- 9. EMAIL NOTIFICATIONS  (Gmail SMTP via Supabase Edge Function)
 -- ═══════════════════════════════════════════════════════════════════
--- Sends an email to the owner whenever a new booking_request is created.
--- Requires:
---   1. Enable the pg_net extension:
---        Dashboard → Database → Extensions → search "pg_net" → Enable
---   2. Create the app_config table (below) and insert your secrets:
---        insert into app_config(key, value) values
---          ('brevo_api_key',  'xkeysib-INSERTKEYHERE'),
---          ('owner_email',    'lorenzoleollamas@gmail.com'),
---          ('owner_name',     'Lorenzo Llamas'),
---          ('sender_email',   'lorenzoleollamas@gmail.com'),  -- Brevo verified sender
---          ('sender_name',    'Dogs & Llamas');
---   3. Re-run this whole file so the trigger picks up the config.
+-- Sends an email to the owner whenever a new booking_request is
+-- created, and emails the client when the owner approves/declines.
 --
--- If pg_net is NOT enabled the trigger silently no-ops, so the booking
+-- Architecture: Postgres trigger → pg_net.http_post → Supabase Edge
+-- Function `send-email` (supabase/functions/send-email/index.ts) →
+-- Gmail SMTP using a Google App Password. The Edge Function accepts
+-- the exact same JSON payload shape Brevo used (sender / to / subject
+-- / htmlContent) so these SQL functions only need to change the target
+-- URL and the auth header.
+--
+-- Why not Brevo: Brevo refuses Gmail addresses as senders, and the
+-- business runs out of dogsandllamasservice@gmail.com.
+--
+-- Required setup (run ONCE, outside this file):
+--   1. Enable pg_net:
+--        Dashboard → Database → Extensions → search "pg_net" → Enable
+--   2. Generate a Google App Password for dogsandllamasservice@gmail.com
+--      at myaccount.google.com → Security → App passwords.
+--   3. Deploy the Edge Function with the Supabase CLI:
+--        supabase login
+--        supabase link --project-ref nizvndjuzyblsewobkru
+--        supabase functions deploy send-email
+--   4. Set the function secrets:
+--        supabase secrets set \
+--          GMAIL_USER=dogsandllamasservice@gmail.com \
+--          GMAIL_APP_PASSWORD=<16-char app password> \
+--          EDGE_SHARED_SECRET=<32+ random chars>
+--   5. Insert the app_config rows:
+--        insert into public.app_config(key, value) values
+--          ('owner_email',     'dogsandllamasservice@gmail.com'),
+--          ('owner_name',      'Lorenzo Llamas'),
+--          ('sender_email',    'dogsandllamasservice@gmail.com'),
+--          ('sender_name',     'Dogs & Llamas'),
+--          ('email_fn_url',    'https://nizvndjuzyblsewobkru.supabase.co/functions/v1/send-email'),
+--          ('email_fn_secret', '<same EDGE_SHARED_SECRET as step 4>')
+--        on conflict (key) do update set value = excluded.value;
+--   6. Re-run this whole file so the triggers pick up the new config.
+--
+-- Legacy: the 'brevo_api_key' row (if present) is now unused. Safe to
+-- leave in place as a rollback hedge; delete later once stable.
+--
+-- If pg_net is NOT enabled the triggers silently no-op, so the booking
 -- request still saves successfully — you just won't get an email.
 
 create table if not exists public.app_config (
@@ -529,15 +557,19 @@ security definer
 set search_path = public, extensions
 as $$
 declare
-  v_brevo_key   text;
-  v_owner_email text;
-  v_owner_name  text;
-  v_sender_email text;
-  v_sender_name  text;
-  v_subject     text;
-  v_html        text;
-  v_payload     jsonb;
-  v_pgnet_ok    boolean;
+  v_owner_email   text;
+  v_owner_name    text;
+  v_sender_email  text;
+  v_sender_name   text;
+  v_fn_url        text;
+  v_fn_secret     text;
+  v_subject       text;
+  v_html          text;
+  v_service_label text;
+  v_phone_block   text;
+  v_notes_block   text;
+  v_payload       jsonb;
+  v_pgnet_ok      boolean;
 begin
   -- Check pg_net is available
   select exists (
@@ -548,35 +580,74 @@ begin
   if not v_pgnet_ok then return new; end if;
 
   -- Pull config
-  select value into v_brevo_key    from public.app_config where key = 'brevo_api_key';
   select value into v_owner_email  from public.app_config where key = 'owner_email';
   select value into v_owner_name   from public.app_config where key = 'owner_name';
   select value into v_sender_email from public.app_config where key = 'sender_email';
   select value into v_sender_name  from public.app_config where key = 'sender_name';
+  select value into v_fn_url       from public.app_config where key = 'email_fn_url';
+  select value into v_fn_secret    from public.app_config where key = 'email_fn_secret';
 
-  if v_brevo_key is null or v_owner_email is null then return new; end if;
+  if v_owner_email is null or v_fn_url is null or v_fn_secret is null then
+    return new;
+  end if;
+
+  -- Pretty service label
+  v_service_label := case lower(coalesce(new.service, ''))
+    when 'boarding'     then 'Overnight boarding'
+    when 'daycare'      then 'Daycare'
+    when 'dropin'       then 'Drop-in visit'
+    when 'walking'      then 'Dog walk'
+    when 'housesitting' then 'House-sitting'
+    else coalesce(initcap(new.service), '—')
+  end;
+
+  -- Optional phone line (hidden if empty)
+  if new.client_phone is not null and length(trim(new.client_phone)) > 0 then
+    v_phone_block := $H$<br><span style="color:#4C5470;font-size:14px;">$H$ || new.client_phone || $H$</span>$H$;
+  else
+    v_phone_block := '';
+  end if;
+
+  -- Optional notes block (hidden if empty)
+  if new.notes is not null and length(trim(new.notes)) > 0 then
+    v_notes_block :=
+      $H$<p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Notes from Client</p><p style="margin:0 0 28px;font-family:Georgia,serif;font-size:15px;font-style:italic;line-height:1.7;color:#4C5470;border-left:3px solid #D4A017;padding:4px 0 4px 16px;">&ldquo;$H$
+      || replace(replace(replace(new.notes, '<', '&lt;'), '>', '&gt;'), E'\n', '<br>')
+      || $H$&rdquo;</p>$H$;
+  else
+    v_notes_block := '';
+  end if;
 
   v_subject := 'New booking request from ' || new.client_name || ' (' || new.dog_name || ')';
-  v_html := format(
-    '<h2>New booking request</h2>'
-    '<p><strong>Client:</strong> %s &lt;%s&gt;%s</p>'
-    '<p><strong>Dog:</strong> %s</p>'
-    '<p><strong>Service:</strong> %s</p>'
-    '<p><strong>Dates:</strong> %s to %s</p>'
-    '<p><strong>Drop-off:</strong> %s &nbsp; <strong>Pick-up:</strong> %s</p>'
-    '<p><strong>Notes:</strong><br>%s</p>'
-    '<hr><p><a href="https://dogsandllamas.pages.dev/schedule.html">Open the schedule</a> and use admin mode to approve or decline.</p>',
-    coalesce(new.client_name, ''),
-    coalesce(new.client_email, ''),
-    coalesce(' / ' || new.client_phone, ''),
-    coalesce(new.dog_name, ''),
-    coalesce(new.service, ''),
-    coalesce(new.start_date::text, ''),
-    coalesce(new.end_date::text, ''),
-    coalesce(new.drop_off::text, '—'),
-    coalesce(new.pick_up::text, '—'),
-    coalesce(new.notes, '(none)')
-  );
+
+  v_html :=
+    $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>New booking request</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">New booking request from $H$
+    || coalesce(new.client_name, 'a client')
+    || $H$ for $H$
+    || coalesce(new.dog_name, 'their dog')
+    || $H$ &mdash; open the admin view to approve or decline.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">New Booking Request</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">Someone just requested a stay</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi Lorenzo, a new booking request just came in. Review the details below, then open the admin view to approve or decline.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Booking Details</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;border-left:4px solid #D4A017;"><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;width:92px;vertical-align:top;">Service</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || v_service_label
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dog</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(new.dog_name, '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dates</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(new.start_date, 'FMMon FMDD'), '—')
+    || $H$ &nbsp;&rarr;&nbsp; $H$
+    || coalesce(to_char(new.end_date, 'FMMon FMDD, YYYY'), '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Drop-off</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(new.drop_off, 'FMHH12:MI AM'), '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Pick-up</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(new.pick_up, 'FMHH12:MI AM'), '—')
+    || $H$</td></tr></table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Client</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.6;"><strong style="font-size:16px;">$H$
+    || coalesce(new.client_name, '—')
+    || $H$</strong><br><a href="mailto:$H$
+    || coalesce(new.client_email, '')
+    || $H$" style="color:#1B4F8C;text-decoration:none;font-size:14px;">$H$
+    || coalesce(new.client_email, '')
+    || $H$</a>$H$
+    || v_phone_block
+    || $H$</td></tr></table>$H$
+    || v_notes_block
+    || $H$<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:8px 0 4px;"><tr><td align="center"><a href="https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Open admin view &rarr;</a></td></tr></table><p style="margin:18px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#8C94B0;text-align:center;line-height:1.6;">Enter admin mode on the schedule page to approve or decline this request.<br>Approved bookings update the calendar automatically.</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
 
   v_payload := jsonb_build_object(
     'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
@@ -587,15 +658,16 @@ begin
     'htmlContent', v_html
   );
 
-  -- Fire-and-forget POST to Brevo. Wrapped in EXCEPTION so trigger can't block insert.
+  -- Fire-and-forget POST to the send-email Edge Function.
+  -- Wrapped in EXCEPTION so the trigger can never block the insert.
   begin
     perform net.http_post(
-      url     := 'https://api.brevo.com/v3/smtp/email',
-      headers := jsonb_build_object('Content-Type', 'application/json', 'api-key', v_brevo_key),
+      url     := v_fn_url,
+      headers := jsonb_build_object('Content-Type', 'application/json', 'x-edge-secret', v_fn_secret),
       body    := v_payload
     );
   exception when others then
-    raise warning 'dal_notify_owner_of_request: Brevo POST failed: %', SQLERRM;
+    raise warning 'dal_notify_owner_of_request: edge POST failed: %', SQLERRM;
   end;
 
   return new;
@@ -624,14 +696,17 @@ security definer
 set search_path = public, extensions
 as $$
 declare
-  v_brevo_key    text;
-  v_sender_email text;
-  v_sender_name  text;
-  v_pgnet_ok     boolean;
-  v_subject      text;
-  v_html         text;
-  v_payload      jsonb;
-  v_pay_link     text;
+  v_sender_email  text;
+  v_sender_name   text;
+  v_fn_url        text;
+  v_fn_secret     text;
+  v_pgnet_ok      boolean;
+  v_subject       text;
+  v_html          text;
+  v_payload       jsonb;
+  v_pay_link      text;
+  v_service_label text;
+  v_schedule_url  text := 'https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html';
 begin
   select exists (
     select 1 from pg_proc p
@@ -640,49 +715,71 @@ begin
   ) into v_pgnet_ok;
   if not v_pgnet_ok then return; end if;
 
-  select value into v_brevo_key    from public.app_config where key = 'brevo_api_key';
   select value into v_sender_email from public.app_config where key = 'sender_email';
   select value into v_sender_name  from public.app_config where key = 'sender_name';
-  if v_brevo_key is null or v_req.client_email is null then return; end if;
+  select value into v_fn_url       from public.app_config where key = 'email_fn_url';
+  select value into v_fn_secret    from public.app_config where key = 'email_fn_secret';
+  if v_fn_url is null or v_fn_secret is null or v_req.client_email is null then
+    return;
+  end if;
+
+  -- Pretty service label
+  v_service_label := case lower(coalesce(v_req.service, ''))
+    when 'boarding'     then 'Overnight boarding'
+    when 'daycare'      then 'Daycare'
+    when 'dropin'       then 'Drop-in visit'
+    when 'walking'      then 'Dog walk'
+    when 'housesitting' then 'House-sitting'
+    else coalesce(initcap(v_req.service), '—')
+  end;
 
   -- MOCK Stripe payment link. Replace with a real Checkout Session URL later.
-  v_pay_link := 'https://dogsandllamas.pages.dev/pay-mock?booking=' || substring(v_req.id::text, 1, 8);
+  v_pay_link := 'https://llllamas.github.io/Dog-Newsletter-and-Store/pay-mock?booking=' || substring(v_req.id::text, 1, 8);
 
   if p_action = 'approve' then
-    v_subject := 'Your booking with Dogs & Llamas is confirmed!';
-    v_html := format(
-      '<h2>You''re all set, %s!</h2>'
-      '<p>Lorenzo has confirmed your booking for <strong>%s</strong>.</p>'
-      '<p><strong>Service:</strong> %s<br>'
-      '<strong>Dates:</strong> %s to %s<br>'
-      '<strong>Drop-off:</strong> %s &nbsp; <strong>Pick-up:</strong> %s</p>'
-      '<p style="margin:24px 0"><a href="%s" style="background:#1B4F8C;color:#fff;text-decoration:none;padding:12px 24px;border-radius:99px;font-weight:600;display:inline-block">Pay &amp; reserve your spot</a></p>'
-      '<p style="font-size:12px;color:#666"><em>This is a mock payment link &mdash; full Stripe checkout coming soon.</em></p>'
-      '<p>Looking forward to hosting %s!</p>'
-      '<p>&mdash; Lorenzo &amp; Catalina</p>',
-      coalesce(v_req.client_name, 'there'),
-      coalesce(v_req.dog_name, 'your dog'),
-      coalesce(v_req.service, ''),
-      coalesce(v_req.start_date::text, ''),
-      coalesce(v_req.end_date::text, ''),
-      coalesce(v_req.drop_off::text, '—'),
-      coalesce(v_req.pick_up::text,  '—'),
-      v_pay_link,
-      coalesce(v_req.dog_name, 'your dog')
-    );
+    v_subject := 'Your stay with Dogs & Llamas is confirmed!';
+    v_html :=
+      $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Booking confirmed</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">Your stay for $H$
+      || coalesce(v_req.dog_name, 'your dog')
+      || $H$ is confirmed. Here are the details.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">Booking Confirmed</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">You&rsquo;re all set &mdash; we can&rsquo;t wait to meet $H$
+      || coalesce(v_req.dog_name, 'your pup')
+      || $H$</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi $H$
+      || coalesce(v_req.client_name, 'there')
+      || $H$,</p><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Lorenzo has confirmed your booking for <strong>$H$
+      || coalesce(v_req.dog_name, 'your dog')
+      || $H$</strong>. We&rsquo;ve locked in your dates on the calendar. Here&rsquo;s the full picture:</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Your Booking</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;border-left:4px solid #D4A017;"><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;width:92px;vertical-align:top;">Service</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+      || v_service_label
+      || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dog</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+      || coalesce(v_req.dog_name, '—')
+      || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dates</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+      || coalesce(to_char(v_req.start_date, 'FMMon FMDD'), '—')
+      || $H$ &nbsp;&rarr;&nbsp; $H$
+      || coalesce(to_char(v_req.end_date, 'FMMon FMDD, YYYY'), '—')
+      || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Drop-off</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+      || coalesce(to_char(v_req.drop_off, 'FMHH12:MI AM'), '—')
+      || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Pick-up</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+      || coalesce(to_char(v_req.pick_up, 'FMHH12:MI AM'), '—')
+      || $H$</td></tr></table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 10px;"><tr><td align="center"><a href="$H$
+      || v_pay_link
+      || $H$" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Pay &amp; reserve your spot &rarr;</a></td></tr></table><p style="margin:14px 0 28px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-align:center;font-style:italic;">This is a placeholder payment link &mdash; full Stripe checkout is coming soon.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">What Happens Next</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">1.</strong> &nbsp;Reply to this email with anything Lorenzo should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">2.</strong> &nbsp;We&rsquo;ll send a quick check-in the day before drop-off with the address and any last-minute details.</p><p style="margin:0;"><strong style="color:#1B4F8C;">3.</strong> &nbsp;Bring food, leash, and any comfort item &mdash; we&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;">Looking forward to hosting $H$
+      || coalesce(v_req.dog_name, 'your dog')
+      || $H$!</p><p style="margin:0 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
   else
     v_subject := 'About your booking request with Dogs & Llamas';
-    v_html := format(
-      '<h2>Hi %s,</h2>'
-      '<p>Thank you so much for reaching out about %s. Unfortunately Lorenzo isn''t able to take this booking (%s to %s) &mdash; we''re really sorry!</p>'
-      '<p>Please feel free to check the calendar again and request another window. We''d love to host %s on a different date.</p>'
-      '<p>&mdash; Lorenzo &amp; Catalina</p>',
-      coalesce(v_req.client_name, 'there'),
-      coalesce(v_req.dog_name, 'your dog'),
-      coalesce(v_req.start_date::text, ''),
-      coalesce(v_req.end_date::text, ''),
-      coalesce(v_req.dog_name, 'your dog')
-    );
+    v_html :=
+      $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>About your booking request</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">Sorry &mdash; Lorenzo isn&rsquo;t able to take this booking. Try another window?</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">Booking Update</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">About your recent request</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi $H$
+      || coalesce(v_req.client_name, 'there')
+      || $H$,</p><p style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Thank you so much for reaching out about <strong>$H$
+      || coalesce(v_req.dog_name, 'your dog')
+      || $H$</strong>. Unfortunately Lorenzo isn&rsquo;t able to take this booking &mdash; we&rsquo;re genuinely sorry to miss it.</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;border-left:4px solid #D4A017;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#4C5470;line-height:1.6;"><p style="margin:0 0 4px;font-size:11px;font-weight:bold;letter-spacing:0.8px;text-transform:uppercase;color:#8C94B0;">Requested Window</p><p style="margin:0;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+      || coalesce(to_char(v_req.start_date, 'FMMon FMDD'), '—')
+      || $H$ &nbsp;&rarr;&nbsp; $H$
+      || coalesce(to_char(v_req.end_date, 'FMMon FMDD, YYYY'), '—')
+      || $H$</p></td></tr></table><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Please feel free to check the calendar again and request another window &mdash; we&rsquo;d love to host $H$
+      || coalesce(v_req.dog_name, 'your dog')
+      || $H$ on a different date.</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 10px;"><tr><td align="center"><a href="$H$
+      || v_schedule_url
+      || $H$" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Check other dates &rarr;</a></td></tr></table><p style="margin:24px 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
   end if;
 
   v_payload := jsonb_build_object(
@@ -696,12 +793,12 @@ begin
 
   begin
     perform net.http_post(
-      url     := 'https://api.brevo.com/v3/smtp/email',
-      headers := jsonb_build_object('Content-Type', 'application/json', 'api-key', v_brevo_key),
+      url     := v_fn_url,
+      headers := jsonb_build_object('Content-Type', 'application/json', 'x-edge-secret', v_fn_secret),
       body    := v_payload
     );
   exception when others then
-    raise warning 'dal_notify_client_of_decision: Brevo POST failed: %', SQLERRM;
+    raise warning 'dal_notify_client_of_decision: edge POST failed: %', SQLERRM;
   end;
 end;
 $$;

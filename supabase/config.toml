@@ -1,0 +1,12 @@
+# Supabase CLI project config
+# Docs: https://supabase.com/docs/guides/cli/config
+
+project_id = "nizvndjuzyblsewobkru"
+
+# ── Edge Functions ────────────────────────────────────────────────
+# send-email is called by Postgres triggers via pg_net, which cannot
+# attach a JWT. Auth is enforced inside the function via the
+# `x-edge-secret` header (matched against the EDGE_SHARED_SECRET env
+# var, which is the same value stored in app_config.email_fn_secret).
+[functions.send-email]
+verify_jwt = false
