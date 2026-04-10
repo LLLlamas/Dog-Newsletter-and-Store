@@ -315,6 +315,293 @@ grant  execute on function public.dal_verify_admin_pin(text)                    
 
 
 -- ═══════════════════════════════════════════════════════════════════
+-- 8. BOOKING REQUESTS  (in-house booking flow, replaces Rover)
+-- ═══════════════════════════════════════════════════════════════════
+-- Visitors submit booking requests on the schedule page. The owner
+-- sees pending requests in admin mode and can approve / decline.
+-- Approving a request flips the requested days to 'booked' on the
+-- availability calendar (Stage 2 will also generate a Stripe link).
+
+create table if not exists public.booking_requests (
+  id            uuid primary key default gen_random_uuid(),
+  status        text not null default 'pending'
+                 check (status in ('pending','approved','declined','cancelled')),
+  service       text not null
+                 check (service in ('boarding','daycare','dropin','walking','housesitting')),
+  client_name   text not null,
+  client_email  text not null,
+  client_phone  text,
+  dog_name      text not null,
+  start_date    date not null,
+  end_date      date not null,
+  drop_off      time,
+  pick_up       time,
+  notes         text,
+  decided_at    timestamptz,
+  decided_by    text,
+  created_at    timestamptz default now()
+);
+
+comment on table public.booking_requests is
+  'Visitor-submitted booking requests. Owner approves/declines via PIN-gated RPC.';
+
+create index if not exists booking_requests_status_idx on public.booking_requests(status);
+create index if not exists booking_requests_dates_idx  on public.booking_requests(start_date, end_date);
+
+alter table public.booking_requests enable row level security;
+-- Zero policies. All reads/writes go through SECURITY DEFINER RPCs below.
+
+-- ── 8a. CREATE REQUEST (anon-callable, public form) ───────────────
+drop function if exists public.dal_create_booking_request(text,text,text,text,text,date,date,time,time,text);
+
+create or replace function public.dal_create_booking_request(
+  p_service      text,
+  p_client_name  text,
+  p_client_email text,
+  p_client_phone text,
+  p_dog_name     text,
+  p_start_date   date,
+  p_end_date     date,
+  p_drop_off     time,
+  p_pick_up      time,
+  p_notes        text
+)
+returns public.booking_requests
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_row public.booking_requests;
+begin
+  -- Basic validation
+  if p_client_name  is null or length(trim(p_client_name))  = 0 then raise exception 'Name required';  end if;
+  if p_client_email is null or length(trim(p_client_email)) = 0 then raise exception 'Email required'; end if;
+  if p_dog_name     is null or length(trim(p_dog_name))     = 0 then raise exception 'Dog name required'; end if;
+  if p_start_date is null or p_end_date is null then raise exception 'Dates required'; end if;
+  if p_end_date < p_start_date then raise exception 'End date must be on or after start date'; end if;
+  if p_start_date < current_date then raise exception 'Cannot request a date in the past'; end if;
+  if p_service not in ('boarding','daycare','dropin','walking','housesitting') then
+    raise exception 'Invalid service';
+  end if;
+
+  insert into public.booking_requests
+    (service, client_name, client_email, client_phone,
+     dog_name, start_date, end_date, drop_off, pick_up, notes)
+  values
+    (p_service, trim(p_client_name), lower(trim(p_client_email)), nullif(trim(p_client_phone),''),
+     trim(p_dog_name), p_start_date, p_end_date, p_drop_off, p_pick_up, nullif(trim(p_notes),''))
+  returning * into v_row;
+
+  return v_row;
+end;
+$$;
+
+comment on function public.dal_create_booking_request(text,text,text,text,text,date,date,time,time,text)
+  is 'Public booking request submission. No PIN required.';
+
+-- ── 8b. LIST PENDING REQUESTS  (PIN-gated, owner-only) ────────────
+drop function if exists public.dal_list_booking_requests(text, text);
+
+create or replace function public.dal_list_booking_requests(p_pin text, p_status text default 'pending')
+returns setof public.booking_requests
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_admin_pin constant text := '1234';   -- ← must match dal_set_availability
+begin
+  if p_pin is null or p_pin <> v_admin_pin then raise exception 'Invalid PIN'; end if;
+  return query
+    select * from public.booking_requests
+    where (p_status is null or status = p_status)
+    order by created_at desc;
+end;
+$$;
+
+comment on function public.dal_list_booking_requests(text, text)
+  is 'Owner reads booking requests filtered by status (default pending).';
+
+-- ── 8c. APPROVE / DECLINE  (PIN-gated, owner-only) ────────────────
+drop function if exists public.dal_decide_booking_request(text, uuid, text);
+
+create or replace function public.dal_decide_booking_request(
+  p_pin     text,
+  p_id      uuid,
+  p_action  text   -- 'approve' | 'decline'
+)
+returns public.booking_requests
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_admin_pin constant text := '1234';   -- ← must match
+  v_req public.booking_requests;
+  v_day date;
+begin
+  if p_pin is null or p_pin <> v_admin_pin then raise exception 'Invalid PIN'; end if;
+  if p_action not in ('approve','decline') then raise exception 'Invalid action'; end if;
+
+  select * into v_req from public.booking_requests where id = p_id for update;
+  if not found then raise exception 'Request not found'; end if;
+
+  update public.booking_requests
+     set status     = case when p_action = 'approve' then 'approved' else 'declined' end,
+         decided_at = now(),
+         decided_by = 'owner'
+   where id = p_id
+  returning * into v_req;
+
+  -- On approval: mark every day in the range as 'booked' on the availability calendar
+  if p_action = 'approve' then
+    v_day := v_req.start_date;
+    while v_day <= v_req.end_date loop
+      insert into public.availability (day, status, dog_name, drop_off, pick_up, notes, updated_at)
+      values (v_day, 'booked', v_req.dog_name, v_req.drop_off, v_req.pick_up,
+              'Booking #' || substring(v_req.id::text, 1, 8), now())
+      on conflict (day) do update
+        set status     = excluded.status,
+            dog_name   = excluded.dog_name,
+            drop_off   = excluded.drop_off,
+            pick_up    = excluded.pick_up,
+            notes      = excluded.notes,
+            updated_at = now();
+      v_day := v_day + 1;
+    end loop;
+  end if;
+
+  return v_req;
+end;
+$$;
+
+comment on function public.dal_decide_booking_request(text, uuid, text)
+  is 'Owner approves or declines a booking request. Approval marks availability days booked.';
+
+-- ── 8d. GRANTS ─────────────────────────────────────────────────────
+revoke all   on table public.booking_requests                                                                from anon, authenticated;
+grant  execute on function public.dal_create_booking_request(text,text,text,text,text,date,date,time,time,text) to anon, authenticated;
+grant  execute on function public.dal_list_booking_requests(text, text)                                      to anon, authenticated;
+grant  execute on function public.dal_decide_booking_request(text, uuid, text)                               to anon, authenticated;
+
+
+-- ═══════════════════════════════════════════════════════════════════
+-- 9. EMAIL NOTIFICATIONS  (Brevo via pg_net trigger)
+-- ═══════════════════════════════════════════════════════════════════
+-- Sends an email to the owner whenever a new booking_request is created.
+-- Requires:
+--   1. Enable the pg_net extension:
+--        Dashboard → Database → Extensions → search "pg_net" → Enable
+--   2. Create the app_config table (below) and insert your secrets:
+--        insert into app_config(key, value) values
+--          ('brevo_api_key',  'xkeysib-YOUR-KEY-HERE'),
+--          ('owner_email',    'lorenzoleollamas@gmail.com'),
+--          ('owner_name',     'Lorenzo Llamas'),
+--          ('sender_email',   'no-reply@dogsandllamas.com'),  -- Brevo verified sender
+--          ('sender_name',    'Dogs & Llamas');
+--   3. Re-run this whole file so the trigger picks up the config.
+--
+-- If pg_net is NOT enabled the trigger silently no-ops, so the booking
+-- request still saves successfully — you just won't get an email.
+
+create table if not exists public.app_config (
+  key   text primary key,
+  value text not null
+);
+alter table public.app_config enable row level security;
+-- Zero policies. Only SECURITY DEFINER functions read this table.
+revoke all on table public.app_config from anon, authenticated;
+
+comment on table public.app_config is 'Private key/value store for API keys and emails. Anon role has zero access.';
+
+create or replace function public.dal_notify_owner_of_request()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_brevo_key   text;
+  v_owner_email text;
+  v_owner_name  text;
+  v_sender_email text;
+  v_sender_name  text;
+  v_subject     text;
+  v_html        text;
+  v_payload     jsonb;
+  v_pgnet_ok    boolean;
+begin
+  -- Check pg_net is available
+  select exists (
+    select 1 from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('net','extensions') and p.proname = 'http_post'
+  ) into v_pgnet_ok;
+  if not v_pgnet_ok then return new; end if;
+
+  -- Pull config
+  select value into v_brevo_key    from public.app_config where key = 'brevo_api_key';
+  select value into v_owner_email  from public.app_config where key = 'owner_email';
+  select value into v_owner_name   from public.app_config where key = 'owner_name';
+  select value into v_sender_email from public.app_config where key = 'sender_email';
+  select value into v_sender_name  from public.app_config where key = 'sender_name';
+
+  if v_brevo_key is null or v_owner_email is null then return new; end if;
+
+  v_subject := 'New booking request from ' || new.client_name || ' (' || new.dog_name || ')';
+  v_html := format(
+    '<h2>New booking request</h2>'
+    '<p><strong>Client:</strong> %s &lt;%s&gt;%s</p>'
+    '<p><strong>Dog:</strong> %s</p>'
+    '<p><strong>Service:</strong> %s</p>'
+    '<p><strong>Dates:</strong> %s to %s</p>'
+    '<p><strong>Drop-off:</strong> %s &nbsp; <strong>Pick-up:</strong> %s</p>'
+    '<p><strong>Notes:</strong><br>%s</p>'
+    '<hr><p><a href="https://dogsandllamas.pages.dev/schedule.html">Open the schedule</a> and use admin mode to approve or decline.</p>',
+    coalesce(new.client_name, ''),
+    coalesce(new.client_email, ''),
+    coalesce(' / ' || new.client_phone, ''),
+    coalesce(new.dog_name, ''),
+    coalesce(new.service, ''),
+    coalesce(new.start_date::text, ''),
+    coalesce(new.end_date::text, ''),
+    coalesce(new.drop_off::text, '—'),
+    coalesce(new.pick_up::text, '—'),
+    coalesce(new.notes, '(none)')
+  );
+
+  v_payload := jsonb_build_object(
+    'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
+                                   'email', coalesce(v_sender_email, v_owner_email)),
+    'to',      jsonb_build_array(jsonb_build_object('email', v_owner_email,
+                                                    'name',  coalesce(v_owner_name, ''))),
+    'subject', v_subject,
+    'htmlContent', v_html
+  );
+
+  -- Fire-and-forget POST to Brevo. Wrapped in EXCEPTION so trigger can't block insert.
+  begin
+    perform net.http_post(
+      url     := 'https://api.brevo.com/v3/smtp/email',
+      headers := jsonb_build_object('Content-Type', 'application/json', 'api-key', v_brevo_key),
+      body    := v_payload
+    );
+  exception when others then
+    raise warning 'dal_notify_owner_of_request: Brevo POST failed: %', SQLERRM;
+  end;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_notify_owner_of_request on public.booking_requests;
+create trigger trg_notify_owner_of_request
+  after insert on public.booking_requests
+  for each row execute function public.dal_notify_owner_of_request();
+
+
+-- ═══════════════════════════════════════════════════════════════════
 -- VERIFICATION (run these after applying to double-check everything)
 -- ═══════════════════════════════════════════════════════════════════
 
