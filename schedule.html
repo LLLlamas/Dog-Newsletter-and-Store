@@ -140,7 +140,7 @@
     .service-detail-price em { font-style: normal; font-size: 13px; font-weight: 500; color: var(--text-2); margin-left: 2px; }
     .service-detail-desc { font-family: var(--font-body); font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
     .service-detail-focus {
-      display: inline-flex; align-items: center; gap: 6px;
+      display: inline-block;
       background: var(--yellow); color: var(--text);
       font-family: var(--font-body); font-size: 10.5px; font-weight: 700;
       letter-spacing: .6px; text-transform: uppercase;
@@ -214,6 +214,27 @@
       border: 2px solid var(--yellow); border-radius: 50%;
     }
 
+    /* Visitor selection states (range pick for booking request) */
+    .cal-day.in-range {
+      background: rgba(212,160,23,.22);
+      color: var(--text);
+    }
+    .cal-day.range-end {
+      background: var(--yellow);
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(212,160,23,.4);
+    }
+    /* When a range-end overlaps with available/booked, the visitor pick wins visually */
+    .cal-day.available.in-range,
+    .cal-day.unavailable.in-range { color: var(--text); }
+    .cal-day.available.range-end,
+    .cal-day.unavailable.range-end,
+    .cal-day.booked.range-end { background: var(--yellow); color: var(--text); }
+    /* Hover hint for visitors (non-admin) */
+    body:not(.admin-mode) .cal-day:not(.empty):not(.past):not(.booked) { cursor: pointer; }
+    body:not(.admin-mode) .cal-day:not(.empty):not(.past):not(.booked):hover { transform: scale(1.12); box-shadow: 0 0 0 2px var(--yellow-light); }
+
     /* Admin editable */
     body.admin-mode .cal-day.available,
     body.admin-mode .cal-day.booked,
@@ -239,7 +260,25 @@
       letter-spacing: .3px; transition: background .15s, transform .15s;
     }
     .btn-book:hover { background: var(--yellow-light); transform: translateY(-2px); color: var(--text); }
+    .btn-book:disabled {
+      background: rgba(255,255,255,.18); color: rgba(255,255,255,.55);
+      cursor: not-allowed; transform: none; box-shadow: none;
+    }
+    .btn-book:disabled:hover { background: rgba(255,255,255,.18); transform: none; color: rgba(255,255,255,.55); }
     .book-note { font-family: var(--font-body); font-size: 12px; color: rgba(255,255,255,.45); margin: 14px 0 0; }
+    .booking-summary {
+      font-family: var(--font-body); font-size: 13.5px; color: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.08); border: 1px dashed rgba(255,255,255,.22);
+      border-radius: var(--radius-sm); padding: 10px 16px; margin: 0 auto 18px;
+      max-width: 460px; line-height: 1.55;
+    }
+    .booking-summary.has-selection { color: #fff; border-color: var(--yellow-light); background: rgba(212,160,23,.18); }
+    .rover-alt {
+      font-family: var(--font-body); font-size: 12.5px;
+      color: rgba(255,255,255,.55); margin: 18px 0 0;
+    }
+    .rover-alt a { color: var(--yellow-light); text-decoration: none; font-weight: 600; }
+    .rover-alt a:hover { color: #fff; text-decoration: underline; }
 
     /* ── ADMIN PANEL ─────────────────────────────── */
     .admin-fab {
@@ -289,42 +328,42 @@
     #booking-modal .modal h3 { margin-bottom: 4px; }
     #booking-modal .modal p { margin-bottom: 14px; }
 
-    /* ── REQUEST MODAL (visitor-facing) ──────────── */
-    #request-modal .modal {
-      max-width: 460px; max-height: 92vh; overflow-y: auto;
-      padding: 28px 28px 24px;
+    /* Visitor confirm modal — wider, scrollable, but uses the same .modal style */
+    #visitor-modal .modal {
+      max-width: 420px;
+      max-height: 92vh; overflow-y: auto;
     }
-    #request-modal .modal h3 { font-size: 22px; margin-bottom: 4px; }
-    #request-modal .modal p.req-sub { font-family: var(--font-body); font-size: 13.5px; color: var(--text-2); margin: 0 0 16px; }
-    .req-row { display: flex; gap: 10px; }
-    .req-row > div { flex: 1; }
-    #request-modal select,
-    #request-modal textarea,
-    #request-modal input {
-      width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+    #visitor-modal .modal h3 { margin-bottom: 4px; }
+    .vm-summary {
+      background: var(--blue-pale); border-radius: var(--radius-sm);
+      padding: 10px 14px; margin: 0 0 14px;
+      font-family: var(--font-body); font-size: 13.5px; color: var(--text);
+      line-height: 1.6;
+    }
+    .vm-summary .vm-line { display: block; }
+    .vm-summary .vm-line-label {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; color: var(--blue); margin-right: 4px;
+    }
+    #visitor-modal textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
       border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 14px;
-      color: var(--text); outline: none; transition: border-color .15s; margin-bottom: 8px;
+      color: var(--text); outline: none; transition: border-color .15s;
+      margin-bottom: 12px; resize: vertical; min-height: 60px;
       background: #fff;
     }
-    #request-modal textarea { resize: vertical; min-height: 64px; }
-    #request-modal select:focus,
-    #request-modal textarea:focus,
-    #request-modal input:focus { border-color: var(--blue); }
-    #request-modal .booking-label { margin-top: 6px; }
-    #request-modal .modal-error { font-size: 12.5px; color: #c0392b; margin: 6px 0 8px; display: none; }
-    #request-modal .modal-error.show { display: block; }
-    #request-modal .req-success {
-      display: none; text-align: center; padding: 8px 4px 4px;
+    #visitor-modal textarea:focus { border-color: var(--blue); }
+    #vm-success {
+      display: none; text-align: center; padding: 6px 4px 0;
     }
-    #request-modal .req-success.show { display: block; }
-    #request-modal .req-success-icon {
-      width: 56px; height: 56px; border-radius: 50%;
+    #vm-success-icon {
+      width: 52px; height: 52px; border-radius: 50%;
       background: var(--blue-pale); color: var(--blue);
       display: flex; align-items: center; justify-content: center;
-      font-size: 28px; margin: 0 auto 14px; font-weight: 700;
+      font-size: 26px; margin: 0 auto 12px; font-weight: 700;
     }
-    #request-modal .req-success h4 { font-family: var(--font-head); font-size: 20px; margin: 0 0 8px; color: var(--text); }
-    #request-modal .req-success p { font-family: var(--font-body); font-size: 14px; color: var(--text-2); line-height: 1.6; margin: 0 0 18px; }
+    #vm-success h4 { font-family: var(--font-head); font-size: 19px; margin: 0 0 8px; color: var(--text); }
+    #vm-success p { font-family: var(--font-body); font-size: 13.5px; color: var(--text-2); line-height: 1.6; margin: 0 0 16px; }
 
     /* ── ADMIN PENDING REQUESTS PANEL ────────────── */
     .admin-requests {
@@ -618,11 +657,16 @@
   <!-- BOOK CTA -->
   <div class="book-section">
     <h2>Ready to book?</h2>
-    <p>Send a booking request directly to Lorenzo. You&rsquo;ll get an email back within 24 hours confirming the dates.</p>
-    <button class="btn-book" id="open-request-btn" type="button">
-      Request a Booking &rarr;
+    <p>Click dates on the calendar above to pick your range, choose a service, then confirm. Lorenzo will email you within 24 hours.</p>
+    <p class="booking-summary" id="booking-summary">No dates selected yet.</p>
+    <button class="btn-book" id="confirm-booking-btn" type="button" disabled>
+      Confirm Booking &rarr;
     </button>
     <p class="book-note">No account needed &middot; payment handled after approval</p>
+    <p class="rover-alt">
+      Prefer a third-party platform? You can also
+      <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">book us on Rover &#8599;</a>
+    </p>
   </div>
 
 </div>
@@ -642,78 +686,58 @@
   <p style="margin-top:16px;color:rgba(255,255,255,.2);font-size:11.5px;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
 </footer>
 
-<!-- ── VISITOR BOOKING REQUEST MODAL ─────────────────── -->
-<div class="modal-overlay" id="request-modal" role="dialog" aria-modal="true" aria-labelledby="request-modal-title">
+<!-- ── VISITOR BOOKING CONFIRM MODAL ─────────────────── -->
+<div class="modal-overlay" id="visitor-modal" role="dialog" aria-modal="true" aria-labelledby="visitor-modal-title">
   <div class="modal">
-    <div id="request-form-wrap">
-      <h3 id="request-modal-title">Request a Booking</h3>
-      <p class="req-sub">Lorenzo will email you back within 24 hours to confirm.</p>
+    <div id="vm-form">
+      <h3 id="visitor-modal-title">Confirm your booking</h3>
+      <p>Lorenzo will email you back within 24 hours.</p>
 
-      <label class="booking-label" for="req-service">Service</label>
-      <select id="req-service">
-        <option value="boarding">&#127969; Dog Boarding (overnight, in our home)</option>
-        <option value="daycare">&#9728; Doggy Day Care (full day)</option>
-        <option value="dropin">&#128100; Drop-In Visit (in your home)</option>
-        <option value="walking">&#129445; Dog Walking</option>
-        <option value="housesitting">&#127968; House Sitting (in your home)</option>
-      </select>
+      <div class="vm-summary">
+        <span class="vm-line"><span class="vm-line-label">Dates</span><span id="vm-dateline"></span></span>
+        <span class="vm-line"><span class="vm-line-label">Service</span><span id="vm-serviceline"></span></span>
+      </div>
 
-      <div class="req-row">
+      <label class="booking-label" for="vm-dog">Dog's name</label>
+      <input type="text" id="vm-dog" placeholder="e.g. Turbo" maxlength="40" autocomplete="off">
+
+      <label class="booking-label" for="vm-name">Your name</label>
+      <input type="text" id="vm-name" placeholder="Jane Doe" maxlength="80" autocomplete="name">
+
+      <label class="booking-label" for="vm-email">Email</label>
+      <input type="email" id="vm-email" placeholder="you@example.com" maxlength="120" autocomplete="email">
+
+      <label class="booking-label" for="vm-phone">Phone (optional)</label>
+      <input type="tel" id="vm-phone" placeholder="555-555-1234" maxlength="32" autocomplete="tel">
+
+      <div class="booking-time-row">
         <div>
-          <label class="booking-label" for="req-start">Start date</label>
-          <input type="date" id="req-start">
+          <label class="booking-label" for="vm-dropoff">Drop-off</label>
+          <input type="time" id="vm-dropoff" value="08:00">
         </div>
         <div>
-          <label class="booking-label" for="req-end">End date</label>
-          <input type="date" id="req-end">
+          <label class="booking-label" for="vm-pickup">Pick-up</label>
+          <input type="time" id="vm-pickup" value="17:00">
         </div>
       </div>
 
-      <div class="req-row">
-        <div>
-          <label class="booking-label" for="req-dropoff">Drop-off time</label>
-          <input type="time" id="req-dropoff" value="08:00">
-        </div>
-        <div>
-          <label class="booking-label" for="req-pickup">Pick-up time</label>
-          <input type="time" id="req-pickup" value="17:00">
-        </div>
-      </div>
+      <label class="booking-label" for="vm-notes">Notes (optional)</label>
+      <textarea id="vm-notes" placeholder="Anything Lorenzo should know — feeding times, meds, quirks…" maxlength="800"></textarea>
 
-      <label class="booking-label" for="req-dog">Dog's name</label>
-      <input type="text" id="req-dog" placeholder="e.g. Turbo" maxlength="40" autocomplete="off">
-
-      <label class="booking-label" for="req-name">Your name</label>
-      <input type="text" id="req-name" placeholder="Jane Doe" maxlength="80" autocomplete="name">
-
-      <div class="req-row">
-        <div>
-          <label class="booking-label" for="req-email">Email</label>
-          <input type="email" id="req-email" placeholder="you@example.com" maxlength="120" autocomplete="email">
-        </div>
-        <div>
-          <label class="booking-label" for="req-phone">Phone (optional)</label>
-          <input type="tel" id="req-phone" placeholder="555-555-1234" maxlength="32" autocomplete="tel">
-        </div>
-      </div>
-
-      <label class="booking-label" for="req-notes">Notes (optional)</label>
-      <textarea id="req-notes" placeholder="Anything Lorenzo should know — feeding times, meds, quirks…" maxlength="800"></textarea>
-
-      <p class="modal-error" id="req-error"></p>
+      <p class="modal-error" id="vm-error"></p>
 
       <div class="modal-btns">
-        <button class="btn-modal-cancel" id="req-cancel-btn" type="button">Cancel</button>
-        <button class="btn-modal-ok" id="req-submit-btn" type="button">Send request</button>
+        <button class="btn-modal-cancel" id="vm-cancel-btn" type="button">Cancel</button>
+        <button class="btn-modal-ok" id="vm-send-btn" type="button">Send request</button>
       </div>
     </div>
 
-    <div class="req-success" id="req-success">
-      <div class="req-success-icon">&#10003;</div>
+    <div id="vm-success">
+      <div id="vm-success-icon">&#10003;</div>
       <h4>Request sent!</h4>
-      <p>Lorenzo will email you back within 24 hours. Check your inbox (and spam folder, just in case).</p>
+      <p>Lorenzo will email you within 24 hours to confirm. Check your inbox (and spam folder, just in case).</p>
       <div class="modal-btns" style="justify-content:center">
-        <button class="btn-modal-ok" id="req-done-btn" type="button">Done</button>
+        <button class="btn-modal-ok" id="vm-done-btn" type="button">Done</button>
       </div>
     </div>
   </div>
@@ -976,18 +1000,27 @@
             cell.classList.add('dal-bounce');
             setTimeout(function() { cell.classList.remove('dal-bounce'); }, 520);
           }
-          if (!document.body.classList.contains('admin-mode')) return;
-          if (isPast(key)) return;
 
+          /* Visitor (non-admin): range selection for booking request */
+          if (!document.body.classList.contains('admin-mode')) {
+            if (isPast(key)) return;
+            var entry = getEntry(key);
+            if (entry.status === 'booked') {
+              showToast('That day is already booked');
+              return;
+            }
+            handleVisitorPick(key);
+            return;
+          }
+
+          /* Admin: edit availability */
+          if (isPast(key)) return;
           var entry = getEntry(key);
           if (entry.status === 'unavailable') {
-            /* unavailable → available (no modal) */
             commitEntry(key, cell, { status: 'available', dogName: null, dropOff: null, pickUp: null });
           } else if (entry.status === 'available') {
-            /* available → open booking modal to enter dog details */
             openBookingModal(key, cell, entry);
           } else if (entry.status === 'booked') {
-            /* booked → click to clear back to unavailable */
             if (confirm('Clear the booking for ' + key + '?')) {
               commitEntry(key, cell, { status: 'unavailable', dogName: null, dropOff: null, pickUp: null });
             }
@@ -1006,6 +1039,12 @@
     var entry = getEntry(key);
     cell.className = 'cal-day ' + entry.status;
     if (isToday(key)) cell.classList.add('today-ring');
+
+    /* Visitor selection overlay */
+    if (visitorPick.start && key >= visitorPick.start && key <= (visitorPick.end || visitorPick.start)) {
+      if (key === visitorPick.start || key === visitorPick.end) cell.classList.add('range-end');
+      else cell.classList.add('in-range');
+    }
 
     var label;
     if (entry.status === 'past')         label = 'Past';
@@ -1195,36 +1234,36 @@
       name: 'Dog Boarding',
       price: '$90',
       unit: '/night',
-      desc: 'Your dog stays at our home overnight. Full attention, regular walks, backyard play, and photo updates throughout. Our favorite service — and where most of our repeat clients start.',
-      focus: true
+      desc: 'Your dog stays at our home overnight. Full attention, regular walks, backyard play, and photo updates throughout. Most clients start here — and most of them come back.',
+      tag: 'Most Requested'
     },
     daycare: {
       name: 'Doggy Day Care',
       price: '$50',
       unit: '/day',
-      desc: 'Drop your dog off in the morning and pick them up in the evening. They&rsquo;ll spend the day with us getting attention, walks, and play sessions. Perfect for long work days — and our other favorite service.',
-      focus: true
+      desc: 'Drop your dog off in the morning and pick them up in the evening. They&rsquo;ll spend the day with us getting attention, walks, and play sessions. Perfect for long work days.',
+      tag: null
     },
     dropin: {
       name: 'Drop-In Visits',
       price: '$45',
       unit: '/visit',
       desc: 'We come to your home for a 30-minute visit — feeding, a quick walk or play, potty break, and a photo update. Great for midday check-ins.',
-      focus: false
+      tag: null
     },
     walking: {
       name: 'Dog Walking',
       price: '$25',
       unit: '/walk',
-      desc: 'A 30–60 minute walk in your neighborhood. GPS-tracked through Rover so you can follow along in real time.',
-      focus: false
+      desc: 'A 30–60 minute walk in your neighborhood with photo updates so you can follow along.',
+      tag: null
     },
     housesitting: {
       name: 'House Sitting',
       price: '$100',
       unit: '/night',
       desc: 'We stay at your home overnight so your dog sleeps in their own space. Great for anxious dogs or multi-pet households.',
-      focus: false
+      tag: null
     }
   };
 
@@ -1238,95 +1277,170 @@
     var key = this.value;
     if (!key || !SERVICES[key]) {
       serviceDetail.classList.remove('show');
+      updateBookingSummary();
       return;
     }
     var s = SERVICES[key];
     var nameHTML = s.name;
-    if (s.focus) {
-      nameHTML += ' <span class="service-detail-focus">&#9733; Our Favorite</span>';
+    if (s.tag) {
+      nameHTML += ' <span class="service-detail-focus">' + s.tag + '</span>';
     }
     detailName.innerHTML = nameHTML;
     detailPrice.innerHTML = s.price + '<em>' + s.unit + '</em>';
     detailDesc.textContent = s.desc;
     serviceDetail.classList.add('show');
+    updateBookingSummary();
   });
 
-  /* ── Visitor booking request modal ───────────── */
-  var requestModal     = document.getElementById('request-modal');
-  var openRequestBtn   = document.getElementById('open-request-btn');
-  var reqCancelBtn     = document.getElementById('req-cancel-btn');
-  var reqSubmitBtn     = document.getElementById('req-submit-btn');
-  var reqDoneBtn       = document.getElementById('req-done-btn');
-  var reqFormWrap      = document.getElementById('request-form-wrap');
-  var reqSuccess       = document.getElementById('req-success');
-  var reqError         = document.getElementById('req-error');
-  var reqService       = document.getElementById('req-service');
-  var reqStart         = document.getElementById('req-start');
-  var reqEnd           = document.getElementById('req-end');
-  var reqDropoff       = document.getElementById('req-dropoff');
-  var reqPickup        = document.getElementById('req-pickup');
-  var reqDog           = document.getElementById('req-dog');
-  var reqName          = document.getElementById('req-name');
-  var reqEmail         = document.getElementById('req-email');
-  var reqPhone         = document.getElementById('req-phone');
-  var reqNotes         = document.getElementById('req-notes');
+  /* ── Visitor range pick + booking confirmation ─ */
+  var visitorPick = { start: null, end: null };
+  var bookingSummary = document.getElementById('booking-summary');
+  var confirmBookingBtn = document.getElementById('confirm-booking-btn');
 
-  function openRequestModal() {
-    /* Default to today / tomorrow */
-    var t = today();
-    var d = new Date(); d.setDate(d.getDate() + 1);
-    var tomorrow = toKey(d.getFullYear(), d.getMonth(), d.getDate());
-    reqStart.min = t;
-    reqEnd.min   = t;
-    if (!reqStart.value) reqStart.value = t;
-    if (!reqEnd.value)   reqEnd.value   = tomorrow;
-    reqError.classList.remove('show');
-    reqFormWrap.style.display = 'block';
-    reqSuccess.classList.remove('show');
-    requestModal.classList.add('open');
-    setTimeout(function () { reqService.focus(); }, 80);
+  function repaintAllCells() {
+    var cells = document.querySelectorAll('.cal-day[data-key]');
+    cells.forEach(function (cell) {
+      applyCellState(cell, cell.getAttribute('data-key'));
+    });
   }
-  function closeRequestModal() { requestModal.classList.remove('open'); }
 
-  function showReqError(msg) {
-    reqError.textContent = msg;
-    reqError.classList.add('show');
+  function nightsBetween(startKey, endKey) {
+    var p1 = startKey.split('-').map(Number);
+    var p2 = endKey.split('-').map(Number);
+    var d1 = new Date(p1[0], p1[1]-1, p1[2]);
+    var d2 = new Date(p2[0], p2[1]-1, p2[2]);
+    return Math.round((d2 - d1) / (1000*60*60*24));
   }
+
+  function fmtPretty(key) {
+    var p = key.split('-').map(Number);
+    var d = new Date(p[0], p[1]-1, p[2]);
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function handleVisitorPick(key) {
+    if (!visitorPick.start) {
+      visitorPick.start = key;
+      visitorPick.end = key;
+    } else if (!visitorPick.end || visitorPick.start === visitorPick.end) {
+      /* second click extends or resets */
+      if (key < visitorPick.start) {
+        visitorPick.start = key; /* clicked earlier → new start */
+      } else {
+        visitorPick.end = key;
+      }
+    } else {
+      /* a range already exists; clicking again resets to a new single-day pick */
+      visitorPick.start = key;
+      visitorPick.end = key;
+    }
+    repaintAllCells();
+    updateBookingSummary();
+  }
+
+  function clearVisitorPick() {
+    visitorPick.start = null;
+    visitorPick.end = null;
+    repaintAllCells();
+    updateBookingSummary();
+  }
+
+  function updateBookingSummary() {
+    var svc = serviceSelect.value;
+    var hasDates = !!visitorPick.start;
+    var parts = [];
+    if (hasDates) {
+      if (visitorPick.start === visitorPick.end) {
+        parts.push('<strong>' + fmtPretty(visitorPick.start) + '</strong>');
+      } else {
+        var nights = nightsBetween(visitorPick.start, visitorPick.end);
+        parts.push('<strong>' + fmtPretty(visitorPick.start) + ' \u2192 ' + fmtPretty(visitorPick.end) + '</strong> (' + nights + ' night' + (nights === 1 ? '' : 's') + ')');
+      }
+    } else {
+      parts.push('No dates selected yet.');
+    }
+    if (svc && SERVICES[svc]) {
+      parts.push('Service: <strong>' + SERVICES[svc].name + '</strong>');
+    } else if (hasDates) {
+      parts.push('Pick a service below to continue.');
+    }
+    bookingSummary.innerHTML = parts.join(' &middot; ');
+    bookingSummary.classList.toggle('has-selection', hasDates);
+    confirmBookingBtn.disabled = !(hasDates && svc);
+  }
+
+  /* Visitor confirm modal — uses the same .modal style as the PIN modal */
+  var visitorModal      = document.getElementById('visitor-modal');
+  var vmDateLine        = document.getElementById('vm-dateline');
+  var vmServiceLine     = document.getElementById('vm-serviceline');
+  var vmDog             = document.getElementById('vm-dog');
+  var vmName            = document.getElementById('vm-name');
+  var vmEmail           = document.getElementById('vm-email');
+  var vmPhone           = document.getElementById('vm-phone');
+  var vmDropoff         = document.getElementById('vm-dropoff');
+  var vmPickup          = document.getElementById('vm-pickup');
+  var vmNotes           = document.getElementById('vm-notes');
+  var vmError           = document.getElementById('vm-error');
+  var vmSendBtn         = document.getElementById('vm-send-btn');
+  var vmCancelBtn       = document.getElementById('vm-cancel-btn');
+  var vmFormWrap        = document.getElementById('vm-form');
+  var vmSuccess         = document.getElementById('vm-success');
+  var vmDoneBtn         = document.getElementById('vm-done-btn');
 
   function isEmailish(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
+  function vmShowError(msg) { vmError.textContent = msg; vmError.classList.add('show'); }
 
-  function submitBookingRequest() {
-    reqError.classList.remove('show');
-    var service = reqService.value;
-    var start   = reqStart.value;
-    var end     = reqEnd.value;
-    var dog     = reqDog.value.trim();
-    var name    = reqName.value.trim();
-    var email   = reqEmail.value.trim();
-    var phone   = reqPhone.value.trim();
-    var notes   = reqNotes.value.trim();
-    var dOff    = reqDropoff.value || null;
-    var pUp     = reqPickup.value  || null;
+  function openVisitorModal() {
+    if (!visitorPick.start || !serviceSelect.value) return;
+    var startK = visitorPick.start;
+    var endK   = visitorPick.end || visitorPick.start;
+    var svc    = SERVICES[serviceSelect.value];
+    if (startK === endK) {
+      vmDateLine.textContent = fmtPretty(startK);
+    } else {
+      var n = nightsBetween(startK, endK);
+      vmDateLine.textContent = fmtPretty(startK) + ' \u2192 ' + fmtPretty(endK) + ' (' + n + ' night' + (n === 1 ? '' : 's') + ')';
+    }
+    vmServiceLine.textContent = svc.name + ' \u2014 ' + svc.price + svc.unit;
+    vmError.classList.remove('show');
+    vmFormWrap.style.display = 'block';
+    vmSuccess.style.display = 'none';
+    vmSendBtn.disabled = false;
+    vmSendBtn.textContent = 'Send request';
+    visitorModal.classList.add('open');
+    setTimeout(function () { vmDog.focus(); }, 80);
+  }
+  function closeVisitorModal() { visitorModal.classList.remove('open'); }
 
-    if (!service)             return showReqError('Pick a service.');
-    if (!start || !end)       return showReqError('Pick a start and end date.');
-    if (end < start)          return showReqError('End date must be on or after start date.');
-    if (start < today())      return showReqError('Start date can\u2019t be in the past.');
-    if (!dog)                 return showReqError('Enter your dog\u2019s name.');
-    if (!name)                return showReqError('Enter your name.');
-    if (!isEmailish(email))   return showReqError('Enter a valid email address.');
+  function submitVisitorRequest() {
+    vmError.classList.remove('show');
+    var dog   = vmDog.value.trim();
+    var name  = vmName.value.trim();
+    var email = vmEmail.value.trim();
+    var phone = vmPhone.value.trim();
+    var dOff  = vmDropoff.value || null;
+    var pUp   = vmPickup.value  || null;
+    var notes = vmNotes.value.trim();
+    var svc   = serviceSelect.value;
+    var start = visitorPick.start;
+    var end   = visitorPick.end || visitorPick.start;
+
+    if (!dog)               return vmShowError('Enter your dog\u2019s name.');
+    if (!name)              return vmShowError('Enter your name.');
+    if (!isEmailish(email)) return vmShowError('Enter a valid email address.');
+    if (!svc || !start)     return vmShowError('Selection cleared \u2014 please pick dates and a service.');
 
     var s = supa();
-    if (!s) return showReqError('Booking is offline right now \u2014 please try again later.');
+    if (!s) return vmShowError('Booking is offline right now \u2014 please try again later.');
 
-    reqSubmitBtn.disabled = true;
-    reqSubmitBtn.textContent = 'Sending\u2026';
+    vmSendBtn.disabled = true;
+    vmSendBtn.textContent = 'Sending\u2026';
 
     fetch(s.url + '/rest/v1/rpc/dal_create_booking_request', {
       method:  'POST',
       headers: supaHeaders(s),
       body: JSON.stringify({
-        p_service:      service,
+        p_service:      svc,
         p_client_name:  name,
         p_client_email: email,
         p_client_phone: phone || null,
@@ -1338,36 +1452,36 @@
         p_notes:        notes || null
       })
     }).then(function (r) {
-      reqSubmitBtn.disabled = false;
-      reqSubmitBtn.textContent = 'Send request';
       if (!r.ok) {
         return r.text().then(function (txt) {
-          showReqError('Couldn\u2019t send (' + r.status + '). ' + (txt.slice(0,80) || ''));
+          vmSendBtn.disabled = false;
+          vmSendBtn.textContent = 'Send request';
+          vmShowError('Couldn\u2019t send (' + r.status + '). ' + (txt.slice(0,80) || ''));
         });
       }
-      reqFormWrap.style.display = 'none';
-      reqSuccess.classList.add('show');
-      /* Clear sensitive form values for next time */
-      reqDog.value = ''; reqNotes.value = '';
+      vmFormWrap.style.display = 'none';
+      vmSuccess.style.display = 'block';
+      /* Clear the selection so the calendar resets */
+      clearVisitorPick();
     }).catch(function (err) {
-      reqSubmitBtn.disabled = false;
-      reqSubmitBtn.textContent = 'Send request';
-      showReqError('Network error. Please try again.');
+      vmSendBtn.disabled = false;
+      vmSendBtn.textContent = 'Send request';
+      vmShowError('Network error. Please try again.');
       console.warn('[booking] submit error:', err);
     });
   }
 
-  if (openRequestBtn) openRequestBtn.addEventListener('click', openRequestModal);
-  reqCancelBtn.addEventListener('click', closeRequestModal);
-  reqDoneBtn.addEventListener('click', closeRequestModal);
-  reqSubmitBtn.addEventListener('click', submitBookingRequest);
-  requestModal.addEventListener('click', function (e) {
-    if (e.target === requestModal) closeRequestModal();
+  confirmBookingBtn.addEventListener('click', openVisitorModal);
+  vmCancelBtn.addEventListener('click', closeVisitorModal);
+  vmDoneBtn.addEventListener('click', closeVisitorModal);
+  vmSendBtn.addEventListener('click', submitVisitorRequest);
+  visitorModal.addEventListener('click', function (e) {
+    if (e.target === visitorModal) closeVisitorModal();
   });
-  /* Keep end >= start automatically */
-  reqStart.addEventListener('change', function () {
-    reqEnd.min = reqStart.value;
-    if (reqEnd.value && reqEnd.value < reqStart.value) reqEnd.value = reqStart.value;
+  [vmDog, vmName, vmEmail, vmPhone].forEach(function (el) {
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); submitVisitorRequest(); }
+    });
   });
 
   /* ── Admin pending requests panel ────────────── */

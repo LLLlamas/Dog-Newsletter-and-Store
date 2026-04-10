@@ -472,6 +472,13 @@ begin
     end loop;
   end if;
 
+  -- Notify the client of the decision (approve = confirmation, decline = polite no)
+  begin
+    perform public.dal_notify_client_of_decision(v_req, p_action);
+  exception when others then
+    raise warning 'dal_decide_booking_request: client email failed: %', SQLERRM;
+  end;
+
   return v_req;
 end;
 $$;
@@ -495,7 +502,7 @@ grant  execute on function public.dal_decide_booking_request(text, uuid, text)  
 --        Dashboard → Database → Extensions → search "pg_net" → Enable
 --   2. Create the app_config table (below) and insert your secrets:
 --        insert into app_config(key, value) values
---          ('brevo_api_key',  'xkeysib-YOUR-KEY-HERE'),
+--          ('brevo_api_key',  'xkeysib-INSERTKEYHERE'),
 --          ('owner_email',    'lorenzoleollamas@gmail.com'),
 --          ('owner_name',     'Lorenzo Llamas'),
 --          ('sender_email',   'no-reply@dogsandllamas.com'),  -- Brevo verified sender
@@ -599,6 +606,108 @@ drop trigger if exists trg_notify_owner_of_request on public.booking_requests;
 create trigger trg_notify_owner_of_request
   after insert on public.booking_requests
   for each row execute function public.dal_notify_owner_of_request();
+
+
+-- ── 9b. CLIENT-FACING DECISION EMAIL ──────────────────────────────
+-- Sent from dal_decide_booking_request when Lorenzo approves or declines.
+-- On approve, includes a (currently mocked) Stripe Checkout link placeholder.
+-- TODO: replace v_pay_link with a real Stripe Checkout Session URL once
+--       Stripe is fully wired up.
+
+create or replace function public.dal_notify_client_of_decision(
+  v_req     public.booking_requests,
+  p_action  text
+)
+returns void
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_brevo_key    text;
+  v_sender_email text;
+  v_sender_name  text;
+  v_pgnet_ok     boolean;
+  v_subject      text;
+  v_html         text;
+  v_payload      jsonb;
+  v_pay_link     text;
+begin
+  select exists (
+    select 1 from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('net','extensions') and p.proname = 'http_post'
+  ) into v_pgnet_ok;
+  if not v_pgnet_ok then return; end if;
+
+  select value into v_brevo_key    from public.app_config where key = 'brevo_api_key';
+  select value into v_sender_email from public.app_config where key = 'sender_email';
+  select value into v_sender_name  from public.app_config where key = 'sender_name';
+  if v_brevo_key is null or v_req.client_email is null then return; end if;
+
+  -- MOCK Stripe payment link. Replace with a real Checkout Session URL later.
+  v_pay_link := 'https://dogsandllamas.pages.dev/pay-mock?booking=' || substring(v_req.id::text, 1, 8);
+
+  if p_action = 'approve' then
+    v_subject := 'Your booking with Dogs & Llamas is confirmed!';
+    v_html := format(
+      '<h2>You''re all set, %s!</h2>'
+      '<p>Lorenzo has confirmed your booking for <strong>%s</strong>.</p>'
+      '<p><strong>Service:</strong> %s<br>'
+      '<strong>Dates:</strong> %s to %s<br>'
+      '<strong>Drop-off:</strong> %s &nbsp; <strong>Pick-up:</strong> %s</p>'
+      '<p style="margin:24px 0"><a href="%s" style="background:#1B4F8C;color:#fff;text-decoration:none;padding:12px 24px;border-radius:99px;font-weight:600;display:inline-block">Pay &amp; reserve your spot</a></p>'
+      '<p style="font-size:12px;color:#666"><em>This is a mock payment link &mdash; full Stripe checkout coming soon.</em></p>'
+      '<p>Looking forward to hosting %s!</p>'
+      '<p>&mdash; Lorenzo &amp; Catalina</p>',
+      coalesce(v_req.client_name, 'there'),
+      coalesce(v_req.dog_name, 'your dog'),
+      coalesce(v_req.service, ''),
+      coalesce(v_req.start_date::text, ''),
+      coalesce(v_req.end_date::text, ''),
+      coalesce(v_req.drop_off::text, '—'),
+      coalesce(v_req.pick_up::text,  '—'),
+      v_pay_link,
+      coalesce(v_req.dog_name, 'your dog')
+    );
+  else
+    v_subject := 'About your booking request with Dogs & Llamas';
+    v_html := format(
+      '<h2>Hi %s,</h2>'
+      '<p>Thank you so much for reaching out about %s. Unfortunately Lorenzo isn''t able to take this booking (%s to %s) &mdash; we''re really sorry!</p>'
+      '<p>Please feel free to check the calendar again and request another window. We''d love to host %s on a different date.</p>'
+      '<p>&mdash; Lorenzo &amp; Catalina</p>',
+      coalesce(v_req.client_name, 'there'),
+      coalesce(v_req.dog_name, 'your dog'),
+      coalesce(v_req.start_date::text, ''),
+      coalesce(v_req.end_date::text, ''),
+      coalesce(v_req.dog_name, 'your dog')
+    );
+  end if;
+
+  v_payload := jsonb_build_object(
+    'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
+                                   'email', coalesce(v_sender_email, 'no-reply@dogsandllamas.com')),
+    'to',      jsonb_build_array(jsonb_build_object('email', v_req.client_email,
+                                                    'name',  coalesce(v_req.client_name, ''))),
+    'subject', v_subject,
+    'htmlContent', v_html
+  );
+
+  begin
+    perform net.http_post(
+      url     := 'https://api.brevo.com/v3/smtp/email',
+      headers := jsonb_build_object('Content-Type', 'application/json', 'api-key', v_brevo_key),
+      body    := v_payload
+    );
+  exception when others then
+    raise warning 'dal_notify_client_of_decision: Brevo POST failed: %', SQLERRM;
+  end;
+end;
+$$;
+
+-- This helper is called only from dal_decide_booking_request, so no anon grant needed.
+revoke all on function public.dal_notify_client_of_decision(public.booking_requests, text) from anon, authenticated;
 
 
 -- ═══════════════════════════════════════════════════════════════════
