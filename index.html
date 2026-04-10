@@ -594,6 +594,18 @@
     }
     .footer-links a:hover { color: #fff; }
 
+    /* ── SUBSCRIBER PERSONALIZE BUTTON ─────────────── */
+    .dal-personalize-btn {
+      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      background: rgba(212,160,23,.14); color: var(--amber-light);
+      border: 1px solid rgba(212,160,23,.28);
+      padding: 5px 14px; border-radius: var(--radius-full);
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      transition: background .14s, border-color .14s;
+    }
+    .dal-personalize-btn:hover     { background: rgba(212,160,23,.28); border-color: rgba(212,160,23,.55); }
+    .dal-personalize-btn.dal-active{ background: rgba(212,160,23,.38); border-color: var(--amber-light); color: #fff; }
+
     /* ── ACCESSIBILITY ───────────────────────────── */
     :focus-visible {
       outline: 3px solid var(--yellow-light);
@@ -728,6 +740,13 @@
 <!-- ── NAV ──────────────────────────────────────────────────── -->
 <nav>
   <a href="index.html" class="nav-brand">Dogs <span class="amp">&amp;</span> Llamas</a>
+  <button class="dal-personalize-btn" id="dal-personalize-btn" type="button"
+          style="display:none"
+          onclick="DAL && DAL.onPersonalizeBtnClick()"
+          title="Toggle personalized view"
+          aria-label="Toggle personalized view">
+    &#128062;&nbsp;<span class="dal-btn-label">you</span>
+  </button>
   <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
   <div class="nav-links" id="nav-links">
     <a href="schedule.html" class="nav-link">Schedule</a>
@@ -737,6 +756,7 @@
     <a href="#subscribe"    class="nav-cta">Subscribe</a>
   </div>
 </nav>
+<div id="dal-live-region" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);"></div>
 
 <!-- ── HERO ─────────────────────────────────────────────────── -->
 <section class="hero" id="subscribe" aria-label="Subscribe to Dogs &amp; Llamas">
@@ -1061,9 +1081,13 @@
     e.preventDefault();
     var email = document.getElementById('email-input').value.trim();
     if (!email) return;
-    showToast('Thanks! You\'re subscribed. \uD83D\uDC36');
+    if (typeof DAL !== 'undefined') {
+      var sub = DAL.handleSubscribe(email);
+      showToast('\uD83D\uDC3E Welcome, ' + sub.username + '! Your discount code: ' + sub.discountCode);
+    } else {
+      showToast('Thanks! You\u2019re subscribed. \uD83D\uDC36');
+    }
     this.reset();
-    // TODO: POST to Mailchimp / beehiiv when live
   });
 
   /* ── Share button ────────────────────────────────────────── */
@@ -1098,6 +1122,7 @@
     this.setAttribute('aria-expanded', String(open));
   });
 </script>
+<script src="dal-subscriber.js" defer></script>
 
 </body>
 </html>

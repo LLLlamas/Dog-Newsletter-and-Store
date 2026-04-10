@@ -108,6 +108,18 @@
     .footer-links a { font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.5); transition: color .14s; }
     .footer-links a:hover { color: #fff; }
 
+    /* ── SUBSCRIBER PERSONALIZE BUTTON ─────────────── */
+    .dal-personalize-btn {
+      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      background: rgba(212,160,23,.14); color: var(--yellow-light);
+      border: 1px solid rgba(212,160,23,.28);
+      padding: 5px 14px; border-radius: 99px;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      transition: background .14s, border-color .14s;
+    }
+    .dal-personalize-btn:hover     { background: rgba(212,160,23,.28); border-color: rgba(212,160,23,.55); }
+    .dal-personalize-btn.dal-active{ background: rgba(212,160,23,.38); border-color: var(--yellow-light); color: #fff; }
+
     /* ── MICRO-INTERACTIONS ─────────────────────── */
     @keyframes dal-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes dal-wiggle  { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
@@ -155,6 +167,13 @@
 <!-- ── NAV ───────────────────────────────────────────── -->
 <nav>
   <a href="index.html" class="nav-brand">Dogs <span class="amp">&amp;</span> Llamas</a>
+  <button class="dal-personalize-btn" id="dal-personalize-btn" type="button"
+          style="display:none"
+          onclick="DAL && DAL.onPersonalizeBtnClick()"
+          title="Toggle personalized view"
+          aria-label="Toggle personalized view">
+    &#128062;&nbsp;<span class="dal-btn-label">you</span>
+  </button>
   <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
   <div class="nav-links" id="nav-links">
     <a href="schedule.html" class="nav-link">Schedule</a>
@@ -164,6 +183,7 @@
     <a href="index.html#subscribe" class="nav-cta">Subscribe</a>
   </div>
 </nav>
+<div id="dal-live-region" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);"></div>
 
 <!-- ── HEADER ────────────────────────────────────────── -->
 <header class="header-strip">
@@ -275,6 +295,7 @@
     this.setAttribute('aria-expanded', String(open));
   });
 </script>
+<script src="dal-subscriber.js" defer></script>
 
 </body>
 </html>

@@ -53,6 +53,7 @@ Six public pages:
 ├── dogsitter_newsletter_project_brief.md
 ├── chatgpt takeover 4-9-2026.md  ← Original handoff
 ├── chatgpt takeover 4-10-2026.md ← THIS FILE (latest)
+├── dal-subscriber.js             ← Shared subscriber/personalization system (NEW)
 └── media/
     ├── Turbo Outside.jpg         ← Hero main, store pick 2, dogs grid
     ├── Turbo sleeping.JPG        ← Gallery
@@ -144,6 +145,22 @@ All 6 HTML pages use an **identical nav** with 4 main tabs + Subscribe CTA. Hamb
 ```
 
 Add `class="nav-link active"` to the current page's link on each page.
+
+### Personalize button (NEW — all 6 pages)
+
+A `🐾 [username]` button appears **next to the nav brand** — only when the user has subscribed. When clicked, it toggles `dal-personalized` on `<body>`.
+
+```html
+<button class="dal-personalize-btn" id="dal-personalize-btn" type="button"
+        style="display:none"
+        onclick="DAL && DAL.onPersonalizeBtnClick()"
+        title="Toggle personalized view"
+        aria-label="Toggle personalized view">
+  🐾 <span class="dal-btn-label">you</span>
+</button>
+```
+
+All 6 pages also include `<script src="dal-subscriber.js" defer></script>` and an ARIA live region `#dal-live-region`.
 
 Shared JS:
 ```javascript
@@ -321,14 +338,19 @@ setTimeout(function () { btn.classList.remove('dal-pop'); }, 420);
 - Dog chips: Turbo, Troy, Dakota, Harley, Ace, Mango
 - Rover CTA card: no more "$25K vet coverage" footer line
 
-### store.html
-- Affiliate disclosure bar + coupon bar (`SHOP10`)
+### store.html *(picks sidebar + hover shadow updated)*
+- Affiliate disclosure bar + personalized welcome bar (`.dal-welcome-bar`, hidden by default) + coupon bar (`SHOP10`)
 - Sticky filter bar at `top: var(--nav-h)` with 10 filter tags
-- Personal Picks: Harley (Big Barker) + Turbo (Chuckit 26L)
+- **Personal Picks redesigned**: now compact sidebar (≥960px) / collapsible one-liner (<960px)
+  - Two-column layout: `.main-with-picks { grid-template-columns: 1fr 256px }`
+  - Picks section: `.picks-section` is `position: sticky; top: calc(var(--nav-h) + var(--filter-h) + 16px)` on wide
+  - Narrow: collapse button with `aria-expanded`, clicks toggle `.picks-inner.open` class
+  - Each pick: compact `.pick-item` with 50×50 `.pick-item-thumb` (emoji or centered `object-fit:cover` photo)
+- **Product card hover**: removed `transform: translateY(-3px)` tilt; replaced with enhanced shadow `0 8px 32px rgba(27,79,140,.2)`
 - 15-product grid with JS pagination (6 per page on "All", show-all for filtered)
 - Each card has ASIN in HTML comment + `rel="sponsored noopener noreferrer"`
-- Subscribe banner + share row
-- Footer: "Lorenzo & Catalina Llamas • Rover Star Sitters"
+- Subscribe banner wired to `DAL.handleSubscribe()` → shows toast with username + discount code
+- Share row + footer: "Lorenzo & Catalina Llamas • Rover Star Sitters"
 
 ### privacy.html *(rebuilt in April 9 session)*
 - Blue/yellow design system + shared nav
@@ -363,18 +385,63 @@ Shared email styling:
 
 ---
 
-## 9. Coupons
+## 9. Subscriber & Personalization System (`dal-subscriber.js`)
 
-Honor-based, no backend.
+### Overview
+
+A zero-backend localStorage-based subscriber system shipping in **v1 (April 2026)**. Supabase can replace localStorage in v2 for cross-device sync.
+
+### How it works
+
+1. User enters email in any subscribe form → calls `DAL.handleSubscribe(email)`
+2. **Username** = email prefix before `@`, stripped to `[a-z0-9]` and lowercased
+   - `jane.doe@gmail.com` → `janedoe`
+3. **Discount code** = username uppercased (e.g., `JANEDOE`) — Lorenzo & Catalina apply it manually on Rover
+4. Data stored in `localStorage['dal_subscriber']` as JSON: `{ email, username, discountCode, dogName, subscribedAt }`
+5. On every page load, `DAL.initPersonalizeButton()` reads localStorage and shows/hides the `🐾 [username]` nav button
+6. Clicking the nav button toggles `.dal-personalized` on `<body>` and `.dal-active` on the button
+7. Elements with class `.dal-personal-only` are shown/hidden by the toggle
+8. `store.html` has a `.dal-welcome-bar` that populates with username + discount code when personalized
+
+### Mailchimp setup
+
+In `dal-subscriber.js`, set:
+```javascript
+var CONFIG = {
+  mailchimpUrl: 'https://yoursite.us1.list-manage.com/subscribe/post?u=XXXX&id=XXXX'
+};
+```
+Get this URL from Mailchimp → Audience → Signup forms → Embedded forms → copy the `form action` URL.
+
+### Upgrading to Supabase (v2)
+
+1. Create a `subscribers` table: `{ id, email, username, dog_name, subscribed_at }`
+2. Add Supabase JS SDK: `<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>`
+3. Replace `safeSet/safeGet` calls in `dal-subscriber.js` with `supabase.from('subscribers').insert/select`
+4. For personalized picks: add a `dog_profiles` table mapped to `username` and query picks accordingly
+
+### CSS hooks
+
+```css
+/* Always available for personalization: */
+body.dal-personalized .dal-personal-only { display: block; }
+button.dal-personalize-btn.dal-active { background: rgba(212,160,23,.38); color: #fff; }
+```
+
+---
+
+## 10. Coupons
+
+Honor-based. The username-derived code is automatically generated; `SHOP10` is static.
 
 | Code | Trigger | Discount |
 |---|---|---|
-| `PUPS10` | Subscribes to newsletter | 10% off next sit (returning clients) |
+| `[username]` | Subscribes to newsletter (auto-generated from email) | Personal code — apply on Rover at booking |
 | `SHOP10` | Purchases via store affiliate link | 10% off next sit (new + returning) |
 
 ---
 
-## 10. Amazon Affiliate Links
+## 11. Amazon Affiliate Links
 
 All product links use direct Amazon URLs with real ASINs. Replace with personal `amzn.to/XXXXX` short links once affiliate program is approved.
 
@@ -382,7 +449,7 @@ All product links use direct Amazon URLs with real ASINs. Replace with personal 
 
 ---
 
-## 11. Security
+## 12. Security
 
 ### In HTML (works everywhere including GitHub Pages)
 - `<meta name="referrer" content="strict-origin-when-cross-origin">`
@@ -399,7 +466,7 @@ All product links use direct Amazon URLs with real ASINs. Replace with personal 
 
 ---
 
-## 12. Placeholders Still to Fill
+## 13. Placeholders Still to Fill
 
 | Placeholder | Where | Replace With |
 |---|---|---|
@@ -414,35 +481,39 @@ All product links use direct Amazon URLs with real ASINs. Replace with personal 
 
 ---
 
-## 13. Pending Work
+## 14. Pending Work
 
 ### Immediate (before launch)
 - [ ] Fill in real Rover stats on `about.html`
 - [ ] Change schedule admin PIN from `1234`
 - [ ] Replace testimonial placeholders with real client quotes
 - [ ] Convert `Ace.DNG`, `Mango Outside.DNG`, `Teddy.DNG` to JPG
-- [ ] Connect subscribe form `action="#"` to Mailchimp / beehiiv / Buttondown
+- [ ] **Connect Mailchimp**: set `CONFIG.mailchimpUrl` in `dal-subscriber.js` (see §9)
 - [ ] Replace Amazon URLs with personal amzn.to links
 - [ ] Add couple portrait for about page
-- [ ] Confirm Catalina's credential status (is she also a Star Sitter? Same training program?) and adjust badges if needed
+- [ ] Confirm Catalina's credential status and adjust badges if needed
 
 ### Short-term
 - [ ] Send welcome email to existing client list
 - [ ] Publish `monthly-issue-01.html` to subscribers
 - [ ] Add more dogs to "Our Recent Dogs" as photos come in
+- [ ] Add optional `dogName` field to subscribe forms to enable better personalization
 
 ### Medium-term
 - [ ] `monthly-issue-02.html` for May using the template
+- [ ] **Supabase v2**: create `subscribers` table for cross-device sync (see §9)
 - [ ] Add breed filter or "best for your breed" section to store
 - [ ] Testimonial carousel for about page when real reviews come in
+- [ ] Build dog profile mapping (username → dog breed/size/picks) for richer personalization on store page
 
 ### Long-term
 - [ ] Swap "In Progress" badge for full credential card when certification is earned
-- [ ] JSON-synced schedule via GitHub Actions if multi-device sync becomes needed (currently localStorage per-device)
+- [ ] JSON-synced schedule via GitHub Actions if multi-device sync becomes needed
+- [ ] Subscriber analytics dashboard (Mailchimp + optional Supabase)
 
 ---
 
-## 14. Deployment
+## 15. Deployment
 
 ### GitHub Pages
 1. Push repo to GitHub
@@ -461,7 +532,7 @@ Subscribe forms currently `preventDefault` + toast. Replace `action="#"` with Ma
 
 ---
 
-## 15. Changes in this April 10 session
+## 16. Changes in this April 10 session
 
 ### Content / copy
 1. **Sitter name corrected**: Loren → Lorenzo
@@ -517,5 +588,40 @@ Subscribe forms currently `preventDefault` + toast. Replace `action="#"` with Ma
 
 ---
 
-*Handoff prepared by Claude Code — session date April 10, 2026 (final).*
-*All 6 pages are functional, consistent, and animated. Remaining work is content (real stats, testimonials, photos, affiliate links) and email platform integration.*
+---
+
+## 17. Changes — Late April 10 session (subscriber system + store redesign)
+
+### store.html — Personal Picks redesign
+31. **Picks section shrunk and repositioned**: replaced full-width 2-up card grid with compact side panel
+    - Wide (≥960px): CSS grid two-column layout — products left (1fr), picks sidebar right (256px, sticky)
+    - Narrow (<960px): picks become a collapsible one-liner with `aria-expanded` toggle button
+    - Each pick is now a `.pick-item`: 50×50px thumbnail + dog label + product name + 2-line reason + link
+    - Photo thumbnail: `object-fit: cover; object-position: center` — always centered
+    - Old `.pick-card`, `.picks-grid`, `.pick-photo-placeholder` etc. fully removed
+
+32. **Product card hover effect improved**: removed `transform: translateY(-3px)` tilt; hover now only deepens the box shadow (`0 8px 32px rgba(27,79,140,.2)`) — no movement, card stays stable
+
+### New file: `dal-subscriber.js`
+33. **Subscriber system** — shared across all 6 pages
+    - `DAL.handleSubscribe(email)`: saves to localStorage, derives username from email prefix, posts to Mailchimp (if configured)
+    - `DAL.getSubscriber()`: returns stored `{ email, username, discountCode, dogName, subscribedAt }` or null
+    - `DAL.initPersonalizeButton()`: auto-runs on page load; reveals nav `🐾 [username]` button if subscribed
+    - `DAL.onPersonalizeBtnClick()`: toggles `body.dal-personalized`, shows/hides `.dal-personal-only` elements
+
+### Nav — Personalize button (all 6 pages)
+34. **`🐾 [username]` button** added next to nav-brand on every page
+    - Hidden (`display:none`) by default — only shown after subscribing
+    - On click, toggles personalized view; button gets `.dal-active` class (golden fill)
+    - ARIA live region `#dal-live-region` announces state change for screen readers
+
+### store.html — Personalized welcome bar
+35. **`.dal-welcome-bar`** strip between nav and affiliate-bar
+    - `display:none` by default; shown when `body.dal-personalized` is active (via `.dal-personal-only`)
+    - Populated by JS: "Hi, [username]! Showing [dog's picks]." + `[DISCOUNTCODE]` chip in yellow
+
+### Subscribe form wiring (index.html + store.html)
+36. Both subscribe forms now call `DAL.handleSubscribe(email)` and show a toast: *"🐾 Welcome, [username]! Your discount code: [CODE]"*
+
+*All 6 pages updated. `dal-subscriber.js` created. Handoff doc renumbered (sections 9–17).*
+*Next: connect Mailchimp URL in dal-subscriber.js, then optionally add Supabase for cross-device sync.*
