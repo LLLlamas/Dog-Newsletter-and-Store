@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <title>About Lorenzo — Dogs &amp; Llamas</title>
-  <meta name="description" content="Meet Lorenzo Llamas — Rover Star Sitter, professional dog sitter, walker, and dog training student. Read about his experience, approach, and the dogs he's cared for.">
+  <title>About Us — Dogs &amp; Llamas</title>
+  <meta name="description" content="Meet Lorenzo &amp; Catalina Llamas — Rover Star Sitters, professional dog sitters, walkers, and dog training students. Read about our approach and the dogs we&rsquo;ve cared for.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,9 +86,9 @@
     }
     .hero-content { flex: 1; }
     .hero-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--yellow-light); margin: 0 0 12px; }
-    .hero-name { font-family: var(--font-head); font-size: 46px; font-weight: 400; font-style: italic; color: #fff; margin: 0 0 6px; line-height: 1.1; }
+    .hero-name { font-family: var(--font-head); font-size: 46px; font-weight: 600; color: #fff; margin: 0 0 6px; line-height: 1.1; letter-spacing: -0.5px; }
     .hero-title-tag { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: rgba(255,255,255,.55); letter-spacing: .8px; text-transform: uppercase; margin: 0 0 18px; }
-    .hero-bio { font-family: var(--font-head); font-size: 17px; font-style: italic; color: rgba(255,255,255,.8); line-height: 1.65; margin: 0 0 26px; max-width: 440px; }
+    .hero-bio { font-family: var(--font-body); font-size: 15px; font-weight: 400; color: rgba(255,255,255,.85); line-height: 1.7; margin: 0 0 26px; max-width: 460px; }
     .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
     .btn-rover {
       display: inline-flex; align-items: center; gap: 8px;
@@ -171,7 +171,7 @@
     }
     .cert-card-icon { font-size: 28px; flex-shrink: 0; }
     .cert-card-body { flex: 1; }
-    .cert-card h3 { font-family: var(--font-head); font-size: 18px; font-style: italic; color: var(--blue); margin: 0 0 4px; font-weight: 600; }
+    .cert-card h3 { font-family: var(--font-head); font-size: 18px; color: var(--blue); margin: 0 0 4px; font-weight: 600; }
     .cert-card p { font-family: var(--font-body); font-size: 14px; color: var(--text-2); margin: 0; line-height: 1.55; }
 
     /* ── ROVER CARD ──────────────────────────────── */
@@ -179,8 +179,8 @@
       background: var(--blue); border-radius: var(--radius-lg);
       padding: 38px 44px; text-align: center; box-shadow: var(--shadow-lg);
     }
-    .rover-card h2 { font-family: var(--font-head); font-size: 26px; font-weight: 400; font-style: italic; color: #fff; margin: 0 0 12px; }
-    .rover-card p { font-family: var(--font-head); font-size: 15px; font-style: italic; color: rgba(255,255,255,.75); margin: 0 0 24px; line-height: 1.65; max-width: 460px; margin-left: auto; margin-right: auto; }
+    .rover-card h2 { font-family: var(--font-head); font-size: 26px; font-weight: 600; color: #fff; margin: 0 0 12px; letter-spacing: -0.3px; }
+    .rover-card p { font-family: var(--font-body); font-size: 14.5px; color: rgba(255,255,255,.8); margin: 0 0 24px; line-height: 1.7; max-width: 460px; margin-left: auto; margin-right: auto; }
     .rover-link {
       display: inline-flex; align-items: center; gap: 10px;
       background: var(--yellow); color: var(--text);
@@ -219,6 +219,57 @@
         transition-duration: .001ms !important;
         scroll-behavior: auto !important;
       }
+    }
+
+    /* ── MICRO-INTERACTIONS ─────────────────────── */
+    @keyframes dal-fade-up   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dal-pop       { 0% { transform: scale(1); } 45% { transform: scale(1.22); } 100% { transform: scale(1); } }
+    @keyframes dal-pulse     { 0% { box-shadow: 0 0 0 0 rgba(212,160,23,.55); } 80% { box-shadow: 0 0 0 18px rgba(212,160,23,0); } 100% { box-shadow: 0 0 0 0 rgba(212,160,23,0); } }
+    @keyframes dal-wiggle    { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
+    @keyframes dal-paw-walk  { 0% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(-5deg); } 100% { transform: translateY(0) rotate(0); } }
+    @keyframes dal-badge-in  { 0% { opacity: 0; transform: translateY(8px) scale(.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
+    main, .page-wrap { animation: dal-fade-up .55s ease-out both; }
+    .nav-brand { display: inline-block; }
+    .nav-brand:hover { animation: dal-wiggle .5s ease-in-out; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 14px; right: 14px; bottom: 0;
+      height: 2px; background: var(--yellow-light); border-radius: 2px;
+      transform: scaleX(0); transform-origin: center;
+      transition: transform .26s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+    /* Badges stagger-in on load */
+    .badge { animation: dal-badge-in .5s ease-out both; }
+    .badge:nth-child(1) { animation-delay: .15s; }
+    .badge:nth-child(2) { animation-delay: .3s; }
+    .badge:nth-child(3) { animation-delay: .45s; }
+    .badge:hover { animation: dal-pop .42s cubic-bezier(.34,1.56,.64,1); cursor: default; }
+
+    /* Rover CTA welcome pulse */
+    .rover-link, .btn-rover { animation: dal-pulse 2.4s ease-out 2; }
+    .rover-link:active, .btn-rover:active, .btn-schedule:active { transform: translateY(0) scale(.96); }
+
+    /* Value card icon bounce on hover */
+    .value-card:hover .value-icon { animation: dal-paw-walk .55s ease-in-out; }
+
+    /* Dog chip wiggle */
+    .dog-chip:hover { animation: dal-wiggle .5s ease-in-out; cursor: default; }
+
+    /* Hero photo gentle rock on hover */
+    .hero-photo-wrap:hover { animation: dal-wiggle .6s ease-in-out; }
+
+    .dal-pop { animation: dal-pop .42s cubic-bezier(.34,1.56,.64,1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      main, .page-wrap, .nav-brand, .badge, .rover-link, .btn-rover,
+      .value-icon, .dog-chip, .hero-photo-wrap, .dal-pop {
+        animation: none !important;
+      }
+      .nav-link::after { display: none !important; }
     }
 
     /* ── RESPONSIVE ──────────────────────────────── */
@@ -292,28 +343,27 @@
 <section class="hero">
   <div class="hero-inner">
 
-    <!-- Sitter photo — replace Dakota and me.JPG with a solo sitter portrait when available -->
+    <!-- Sitter photo — replace Dakota and me.JPG with a couple portrait when available -->
     <div class="hero-photo-wrap" aria-hidden="true">
       <img class="hero-photo"
            src="./media/Dakota and me.JPG"
-           alt="Lorenzo Llamas with Dakota"
+           alt="Lorenzo &amp; Catalina Llamas with Dakota"
            loading="eager"
            width="166" height="193">
-      <!-- To replace: swap src above with ./media/YourPortrait.jpg -->
+      <!-- To replace: swap src above with ./media/CouplePortrait.jpg -->
     </div>
 
     <div class="hero-content">
-      <p class="hero-eyebrow">Meet Your Sitter</p>
-      <h1 class="hero-name">Lorenzo Llamas</h1>
-      <p class="hero-title-tag">Rover Star Sitter &bull; Dog Walker &bull; Training Student</p>
+      <p class="hero-eyebrow">Meet Your Sitters</p>
+      <h1 class="hero-name">Lorenzo &amp; Catalina</h1>
+      <p class="hero-title-tag">Rover Star Sitters &bull; Dog Walkers &bull; Training Students</p>
       <div class="badge-row">
-        <span class="badge star"><span class="badge-icon">&#9733;</span> Rover Star Sitter</span>
+        <span class="badge star"><span class="badge-icon">&#9733;</span> Rover Star Sitters</span>
         <span class="badge"><span class="badge-icon">&#127891;</span> Dog Training Cert (In Progress)</span>
         <span class="badge"><span class="badge-icon">&#128737;&#65039;</span> Background Checked</span>
       </div>
       <p class="hero-bio">
-        I got into dog sitting because I genuinely love being around dogs &mdash; the energy they bring, the trust they give, and how much they teach you just by being themselves. Every dog I've cared for has left a mark.
-        <!-- ← EDIT: Replace with your own words -->
+        We&rsquo;re a husband-and-wife team who got into dog sitting because we genuinely love being around dogs &mdash; the energy they bring, the trust they give, and how much they teach us just by being themselves. Every dog we&rsquo;ve cared for has left a mark.
       </p>
       <div class="hero-btns">
         <a class="btn-rover" href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">
@@ -353,32 +403,28 @@
   <!-- ← EDIT: Replace [X] values with your actual Rover stats -->
 
   <!-- ABOUT -->
-  <p class="section-eyebrow">My Story</p>
-  <h2 class="section-title">Why I do this</h2>
+  <p class="section-eyebrow">Our Story</p>
+  <h2 class="section-title">Why we do this</h2>
   <div class="about-body">
     <p>
-      I started caring for dogs on Rover because it combined two things I already loved &mdash; animals, and building real relationships with people in my community. What I didn't expect was how deeply personal it would become. Each dog is completely different: Turbo needs his high-energy fetch sessions to settle down, Troy just wants to cruise on a long walk, Dakota's a velcro dog who follows you room to room. Learning what each one needs is genuinely one of my favorite parts of the job.
-      <!-- ← EDIT: Replace with your own story -->
+      We started caring for dogs on Rover because it combined two things we already loved &mdash; animals, and building real relationships with people in our community. What we didn&rsquo;t expect was how deeply personal it would become. Each dog is completely different: Turbo needs his high-energy fetch sessions to settle down, Troy just wants to cruise on a long walk, Dakota&rsquo;s a velcro dog who follows you room to room. Learning what each one needs is genuinely one of our favorite parts of the job.
     </p>
     <p>
-      I'm proud to be a <strong>Rover Star Sitter</strong> &mdash; a designation Rover reserves for sitters with consistently 5-star reviews, fast response times, and repeat clients. It's not a title I take lightly. Every stay, I try to earn it again.
+      We&rsquo;re proud to be <strong>Rover Star Sitters</strong> &mdash; a designation Rover reserves for sitters with consistently 5-star reviews, fast response times, and repeat clients. It&rsquo;s not a title we take lightly. Every stay, we try to earn it again.
     </p>
     <p>
-      I'm also currently working toward my <strong>dog training certification</strong> so I can bring even more to every stay &mdash; better handling, better communication, and a deeper understanding of what dogs are telling us. If your dog is working on anything specific (leash manners, recall, basic cues), let me know and we can build it gently into their routine.
+      We&rsquo;re also currently working toward our <strong>dog training certification</strong> so we can bring even more to every stay &mdash; better handling, better communication, and a deeper understanding of what dogs are telling us. If your dog is working on anything specific (leash manners, recall, basic cues), let us know and we can build it gently into their routine.
     </p>
     <p>
-      I treat every stay as if it's my own dog. That means regular photo updates, keeping to your dog's routine, and messaging you when something funny or sweet happens &mdash; because those moments are the whole point.
-    </p>
-    <p>
-      <strong>A note on trust:</strong> All bookings are handled through Rover, which means every stay comes with $25,000 in vet coverage, 24/7 support, and a secure payment system. I don't ask clients to go around Rover &mdash; it protects both of us, and it keeps things simple and safe.
+      We treat every stay as if it&rsquo;s our own dog. That means regular photo updates, keeping to your dog&rsquo;s routine, and messaging you when something funny or sweet happens &mdash; because those moments are the whole point.
     </p>
 
     <!-- CERTIFICATION CALLOUT -->
     <div class="cert-card">
       <div class="cert-card-icon">&#127891;</div>
       <div class="cert-card-body">
-        <h3>Currently earning my dog training certification</h3>
-        <p>I'm actively working toward a professional dog training credential so I can support clients with gentle, science-based handling and behavior work during stays. Ask me about it &mdash; I love talking about what I'm learning.</p>
+        <h3>Currently earning our dog training certification</h3>
+        <p>We&rsquo;re actively working toward a professional dog training credential so we can support clients with gentle, science-based handling and behavior work during stays. Ask us about it &mdash; we love talking about what we&rsquo;re learning.</p>
       </div>
     </div>
   </div>
@@ -393,46 +439,46 @@
     <div class="value-card">
       <div class="value-icon">📸</div>
       <p class="value-title">Photo Updates</p>
-      <p class="value-desc">You'll get regular candid photos throughout the stay — so you can actually relax while you're away.</p>
+      <p class="value-desc">You&rsquo;ll get regular candid photos throughout the stay &mdash; so you can actually relax while you&rsquo;re away.</p>
     </div>
 
     <div class="value-card">
       <div class="value-icon">📋</div>
-      <p class="value-title">Your Dog's Routine</p>
-      <p class="value-desc">I follow your feeding schedule, walk times, and any special instructions. Consistency helps dogs feel safe.</p>
+      <p class="value-title">Your Dog&rsquo;s Routine</p>
+      <p class="value-desc">We follow your feeding schedule, walk times, and any special instructions. Consistency helps dogs feel safe.</p>
     </div>
 
     <div class="value-card">
       <div class="value-icon">🚨</div>
       <p class="value-title">Always Reachable</p>
-      <p class="value-desc">I respond quickly and I'll contact you proactively if anything comes up — no surprises, ever.</p>
+      <p class="value-desc">We respond quickly and will contact you proactively if anything comes up &mdash; no surprises, ever.</p>
     </div>
 
     <div class="value-card">
       <div class="value-icon">🎓</div>
       <p class="value-title">Training-Informed</p>
-      <p class="value-desc">I'm earning my dog training certification &mdash; so I can support your dog's cues, manners, and behavior gently during stays.</p>
+      <p class="value-desc">We&rsquo;re earning our dog training certification &mdash; so we can support your dog&rsquo;s cues, manners, and behavior gently during stays.</p>
     </div>
 
     <div class="value-card">
-      <div class="value-icon">🛡️</div>
-      <p class="value-title">Rover-Covered</p>
-      <p class="value-desc">Every booking through Rover includes $25K vet coverage and 24/7 support — for total peace of mind.</p>
+      <div class="value-icon">🏠</div>
+      <p class="value-title">Two Sets of Hands</p>
+      <p class="value-desc">As a husband-and-wife team, your dog always has coverage &mdash; walks, meals, and attention never get missed.</p>
     </div>
 
     <div class="value-card">
       <div class="value-icon">❤️</div>
       <p class="value-title">Genuinely Personal</p>
-      <p class="value-desc">I remember your dog's quirks. I notice when they're off. I care — not as a job, but as a dog person.</p>
+      <p class="value-desc">We remember your dog&rsquo;s quirks. We notice when they&rsquo;re off. We care &mdash; not as a job, but as dog people.</p>
     </div>
 
   </div>
 
   <hr class="divider">
 
-  <!-- DOGS I'VE CARED FOR -->
+  <!-- DOGS WE'VE CARED FOR -->
   <p class="section-eyebrow">Familiar Faces</p>
-  <h2 class="section-title">Dogs I've had the pleasure of knowing</h2>
+  <h2 class="section-title">Dogs we&rsquo;ve had the pleasure of knowing</h2>
   <div class="dogs-grid">
     <span class="dog-chip">&#128054; Turbo <em style="font-style:normal;color:var(--text-3);font-size:12px;margin-left:4px;">Aussie</em></span>
     <span class="dog-chip">&#128054; Troy <em style="font-style:normal;color:var(--text-3);font-size:12px;margin-left:4px;">Husky</em></span>
@@ -448,12 +494,11 @@
 
   <!-- ROVER CTA -->
   <div class="rover-card">
-    <h2>See my full profile on Rover</h2>
-    <p>Read reviews from past clients, see my verified background check, and request a booking — all in one place.</p>
+    <h2>See our full profile on Rover</h2>
+    <p>Read reviews from past clients, see our verified background check, and request a booking &mdash; all in one place.</p>
     <a class="rover-link" href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">
-      &#128054; Visit My Rover Profile
+      &#128054; Visit Our Rover Profile
     </a>
-    <p class="rover-note">Rover provides $25K vet coverage, payment protection, and 24/7 support on every booking.</p>
   </div>
 
 </div>
@@ -461,7 +506,7 @@
 <!-- FOOTER -->
 <footer>
   <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
-  <p>Lorenzo Llamas &bull; All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a></p>
+  <p>Lorenzo &amp; Catalina Llamas &bull; All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a></p>
   <div class="footer-links">
     <a href="index.html">Newsletter</a>
     <a href="schedule.html">Schedule</a>

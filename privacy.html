@@ -7,7 +7,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
   <title>Privacy Policy &mdash; Dogs &amp; Llamas</title>
-  <meta name="description" content="Privacy policy for Dogs &amp; Llamas &mdash; Lorenzo Llamas, Rover Star Sitter. What data we collect, how it&rsquo;s used, and how to opt out.">
+  <meta name="description" content="Privacy policy for Dogs &amp; Llamas &mdash; Lorenzo &amp; Catalina Llamas, Rover Star Sitters. What data we collect, how it&rsquo;s used, and how to opt out.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +64,7 @@
     }
     .header-strip::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
     .eyebrow { position: relative; font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--yellow-light); margin: 0 0 10px; }
-    .header-strip h1 { position: relative; font-family: var(--font-head); font-size: 42px; font-weight: 400; font-style: italic; color: #fff; margin: 0 0 8px; line-height: 1.15; }
+    .header-strip h1 { position: relative; font-family: var(--font-head); font-size: 42px; font-weight: 600; color: #fff; margin: 0 0 8px; line-height: 1.1; letter-spacing: -0.5px; }
     .updated { position: relative; font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.55); margin: 0; letter-spacing: .4px; }
 
     /* ── PAGE BODY ──────────────────────────────── */
@@ -92,7 +92,7 @@
       border-radius: var(--radius-md); padding: 22px 26px;
       box-shadow: var(--shadow-sm); margin-bottom: 36px;
     }
-    .intro-card p { margin: 0; color: var(--text); font-size: 15.5px; font-family: var(--font-head); font-style: italic; line-height: 1.7; }
+    .intro-card p { margin: 0; color: var(--text); font-size: 15.5px; font-family: var(--font-body); line-height: 1.7; }
 
     hr.divider { border: none; border-top: 1px solid var(--border); margin: 48px 0 32px; }
     .note { font-family: var(--font-body); font-size: 13px; color: var(--text-3); line-height: 1.7; }
@@ -107,6 +107,28 @@
     .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); }
     .footer-links a { font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.5); transition: color .14s; }
     .footer-links a:hover { color: #fff; }
+
+    /* ── MICRO-INTERACTIONS ─────────────────────── */
+    @keyframes dal-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dal-wiggle  { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
+
+    main, .page-wrap { animation: dal-fade-up .55s ease-out both; }
+    .nav-brand { display: inline-block; }
+    .nav-brand:hover { animation: dal-wiggle .5s ease-in-out; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 14px; right: 14px; bottom: 0;
+      height: 2px; background: var(--yellow-light); border-radius: 2px;
+      transform: scaleX(0); transform-origin: center;
+      transition: transform .26s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      main, .page-wrap, .nav-brand { animation: none !important; }
+      .nav-link::after { display: none !important; }
+    }
 
     /* ── RESPONSIVE ─────────────────────────────── */
     @media (max-width: 720px) {
@@ -154,7 +176,7 @@
 <main class="page-wrap">
 
   <div class="intro-card">
-    <p>Dogs &amp; Llamas is a personal dog-sitting newsletter and product resource run by one person &mdash; Lorenzo Llamas. This page explains what information is collected, how it&rsquo;s used, and how you can opt out any time.</p>
+    <p>Dogs &amp; Llamas is a personal dog-sitting newsletter and product resource run by a husband-and-wife team &mdash; Lorenzo &amp; Catalina Llamas. This page explains what information is collected, how it&rsquo;s used, and how you can opt out any time.</p>
   </div>
 
   <h2>Information Collected</h2>
@@ -233,7 +255,7 @@
 <!-- ── FOOTER ───────────────────────────────────────── -->
 <footer>
   <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
-  <p>Lorenzo Llamas &bull; Rover Star Sitter</p>
+  <p>Lorenzo &amp; Catalina Llamas &bull; Rover Star Sitters</p>
   <p>All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a>.</p>
   <div class="footer-links">
     <a href="index.html">Newsletter</a>

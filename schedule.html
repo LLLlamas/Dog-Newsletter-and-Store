@@ -78,8 +78,8 @@
     }
     .hero-inner { position: relative; z-index: 1; }
     .hero-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--yellow-light); margin: 0 0 12px; }
-    .hero h1 { font-family: var(--font-head); font-size: 32px; font-weight: 400; font-style: italic; color: #fff; margin: 0 0 12px; line-height: 1.2; }
-    .hero p { font-family: var(--font-head); font-size: 16px; font-style: italic; color: rgba(255,255,255,.75); margin: 0 auto; max-width: 440px; line-height: 1.65; }
+    .hero h1 { font-family: var(--font-head); font-size: 36px; font-weight: 600; color: #fff; margin: 0 0 12px; line-height: 1.15; letter-spacing: -0.5px; }
+    .hero p { font-family: var(--font-body); font-size: 15px; color: rgba(255,255,255,.85); margin: 0 auto; max-width: 480px; line-height: 1.7; }
 
     /* ── PAGE ────────────────────────────────────── */
     .page-wrap { max-width: 900px; margin: 0 auto; padding: 48px 28px 96px; }
@@ -90,20 +90,63 @@
     .section-title { font-family: var(--font-head); font-size: 28px; font-weight: 400; color: var(--text); margin: 0 0 28px; line-height: 1.25; }
     hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
 
-    /* ── SERVICES ────────────────────────────────── */
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 52px; }
-    .service-card {
+    /* ── SERVICE PICKER ──────────────────────────── */
+    .service-picker {
       background: var(--surface); border-radius: var(--radius-md);
-      border: 1px solid var(--border); padding: 24px 22px;
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow .18s, transform .18s;
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+      padding: 26px 28px; margin-top: 40px;
     }
-    .service-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-    .service-icon { font-size: 28px; margin-bottom: 12px; }
-    .service-name { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: .6px; margin: 0 0 6px; }
-    .service-desc { font-family: var(--font-body); font-size: 14px; color: var(--text-2); line-height: 1.6; margin: 0 0 12px; }
-    .service-price { font-family: var(--font-head); font-size: 20px; font-weight: 600; color: var(--text); margin: 0 0 2px; }
-    .service-price-note { font-family: var(--font-body); font-size: 11px; color: var(--text-3); }
+    .service-picker-label {
+      font-family: var(--font-body); font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--blue);
+      margin: 0 0 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .service-picker-label::after { content: ''; flex: 0 0 26px; height: 2px; background: var(--yellow); border-radius: 2px; }
+    .service-picker h3 {
+      font-family: var(--font-head); font-size: 22px; font-weight: 600;
+      color: var(--text); margin: 0 0 6px; line-height: 1.25; letter-spacing: -0.2px;
+    }
+    .service-picker-sub {
+      font-family: var(--font-body); font-size: 14px; color: var(--text-2);
+      margin: 0 0 20px; line-height: 1.6;
+    }
+    .service-select-wrap { position: relative; max-width: 440px; }
+    .service-select {
+      appearance: none; -webkit-appearance: none;
+      width: 100%; padding: 14px 44px 14px 18px;
+      background: var(--blue-pale); color: var(--text);
+      border: 1.5px solid var(--blue-light); border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 15px; font-weight: 500;
+      cursor: pointer; outline: none;
+      transition: border-color .15s, background .15s;
+    }
+    .service-select:hover { background: #d8e8f8; border-color: var(--blue-mid); }
+    .service-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(27,79,140,.15); }
+    .service-select-wrap::after {
+      content: '▾'; position: absolute; right: 18px; top: 50%;
+      transform: translateY(-50%); pointer-events: none;
+      color: var(--blue); font-size: 13px;
+    }
+    .service-detail {
+      margin-top: 22px; padding: 20px 22px;
+      background: var(--yellow-pale); border-left: 4px solid var(--yellow);
+      border-radius: var(--radius-sm);
+      display: none;
+    }
+    .service-detail.show { display: block; }
+    .service-detail-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
+    .service-detail-name { font-family: var(--font-head); font-size: 20px; font-weight: 600; color: var(--text); margin: 0; letter-spacing: -0.2px; }
+    .service-detail-price { font-family: var(--font-head); font-size: 26px; font-weight: 600; color: var(--blue); margin: 0; white-space: nowrap; }
+    .service-detail-price em { font-style: normal; font-size: 13px; font-weight: 500; color: var(--text-2); margin-left: 2px; }
+    .service-detail-desc { font-family: var(--font-body); font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+    .service-detail-focus {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--yellow); color: var(--text);
+      font-family: var(--font-body); font-size: 10.5px; font-weight: 700;
+      letter-spacing: .6px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: var(--radius-full);
+      margin-left: 8px; vertical-align: middle;
+    }
 
     /* ── LEGEND ──────────────────────────────────── */
     .legend { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
@@ -124,8 +167,8 @@
     }
     .cal-month-header {
       background: var(--blue); padding: 14px 18px;
-      font-family: var(--font-head); font-style: italic; font-size: 17px;
-      color: #fff; text-align: center;
+      font-family: var(--font-head); font-weight: 600; font-size: 18px;
+      color: #fff; text-align: center; letter-spacing: -0.2px;
     }
     .cal-weekdays {
       display: grid; grid-template-columns: repeat(7, 1fr);
@@ -172,8 +215,8 @@
       padding: 40px 44px; text-align: center; margin-top: 48px;
       box-shadow: var(--shadow-lg);
     }
-    .book-section h2 { font-family: var(--font-head); font-size: 26px; font-weight: 400; font-style: italic; color: #fff; margin: 0 0 12px; }
-    .book-section p { font-family: var(--font-head); font-size: 15px; font-style: italic; color: rgba(255,255,255,.75); margin: 0 0 24px; line-height: 1.65; max-width: 460px; margin-left: auto; margin-right: auto; }
+    .book-section h2 { font-family: var(--font-head); font-size: 28px; font-weight: 600; color: #fff; margin: 0 0 12px; letter-spacing: -0.3px; }
+    .book-section p { font-family: var(--font-body); font-size: 14.5px; color: rgba(255,255,255,.85); margin: 0 0 24px; line-height: 1.7; max-width: 480px; margin-left: auto; margin-right: auto; }
     .btn-book {
       display: inline-block; background: var(--yellow); color: var(--text);
       font-family: var(--font-body); font-size: 15px; font-weight: 700;
@@ -202,7 +245,7 @@
       padding: 32px 32px 28px; max-width: 360px; width: 90%;
       box-shadow: var(--shadow-lg);
     }
-    .modal h3 { font-family: var(--font-head); font-size: 20px; font-weight: 400; color: var(--text); margin: 0 0 8px; }
+    .modal h3 { font-family: var(--font-head); font-size: 20px; font-weight: 600; color: var(--text); margin: 0 0 8px; }
     .modal p  { font-family: var(--font-body); font-size: 14px; color: var(--text-2); margin: 0 0 20px; line-height: 1.6; }
     .modal input {
       width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
@@ -258,12 +301,72 @@
       }
     }
 
+    /* ── MICRO-INTERACTIONS ─────────────────────── */
+    @keyframes dal-fade-up       { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dal-pop           { 0% { transform: scale(1); } 45% { transform: scale(1.28); } 100% { transform: scale(1); } }
+    @keyframes dal-pulse         { 0% { box-shadow: 0 0 0 0 rgba(212,160,23,.55); } 80% { box-shadow: 0 0 0 18px rgba(212,160,23,0); } 100% { box-shadow: 0 0 0 0 rgba(212,160,23,0); } }
+    @keyframes dal-wiggle        { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
+    @keyframes dal-cal-bounce    { 0% { transform: scale(1); } 30% { transform: scale(1.35); } 60% { transform: scale(.92); } 100% { transform: scale(1); } }
+    @keyframes dal-month-slide   { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dal-detail-slide  { from { opacity: 0; transform: translateY(-6px); max-height: 0; } to { opacity: 1; transform: translateY(0); max-height: 300px; } }
+
+    main, .page-wrap { animation: dal-fade-up .55s ease-out both; }
+    .nav-brand { display: inline-block; }
+    .nav-brand:hover { animation: dal-wiggle .5s ease-in-out; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 14px; right: 14px; bottom: 0;
+      height: 2px; background: var(--yellow-light); border-radius: 2px;
+      transform: scaleX(0); transform-origin: center;
+      transition: transform .26s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+    /* Calendar months stagger-in */
+    .cal-month { animation: dal-month-slide .5s ease-out both; }
+    .cal-month:nth-child(1) { animation-delay: .05s; }
+    .cal-month:nth-child(2) { animation-delay: .15s; }
+    .cal-month:nth-child(3) { animation-delay: .25s; }
+
+    /* Calendar day click animation */
+    .cal-day.dal-bounce { animation: dal-cal-bounce .5s cubic-bezier(.34,1.56,.64,1); }
+    .cal-day.available:hover { transform: scale(1.14); box-shadow: 0 4px 12px rgba(27,79,140,.25); }
+    .cal-day { transition: transform .18s ease, box-shadow .18s ease; }
+
+    /* Service detail slide-in on selection */
+    .service-detail.show { animation: dal-detail-slide .45s ease-out; }
+
+    /* Service select hover lift */
+    .service-select:hover { transform: translateY(-1px); }
+
+    /* Book CTA attention pulse */
+    .btn-book { animation: dal-pulse 2.4s ease-out 2; }
+    .btn-book:active { transform: translateY(0) scale(.96); }
+
+    /* Admin FAB gentle spin on hover */
+    .admin-fab:hover { transform: rotate(60deg); }
+    .admin-fab { transition: transform .4s ease, color .15s, border-color .15s; }
+
+    /* Legend dot pulse on hover */
+    .legend-item:hover .legend-dot { animation: dal-pop .45s cubic-bezier(.34,1.56,.64,1); }
+
+    .dal-pop { animation: dal-pop .42s cubic-bezier(.34,1.56,.64,1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      main, .page-wrap, .nav-brand, .cal-month, .cal-day, .btn-book,
+      .admin-fab, .legend-dot, .service-detail, .dal-pop {
+        animation: none !important;
+        transition: none !important;
+      }
+      .nav-link::after { display: none !important; }
+    }
+
     /* ── RESPONSIVE ──────────────────────────────── */
 
     /* Tablet */
     @media (max-width: 960px) {
       nav { padding: 0 24px; }
-      .services-grid { grid-template-columns: repeat(2, 1fr); }
       .calendar-months { grid-template-columns: 1fr 1fr; }
     }
 
@@ -279,15 +382,17 @@
       .page-wrap { padding: 32px 16px 72px; }
       .book-section { padding: 32px 22px; }
       .calendar-months { grid-template-columns: 1fr; gap: 16px; }
-      .services-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .service-picker { padding: 22px 20px; }
+      .service-picker h3 { font-size: 19px; }
       footer { padding: 36px 20px 28px; }
     }
 
     /* Small mobile */
     @media (max-width: 480px) {
-      .services-grid { grid-template-columns: 1fr; }
       .cal-day { font-size: 12px; }
-      .hero h1 { font-size: 26px; }
+      .hero h1 { font-size: 28px; }
+      .service-detail-row { flex-direction: column; gap: 4px; }
+      .service-detail-price { font-size: 22px; }
     }
   </style>
 </head>
@@ -317,61 +422,22 @@
 <section class="hero">
   <div class="hero-inner">
     <p class="hero-eyebrow">Availability</p>
-    <h1>Check My Schedule</h1>
-    <p>See what dates are open and request a booking through Rover — I'll confirm within 24 hours.</p>
+    <h1>Check Our Schedule</h1>
+    <p>See what dates are open, then pick the service you need. Book through Rover &mdash; we&rsquo;ll confirm within 24 hours.</p>
   </div>
 </section>
 
 <!-- ── MAIN ──────────────────────────────────────────── -->
 <div class="page-wrap">
 
-  <!-- SERVICES -->
-  <p class="section-eyebrow">What I Offer</p>
-  <h2 class="section-title">Services &amp; Rates</h2>
-  <div class="services-grid">
-
-    <div class="service-card">
-      <div class="service-icon">🏡</div>
-      <p class="service-name">Dog Boarding</p>
-      <p class="service-desc">Your dog stays at my home overnight. Full attention, regular walks, and updates throughout.</p>
-      <p class="service-price">$[RATE]<span style="font-size:14px;font-weight:400;color:var(--text-2)">/night</span></p>
-      <p class="service-price-note">Rate set on your Rover profile — update there</p>
-    </div>
-
-    <div class="service-card">
-      <div class="service-icon">🚶</div>
-      <p class="service-name">Drop-In Visits</p>
-      <p class="service-desc">I come to your home for a 30-minute visit — feeding, play, potty break, and a photo update.</p>
-      <p class="service-price">$[RATE]<span style="font-size:14px;font-weight:400;color:var(--text-2)">/visit</span></p>
-      <p class="service-price-note">Rate set on your Rover profile — update there</p>
-    </div>
-
-    <div class="service-card">
-      <div class="service-icon">🦮</div>
-      <p class="service-name">Dog Walking</p>
-      <p class="service-desc">A 30–60 minute walk in your neighborhood. GPS-tracked, real-time updates via Rover.</p>
-      <p class="service-price">$[RATE]<span style="font-size:14px;font-weight:400;color:var(--text-2)">/walk</span></p>
-      <p class="service-price-note">Rate set on your Rover profile — update there</p>
-    </div>
-
-    <div class="service-card">
-      <div class="service-icon">🏠</div>
-      <p class="service-name">House Sitting</p>
-      <p class="service-desc">I stay at your home overnight so your dog sleeps in their own space. Great for anxious dogs.</p>
-      <p class="service-price">$[RATE]<span style="font-size:14px;font-weight:400;color:var(--text-2)">/night</span></p>
-      <p class="service-price-note">Rate set on your Rover profile — update there</p>
-    </div>
-
-  </div>
-
   <!-- ADMIN INSTRUCTIONS (only visible in admin mode) -->
   <div class="admin-instructions" id="admin-instructions">
-    <p><strong>Admin mode is active.</strong> Click any future date to cycle through: Available → Booked → Unavailable → Available.</p>
-    <p>Changes save automatically to this browser. To sync across devices, share the exported JSON (feature coming soon).</p>
+    <p><strong>Admin mode is active.</strong> Click any future date to cycle through: Available &rarr; Booked &rarr; Unavailable &rarr; Available.</p>
+    <p>Changes save automatically to this browser.</p>
     <button class="btn-admin-exit" id="exit-admin-btn">Exit admin mode</button>
   </div>
 
-  <!-- LEGEND -->
+  <!-- CALENDAR FIRST -->
   <p class="section-eyebrow">Availability Calendar</p>
   <h2 class="section-title">Open Dates</h2>
   <div class="legend">
@@ -384,14 +450,39 @@
   <!-- CALENDAR (rendered by JS) -->
   <div class="calendar-months" id="calendar-months"></div>
 
+  <!-- SERVICE PICKER (BELOW CALENDAR) -->
+  <div class="service-picker">
+    <p class="service-picker-label">Step 2</p>
+    <h3>What service are you looking for?</h3>
+    <p class="service-picker-sub">Pick one and we&rsquo;ll show the rate. Boarding &amp; Doggy Day Care are our favorites &mdash; we especially love repeat pups.</p>
+
+    <div class="service-select-wrap">
+      <select class="service-select" id="service-select" aria-label="Select a service">
+        <option value="">&mdash; Select a service &mdash;</option>
+        <option value="boarding">&#127969;&nbsp; Dog Boarding &mdash; in our home</option>
+        <option value="daycare">&#9728;&nbsp; Doggy Day Care &mdash; in our home</option>
+        <option value="dropin">&#128100;&nbsp; Drop-In Visits &mdash; in your home</option>
+        <option value="walking">&#129445;&nbsp; Dog Walking &mdash; your neighborhood</option>
+        <option value="housesitting">&#127968;&nbsp; House Sitting &mdash; in your home</option>
+      </select>
+    </div>
+
+    <div class="service-detail" id="service-detail">
+      <div class="service-detail-row">
+        <p class="service-detail-name" id="service-detail-name"></p>
+        <p class="service-detail-price" id="service-detail-price"></p>
+      </div>
+      <p class="service-detail-desc" id="service-detail-desc"></p>
+    </div>
+  </div>
+
   <!-- BOOK CTA -->
   <div class="book-section">
     <h2>Ready to book?</h2>
-    <p>All bookings go through Rover — it handles payment, insurance, and messaging in one place. Just click below to request your dates.</p>
+    <p>All bookings go through Rover &mdash; it handles payment, messaging, and insurance in one place. Click below to request your dates.</p>
     <a class="btn-book" href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">
       Request a Booking on Rover &#8599;
     </a>
-    <p class="book-note">Rover provides $25K vet coverage and 24/7 support on every booking.</p>
   </div>
 
 </div>
@@ -399,7 +490,7 @@
 <!-- FOOTER -->
 <footer>
   <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
-  <p>Lorenzo Llamas &bull; All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a></p>
+  <p>Lorenzo &amp; Catalina Llamas &bull; All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a></p>
   <div class="footer-links">
     <a href="index.html">Newsletter</a>
     <a href="schedule.html">Schedule</a>
@@ -533,6 +624,14 @@
         cell.setAttribute('title', status === 'available' ? 'Available' : status === 'booked' ? 'Booked' : status === 'past' ? 'Past' : 'Unavailable');
 
         cell.addEventListener('click', function() {
+          /* Bounce feedback on every click (even view-only) */
+          if (!isPast(key)) {
+            cell.classList.remove('dal-bounce');
+            /* force reflow to restart animation */
+            void cell.offsetWidth;
+            cell.classList.add('dal-bounce');
+            setTimeout(function() { cell.classList.remove('dal-bounce'); }, 520);
+          }
           if (!document.body.classList.contains('admin-mode')) return;
           if (isPast(key)) return;
           var newStatus = cycleStatus(key);
@@ -610,6 +709,68 @@
     t.classList.add('show');
     setTimeout(function() { t.classList.remove('show'); }, 3000);
   }
+
+  /* ── Service picker ──────────────────────────── */
+  var SERVICES = {
+    boarding: {
+      name: 'Dog Boarding',
+      price: '$90',
+      unit: '/night',
+      desc: 'Your dog stays at our home overnight. Full attention, regular walks, backyard play, and photo updates throughout. Our favorite service — and where most of our repeat clients start.',
+      focus: true
+    },
+    daycare: {
+      name: 'Doggy Day Care',
+      price: '$50',
+      unit: '/day',
+      desc: 'Drop your dog off in the morning and pick them up in the evening. They&rsquo;ll spend the day with us getting attention, walks, and play sessions. Perfect for long work days — and our other favorite service.',
+      focus: true
+    },
+    dropin: {
+      name: 'Drop-In Visits',
+      price: '$45',
+      unit: '/visit',
+      desc: 'We come to your home for a 30-minute visit — feeding, a quick walk or play, potty break, and a photo update. Great for midday check-ins.',
+      focus: false
+    },
+    walking: {
+      name: 'Dog Walking',
+      price: '$25',
+      unit: '/walk',
+      desc: 'A 30–60 minute walk in your neighborhood. GPS-tracked through Rover so you can follow along in real time.',
+      focus: false
+    },
+    housesitting: {
+      name: 'House Sitting',
+      price: '$100',
+      unit: '/night',
+      desc: 'We stay at your home overnight so your dog sleeps in their own space. Great for anxious dogs or multi-pet households.',
+      focus: false
+    }
+  };
+
+  var serviceSelect = document.getElementById('service-select');
+  var serviceDetail = document.getElementById('service-detail');
+  var detailName    = document.getElementById('service-detail-name');
+  var detailPrice   = document.getElementById('service-detail-price');
+  var detailDesc    = document.getElementById('service-detail-desc');
+
+  serviceSelect.addEventListener('change', function() {
+    var key = this.value;
+    if (!key || !SERVICES[key]) {
+      serviceDetail.classList.remove('show');
+      return;
+    }
+    var s = SERVICES[key];
+    var nameHTML = s.name;
+    if (s.focus) {
+      nameHTML += ' <span class="service-detail-focus">&#9733; Our Favorite</span>';
+    }
+    detailName.innerHTML = nameHTML;
+    detailPrice.innerHTML = s.price + '<em>' + s.unit + '</em>';
+    detailDesc.textContent = s.desc;
+    serviceDetail.classList.add('show');
+  });
 
   /* ── Init ────────────────────────────────────── */
   renderCalendars();

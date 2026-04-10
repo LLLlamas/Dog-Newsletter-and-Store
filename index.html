@@ -171,22 +171,22 @@
     }
     .hero-title {
       font-family: var(--font-head);
-      font-size: 52px; font-weight: 400; font-style: italic;
-      color: #fff; margin: 0 0 6px; line-height: 1.1;
-      letter-spacing: -.3px;
+      font-size: 54px; font-weight: 600;
+      color: #fff; margin: 0 0 6px; line-height: 1.05;
+      letter-spacing: -1px;
     }
-    .hero-title .amp { color: var(--amber-light); font-style: normal; }
+    .hero-title .amp { color: var(--amber-light); font-weight: 400; font-style: italic; }
     .hero-byline {
       font-family: var(--font-body);
-      font-size: 13px; font-weight: 400;
-      color: rgba(255,255,255,.5);
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,.6);
       letter-spacing: .8px; margin: 0 0 22px;
     }
     .hero-sub {
-      font-family: var(--font-head);
-      font-size: 17px; font-style: italic;
-      color: rgba(255,255,255,.8);
-      margin: 0 0 36px; line-height: 1.65; max-width: 400px;
+      font-family: var(--font-body);
+      font-size: 15.5px; font-weight: 400;
+      color: rgba(255,255,255,.85);
+      margin: 0 0 36px; line-height: 1.7; max-width: 420px;
     }
     .hero-form {
       display: flex; flex-wrap: wrap; gap: 8px; max-width: 420px;
@@ -350,8 +350,9 @@
     }
     .issue-aside-title {
       font-family: var(--font-head);
-      font-size: 19px; font-weight: 400; font-style: italic;
-      color: #fff; line-height: 1.35; margin: 0 0 auto;
+      font-size: 20px; font-weight: 600;
+      color: #fff; line-height: 1.3; margin: 0 0 auto;
+      letter-spacing: -0.2px;
     }
     .issue-aside-date {
       font-family: var(--font-body);
@@ -422,7 +423,7 @@
     .dog-card-footer { padding: 11px 14px 13px; }
     .dog-card-name {
       font-family: var(--font-head);
-      font-size: 15px; font-weight: 400; font-style: italic;
+      font-size: 16px; font-weight: 600;
       color: var(--text); margin: 0;
     }
     .dog-card-note {
@@ -456,9 +457,9 @@
       position: absolute; top: 12px; left: 18px;
     }
     .testimonial-quote {
-      font-family: var(--font-head);
-      font-size: 15px; font-style: italic;
-      color: var(--text-2); line-height: 1.7;
+      font-family: var(--font-body);
+      font-size: 14.5px; font-weight: 400;
+      color: var(--text-2); line-height: 1.72;
       margin: 24px 0 16px; position: relative; z-index: 1;
     }
     .testimonial-author {
@@ -467,7 +468,7 @@
     }
     .testimonial-dog {
       font-family: var(--font-body);
-      font-size: 12px; color: var(--text-3); font-style: italic; margin: 3px 0 0;
+      font-size: 12px; color: var(--text-3); margin: 3px 0 0;
     }
 
     /* ── STORE TEASER ────────────────────────────── */
@@ -481,8 +482,9 @@
     }
     .store-teaser-text h3 {
       font-family: var(--font-head);
-      font-size: 24px; font-weight: 400; font-style: italic;
-      color: #fff; margin: 0 0 10px; line-height: 1.25;
+      font-size: 26px; font-weight: 600;
+      color: #fff; margin: 0 0 10px; line-height: 1.2;
+      letter-spacing: -0.3px;
     }
     .store-teaser-text p {
       font-family: var(--font-body);
@@ -615,6 +617,44 @@
     }
     .skip-link:focus { left: 0; }
 
+    /* ── MICRO-INTERACTIONS ─────────────────────── */
+    @keyframes dal-fade-up   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dal-pop       { 0% { transform: scale(1); } 45% { transform: scale(1.22); } 100% { transform: scale(1); } }
+    @keyframes dal-pulse     { 0% { box-shadow: 0 0 0 0 rgba(212,160,23,.55); } 80% { box-shadow: 0 0 0 18px rgba(212,160,23,0); } 100% { box-shadow: 0 0 0 0 rgba(212,160,23,0); } }
+    @keyframes dal-wiggle    { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
+    @keyframes dal-paw-walk  { 0% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(-6deg); } 100% { transform: translateY(0) rotate(0); } }
+    main, .page-wrap { animation: dal-fade-up .55s ease-out both; }
+    .nav-brand { display: inline-block; }
+    .nav-brand:hover { animation: dal-wiggle .5s ease-in-out; }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 14px; right: 14px; bottom: 0;
+      height: 2px; background: var(--yellow-light); border-radius: 2px;
+      transform: scaleX(0); transform-origin: center;
+      transition: transform .26s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+    .btn-primary, .hero-form button, .issue-read-link {
+      animation: dal-pulse 2.4s ease-out 2;
+    }
+    .dal-pop { animation: dal-pop .42s cubic-bezier(.34,1.56,.64,1); }
+    /* dog-card hover: gentle paw lift */
+    .dog-card:hover .dog-card-photo,
+    .dog-card:hover .ph-icon { animation: dal-paw-walk .6s ease-in-out; }
+    /* Perk icon bounce on hover */
+    .perk-item:hover .perk-icon { animation: dal-paw-walk .55s ease-in-out; }
+    /* Coupon code subtle wiggle on hover */
+    .coupon-code:hover { animation: dal-wiggle .5s ease-in-out; cursor: pointer; }
+
+    @media (prefers-reduced-motion: reduce) {
+      main, .page-wrap, .nav-brand, .btn-primary, .hero-form button,
+      .issue-read-link, .dal-pop, .dog-card-photo, .ph-icon,
+      .perk-icon, .coupon-code {
+        animation: none !important;
+      }
+      .nav-link::after { display: none !important; }
+    }
+
     /* ── RESPONSIVE ──────────────────────────────── */
 
     /* Tablet — shrink hero, tighten grids */
@@ -705,7 +745,7 @@
     <div class="hero-content">
       <p class="hero-eyebrow">Monthly Dog-Care Updates</p>
       <h1 class="hero-title">Dogs <span class="amp">&amp;</span> Llamas</h1>
-      <p class="hero-byline">by Lorenzo Llamas &bull; Rover Star Sitter</p>
+      <p class="hero-byline">by Lorenzo &amp; Catalina Llamas &bull; Rover Star Sitters</p>
       <p class="hero-sub">Availability openings, honest dog tips, and small perks for repeat clients — once a month, always personal.</p>
 
       <form class="hero-form" id="subscribe-form" action="#" method="post" novalidate>
@@ -912,7 +952,7 @@
       <p class="testimonial-dog">Owner of [Dog Name]</p>
     </div>
     <div class="testimonial-card reveal reveal-d2">
-      <p class="testimonial-quote">I love that I hear about openings before they're gone. Lorenzo always takes such good care of our pup.</p>
+      <p class="testimonial-quote">I love that I hear about openings before they&rsquo;re gone. Lorenzo &amp; Catalina always take such good care of our pup.</p>
       <p class="testimonial-author">[Client Name]</p>
       <p class="testimonial-dog">Owner of [Dog Name]</p>
     </div>
@@ -982,7 +1022,7 @@
 <!-- ── FOOTER ────────────────────────────────────────────────── -->
 <footer>
   <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
-  <p>Lorenzo Llamas &bull; Rover Star Sitter</p>
+  <p>Lorenzo &amp; Catalina Llamas &bull; Rover Star Sitters</p>
   <p>All active Rover bookings are handled through
      <a href="https://www.rover.com" target="_blank" rel="noopener noreferrer">Rover.com</a>
      in accordance with their Terms of Service.</p>

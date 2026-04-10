@@ -1,29 +1,37 @@
 # Dogs & Llamas — Project Handoff
-**Date:** April 10, 2026
+**Date:** April 10, 2026 (updated late session)
 **Prepared for:** Codex / next AI session
-**Project:** Dogs & Llamas — Lorenzo Llamas's dog-sitting newsletter, booking/availability hub, photo gallery, about page, and curated product store.
+**Project:** Dogs & Llamas — Lorenzo & Catalina Llamas's husband-and-wife dog-sitting business. Newsletter, booking/availability hub, photo gallery, about page, and curated affiliate product store.
 
 ---
 
 ## 1. What This Project Is
 
-A static multi-page website + email newsletter system for **Lorenzo Llamas**, a **Rover Star Sitter** currently earning his dog training certification. Brand: **"Dogs & Llamas."** Rover profile: <https://www.rover.com/sit/lorenl45629>.
+A static multi-page website + email newsletter system for **Lorenzo & Catalina Llamas**, a husband-and-wife team of **Rover Star Sitters** currently earning their dog training certification. Brand: **"Dogs & Llamas."** Rover profile: <https://www.rover.com/sit/lorenl45629>.
 
-The site has **six public pages** plus email templates:
+Focus services (highlighted with ⭐ "Our Favorite" labels on the schedule page):
+- **Dog Boarding** — $90/night (in our home)
+- **Doggy Day Care** — $50/day (in our home)
+
+Supporting services:
+- Drop-In Visits — $45/visit
+- Dog Walking — $25/walk
+- House Sitting — $100/night
+
+Six public pages:
 
 | Page | Purpose |
 |---|---|
 | `index.html` | Newsletter hub, hero + subscribe, dog grid, testimonials, store teaser, coupons |
-| `schedule.html` | 3-month availability calendar (clients view; sitter edits via PIN-gated admin mode) |
+| `schedule.html` | **Calendar first**, then service dropdown, then Rover booking CTA. Sitter edits calendar via PIN-gated admin mode |
 | `gallery.html` | Masonry photo gallery with filter + lightbox, "photography services coming soon" teaser |
-| `about.html` | Sitter bio, Rover Star Sitter + dog training certification badges, values, dog chips, Rover CTA |
+| `about.html` | Couple bio, Star Sitter + dog training cert badges, values, dog chips, Rover CTA |
 | `store.html` | Curated Amazon affiliate product picks with filter + pagination |
-| `privacy.html` | Privacy policy (same design system, blue/yellow, shared nav) |
+| `privacy.html` | Privacy policy (shared nav, blue/yellow design) |
 
-**Rover-safe framing**: all bookings are directed to Rover.com. The schedule page is **view-only for clients** and links to Rover for booking requests.
+**Rover-safe framing**: all bookings go through Rover.com. No off-platform booking language anywhere.
 
-**Audience:** Past and prospective Rover clients. Dog/animal people — warm, friendly, community-minded.
-**Tech stack:** 100% static HTML + CSS + vanilla JS. No framework, no build step. Deployable to GitHub Pages, Netlify, Cloudflare Pages.
+**Tech stack:** Pure static HTML + CSS + vanilla JS. No framework, no build step. Deploys to GitHub Pages, Netlify, or Cloudflare Pages.
 
 ---
 
@@ -32,24 +40,24 @@ The site has **six public pages** plus email templates:
 ```
 /Dog Newsletter and Store/
 ├── index.html                    ← Newsletter hub / landing
-├── schedule.html                 ← Availability calendar (NEW — admin editable via PIN)
-├── gallery.html                  ← Photo gallery (NEW — masonry + lightbox + filter)
-├── about.html                    ← About Lorenzo (NEW — Star Sitter, training cert)
+├── schedule.html                 ← Calendar-first + service dropdown (admin editable via PIN)
+├── gallery.html                  ← Masonry photo gallery + lightbox + filter
+├── about.html                    ← About Lorenzo & Catalina
 ├── store.html                    ← Curated Amazon picks
 ├── privacy.html                  ← Privacy policy
-├── newsletter-template.html      ← Monthly email template (copy to monthly-issue-XX.html)
-├── welcome-email.html            ← One-time welcome email for new subscribers
-├── monthly-issue-01.html         ← April 2026 issue (first one)
-├── mini-update-01.html           ← Short-form mid-month template
+├── newsletter-template.html      ← Monthly email template (blue/yellow rebranded)
+├── welcome-email.html            ← One-time welcome email (blue/yellow rebranded)
+├── monthly-issue-01.html         ← April 2026 issue (blue/yellow rebranded)
+├── mini-update-01.html           ← Short-form mid-month template (blue/yellow rebranded)
 ├── _headers                      ← Netlify/Cloudflare security headers
 ├── dogsitter_newsletter_project_brief.md
-├── chatgpt takeover 4-9-2026.md  ← Previous handoff
-├── chatgpt takeover 4-10-2026.md ← THIS FILE
+├── chatgpt takeover 4-9-2026.md  ← Original handoff
+├── chatgpt takeover 4-10-2026.md ← THIS FILE (latest)
 └── media/
-    ├── Turbo Outside.jpg         ← Merle Aussie outdoors (hero main, store pick 2)
-    ├── Turbo sleeping.JPG        ← Turbo napping (gallery)
-    ├── Troy.jpg                  ← Husky with blue eyes (hero secondary, dogs grid)
-    ├── Dakota and me.JPG         ← Sitter selfie with Sheltie (about hero, gallery)
+    ├── Turbo Outside.jpg         ← Hero main, store pick 2, dogs grid
+    ├── Turbo sleeping.JPG        ← Gallery
+    ├── Troy.jpg                  ← Hero secondary, dogs grid
+    ├── Dakota and me.JPG         ← About hero, gallery (placeholder until couple portrait)
     ├── Ace.DNG                   ← RAW — convert via cloudconvert.com
     ├── Mango Outside.DNG         ← RAW — convert
     └── Teddy.DNG                 ← RAW — convert
@@ -57,18 +65,23 @@ The site has **six public pages** plus email templates:
 
 ---
 
-## 3. Design System (Blue & Yellow — Dog Vision Palette)
+## 3. Design System — Blue & Yellow (Dog Vision Palette)
 
-Inspired by research that dogs primarily see in shades of blue, yellow, and gray.
+Inspired by research that dogs primarily see shades of blue, yellow, and gray.
 
-### Fonts (Google Fonts CDN)
-- **Headings/display:** `Playfair Display` — italic serif, warm editorial feel
-- **Body/UI:** `DM Sans` — clean, modern, friendly
+### Fonts
 
-### Color Tokens (CSS custom properties — identical across all 6 pages)
+- **Display / headings:** `Playfair Display` **600 weight, roman (not italic)** — used at larger sizes with tight negative letter-spacing for presence. Italic is reserved for the small decorative brand wordmark (nav-brand, footer-brand) and the stylized `&` ampersand only.
+- **Body / UI / long text:** `DM Sans` — clean, modern, highly legible. Used for all body copy, subtitles, card descriptions, value cards, bios on dark heroes.
+- **Email templates:** body font is **Arial/Helvetica** (email-client safe). Headline wordmark uses Georgia 600.
+
+> Late in the April 10 session, the site was audited for italic Playfair Display overuse (hard to read at body sizes). All large italic headings and long italic body copy on dark backgrounds were converted to either Playfair roman 600 (headings) or DM Sans (body). See `§ 15`.
+
+### Color Tokens (shared across all 6 HTML pages)
+
 ```css
 :root {
-  --bg:          #F2F5FB;   /* cool, soft ice blue */
+  --bg:          #F2F5FB;   /* cool soft ice blue */
   --bg-2:        #E4EAFA;
   --surface:     #FFFFFF;
   --blue:        #1B4F8C;   /* primary deep navy */
@@ -77,7 +90,7 @@ Inspired by research that dogs primarily see in shades of blue, yellow, and gray
   --blue-pale:   #E4F0FB;
   --yellow:      #D4A017;   /* accent — all CTAs */
   --yellow-light:#F5CC4A;   /* nav accent, hero highlights */
-  --yellow-pale: #FEF9E7;   /* coupon bar */
+  --yellow-pale: #FEF9E7;   /* coupon/callout backgrounds */
   --text:        #1A1D26;
   --text-2:      #4C5470;
   --text-3:      #8C94B0;
@@ -95,30 +108,26 @@ Inspired by research that dogs primarily see in shades of blue, yellow, and gray
 }
 ```
 
-> Note: The schedule, store, gallery, and about pages use the token names `--blue` / `--yellow`. The original `index.html` + the earlier versions kept legacy `--green` / `--amber` variable names but remapped their values to the blue/yellow palette for zero-touch compatibility. Both styles render identically.
+> `store.html` retains legacy `--green` / `--amber` variable name aliases (pointing at the blue/yellow values) for backward compatibility with pre-refactor rules. Both naming conventions resolve to the same values.
 
-### Hero gradient (shared)
+### Hero gradient (all pages)
+
 ```css
 background: linear-gradient(150deg, #0A1E3D 0%, #1B4F8C 55%, #2B6CB0 100%);
 ```
-Plus a radial dot overlay via `::before` (24px spacing).
+With a radial dot overlay via `::before` (24px spacing).
 
-### Footer (shared)
+### Footer
+
 ```css
 background: #081529;
 ```
-
-### UI patterns (shared)
-- **Primary CTA buttons**: amber pill (`border-radius: 99px`), white/dark text
-- **Section eyebrows**: 11px uppercase DM Sans + amber underline bar via `::after`
-- **Cards**: white surface, 1px warm border, `var(--shadow-sm)`, hover lifts 3px
-- **Scroll reveal**: IntersectionObserver `.reveal` → `.visible` fade-up (disabled under `prefers-reduced-motion`)
 
 ---
 
 ## 4. Shared Navigation
 
-All 6 HTML pages use an **identical nav component** with 4 main tabs + Subscribe CTA. The nav is sticky-top, deep navy, with a hamburger that kicks in at `max-width: 820px`.
+All 6 HTML pages use an **identical nav** with 4 main tabs + Subscribe CTA. Hamburger kicks in at `max-width: 820px`.
 
 ```html
 <nav>
@@ -136,7 +145,7 @@ All 6 HTML pages use an **identical nav component** with 4 main tabs + Subscribe
 
 Add `class="nav-link active"` to the current page's link on each page.
 
-JS (shared):
+Shared JS:
 ```javascript
 document.getElementById('nav-toggle').addEventListener('click', function () {
   var links = document.getElementById('nav-links');
@@ -147,16 +156,16 @@ document.getElementById('nav-toggle').addEventListener('click', function () {
 
 ---
 
-## 5. Responsive Breakpoints (applied to all main pages)
+## 5. Responsive Breakpoints
 
-Three-tier mobile-first scaling:
+Three-tier mobile-first scaling applied to every page:
 
 | Breakpoint | Range | Behavior |
 |---|---|---|
-| Desktop (default) | `>= 961px` | Full nav, multi-column grids, large hero |
-| Tablet | `<= 960px` | Tighter padding, 2-col grids, moderate hero |
-| Mobile | `<= 820px` | Hamburger menu, single/2-col grids, stacked hero |
-| Small mobile | `<= 480px` | Single-column, reduced type, stacked forms |
+| Desktop (default) | `≥ 961px` | Full nav, multi-column grids, large hero |
+| Tablet | `≤ 960px` | Tighter padding, 2-col grids |
+| Mobile | `≤ 820px` | Hamburger menu, single/2-col grids, stacked hero |
+| Small mobile | `≤ 480px` | Single-column, reduced type, stacked forms |
 
 Every page also includes:
 
@@ -176,88 +185,185 @@ Every page also includes:
 }
 ```
 
-`index.html` additionally has a **skip-to-main-content** link for keyboard users.
+`index.html` also has a **skip-to-main-content** link for keyboard users.
 
 ---
 
-## 6. Page-by-Page Notes
+## 6. Micro-interactions & Animations
+
+Added late in the April 10 session to give the site warmth and feedback without being noisy. All animations respect `prefers-reduced-motion` (a late block in every page's stylesheet cancels them if the user opts out).
+
+### Shared keyframes (in every page's style block, near the ACCESSIBILITY section)
+
+```css
+@keyframes dal-fade-up   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes dal-pop       { 0% { transform: scale(1); } 45% { transform: scale(1.22); } 100% { transform: scale(1); } }
+@keyframes dal-pulse     { 0% { box-shadow: 0 0 0 0 rgba(212,160,23,.55); } 80% { box-shadow: 0 0 0 18px rgba(212,160,23,0); } 100% { box-shadow: 0 0 0 0 rgba(212,160,23,0); } }
+@keyframes dal-wiggle    { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
+@keyframes dal-paw-walk  { 0% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(-5deg); } 100% { transform: translateY(0) rotate(0); } }
+```
+
+### Global effects (all pages)
+
+| Interaction | Effect |
+|---|---|
+| Page load | `main` / `.page-wrap` fade-up over 550ms |
+| Nav brand hover | `dal-wiggle` — playful 500ms wiggle |
+| Nav link hover / active | Yellow underline slides in from center (`::after` scaleX transition) |
+| `.dal-pop` class | JS-triggered 420ms pop scale (1 → 1.22 → 1) with bouncy cubic-bezier |
+
+### Page-specific effects
+
+**index.html**
+- Primary CTAs (`.btn-primary`, `.issue-read-link`, `.hero-form button`): `dal-pulse` welcome ring, 2 iterations on page load then stops
+- Dog cards: on hover, photo runs `dal-paw-walk` (gentle lift + rotate)
+- Perk-strip icons: `dal-paw-walk` on hover
+- Coupon codes: `dal-wiggle` on hover (subtle "try me" gesture)
+
+**store.html**
+- `.btn-amazon`, `.pick-cta`: `dal-pulse` welcome ring × 2 on load
+- Filter buttons: hover `translateY(-1px)`, active `scale(.95)`, JS adds `.dal-pop` on click for a tactile pop
+- Product-img icons: `dal-paw-walk` on card hover
+
+**about.html**
+- Credential badges (Star Sitter, Training Cert, Background Checked): **stagger-in** animation on load (150ms, 300ms, 450ms delays)
+- Value-card icons: `dal-paw-walk` on hover
+- Dog chips: `dal-wiggle` on hover
+- Hero photo: gentle rock (`dal-wiggle`) on hover
+- `.rover-link` / `.btn-rover`: `dal-pulse` welcome ring × 2 on load
+
+**schedule.html**
+- Calendar months: stagger-in (`dal-month-slide`) with 50ms/150ms/250ms delays
+- **Calendar day click**: bounce animation (`dal-cal-bounce`: scale 1 → 1.35 → .92 → 1) via JS-added `.dal-bounce` class, triggered on any future-date click — works in both view-only and admin mode
+- `.cal-day.available:hover`: lifts to `scale(1.14)` with soft blue shadow
+- Service select: hover `translateY(-1px)`
+- Service detail pane: slides in with opacity + translateY + max-height when a service is picked
+- `.btn-book`: `dal-pulse` welcome ring × 2 on load
+- Admin FAB (⚙): 60° spin on hover
+- Legend dots: `dal-pop` on hover
+
+**gallery.html**
+- Gallery items: `translateY(-4px) rotate(-.8deg)` + shadow lift on hover
+- Filter buttons: hover translate + JS `.dal-pop` on click
+- Lightbox: `dal-lightbox-in` (scale .92 → 1 + opacity) on open
+
+**privacy.html**
+- Page fade-up, nav brand wiggle, nav underline slide (no loud effects — legal page stays calm)
+
+### JavaScript hooks
+
+Two JS handlers add `.dal-pop` / `.dal-bounce` classes briefly:
+
+**schedule.html** (inside `cell.addEventListener('click', ...)`):
+```javascript
+if (!isPast(key)) {
+  cell.classList.remove('dal-bounce');
+  void cell.offsetWidth;  /* restart animation */
+  cell.classList.add('dal-bounce');
+  setTimeout(function() { cell.classList.remove('dal-bounce'); }, 520);
+}
+```
+
+**store.html** and **gallery.html** (inside filter button click handlers):
+```javascript
+btn.classList.remove('dal-pop');
+void btn.offsetWidth;
+btn.classList.add('dal-pop');
+setTimeout(function () { btn.classList.remove('dal-pop'); }, 420);
+```
+
+---
+
+## 7. Page-by-Page Notes (post-April-10)
 
 ### index.html
-- Hero with Lorenzo's name + "Rover Star Sitter" byline
-- Polaroid Turbo (main) + Troy (secondary) photos rotating in hero
-- Perks strip, What You'll Get pillars, Latest Issue preview, archive links
-- **Our Recent Dogs** section (`#our-dogs`): Turbo, Troy, Dakota + Ace/Mango/Harley placeholders. Duplicate Turbo has been removed.
-- 3 testimonial placeholder cards
-- Store teaser (→ store.html), coupon cards (PUPS10, SHOP10)
-- Share/refer row
-- Footer links to all 6 pages + privacy
+- Hero byline: "by Lorenzo & Catalina Llamas • Rover Star Sitters"
+- Polaroid Turbo (main) + Troy (secondary) in hero
+- Perks, What You'll Get pillars, Latest Issue preview
+- Our Recent Dogs grid: Turbo (only once), Troy, Dakota, + Ace/Mango/Harley placeholders
+- Testimonial copy uses plural ("Lorenzo & Catalina always take...")
+- Footer: "Lorenzo & Catalina Llamas • Rover Star Sitters"
 
-### schedule.html  *(NEW)*
-- 3-month forward-looking calendar grid (today + 2 more months), rendered dynamically in JS
-- Status colors: `available` = deep blue, `booked` = gray strike, `unavailable` = light gray
-- Today highlighted with amber ring
-- Services grid: Boarding, Drop-in Visits, Dog Walking, House Sitting (rate placeholders `$[RATE]`)
-- **Admin mode**: ⚙ FAB button → PIN modal (default PIN `1234` — CHANGE THIS)
-- `localStorage` keys: `dal_schedule` (JSON map `{ "YYYY-MM-DD": "available"|"booked"|"unavailable" }`) and `dal_admin` (auth token)
-- Click future date in admin mode → cycles status: available → booked → unavailable → available
-- Rover booking CTA → rover.com/sit/lorenl45629
-- "Exit admin mode" button when authenticated
+### schedule.html *(redesigned in April 10 session)*
+- **Layout order changed:** Hero → Calendar (Step 1) → Service dropdown (Step 2) → Rover CTA
+- Removed: old service-tile grid (4 tiles), trust note paragraph, "$25K vet coverage" line
+- Calendar: 3 months, blue available / gray booked / amber today ring
+- Service picker card below calendar with `<select>` dropdown
+- When a service is selected, a yellow-accented detail pane slides in showing name + price + description. **Dog Boarding & Doggy Day Care** include a "⭐ Our Favorite" badge
+- Services JS object (`SERVICES`) defines rates:
+  - `boarding` — $90/night (focus: true)
+  - `daycare` — $50/day (focus: true)
+  - `dropin` — $45/visit
+  - `walking` — $25/walk
+  - `housesitting` — $100/night
+- Admin mode: ⚙ FAB → PIN modal (default `1234` — CHANGE IT)
+- LocalStorage: `dal_schedule` (JSON `{ "YYYY-MM-DD": status }`) and `dal_admin_pin`
+- Click any future date → `dal-bounce` animation; in admin mode, also cycles through available → booked → unavailable
 
-### gallery.html  *(NEW)*
-- CSS masonry via `columns: 4 240px; column-gap: 14px`
-- 4 filter buttons: All, Outdoors, Action, Portraits, Rest & Play
+### gallery.html
+- CSS masonry `columns: 4 240px`
+- Filter: All, Outdoors, Portraits, Action, Rest & Play
 - Each item has `data-tags`, `data-name`, `data-caption`
-- Hover caption overlay + click-to-open full-size lightbox (ESC/click-outside closes)
-- 4 real photos + 4 "coming soon" placeholders for Ace, Mango, Harley, extra slot
-- "Photography services coming soon" banner at bottom
+- Click real photo → lightbox (ESC / click-outside closes)
+- 4 real photos + 4 placeholders
 - Tablet: 3 columns; mobile: 2 columns; small: 2 narrow
+- Footer: "Lorenzo & Catalina Llamas • Photos shared with client permission"
 
-### about.html  *(NEW)*
-- Lorenzo Llamas hero with polaroid photo (currently `Dakota and me.JPG` — replace with solo portrait)
-- **Badge row** under title:
-  1. ⭐ Rover Star Sitter (linear gradient highlighted)
-  2. 🎓 Dog Training Cert (In Progress)
-  3. 🛡️ Background Checked
-- Stat bar: Happy Dogs `[X]`, Rover Star Sitter, 5-Star Reviews `[X]`, Stays Completed `[X]+`
-- Bio: "Why I do this" + Rover Star Sitter paragraph + training certification paragraph
-- **Certification callout card** with gold accent — reiterates the in-progress credential
-- 6 value cards including new "Training-Informed" card replacing "Pet First Aid Aware"
-- Dog chip list: Turbo, Troy, Dakota, Harley, Ace, Mango
-- Rover profile CTA card (navy bg, yellow button)
+### about.html *(rewritten for couple in April 10 session)*
+- Title: "About Us — Dogs & Llamas"
+- Hero name: "Lorenzo & Catalina" (eyebrow "Meet Your Sitters")
+- Tagline: "Rover Star Sitters • Dog Walkers • Training Students"
+- Badge row: ⭐ Rover Star Sitters, 🎓 Dog Training Cert (In Progress), 🛡️ Background Checked
+- Stat bar placeholders: `[X]` Happy Dogs, ⭐ Star (Rover Star Sitter), `[X]` 5-Star Reviews, `[X]+` Stays Completed
+- Bio rewritten in plural (we/our/us); removed "A note on trust" paragraph entirely
+- **Certification callout card** (yellow left border) reiterates the in-progress credential
+- 6 value cards: Photo Updates, Your Dog's Routine, Always Reachable, Training-Informed, **Two Sets of Hands** (new — replaces Rover-Covered), Genuinely Personal
+- Dog chips: Turbo, Troy, Dakota, Harley, Ace, Mango
+- Rover CTA card: no more "$25K vet coverage" footer line
 
 ### store.html
 - Affiliate disclosure bar + coupon bar (`SHOP10`)
 - Sticky filter bar at `top: var(--nav-h)` with 10 filter tags
-- **Personal Picks** (2-up): Harley (Big Barker) + Turbo (Chuckit 26L)
-- All Picks product grid with JS pagination (6 per page on "All", show-all for filters)
-- 15 products, each with ASIN comment in HTML + `rel="sponsored noopener noreferrer"`
-- Subscribe banner + share row at bottom
-- Product grid auto-fits: desktop 272px min / tablet 240px / mobile 200px / narrow mobile 1-col
+- Personal Picks: Harley (Big Barker) + Turbo (Chuckit 26L)
+- 15-product grid with JS pagination (6 per page on "All", show-all for filtered)
+- Each card has ASIN in HTML comment + `rel="sponsored noopener noreferrer"`
+- Subscribe banner + share row
+- Footer: "Lorenzo & Catalina Llamas • Rover Star Sitters"
 
-### privacy.html  *(REBUILT in session)*
-- Now matches blue/yellow design system + shared nav
-- Intro card with italic Playfair quote
+### privacy.html *(rebuilt in April 9 session)*
+- Blue/yellow design system + shared nav
+- Intro card (no italic — changed in April 10)
 - Sections: Info Collected, Email Use, Affiliate Links, Rover Bookings, Unsubscribing, External Links, Contact
-- Links Rover TOS + Rover privacy policy
-- Contact line: "Reach out on my Rover profile" → rover.com/sit/lorenl45629
+- Rover links go directly to the Rover profile
 
 ---
 
-## 7. Email Templates
+## 8. Email Templates *(rebranded blue/yellow in April 10 session)*
 
-**These are still in the original green/warm serif style** — they haven't been rebranded to blue/yellow. Monthly/welcome emails render fine in inboxes as-is, but if the user wants a fully unified brand, these three files need updating:
-- `newsletter-template.html`
-- `welcome-email.html`
-- `monthly-issue-01.html`
-- `mini-update-01.html`
+All 4 email files now match the site:
 
-All files now sign off as **"Lorenzo Llamas"** (all `[First Name] Llamas` references have been updated). The recipient greeting `Hi [First Name],` is still a placeholder since it's filled in per-recipient by the email platform.
+- `welcome-email.html` — fully rewritten
+- `mini-update-01.html` — fully rewritten
+- `monthly-issue-01.html` — fully rewritten, now includes a yellow Rover CTA button
+- `newsletter-template.html` — color tokens + fonts swapped in-place to preserve optional section blocks
 
-`newsletter-template.html` includes an OPTIONAL PERSONALIZED DOG PICK section (commented out by default) for "Just for [Dog Name]" style product recs tied to specific clients.
+Shared email styling:
+- Background: `#F2F5FB`
+- Card: `#FFFFFF` with `border-radius: 10px` + subtle blue shadow
+- Header: navy gradient (`#0A1E3D → #1B4F8C → #2B6CB0`) with `#F5CC4A` eyebrow
+- Body font: **Arial / Helvetica** (email-client safe)
+- Wordmark font: Georgia 600 (`"Dogs & Llamas"`)
+- Accent callouts: `#E4F0FB` background with `#D4A017` left border
+- Link color: `#2B6CB0`
+- Footer: `#081529` with muted white text
+- All sign-offs: "Lorenzo & Catalina Llamas" + "Rover Star Sitters • rover.com/sit/lorenl45629"
+- Monthly issue copy rewritten in plural voice (we/our)
+
+`newsletter-template.html` still includes the OPTIONAL sections (Photo Strip, Testimonial, Product Spotlight, Personalized Dog Pick) commented out — uncomment and fill in the config block at the top of the file.
 
 ---
 
-## 8. Coupon System
+## 9. Coupons
 
 Honor-based, no backend.
 
@@ -266,11 +372,17 @@ Honor-based, no backend.
 | `PUPS10` | Subscribes to newsletter | 10% off next sit (returning clients) |
 | `SHOP10` | Purchases via store affiliate link | 10% off next sit (new + returning) |
 
-Both mentioned verbally when the client reaches out on Rover.
+---
+
+## 10. Amazon Affiliate Links
+
+All product links use direct Amazon URLs with real ASINs. Replace with personal `amzn.to/XXXXX` short links once affiliate program is approved.
+
+**ASINs on file:** Big Barker `B009G9Y5UC`, MidWest iCrate `B000OX64P8`, KONG `B0002AR0I8`, Benebone `B00CPDWT2M`, Chuckit Ultra `B00UNLOWK0`, Chuckit Sport 26L `B001B4TV1I`, West Paw Zisc `B004A7X29U`, Blue Buffalo `B0009YWKUA`, Purina Pro Plan `B01EY9KQ2Y`, Earth Rated Wipes `B07NHL31CC`, Puomue Towel `B0BY57YF6B`.
 
 ---
 
-## 9. Security
+## 11. Security
 
 ### In HTML (works everywhere including GitHub Pages)
 - `<meta name="referrer" content="strict-origin-when-cross-origin">`
@@ -278,133 +390,132 @@ Both mentioned verbally when the client reaches out on Rover.
 - All external links: `rel="noopener noreferrer"`
 - All Amazon affiliate links: `rel="noopener noreferrer sponsored"`
 - Event listeners via `addEventListener` (no inline `onclick`)
-- Subscribe form uses `preventDefault` with toast feedback
-- Schedule admin PIN is **hashed** in localStorage (simple polynomial hash, not cryptographic — this is a soft lock, not a real security boundary)
+- Schedule admin PIN is **hashed in localStorage** (simple polynomial hash — soft lock, not cryptographic)
 
 ### `_headers` file (Netlify / Cloudflare only)
 - X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, CSP
 - Cache: HTML = 1hr, `/media/*` = 30 days immutable
-- GitHub Pages ignores this file; HTML meta tags cover what they can
+- GitHub Pages ignores this file
 
 ---
 
-## 10. Amazon Affiliate Links
-
-All current product links use direct Amazon URLs with real ASINs. The sitter will replace them with personal `amzn.to/XXXXX` short links once their affiliate program is approved.
-
-Every product card has an HTML comment with the ASIN:
-```html
-<!-- AFFILIATE LINK: replace href with your amzn.to link | ASIN: B009G9Y5UC -->
-```
-
-**ASINs on file:**
-- Big Barker 7″ Bed: `B009G9Y5UC`
-- MidWest iCrate 42″: `B000OX64P8`
-- KONG Classic: `B0002AR0I8`
-- Benebone Wishbone: `B00CPDWT2M`
-- Chuckit Ultra Ball: `B00UNLOWK0`
-- Chuckit Sport 26L: `B001B4TV1I`
-- West Paw Zisc 8.5″: `B004A7X29U`
-- Blue Buffalo Life Protection 30lb: `B0009YWKUA`
-- Purina Pro Plan Sensitive 30lb: `B01EY9KQ2Y`
-- Earth Rated Wipes 100ct: `B07NHL31CC`
-- Puomue Towel 2-Pack: `B0BY57YF6B`
-
----
-
-## 11. Placeholders Still to Fill Before Launch
+## 12. Placeholders Still to Fill
 
 | Placeholder | Where | Replace With |
 |---|---|---|
-| `[X]` stat numbers | `about.html` stat bar | Actual Rover stats from Lorenzo's profile |
-| `[X]+` stays completed | `about.html` | Actual count |
-| `$[RATE]` | `schedule.html` services grid | Actual rates for boarding, drop-in, walking, house sitting |
-| Default PIN `1234` | `schedule.html` | Personal admin PIN |
-| `[YOUR-GITHUB-USERNAME]` `[REPO-NAME]` | OG meta tags in all pages | Actual deployment URL |
-| `[YOUR-SITE]` | Share links | Live site URL |
+| `[X]` stat numbers | `about.html` stat bar | Actual Rover stats (Happy Dogs, 5-Star Reviews, Stays Completed) |
+| Default PIN `1234` | `schedule.html` line ~441 | Personal 4-digit admin PIN |
+| Solo / couple portrait | `about.html` hero | Replace `Dakota and me.JPG` with a photo of the two of you |
+| Harley photo | `store.html` personal pick + gallery | Add `./media/Harley.jpg` |
+| Testimonial copy | `index.html` | 3 real client quotes (with written permission) |
+| `[YOUR-GITHUB-USERNAME]` / `[REPO-NAME]` | OG meta tags | Actual deployment URL |
+| `[YOUR-SITE]` | Share links in store.html | Live site URL |
 | `https://amzn.to/XXXXX` | All 15 product cards | Personal amzn.to affiliate links |
-| Solo portrait photo | `about.html` hero | Replace `Dakota and me.JPG` with a solo shot |
-| Harley photo | `store.html` personal pick + gallery | Add `./media/Harley.jpg` when available |
-| Testimonial content | `index.html` | 3 real client quotes (with written permission) |
 
 ---
 
-## 12. Known Issues / Pending Work
+## 13. Pending Work
 
 ### Immediate (before launch)
-- [ ] Fill in Rover stats on `about.html` (Lorenzo will need to share screenshots of his profile)
-- [ ] Pick rates for schedule services grid
-- [ ] Change schedule admin PIN from default `1234`
+- [ ] Fill in real Rover stats on `about.html`
+- [ ] Change schedule admin PIN from `1234`
 - [ ] Replace testimonial placeholders with real client quotes
-- [ ] Convert `Ace.DNG`, `Mango Outside.DNG`, `Teddy.DNG` to JPG (cloudconvert.com → place in `/media`, swap placeholder divs for `<img>`)
+- [ ] Convert `Ace.DNG`, `Mango Outside.DNG`, `Teddy.DNG` to JPG
 - [ ] Connect subscribe form `action="#"` to Mailchimp / beehiiv / Buttondown
-- [ ] Replace Amazon product URLs with personal amzn.to affiliate short links
+- [ ] Replace Amazon URLs with personal amzn.to links
+- [ ] Add couple portrait for about page
+- [ ] Confirm Catalina's credential status (is she also a Star Sitter? Same training program?) and adjust badges if needed
 
 ### Short-term
-- [ ] Rebrand email templates (newsletter-template, welcome-email, monthly-issue-01, mini-update-01) to blue/yellow to match the website
-- [ ] Add a solo portrait photo to `about.html` hero
-- [ ] Add more dogs to the "Our Recent Dogs" grid as photos come in
 - [ ] Send welcome email to existing client list
 - [ ] Publish `monthly-issue-01.html` to subscribers
+- [ ] Add more dogs to "Our Recent Dogs" as photos come in
 
 ### Medium-term
-- [ ] Add a breed filter or "best for your breed" section to the store
-- [ ] Consider a small testimonial carousel for the about page once real reviews come in
-- [ ] Create `monthly-issue-02.html` for May using the template
-- [ ] UTM-tag Amazon affiliate links for click-through tracking
+- [ ] `monthly-issue-02.html` for May using the template
+- [ ] Add breed filter or "best for your breed" section to store
+- [ ] Testimonial carousel for about page when real reviews come in
 
 ### Long-term
-- [ ] Once dog training certification is earned, swap "In Progress" badge for a full credential card
-- [ ] Consider upgrading to a build step (Astro, 11ty, or Vite) if the site grows beyond 10+ pages
-- [ ] Add a simple JSON-driven schedule sync via a GitHub-based workflow if client demand grows (currently localStorage-only per-device)
+- [ ] Swap "In Progress" badge for full credential card when certification is earned
+- [ ] JSON-synced schedule via GitHub Actions if multi-device sync becomes needed (currently localStorage per-device)
 
 ---
 
-## 13. Deployment
+## 14. Deployment
 
 ### GitHub Pages
 1. Push repo to GitHub
-2. Settings → Pages → Source: `main` branch, `/ (root)`
+2. Settings → Pages → Source: `main` / root
 3. Site live at `https://<username>.github.io/<repo-name>/`
-4. Replace OG meta placeholders with the real URL
+4. Replace OG meta placeholders with real URL
 
 ### Netlify / Cloudflare Pages
 1. Connect repo
-2. Build command: *(none — static)*
+2. Build command: *(none)*
 3. Publish directory: `/` (root)
-4. `_headers` file activates automatically
+4. `_headers` activates automatically
 
 ### Email platform (not yet connected)
-- Subscribe forms in `index.html` and `store.html` currently `preventDefault` + toast
-- Replace `action="#"` with Mailchimp / beehiiv embed URL or connect via Formspree/Netlify Forms
-- Recommended: **beehiiv** (simple, free tier)
+Subscribe forms currently `preventDefault` + toast. Replace `action="#"` with Mailchimp/beehiiv embed. Recommended: **beehiiv** (free tier, simple analytics).
 
 ---
 
-## 14. Brand Voice
+## 15. Changes in this April 10 session
 
-- **Personal, warm, never corporate.** One person who genuinely loves dogs.
-- **Rover-safe.** All bookings stay on Rover — never "book with me directly."
-- **Honest.** Products and tips come from real experience.
-- **Minimal.** Less text, not more. One tip. One product. One clear CTA.
-- **Credentialed but humble.** Star Sitter is a quiet badge of pride, not a sales lever. Training certification is shared with genuine enthusiasm.
-- **Dog people talk to dog people.** Reference specific dogs by name. Say why.
+### Content / copy
+1. **Sitter name corrected**: Loren → Lorenzo
+2. **Added Catalina** as co-sitter. Site now reads "Lorenzo & Catalina Llamas" / "Rover Star Sitters" (plural) everywhere — about, index, store, gallery, privacy, schedule, all emails
+3. About bio rewritten in plural voice (we/our/us)
+4. New value card: **"Two Sets of Hands"** (husband-and-wife team angle), replaces "Rover-Covered"
+5. **Removed trust paragraph** from about.html entirely
+6. **Removed "$25K vet coverage"** lines from about Rover CTA card and schedule book section
+7. Schedule page Rover booking CTA text pruned (no insurance boilerplate)
+
+### Design / UX
+8. **Star Sitter + Dog Training Cert badges** added to about hero with stagger-in animation
+9. **Font readability fix** — italic Playfair Display replaced with roman 600 weight (headings) or DM Sans (body) across all pages. Italic retained only for the small decorative `nav-brand` / `footer-brand` wordmark and stylized `&` ampersand.
+10. **Schedule page restructure**:
+    - Calendar is now **first** (directly after hero)
+    - Service tiles replaced with a **`<select>` dropdown** below the calendar
+    - Selecting a service reveals a detail pane with rate, description, and "⭐ Our Favorite" badge for Boarding and Doggy Day Care
+    - Rates populated: Boarding $90/night, Doggy Day Care $50/day, Drop-In $45/visit, Walking $25/walk, House Sitting $100/night
+11. **store.html blue/yellow verification**: added proper `--blue`/`--yellow` CSS variable aliases; fixed two hardcoded green leftovers (`.badge-value`, `.product-why` text color)
+
+### Email rebrand
+12. All 4 email templates rebranded from green/cream Georgia to **blue/yellow Arial-Helvetica**
+13. Header: navy gradient with yellow eyebrow
+14. Monthly issue #1 got a new **yellow Rover CTA button** table-row
+15. All email sign-offs updated to "Lorenzo & Catalina Llamas" + "Rover Star Sitters • rover.com/sit/lorenl45629"
+
+### Micro-interactions (new in late-session addition)
+16. **Shared animation system** added to every page (5 keyframes: fade-up, pop, pulse, wiggle, paw-walk)
+17. **Page fade-in** on load for all main content
+18. **Nav brand wiggle** on hover
+19. **Nav link underline slide** (yellow, scaleX origin center)
+20. **Welcome pulse ring** (2 iterations on load) on primary CTAs — book, Rover, Amazon
+21. **Calendar day click bounce** — visible feedback for every click on any future date (view-only or admin)
+22. **Calendar months stagger-in** on page load
+23. **Filter button pop** on click (store + gallery)
+24. **About badge stagger-in** on load (150/300/450ms delays)
+25. **Dog cards / perk icons / value icons** do a gentle paw-walk on hover
+26. **Dog chips / coupon codes / hero photo** wiggle on hover
+27. **Service detail pane** slides in when a schedule service is selected
+28. **Admin FAB spins** 60° on hover
+29. **Lightbox** scales in with bouncy cubic-bezier
+30. All animations wrapped in `prefers-reduced-motion` guards
+
+### What did NOT change
+- 6 public pages, shared nav structure
+- Blue/yellow palette values (just renamed the variables in store.html)
+- Responsive breakpoints (960 / 820 / 480)
+- Schedule admin PIN system (localStorage + polynomial hash)
+- Store filter + pagination JS
+- Gallery masonry layout + lightbox
+- Amazon ASINs
+- Deployment assumptions (GitHub Pages / Netlify / Cloudflare)
 
 ---
 
-## 15. Changes from April 9 handoff → April 10
-
-1. Sitter name corrected: **Loren → Lorenzo** (all files)
-2. Added **Rover Star Sitter** badge prominently on about page (hero badge row, stat bar, index hero byline, footers, privacy + welcome email sign-off)
-3. Added **Dog Training Certification (In Progress)** badge + callout card on about page; new "Training-Informed" value card
-4. **privacy.html** fully rebuilt in blue/yellow design system + shared nav
-5. **All `[First Name]` placeholders** updated to `Lorenzo` throughout site and email templates (kept `[First Name]` as the recipient placeholder in newsletter-template + mini-update + monthly-issue since it's filled in per-recipient by the email platform)
-6. **Three-tier responsive breakpoints** on all main pages: desktop (default), tablet (≤960), mobile (≤820), small mobile (≤480). Nav hamburger now consistently triggers at 820px across all pages.
-7. **Accessibility enhancements**: global `:focus-visible` rings, `prefers-reduced-motion` support, skip-to-main-content link on index
-8. **Store.html** product grid now reflows from 4→3→2→1 columns across breakpoints (was 640px-only before)
-9. **Index.html** hero now properly stacks on mobile with form wrap, perks strip stacks vertically, pillars collapse 4→2→1, testimonials 3→2→1, dogs grid adapts
-
----
-
-*Handoff prepared by Claude Code — session date April 10, 2026.*
-*All 6 pages are functional and consistent. Remaining work is content (real stats, rates, testimonials, photos, affiliate links) and email platform integration.*
+*Handoff prepared by Claude Code — session date April 10, 2026 (final).*
+*All 6 pages are functional, consistent, and animated. Remaining work is content (real stats, testimonials, photos, affiliate links) and email platform integration.*

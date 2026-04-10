@@ -22,6 +22,14 @@
       --bg:          #F2F5FB;
       --bg-2:        #E4EAFA;
       --surface:     #FFFFFF;
+      --blue:        #1B4F8C;
+      --blue-mid:    #2B6CB0;
+      --blue-light:  #6BA3D6;
+      --blue-pale:   #E4F0FB;
+      --yellow:      #D4A017;
+      --yellow-light:#F5CC4A;
+      --yellow-pale: #FEF9E7;
+      /* legacy aliases — safe to keep during transition */
       --green:       #1B4F8C;
       --green-mid:   #2B6CB0;
       --green-light: #6BA3D6;
@@ -126,12 +134,12 @@
       color: var(--amber-light); margin: 0 0 12px;
     }
     .hero h1 {
-      font-family: var(--font-head); font-size: 32px; font-weight: 400; font-style: italic;
-      color: #fff; margin: 0 0 12px; line-height: 1.2;
+      font-family: var(--font-head); font-size: 36px; font-weight: 600;
+      color: #fff; margin: 0 0 12px; line-height: 1.15; letter-spacing: -0.5px;
     }
     .hero p {
-      font-family: var(--font-head); font-size: 16px; font-style: italic;
-      color: rgba(255,255,255,.75); margin: 0 auto; max-width: 440px; line-height: 1.65;
+      font-family: var(--font-body); font-size: 15px;
+      color: rgba(255,255,255,.85); margin: 0 auto; max-width: 460px; line-height: 1.7;
     }
 
     /* ── COUPON BAR ──────────────────────────────── */
@@ -187,8 +195,8 @@
       font-size: 18px;
     }
     .sitter-note p {
-      font-family: var(--font-head); font-size: 15px; font-style: italic;
-      color: var(--text-2); line-height: 1.7; margin: 0; padding-top: 6px;
+      font-family: var(--font-body); font-size: 14.5px;
+      color: var(--text-2); line-height: 1.72; margin: 0; padding-top: 6px;
     }
 
     /* ── SECTION EYEBROW ─────────────────────────── */
@@ -240,12 +248,12 @@
       color: var(--green); margin: 0 0 6px;
     }
     .pick-product-name {
-      font-family: var(--font-head); font-size: 16px; font-weight: 400;
-      color: var(--text); margin: 0 0 10px; line-height: 1.35;
+      font-family: var(--font-head); font-size: 17px; font-weight: 600;
+      color: var(--text); margin: 0 0 10px; line-height: 1.3;
     }
     .pick-reason {
-      font-family: var(--font-head); font-size: 14px; font-style: italic;
-      color: var(--text-2); line-height: 1.68; margin: 0 0 16px; flex: 1;
+      font-family: var(--font-body); font-size: 13.5px;
+      color: var(--text-2); line-height: 1.7; margin: 0 0 16px; flex: 1;
     }
     .pick-cta {
       display: inline-block; align-self: flex-start;
@@ -289,7 +297,7 @@
     }
     .badge-pick    { background: var(--green); color: #fff; }
     .badge-popular { background: var(--amber); color: #fff; }
-    .badge-value   { background: #5a7f35; color: #fff; }
+    .badge-value   { background: var(--blue-mid); color: #fff; }
 
     .product-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
     .product-brand {
@@ -310,7 +318,7 @@
       border-left: 3px solid var(--green-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     }
     .product-why p {
-      font-family: var(--font-body); font-size: 11.5px; color: #3a6347;
+      font-family: var(--font-body); font-size: 11.5px; color: var(--blue);
       line-height: 1.55; margin: 0;
     }
     .product-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 9px 0 0; }
@@ -387,12 +395,12 @@
       box-shadow: var(--shadow-lg);
     }
     .subscribe-banner h2 {
-      font-family: var(--font-head); font-size: 24px; font-weight: 400; font-style: italic;
-      color: #fff; margin: 0 0 10px;
+      font-family: var(--font-head); font-size: 26px; font-weight: 600;
+      color: #fff; margin: 0 0 10px; letter-spacing: -0.3px;
     }
     .subscribe-banner p {
-      font-family: var(--font-head); font-size: 15px; font-style: italic;
-      color: rgba(255,255,255,.7); margin: 0 0 24px; line-height: 1.65;
+      font-family: var(--font-body); font-size: 14.5px;
+      color: rgba(255,255,255,.8); margin: 0 0 24px; line-height: 1.7;
     }
     .subscribe-form { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 420px; margin: 0 auto; }
     .subscribe-form input[type="email"] {
@@ -458,6 +466,53 @@
         transition-duration: .001ms !important;
         scroll-behavior: auto !important;
       }
+    }
+
+    /* ── MICRO-INTERACTIONS ─────────────────────── */
+    @keyframes dal-fade-up   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dal-pop       { 0% { transform: scale(1); } 45% { transform: scale(1.22); } 100% { transform: scale(1); } }
+    @keyframes dal-pulse     { 0% { box-shadow: 0 0 0 0 rgba(212,160,23,.55); } 80% { box-shadow: 0 0 0 18px rgba(212,160,23,0); } 100% { box-shadow: 0 0 0 0 rgba(212,160,23,0); } }
+    @keyframes dal-wiggle    { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
+    @keyframes dal-paw-walk  { 0% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(-5deg); } 100% { transform: translateY(0) rotate(0); } }
+
+    main, .page-wrap { animation: dal-fade-up .55s ease-out both; }
+    .nav-brand { display: inline-block; }
+    .nav-brand:hover { animation: dal-wiggle .5s ease-in-out; }
+
+    /* Nav link underline slide */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 14px; right: 14px; bottom: 0;
+      height: 2px; background: var(--yellow-light); border-radius: 2px;
+      transform: scaleX(0); transform-origin: center;
+      transition: transform .26s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+    /* Primary store CTAs gentle welcome pulse */
+    .btn-amazon, .pick-cta { animation: dal-pulse 2.4s ease-out 2; }
+
+    /* JS-triggered click pop */
+    .dal-pop { animation: dal-pop .42s cubic-bezier(.34,1.56,.64,1); }
+
+    /* Filter button click bounce already via dal-pop */
+    .filter-btn:hover .product-icon,
+    .product-card:hover .product-img { animation: dal-paw-walk .6s ease-in-out; }
+
+    /* Filter bar active state already blue — add micro-shimmer on hover */
+    .filter-btn:hover { transform: translateY(-1px); }
+    .filter-btn:active { transform: scale(.95); }
+
+    /* Amazon button press */
+    .btn-amazon:active, .pick-cta:active { transform: translateY(0) scale(.96); }
+
+    @media (prefers-reduced-motion: reduce) {
+      main, .page-wrap, .nav-brand, .btn-amazon, .pick-cta,
+      .dal-pop, .product-img, .filter-btn {
+        animation: none !important;
+        transition: none !important;
+      }
+      .nav-link::after { display: none !important; }
     }
 
     /* ── RESPONSIVE ──────────────────────────────── */
@@ -1027,7 +1082,7 @@
 <!-- ── FOOTER ────────────────────────────────────────── -->
 <footer>
   <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
-  <p>Lorenzo Llamas &bull; Rover Star Sitter</p>
+  <p>Lorenzo &amp; Catalina Llamas &bull; Rover Star Sitters</p>
   <p>Some links are Amazon affiliate links — I earn a small commission at no extra cost to you. Only products I'd genuinely suggest.</p>
   <p>All Rover bookings through <a href="https://www.rover.com" target="_blank" rel="noopener noreferrer">Rover.com</a>.</p>
   <div class="footer-links">
@@ -1110,6 +1165,12 @@
 
     btns.forEach(function (btn) {
       btn.addEventListener('click', function () {
+        /* Pop animation feedback */
+        btn.classList.remove('dal-pop');
+        void btn.offsetWidth;
+        btn.classList.add('dal-pop');
+        setTimeout(function () { btn.classList.remove('dal-pop'); }, 420);
+
         btns.forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
         applyFilter(btn.getAttribute('data-filter'));
