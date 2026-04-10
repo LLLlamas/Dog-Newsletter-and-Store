@@ -505,7 +505,7 @@ grant  execute on function public.dal_decide_booking_request(text, uuid, text)  
 --          ('brevo_api_key',  'xkeysib-INSERTKEYHERE'),
 --          ('owner_email',    'lorenzoleollamas@gmail.com'),
 --          ('owner_name',     'Lorenzo Llamas'),
---          ('sender_email',   'no-reply@dogsandllamas.com'),  -- Brevo verified sender
+--          ('sender_email',   'lorenzoleollamas@gmail.com'),  -- Brevo verified sender
 --          ('sender_name',    'Dogs & Llamas');
 --   3. Re-run this whole file so the trigger picks up the config.
 --
