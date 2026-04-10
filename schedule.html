@@ -152,10 +152,11 @@
     .legend { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
     .legend-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 13px; color: var(--text-2); }
     .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
-    .legend-dot.available { background: var(--blue); }
-    .legend-dot.booked    { background: #C8CEDE; border: 1px solid var(--border); }
-    .legend-dot.today     { background: var(--yellow); }
-    .legend-dot.past      { background: var(--bg-2); border: 1px solid var(--border); }
+    .legend-dot.available   { background: var(--blue); }
+    .legend-dot.booked      { background: #E8EAF4; border: 1px solid var(--border); }
+    .legend-dot.unavailable { background: var(--bg-2); border: 1px solid var(--border); }
+    .legend-dot.today       { background: var(--yellow); }
+    .legend-dot.past        { background: var(--bg-2); border: 1px solid var(--border); }
 
     /* ── CALENDAR CONTAINER ──────────────────────── */
     .calendar-months { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
@@ -414,7 +415,7 @@
 
 <!-- ADMIN MODE BANNER -->
 <div class="admin-banner" id="admin-banner">
-  &#9998; Admin Mode — Click any future date to change its status. Changes are saved automatically.
+  &#9998; Admin Mode — Click a date to mark it Available, then again to mark it Booked. Changes save to Supabase.
 </div>
 
 <!-- ── NAV ──────────────────────────────────────────── -->
@@ -452,8 +453,8 @@
 
   <!-- ADMIN INSTRUCTIONS (only visible in admin mode) -->
   <div class="admin-instructions" id="admin-instructions">
-    <p><strong>Admin mode is active.</strong> Click any future date to cycle through: Available &rarr; Booked &rarr; Unavailable &rarr; Available.</p>
-    <p>Changes save automatically to this browser.</p>
+    <p><strong>Admin mode is active.</strong> Click any future date to cycle: Unavailable &rarr; Available &rarr; Booked &rarr; Unavailable.</p>
+    <p>Changes sync to Supabase and are visible to everyone immediately.</p>
     <button class="btn-admin-exit" id="exit-admin-btn">Exit admin mode</button>
   </div>
 
@@ -463,6 +464,7 @@
   <div class="legend">
     <div class="legend-item"><div class="legend-dot available"></div> Available</div>
     <div class="legend-item"><div class="legend-dot booked"></div> Booked</div>
+    <div class="legend-item"><div class="legend-dot unavailable"></div> Unavailable</div>
     <div class="legend-item"><div class="legend-dot today"></div> Today</div>
     <div class="legend-item"><div class="legend-dot past"></div> Past</div>
   </div>
@@ -548,9 +550,11 @@
    ════════════════════════════════════════════════════════ */
 
   var STORAGE_KEY  = 'dal_schedule';
-  var PIN_KEY      = 'dal_admin_pin';
-  var DEFAULT_PIN  = '1234';   // ← CHANGE THIS after first login
   var MONTHS_AHEAD = 3;
+
+  /* Admin PIN — kept in memory only after a successful Supabase verify.
+     Required to write changes to the cloud. */
+  var ADMIN_PIN_MEM = null;
 
   /* ── Helpers ─────────────────────────────────── */
   function padZ(n) { return String(n).padStart(2,'0'); }
@@ -559,11 +563,11 @@
   function isPast(key) { return key < today(); }
   function isToday(key) { return key === today(); }
 
-  function hashPin(pin) {
-    /* Simple reversible hash — good enough for localStorage; not cryptographic */
-    var h = 0;
-    for (var i = 0; i < pin.length; i++) { h = (h * 31 + pin.charCodeAt(i)) & 0xFFFFFFFF; }
-    return 'dal_' + h.toString(16);
+  /* End-of-window date string (n months from today, last day) */
+  function rangeEnd(monthsAhead) {
+    var d = new Date();
+    var end = new Date(d.getFullYear(), d.getMonth() + monthsAhead + 1, 0);
+    return toKey(end.getFullYear(), end.getMonth(), end.getDate());
   }
 
   function getSchedule() {
@@ -571,18 +575,83 @@
   }
   function saveSchedule(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
 
+  /* Default state for unset future days = 'unavailable'.
+     Lorenzo & Catalina mark days available by clicking them in admin mode. */
   function getStatus(key) {
     if (isPast(key)) return 'past';
-    return getSchedule()[key] || 'available';
+    return getSchedule()[key] || 'unavailable';
   }
 
+  /* Cycle order starts from grey: unavailable → available → booked → unavailable */
   function cycleStatus(key) {
     var s = getSchedule();
-    var cur = s[key] || 'available';
-    var next = { available: 'booked', booked: 'unavailable', unavailable: 'available' };
+    var cur = s[key] || 'unavailable';
+    var next = { unavailable: 'available', available: 'booked', booked: 'unavailable' };
     s[key] = next[cur];
     saveSchedule(s);
     return s[key];
+  }
+
+  /* ── Cloud sync (Supabase) ─────────────────── */
+  function supa() {
+    return (window.DAL && DAL._supabase && DAL._supabase.url && DAL._supabase.key)
+      ? DAL._supabase : null;
+  }
+  function supaHeaders(s) {
+    return {
+      'Content-Type':  'application/json',
+      'apikey':        s.key,
+      'Authorization': 'Bearer ' + s.key,
+      'Accept':        'application/json'
+    };
+  }
+
+  function cloudFetchAvailability() {
+    var s = supa();
+    if (!s) return Promise.resolve(false);
+    return fetch(s.url + '/rest/v1/rpc/dal_get_availability', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_from: today(), p_to: rangeEnd(MONTHS_AHEAD) })
+    }).then(function (r) {
+      if (!r.ok) return null;
+      return r.json();
+    }).then(function (rows) {
+      if (!rows) return false;
+      var map = getSchedule();
+      /* Replace cloud-tracked dates from the server (cloud is authoritative) */
+      rows.forEach(function (row) { map[row.day] = row.status; });
+      saveSchedule(map);
+      return true;
+    }).catch(function (err) {
+      console.warn('[schedule] cloud fetch failed:', err.message);
+      return false;
+    });
+  }
+
+  function cloudWriteAvailability(key, status) {
+    var s = supa();
+    if (!s || !ADMIN_PIN_MEM) return Promise.resolve(false);
+    return fetch(s.url + '/rest/v1/rpc/dal_set_availability', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_date: key, p_status: status })
+    }).then(function (r) { return r.ok; })
+      .catch(function () { return false; });
+  }
+
+  function cloudVerifyPin(pin) {
+    var s = supa();
+    if (!s) return Promise.resolve(false);
+    return fetch(s.url + '/rest/v1/rpc/dal_verify_admin_pin', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_pin: pin })
+    }).then(function (r) {
+      if (!r.ok) return false;
+      return r.json();
+    }).then(function (result) { return result === true; })
+      .catch(function () { return false; });
   }
 
   /* ── Calendar rendering ──────────────────────── */
@@ -658,7 +727,15 @@
           cell.className = 'cal-day ' + newStatus;
           if (isToday(key)) cell.classList.add('today-ring');
           cell.setAttribute('title', newStatus);
-          showToast('Day marked as ' + newStatus);
+
+          /* Push to cloud — non-blocking. Falls back to local-only if offline. */
+          cloudWriteAvailability(key, newStatus).then(function (ok) {
+            if (ok) {
+              showToast('Saved: ' + key + ' \u2192 ' + newStatus);
+            } else {
+              showToast('\u26A0 Saved locally only — cloud sync failed');
+            }
+          });
         });
         grid.appendChild(cell);
       }(day));
@@ -677,8 +754,6 @@
   var modalCancel = document.getElementById('modal-cancel-btn');
   var exitAdmin   = document.getElementById('exit-admin-btn');
 
-  function getPin() { return localStorage.getItem(PIN_KEY) || hashPin(DEFAULT_PIN); }
-
   adminFab.addEventListener('click', function() {
     if (document.body.classList.contains('admin-mode')) { return; }
     pinInput.value = '';
@@ -687,20 +762,50 @@
     setTimeout(function() { pinInput.focus(); }, 80);
   });
 
+  function unlockAdmin(pin) {
+    ADMIN_PIN_MEM = pin;
+    pinModal.classList.remove('open');
+    document.body.classList.add('admin-mode');
+    adminFab.textContent = '\u2713';
+    adminFab.style.background = '#1B4F8C';
+    adminFab.style.color = '#fff';
+    showToast('Admin mode active \u2014 click days to edit');
+  }
+
+  function rejectPin() {
+    pinError.classList.add('show');
+    pinError.textContent = 'Incorrect PIN. Try again.';
+    pinInput.value = '';
+    pinInput.focus();
+  }
+
   function tryPin() {
     var entered = pinInput.value.trim();
-    if (hashPin(entered) === getPin()) {
-      pinModal.classList.remove('open');
-      document.body.classList.add('admin-mode');
-      adminFab.textContent = '✓';
-      adminFab.style.background = '#1B4F8C';
-      adminFab.style.color = '#fff';
-      showToast('Admin mode active — click days to edit');
-    } else {
-      pinError.classList.add('show');
-      pinInput.value = '';
-      pinInput.focus();
-    }
+    if (!entered) { rejectPin(); return; }
+
+    pinError.classList.remove('show');
+    modalOk.disabled = true;
+    pinError.textContent = 'Checking\u2026';
+    pinError.classList.add('show');
+
+    cloudVerifyPin(entered).then(function (ok) {
+      modalOk.disabled = false;
+      if (ok) {
+        pinError.classList.remove('show');
+        unlockAdmin(entered);
+      } else if (!supa()) {
+        /* No cloud configured — fall back to local-only mode with default PIN '1234' */
+        if (entered === '1234') {
+          pinError.classList.remove('show');
+          showToast('Offline mode \u2014 changes saved locally only');
+          unlockAdmin(entered);
+        } else {
+          rejectPin();
+        }
+      } else {
+        rejectPin();
+      }
+    });
   }
 
   modalOk.addEventListener('click', tryPin);
@@ -710,7 +815,8 @@
 
   exitAdmin.addEventListener('click', function() {
     document.body.classList.remove('admin-mode');
-    adminFab.textContent = '⚙';
+    ADMIN_PIN_MEM = null;
+    adminFab.textContent = '\u2699';
     adminFab.style.background = '';
     adminFab.style.color = '';
   });
@@ -793,9 +899,24 @@
   });
 
   /* ── Init ────────────────────────────────────── */
+  /* Initial paint from localStorage cache (instant) */
   renderCalendars();
+
+  /* Then pull fresh data from Supabase and re-render.
+     DOMContentLoaded fires after deferred scripts (incl. dal-subscriber.js)
+     so DAL._supabase is guaranteed to be set by this point. */
+  function syncFromCloud() {
+    cloudFetchAvailability().then(function (ok) {
+      if (ok) renderCalendars();
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncFromCloud);
+  } else {
+    syncFromCloud();
+  }
 </script>
-<script src="dal-subscriber.js" defer></script>
+<script src="dal-subscriber.js?v=3" defer></script>
 
 </body>
 </html>

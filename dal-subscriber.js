@@ -47,6 +47,13 @@
     supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5penZuZGp1enlibHNld29ia3J1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4MzEyNjUsImV4cCI6MjA5MTQwNzI2NX0.EJL17l72-Dx8GH2RYPrl34-NUtskY0ldcevgm8dOcpQ'
   };
 
+  /* Expose minimal Supabase config so other page scripts (e.g. schedule.html)
+     can call additional RPCs without re-declaring the URL/key. */
+  DAL._supabase = {
+    url: CONFIG.supabaseUrl,
+    key: CONFIG.supabaseAnonKey
+  };
+
   /* ══════════════════════════════════════════════════════════════
    *  BUILT-IN DOG PROFILES
    *  Keyed by lowercased dog name. When a subscriber's row in Supabase

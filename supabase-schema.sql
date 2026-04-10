@@ -188,6 +188,107 @@ on conflict (email) do update set
 
 
 -- ═══════════════════════════════════════════════════════════════════
+-- 7. AVAILABILITY CALENDAR
+-- ═══════════════════════════════════════════════════════════════════
+-- Stores Lorenzo & Catalina's availability for boarding/sitting.
+-- Public visitors can READ via dal_get_availability.
+-- Only the owner (with the admin PIN) can WRITE via dal_set_availability.
+--
+-- IMPORTANT: change the PIN below from '1234' to your own 4-digit PIN
+-- before applying this in production. The PIN lives only inside the
+-- function body — anon visitors never see it.
+
+create table if not exists public.availability (
+  day        date primary key,
+  status     text not null check (status in ('available','booked','unavailable')),
+  updated_at timestamptz default now()
+);
+
+comment on table public.availability is 'Owner-managed availability calendar — public read, PIN-gated write';
+
+alter table public.availability enable row level security;
+-- Zero policies on the table itself — all access via SECURITY DEFINER RPCs.
+
+-- ── 7a. READ FUNCTION ──────────────────────────────────────────────
+-- Returns all availability rows in [p_from, p_to]. Anon-callable.
+create or replace function public.dal_get_availability(p_from date, p_to date)
+returns table (
+  day        date,
+  status     text,
+  updated_at timestamptz
+)
+language sql
+security definer
+set search_path = public
+as $$
+  select a.day, a.status, a.updated_at
+  from public.availability a
+  where a.day between p_from and p_to;
+$$;
+
+comment on function public.dal_get_availability(date, date) is 'Public read of the availability calendar in a date range';
+
+-- ── 7b. WRITE FUNCTION (PIN-gated) ─────────────────────────────────
+-- Upserts a single day. Requires the admin PIN.
+-- ⚠ Change '1234' to your real PIN before applying!
+create or replace function public.dal_set_availability(
+  p_pin    text,
+  p_date   date,
+  p_status text
+)
+returns public.availability
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_admin_pin constant text := '1234';   -- ← CHANGE ME
+  v_row public.availability;
+begin
+  if p_pin is null or p_pin <> v_admin_pin then
+    raise exception 'Invalid PIN';
+  end if;
+  if p_status not in ('available','booked','unavailable') then
+    raise exception 'Invalid status: %', p_status;
+  end if;
+
+  insert into public.availability (day, status, updated_at)
+  values (p_date, p_status, now())
+  on conflict (day) do update
+    set status     = excluded.status,
+        updated_at = now()
+  returning * into v_row;
+
+  return v_row;
+end;
+$$;
+
+comment on function public.dal_set_availability(text, date, text) is 'Owner write — requires admin PIN. Upserts a single day.';
+
+-- ── 7c. PIN VERIFY (used by client to validate before showing edit UI) ─
+create or replace function public.dal_verify_admin_pin(p_pin text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_admin_pin constant text := '1234';   -- ← CHANGE ME (must match above)
+begin
+  return p_pin is not null and p_pin = v_admin_pin;
+end;
+$$;
+
+comment on function public.dal_verify_admin_pin(text) is 'Returns true if the supplied PIN matches the owner PIN';
+
+-- ── 7d. GRANTS ─────────────────────────────────────────────────────
+revoke all   on table public.availability                                from anon, authenticated;
+grant  execute on function public.dal_get_availability(date, date)       to   anon, authenticated;
+grant  execute on function public.dal_set_availability(text, date, text) to   anon, authenticated;
+grant  execute on function public.dal_verify_admin_pin(text)             to   anon, authenticated;
+
+
+-- ═══════════════════════════════════════════════════════════════════
 -- VERIFICATION (run these after applying to double-check everything)
 -- ═══════════════════════════════════════════════════════════════════
 
