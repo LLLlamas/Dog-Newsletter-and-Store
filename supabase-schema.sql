@@ -568,6 +568,11 @@ declare
   v_service_label text;
   v_phone_block   text;
   v_notes_block   text;
+  v_unit_price    integer;
+  v_unit_label    text;
+  v_quantity      integer;
+  v_total         integer;
+  v_total_line    text;
   v_payload       jsonb;
   v_pgnet_ok      boolean;
 begin
@@ -600,6 +605,49 @@ begin
     when 'housesitting' then 'House-sitting'
     else coalesce(initcap(new.service), '—')
   end;
+
+  -- Pricing: unit price, unit label, quantity.
+  -- Boarding + housesitting bill per NIGHT (end - start, min 1).
+  -- Daycare / dropin / walking bill per DAY in the range (inclusive).
+  case lower(coalesce(new.service, ''))
+    when 'boarding' then
+      v_unit_price := 90;
+      v_unit_label := 'night';
+      v_quantity   := greatest(new.end_date - new.start_date, 1);
+    when 'housesitting' then
+      v_unit_price := 100;
+      v_unit_label := 'night';
+      v_quantity   := greatest(new.end_date - new.start_date, 1);
+    when 'daycare' then
+      v_unit_price := 50;
+      v_unit_label := 'day';
+      v_quantity   := (new.end_date - new.start_date) + 1;
+    when 'dropin' then
+      v_unit_price := 45;
+      v_unit_label := 'visit';
+      v_quantity   := (new.end_date - new.start_date) + 1;
+    when 'walking' then
+      v_unit_price := 25;
+      v_unit_label := 'walk';
+      v_quantity   := (new.end_date - new.start_date) + 1;
+    else
+      v_unit_price := 0;
+      v_unit_label := '';
+      v_quantity   := 0;
+  end case;
+  v_total := v_unit_price * v_quantity;
+
+  if v_total > 0 then
+    v_total_line :=
+      $H$<tr><td style="padding:10px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Total</td><td style="padding:10px 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:18px;color:#1B4F8C;font-weight:700;">$$H$
+      || v_total::text
+      || $H$<span style="display:block;font-size:12px;font-weight:500;color:#8C94B0;margin-top:2px;">$H$
+      || v_quantity::text
+      || $H$ $H$ || v_unit_label || case when v_quantity = 1 then '' else 's' end
+      || $H$ &times; $$H$ || v_unit_price::text || $H$/$H$ || v_unit_label || $H$</span></td></tr>$H$;
+  else
+    v_total_line := '';
+  end if;
 
   -- Optional phone line (hidden if empty)
   if new.client_phone is not null and length(trim(new.client_phone)) > 0 then
@@ -637,7 +685,9 @@ begin
     || coalesce(to_char(new.drop_off, 'FMHH12:MI AM'), '—')
     || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Pick-up</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
     || coalesce(to_char(new.pick_up, 'FMHH12:MI AM'), '—')
-    || $H$</td></tr></table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Client</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.6;"><strong style="font-size:16px;">$H$
+    || $H$</td></tr>$H$
+    || v_total_line
+    || $H$</table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Client</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.6;"><strong style="font-size:16px;">$H$
     || coalesce(new.client_name, '—')
     || $H$</strong><br><a href="mailto:$H$
     || coalesce(new.client_email, '')
@@ -706,6 +756,11 @@ declare
   v_payload       jsonb;
   v_pay_link      text;
   v_service_label text;
+  v_unit_price    integer;
+  v_unit_label    text;
+  v_quantity      integer;
+  v_total         integer;
+  v_total_line    text;
   v_schedule_url  text := 'https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html';
 begin
   select exists (
@@ -733,21 +788,60 @@ begin
     else coalesce(initcap(v_req.service), '—')
   end;
 
+  -- Pricing: see dal_notify_owner_of_request for rationale.
+  case lower(coalesce(v_req.service, ''))
+    when 'boarding' then
+      v_unit_price := 90;
+      v_unit_label := 'night';
+      v_quantity   := greatest(v_req.end_date - v_req.start_date, 1);
+    when 'housesitting' then
+      v_unit_price := 100;
+      v_unit_label := 'night';
+      v_quantity   := greatest(v_req.end_date - v_req.start_date, 1);
+    when 'daycare' then
+      v_unit_price := 50;
+      v_unit_label := 'day';
+      v_quantity   := (v_req.end_date - v_req.start_date) + 1;
+    when 'dropin' then
+      v_unit_price := 45;
+      v_unit_label := 'visit';
+      v_quantity   := (v_req.end_date - v_req.start_date) + 1;
+    when 'walking' then
+      v_unit_price := 25;
+      v_unit_label := 'walk';
+      v_quantity   := (v_req.end_date - v_req.start_date) + 1;
+    else
+      v_unit_price := 0;
+      v_unit_label := '';
+      v_quantity   := 0;
+  end case;
+  v_total := v_unit_price * v_quantity;
+
+  if v_total > 0 then
+    v_total_line :=
+      $H$<tr><td style="padding:10px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Total</td><td style="padding:10px 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:18px;color:#1B4F8C;font-weight:700;">$$H$
+      || v_total::text
+      || $H$<span style="display:block;font-size:12px;font-weight:500;color:#8C94B0;margin-top:2px;">$H$
+      || v_quantity::text
+      || $H$ $H$ || v_unit_label || case when v_quantity = 1 then '' else 's' end
+      || $H$ &times; $$H$ || v_unit_price::text || $H$/$H$ || v_unit_label || $H$</span></td></tr>$H$;
+  else
+    v_total_line := '';
+  end if;
+
   -- MOCK Stripe payment link. Replace with a real Checkout Session URL later.
   v_pay_link := 'https://llllamas.github.io/Dog-Newsletter-and-Store/pay-mock?booking=' || substring(v_req.id::text, 1, 8);
 
   if p_action = 'approve' then
-    v_subject := 'Your stay with Dogs & Llamas is confirmed!';
+    v_subject := 'Almost there — complete payment to confirm your stay';
     v_html :=
-      $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Booking confirmed</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">Your stay for $H$
+      $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Almost confirmed</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">Lorenzo approved your booking for $H$
       || coalesce(v_req.dog_name, 'your dog')
-      || $H$ is confirmed. Here are the details.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">Booking Confirmed</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">You&rsquo;re all set &mdash; we can&rsquo;t wait to meet $H$
-      || coalesce(v_req.dog_name, 'your pup')
-      || $H$</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi $H$
+      || $H$ &mdash; one last step: complete payment to lock it in.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">Almost Confirmed</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">One last step &mdash; complete payment to lock it in</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi $H$
       || coalesce(v_req.client_name, 'there')
-      || $H$,</p><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Lorenzo has confirmed your booking for <strong>$H$
+      || $H$,</p><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Lorenzo has <strong>approved</strong> your booking request for <strong>$H$
       || coalesce(v_req.dog_name, 'your dog')
-      || $H$</strong>. We&rsquo;ve locked in your dates on the calendar. Here&rsquo;s the full picture:</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Your Booking</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;border-left:4px solid #D4A017;"><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;width:92px;vertical-align:top;">Service</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+      || $H$</strong> &mdash; you&rsquo;re almost set! One last step: complete payment using the link below, and we&rsquo;ll send a final confirmation as soon as it clears.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Booking Summary</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;border-left:4px solid #D4A017;"><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;width:92px;vertical-align:top;">Service</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
       || v_service_label
       || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dog</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
       || coalesce(v_req.dog_name, '—')
@@ -759,9 +853,11 @@ begin
       || coalesce(to_char(v_req.drop_off, 'FMHH12:MI AM'), '—')
       || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Pick-up</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
       || coalesce(to_char(v_req.pick_up, 'FMHH12:MI AM'), '—')
-      || $H$</td></tr></table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 10px;"><tr><td align="center"><a href="$H$
+      || $H$</td></tr>$H$
+      || v_total_line
+      || $H$</table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 10px;"><tr><td align="center"><a href="$H$
       || v_pay_link
-      || $H$" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Pay &amp; reserve your spot &rarr;</a></td></tr></table><p style="margin:14px 0 28px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-align:center;font-style:italic;">This is a placeholder payment link &mdash; full Stripe checkout is coming soon.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">What Happens Next</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">1.</strong> &nbsp;Reply to this email with anything Lorenzo should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">2.</strong> &nbsp;We&rsquo;ll send a quick check-in the day before drop-off with the address and any last-minute details.</p><p style="margin:0;"><strong style="color:#1B4F8C;">3.</strong> &nbsp;Bring food, leash, and any comfort item &mdash; we&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;">Looking forward to hosting $H$
+      || $H$" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Pay &amp; reserve your spot &rarr;</a></td></tr></table><p style="margin:14px 0 28px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-align:center;font-style:italic;">This is a placeholder payment link &mdash; full Stripe checkout is coming soon.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">What Happens Next</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">1.</strong> &nbsp;<strong>Complete payment</strong> using the button above &mdash; your dates are held while we wait for it.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">2.</strong> &nbsp;As soon as payment clears, we&rsquo;ll send a <strong>final confirmation email</strong> with the address and last-minute details.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">3.</strong> &nbsp;Reply to either email with anything Lorenzo should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0;"><strong style="color:#1B4F8C;">4.</strong> &nbsp;Bring food, leash, and any comfort item &mdash; we&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;">Can&rsquo;t wait to host $H$
       || coalesce(v_req.dog_name, 'your dog')
       || $H$!</p><p style="margin:0 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
   else

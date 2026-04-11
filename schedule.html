@@ -155,7 +155,7 @@
     .legend-dot.available   { background: var(--blue); }
     .legend-dot.boarding    { background: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%); }
     .legend-dot.today       { background: var(--yellow); border: 2px solid var(--yellow); box-shadow: 0 0 0 2px #fff inset; }
-    .legend-dot.past        { background: #B8C0D2; }
+    .legend-dot.unavailable { background: #FFFFFF; border: 2px solid #E4EAFA; }
 
     /* ── CALENDAR CONTAINER ──────────────────────── */
     .calendar-months { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
@@ -189,7 +189,6 @@
       position: relative;
     }
     .cal-day.empty { pointer-events: none; }
-    .cal-day.past  { color: #5A6378; background: #B8C0D2; cursor: not-allowed; }
     .cal-day.available { background: var(--blue); color: #fff; font-weight: 600; cursor: pointer; }
     .cal-day.available:hover { transform: scale(1.12); }
     /* Booked-for-boarding: gold accent so it pops next to blue available days */
@@ -208,7 +207,17 @@
       box-shadow: 0 1px 3px rgba(0,0,0,.18);
       z-index: 1;
     }
-    .cal-day.unavailable { background: var(--bg-2); color: var(--border); cursor: pointer; }
+    /* "Past" and "unavailable" render identically — one state visually.
+       The isPast() guard in JS still prevents clicking dates before today. */
+    .cal-day.unavailable,
+    .cal-day.past {
+      background: #FFFFFF;
+      color: #4C5470;
+      cursor: pointer;
+      border: 2px solid #E4EAFA;
+      font-weight: 500;
+    }
+    .cal-day.past { cursor: not-allowed; }
     .cal-day.today-ring::after {
       content: ''; position: absolute; inset: -2px;
       border: 2px solid var(--yellow); border-radius: 50%;
@@ -622,7 +631,7 @@
     <div class="legend-item"><div class="legend-dot available"></div> Available</div>
     <div class="legend-item"><div class="legend-dot boarding"></div> Booked for boarding</div>
     <div class="legend-item"><div class="legend-dot today"></div> Today</div>
-    <div class="legend-item"><div class="legend-dot past"></div> Past</div>
+    <div class="legend-item"><div class="legend-dot unavailable"></div> Unavailable</div>
   </div>
 
   <!-- CALENDAR (rendered by JS) -->
@@ -1047,7 +1056,7 @@
     }
 
     var label;
-    if (entry.status === 'past')         label = 'Past';
+    if (entry.status === 'past')         label = 'Unavailable';
     else if (entry.status === 'available')   label = 'Available';
     else if (entry.status === 'unavailable') label = 'Unavailable';
     else if (entry.status === 'booked') {
