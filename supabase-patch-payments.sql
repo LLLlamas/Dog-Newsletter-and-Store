@@ -331,6 +331,85 @@ $$;
 revoke all on function public.dal_notify_client_of_payment(public.booking_requests) from anon, authenticated;
 
 
+-- 4b. dal_notify_client_of_cancellation — fires the polite
+-- "your booking has been cancelled, reach out if this was a mistake" email.
+create or replace function public.dal_notify_client_of_cancellation(
+  v_req public.booking_requests
+)
+returns void
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_sender_email  text;
+  v_sender_name   text;
+  v_fn_url        text;
+  v_fn_secret     text;
+  v_pgnet_ok      boolean;
+  v_subject       text;
+  v_html          text;
+  v_payload       jsonb;
+  v_schedule_url  text := 'https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html';
+begin
+  select exists (
+    select 1 from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('net','extensions') and p.proname = 'http_post'
+  ) into v_pgnet_ok;
+  if not v_pgnet_ok then return; end if;
+
+  select value into v_sender_email from public.app_config where key = 'sender_email';
+  select value into v_sender_name  from public.app_config where key = 'sender_name';
+  select value into v_fn_url       from public.app_config where key = 'email_fn_url';
+  select value into v_fn_secret    from public.app_config where key = 'email_fn_secret';
+  if v_fn_url is null or v_fn_secret is null or v_req.client_email is null then
+    return;
+  end if;
+
+  v_subject := 'Your Dogs & Llamas booking has been cancelled';
+
+  v_html :=
+    $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Booking cancelled</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">Your booking for $H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$ has been cancelled. Reach out if you think this was a mistake.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">Booking Cancelled</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">We&rsquo;re sorry &mdash; something came up</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi $H$
+    || coalesce(v_req.client_name, 'there')
+    || $H$,</p><p style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">We wanted to let you know that your booking for <strong>$H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$</strong> has been cancelled. We&rsquo;re genuinely sorry for any inconvenience this causes.</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;border-left:4px solid #D4A017;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#4C5470;line-height:1.6;"><p style="margin:0 0 4px;font-size:11px;font-weight:bold;letter-spacing:0.8px;text-transform:uppercase;color:#8C94B0;">Cancelled Booking</p><p style="margin:0;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(v_req.start_date, 'FMMon FMDD'), '—')
+    || $H$ &nbsp;&rarr;&nbsp; $H$
+    || coalesce(to_char(v_req.end_date, 'FMMon FMDD, YYYY'), '—')
+    || $H$</p></td></tr></table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#FEF9E7;border:1.5px solid #F0D580;border-radius:6px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#7A5E0D;line-height:1.6;text-align:center;"><strong>Think this was a mistake?</strong><br>Just reply to this email right away and we&rsquo;ll sort it out together.</td></tr></table><p style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Otherwise, feel free to check the calendar again whenever you&rsquo;d like to try another date &mdash; we&rsquo;d still love to host $H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$ soon.</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 10px;"><tr><td align="center"><a href="$H$
+    || v_schedule_url
+    || $H$" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Check other dates &rarr;</a></td></tr></table><p style="margin:24px 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
+
+  v_payload := jsonb_build_object(
+    'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
+                                   'email', coalesce(v_sender_email, 'no-reply@dogsandllamas.com')),
+    'to',      jsonb_build_array(jsonb_build_object('email', v_req.client_email,
+                                                    'name',  coalesce(v_req.client_name, ''))),
+    'subject', v_subject,
+    'htmlContent', v_html
+  );
+
+  begin
+    perform net.http_post(
+      url     := v_fn_url,
+      headers := jsonb_build_object('Content-Type', 'application/json', 'x-edge-secret', v_fn_secret),
+      body    := v_payload
+    );
+  exception when others then
+    raise warning 'dal_notify_client_of_cancellation: edge POST failed: %', SQLERRM;
+  end;
+end;
+$$;
+
+revoke all on function public.dal_notify_client_of_cancellation(public.booking_requests) from anon, authenticated;
+
+
 -- 5. dal_list_awaiting_payment — admin queue fetch
 drop function if exists public.dal_list_awaiting_payment(text);
 
@@ -415,6 +494,7 @@ comment on function public.dal_mark_booking_paid(text, uuid)
 
 
 -- 7. dal_cancel_booking_request — soft-cancel + free availability dates
+--    + fire the client cancellation email.
 drop function if exists public.dal_cancel_booking_request(text, uuid);
 
 create or replace function public.dal_cancel_booking_request(
@@ -424,7 +504,7 @@ create or replace function public.dal_cancel_booking_request(
 returns public.booking_requests
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_admin_pin text := '1234';
@@ -460,6 +540,15 @@ begin
     where id = p_id
     returning * into v_req;
 
+  -- Fire the client cancellation email (fire-and-forget). Wrapped in
+  -- its own exception block so an email failure doesn't roll back the
+  -- cancellation itself.
+  begin
+    perform public.dal_notify_client_of_cancellation(v_req);
+  exception when others then
+    raise warning 'dal_cancel_booking_request: notify failed: %', SQLERRM;
+  end;
+
   return v_req;
 end;
 $$;
@@ -472,6 +561,173 @@ comment on function public.dal_cancel_booking_request(text, uuid)
 grant execute on function public.dal_list_awaiting_payment(text)        to anon, authenticated;
 grant execute on function public.dal_mark_booking_paid(text, uuid)      to anon, authenticated;
 grant execute on function public.dal_cancel_booking_request(text, uuid) to anon, authenticated;
+
+
+-- 9. Updated dal_notify_owner_of_request — new header subtitle that uses
+--    the client name + service label + dog name instead of "Someone just
+--    requested a stay".
+create or replace function public.dal_notify_owner_of_request()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_owner_email   text;
+  v_owner_name    text;
+  v_sender_email  text;
+  v_sender_name   text;
+  v_fn_url        text;
+  v_fn_secret     text;
+  v_subject       text;
+  v_html          text;
+  v_service_label text;
+  v_phone_block   text;
+  v_notes_block   text;
+  v_unit_price    integer;
+  v_unit_label    text;
+  v_quantity      integer;
+  v_total         integer;
+  v_total_line    text;
+  v_payload       jsonb;
+  v_pgnet_ok      boolean;
+begin
+  select exists (
+    select 1 from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('net','extensions') and p.proname = 'http_post'
+  ) into v_pgnet_ok;
+  if not v_pgnet_ok then return new; end if;
+
+  select value into v_owner_email  from public.app_config where key = 'owner_email';
+  select value into v_owner_name   from public.app_config where key = 'owner_name';
+  select value into v_sender_email from public.app_config where key = 'sender_email';
+  select value into v_sender_name  from public.app_config where key = 'sender_name';
+  select value into v_fn_url       from public.app_config where key = 'email_fn_url';
+  select value into v_fn_secret    from public.app_config where key = 'email_fn_secret';
+
+  if v_owner_email is null or v_fn_url is null or v_fn_secret is null then
+    return new;
+  end if;
+
+  v_service_label := case lower(coalesce(new.service, ''))
+    when 'boarding'     then 'Overnight boarding'
+    when 'daycare'      then 'Daycare'
+    when 'dropin'       then 'Drop-in visit'
+    when 'walking'      then 'Dog walk'
+    when 'housesitting' then 'House-sitting'
+    else coalesce(initcap(new.service), '—')
+  end;
+
+  case lower(coalesce(new.service, ''))
+    when 'boarding' then
+      v_unit_price := 90;  v_unit_label := 'night'; v_quantity := greatest(new.end_date - new.start_date, 1);
+    when 'housesitting' then
+      v_unit_price := 100; v_unit_label := 'night'; v_quantity := greatest(new.end_date - new.start_date, 1);
+    when 'daycare' then
+      v_unit_price := 50;  v_unit_label := 'day';   v_quantity := (new.end_date - new.start_date) + 1;
+    when 'dropin' then
+      v_unit_price := 45;  v_unit_label := 'visit'; v_quantity := (new.end_date - new.start_date) + 1;
+    when 'walking' then
+      v_unit_price := 25;  v_unit_label := 'walk';  v_quantity := (new.end_date - new.start_date) + 1;
+    else
+      v_unit_price := 0;   v_unit_label := '';      v_quantity := 0;
+  end case;
+  v_total := v_unit_price * v_quantity;
+
+  if v_total > 0 then
+    v_total_line :=
+      $H$<tr><td style="padding:10px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Total</td><td style="padding:10px 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:18px;color:#1B4F8C;font-weight:700;">&#36;$H$
+      || v_total::text
+      || $H$<span style="display:block;font-size:12px;font-weight:500;color:#8C94B0;margin-top:2px;">$H$
+      || v_quantity::text
+      || $H$ $H$ || v_unit_label || case when v_quantity = 1 then '' else 's' end
+      || $H$ &times; &#36;$H$ || v_unit_price::text || $H$/$H$ || v_unit_label || $H$</span></td></tr>$H$;
+  else
+    v_total_line := '';
+  end if;
+
+  if new.client_phone is not null and length(trim(new.client_phone)) > 0 then
+    v_phone_block := $H$<br><span style="color:#4C5470;font-size:14px;">$H$ || new.client_phone || $H$</span>$H$;
+  else
+    v_phone_block := '';
+  end if;
+
+  if new.notes is not null and length(trim(new.notes)) > 0 then
+    v_notes_block :=
+      $H$<p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Notes from Client</p><p style="margin:0 0 28px;font-family:Georgia,serif;font-size:15px;font-style:italic;line-height:1.7;color:#4C5470;border-left:3px solid #D4A017;padding:4px 0 4px 16px;">&ldquo;$H$
+      || replace(replace(replace(new.notes, '<', '&lt;'), '>', '&gt;'), E'\n', '<br>')
+      || $H$&rdquo;</p>$H$;
+  else
+    v_notes_block := '';
+  end if;
+
+  v_subject := 'New booking request from ' || new.client_name || ' (' || new.dog_name || ')';
+
+  v_html :=
+    $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>New booking request</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">New booking request from $H$
+    || coalesce(new.client_name, 'a client')
+    || $H$ for $H$
+    || coalesce(new.dog_name, 'their dog')
+    || $H$ &mdash; open the admin view to approve or decline.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">New Booking Request</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">$H$
+    || coalesce(new.client_name, 'Someone')
+    || $H$ just requested $H$
+    || coalesce(v_service_label, 'a stay')
+    || $H$ for their dog, $H$
+    || coalesce(new.dog_name, 'their pup')
+    || $H$</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi Lorenzo, a new booking request just came in. Review the details below, then open the admin view to approve or decline.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Booking Details</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;border-left:4px solid #D4A017;"><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;width:92px;vertical-align:top;">Service</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || v_service_label
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dog</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(new.dog_name, '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dates</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(new.start_date, 'FMMon FMDD'), '—')
+    || $H$ &nbsp;&rarr;&nbsp; $H$
+    || coalesce(to_char(new.end_date, 'FMMon FMDD, YYYY'), '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Drop-off</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(new.drop_off, 'FMHH12:MI AM'), '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Pick-up</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(new.pick_up, 'FMHH12:MI AM'), '—')
+    || $H$</td></tr>$H$
+    || v_total_line
+    || $H$</table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Client</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.6;"><strong style="font-size:16px;">$H$
+    || coalesce(new.client_name, '—')
+    || $H$</strong><br><a href="mailto:$H$
+    || coalesce(new.client_email, '')
+    || $H$" style="color:#1B4F8C;text-decoration:none;font-size:14px;">$H$
+    || coalesce(new.client_email, '')
+    || $H$</a>$H$
+    || v_phone_block
+    || $H$</td></tr></table>$H$
+    || v_notes_block
+    || $H$<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:8px 0 4px;"><tr><td align="center"><a href="https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Open admin view &rarr;</a></td></tr></table><p style="margin:18px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#8C94B0;text-align:center;line-height:1.6;">Enter admin mode on the schedule page to approve or decline this request.<br>Approved bookings update the calendar automatically.</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
+
+  v_payload := jsonb_build_object(
+    'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
+                                   'email', coalesce(v_sender_email, v_owner_email)),
+    'to',      jsonb_build_array(jsonb_build_object('email', v_owner_email,
+                                                    'name',  coalesce(v_owner_name, ''))),
+    'subject', v_subject,
+    'htmlContent', v_html
+  );
+
+  begin
+    perform net.http_post(
+      url     := v_fn_url,
+      headers := jsonb_build_object('Content-Type', 'application/json', 'x-edge-secret', v_fn_secret),
+      body    := v_payload
+    );
+  exception when others then
+    raise warning 'dal_notify_owner_of_request: edge POST failed: %', SQLERRM;
+  end;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_notify_owner_of_request on public.booking_requests;
+create trigger trg_notify_owner_of_request
+  after insert on public.booking_requests
+  for each row execute function public.dal_notify_owner_of_request();
 
 
 -- ═══════════════════════════════════════════════════════════════════

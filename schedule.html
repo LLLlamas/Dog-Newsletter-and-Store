@@ -137,6 +137,11 @@
       transform: translateY(-50%); pointer-events: none;
       color: var(--blue); font-size: 13px;
     }
+    .service-hint {
+      font-family: var(--font-body); font-size: 11.5px;
+      color: var(--text-3); font-style: italic;
+      margin: 8px 0 0; text-align: center; line-height: 1.5;
+    }
     .service-detail {
       margin: 16px auto 0; padding: 16px 20px;
       background: var(--yellow-pale); border-left: 4px solid var(--yellow);
@@ -893,12 +898,13 @@
     <div class="service-select-wrap">
       <select class="service-select" id="service-select" aria-label="Select a service">
         <option value="">&mdash; Select a service &mdash;</option>
-        <option value="boarding">&#127969;&nbsp; Dog Boarding &mdash; in our home</option>
-        <option value="daycare">&#9728;&nbsp; Doggy Day Care &mdash; in our home</option>
-        <option value="dropin">&#128100;&nbsp; Drop-In Visits &mdash; in your home</option>
-        <option value="walking">&#129445;&nbsp; Dog Walking &mdash; your neighborhood</option>
-        <option value="housesitting">&#127968;&nbsp; House Sitting &mdash; in your home</option>
+        <option value="boarding"     title="Overnight care in our home for multi-day stays">&#127969;&nbsp; Dog Boarding &mdash; Overnight care in our home</option>
+        <option value="daycare"      title="Same-day drop-off and pickup at our home">&#9728;&nbsp; Doggy Day Care &mdash; Same-day pickup/dropoff in our home</option>
+        <option value="dropin"       title="We come to your home for a quick visit, walk, and photo update">&#128100;&nbsp; Drop-In Visits &mdash; In your home</option>
+        <option value="walking"      title="A 30–60 minute walk in your dog’s own neighborhood">&#129445;&nbsp; Dog Walking &mdash; In your neighborhood</option>
+        <option value="housesitting" title="Multi-day overnight care at your home so your dog sleeps in their own space">&#127968;&nbsp; House Sitting &mdash; Overnight care in your home</option>
       </select>
+      <p class="service-hint" id="service-hint">Hover an option for a quick description, or pick one below to see full pricing.</p>
     </div>
 
     <div class="service-detail" id="service-detail">

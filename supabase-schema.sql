@@ -687,7 +687,13 @@ begin
     || coalesce(new.client_name, 'a client')
     || $H$ for $H$
     || coalesce(new.dog_name, 'their dog')
-    || $H$ &mdash; open the admin view to approve or decline.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">New Booking Request</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">Someone just requested a stay</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi Lorenzo, a new booking request just came in. Review the details below, then open the admin view to approve or decline.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Booking Details</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;border-left:4px solid #D4A017;"><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;width:92px;vertical-align:top;">Service</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || $H$ &mdash; open the admin view to approve or decline.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">New Booking Request</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">$H$
+    || coalesce(new.client_name, 'Someone')
+    || $H$ just requested $H$
+    || coalesce(v_service_label, 'a stay')
+    || $H$ for their dog, $H$
+    || coalesce(new.dog_name, 'their pup')
+    || $H$</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi Lorenzo, a new booking request just came in. Review the details below, then open the admin view to approve or decline.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Booking Details</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;border-left:4px solid #D4A017;"><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;width:92px;vertical-align:top;">Service</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
     || v_service_label
     || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dog</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
     || coalesce(new.dog_name, '—')
@@ -1087,6 +1093,87 @@ $$;
 revoke all on function public.dal_notify_client_of_payment(public.booking_requests) from anon, authenticated;
 
 
+-- ── 10a-bis. CLIENT CANCELLATION EMAIL ────────────────────────────
+-- Fires when the owner cancels an already-approved booking via
+-- dal_cancel_booking_request. Polite, explicit, and invites the
+-- client to reply if they think the cancellation was a mistake.
+create or replace function public.dal_notify_client_of_cancellation(
+  v_req public.booking_requests
+)
+returns void
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_sender_email  text;
+  v_sender_name   text;
+  v_fn_url        text;
+  v_fn_secret     text;
+  v_pgnet_ok      boolean;
+  v_subject       text;
+  v_html          text;
+  v_payload       jsonb;
+  v_schedule_url  text := 'https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html';
+begin
+  select exists (
+    select 1 from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('net','extensions') and p.proname = 'http_post'
+  ) into v_pgnet_ok;
+  if not v_pgnet_ok then return; end if;
+
+  select value into v_sender_email from public.app_config where key = 'sender_email';
+  select value into v_sender_name  from public.app_config where key = 'sender_name';
+  select value into v_fn_url       from public.app_config where key = 'email_fn_url';
+  select value into v_fn_secret    from public.app_config where key = 'email_fn_secret';
+  if v_fn_url is null or v_fn_secret is null or v_req.client_email is null then
+    return;
+  end if;
+
+  v_subject := 'Your Dogs & Llamas booking has been cancelled';
+
+  v_html :=
+    $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Booking cancelled</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">Your booking for $H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$ has been cancelled. Reach out if you think this was a mistake.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">Booking Cancelled</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">We&rsquo;re sorry &mdash; something came up</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi $H$
+    || coalesce(v_req.client_name, 'there')
+    || $H$,</p><p style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">We wanted to let you know that your booking for <strong>$H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$</strong> has been cancelled. We&rsquo;re genuinely sorry for any inconvenience this causes.</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;border-left:4px solid #D4A017;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#4C5470;line-height:1.6;"><p style="margin:0 0 4px;font-size:11px;font-weight:bold;letter-spacing:0.8px;text-transform:uppercase;color:#8C94B0;">Cancelled Booking</p><p style="margin:0;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(v_req.start_date, 'FMMon FMDD'), '—')
+    || $H$ &nbsp;&rarr;&nbsp; $H$
+    || coalesce(to_char(v_req.end_date, 'FMMon FMDD, YYYY'), '—')
+    || $H$</p></td></tr></table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#FEF9E7;border:1.5px solid #F0D580;border-radius:6px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#7A5E0D;line-height:1.6;text-align:center;"><strong>Think this was a mistake?</strong><br>Just reply to this email right away and we&rsquo;ll sort it out together.</td></tr></table><p style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Otherwise, feel free to check the calendar again whenever you&rsquo;d like to try another date &mdash; we&rsquo;d still love to host $H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$ soon.</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 10px;"><tr><td align="center"><a href="$H$
+    || v_schedule_url
+    || $H$" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Check other dates &rarr;</a></td></tr></table><p style="margin:24px 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
+
+  v_payload := jsonb_build_object(
+    'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
+                                   'email', coalesce(v_sender_email, 'no-reply@dogsandllamas.com')),
+    'to',      jsonb_build_array(jsonb_build_object('email', v_req.client_email,
+                                                    'name',  coalesce(v_req.client_name, ''))),
+    'subject', v_subject,
+    'htmlContent', v_html
+  );
+
+  begin
+    perform net.http_post(
+      url     := v_fn_url,
+      headers := jsonb_build_object('Content-Type', 'application/json', 'x-edge-secret', v_fn_secret),
+      body    := v_payload
+    );
+  exception when others then
+    raise warning 'dal_notify_client_of_cancellation: edge POST failed: %', SQLERRM;
+  end;
+end;
+$$;
+
+revoke all on function public.dal_notify_client_of_cancellation(public.booking_requests) from anon, authenticated;
+
+
 -- ── 10b. LIST AWAITING PAYMENT (admin) ────────────────────────────
 -- Lists all bookings that are approved but haven't been marked paid yet.
 -- PIN-gated; returns nothing unless the caller knows the PIN.
@@ -1188,7 +1275,7 @@ create or replace function public.dal_cancel_booking_request(
 returns public.booking_requests
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_admin_pin text := '1234';
@@ -1225,6 +1312,15 @@ begin
         decided_by = coalesce(decided_by, 'owner')
     where id = p_id
     returning * into v_req;
+
+  -- Fire the client cancellation email (fire-and-forget). Wrapped in
+  -- its own exception block so an email failure doesn't roll back the
+  -- cancellation itself.
+  begin
+    perform public.dal_notify_client_of_cancellation(v_req);
+  exception when others then
+    raise warning 'dal_cancel_booking_request: notify failed: %', SQLERRM;
+  end;
 
   return v_req;
 end;
