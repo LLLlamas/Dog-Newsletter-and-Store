@@ -240,9 +240,13 @@
     .cal-day.available.range-end,
     .cal-day.unavailable.range-end,
     .cal-day.booked.range-end { background: var(--yellow); color: var(--text); }
-    /* Hover hint for visitors (non-admin) */
-    body:not(.admin-mode) .cal-day:not(.empty):not(.past):not(.booked) { cursor: pointer; }
-    body:not(.admin-mode) .cal-day:not(.empty):not(.past):not(.booked):hover { transform: scale(1.12); box-shadow: 0 0 0 2px var(--yellow-light); }
+    /* Hover hint for visitors (non-admin): only .available cells are bookable */
+    body:not(.admin-mode) .cal-day.available { cursor: pointer; }
+    body:not(.admin-mode) .cal-day.available:hover { transform: scale(1.12); box-shadow: 0 0 0 2px var(--yellow-light); }
+    /* Past, unavailable, and booked stay non-interactive for visitors */
+    body:not(.admin-mode) .cal-day.past,
+    body:not(.admin-mode) .cal-day.unavailable,
+    body:not(.admin-mode) .cal-day.booked { cursor: not-allowed; }
 
     /* Admin editable */
     body.admin-mode .cal-day.available,
@@ -323,6 +327,38 @@
     .btn-modal-ok:hover { background: var(--blue-mid); }
     .modal-error { font-family: var(--font-body); font-size: 12px; color: #c0392b; margin: -6px 0 10px; display: none; }
     .modal-error.show { display: block; }
+
+    /* State picker modal */
+    #state-modal .modal { max-width: 340px; }
+    #state-modal .modal h3 { margin-bottom: 4px; }
+    #state-modal .modal p  { margin-bottom: 16px; }
+    #state-modal-current { color: var(--text); text-transform: capitalize; }
+    .state-picker-actions { display: flex; flex-direction: column; gap: 10px; }
+    .state-btn {
+      font-family: var(--font-body); font-size: 14px; font-weight: 600;
+      padding: 13px 20px; border-radius: var(--radius-full);
+      cursor: pointer; border: 1.5px solid transparent;
+      transition: background .14s, border-color .14s, color .14s, transform .1s, box-shadow .14s;
+      text-align: center; letter-spacing: .2px;
+    }
+    .state-btn:hover   { transform: translateY(-1px); }
+    .state-btn:active  { transform: translateY(0); }
+    .state-btn-available   { background: var(--blue); color: #fff; }
+    .state-btn-available:hover   { background: var(--blue-mid); }
+    .state-btn-unavailable {
+      background: #fff; color: var(--text);
+      border-color: var(--border);
+    }
+    .state-btn-unavailable:hover { border-color: var(--blue-mid); color: var(--blue); }
+    .state-btn-booked {
+      background: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%);
+      color: #fff; box-shadow: 0 2px 8px rgba(180,132,15,.28);
+    }
+    .state-btn-booked:hover { box-shadow: 0 4px 14px rgba(180,132,15,.38); }
+    .state-btn.is-current {
+      opacity: .45; cursor: default; box-shadow: none; transform: none;
+    }
+    .state-btn.is-current:hover { transform: none; }
 
     /* Booking modal extras */
     .booking-label {
@@ -769,6 +805,22 @@
   </div>
 </div>
 
+<!-- STATE PICKER MODAL — admin picks the state for a clicked day -->
+<div class="modal-overlay" id="state-modal" role="dialog" aria-modal="true" aria-labelledby="state-modal-title">
+  <div class="modal">
+    <h3 id="state-modal-title">Set day state</h3>
+    <p id="state-modal-sub">Currently: <strong id="state-modal-current">&mdash;</strong></p>
+    <div class="state-picker-actions">
+      <button class="state-btn state-btn-available"   id="state-btn-available"   type="button">Mark Available</button>
+      <button class="state-btn state-btn-unavailable" id="state-btn-unavailable" type="button">Mark Unavailable</button>
+      <button class="state-btn state-btn-booked"      id="state-btn-booked"      type="button">Mark as Boarding &rarr;</button>
+    </div>
+    <div class="modal-btns" style="margin-top:16px;justify-content:center;">
+      <button class="btn-modal-cancel" id="state-cancel-btn" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- BOOKING MODAL — captures dog name, drop-off, pick-up -->
 <div class="modal-overlay" id="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
   <div class="modal">
@@ -1001,39 +1053,36 @@
         cell.setAttribute('data-key', key);
 
         cell.addEventListener('click', function() {
-          /* Bounce feedback on every click (even view-only) */
-          if (!isPast(key)) {
-            cell.classList.remove('dal-bounce');
-            /* force reflow to restart animation */
-            void cell.offsetWidth;
-            cell.classList.add('dal-bounce');
-            setTimeout(function() { cell.classList.remove('dal-bounce'); }, 520);
-          }
+          var isAdmin = document.body.classList.contains('admin-mode');
+          var entry = getEntry(key);
 
-          /* Visitor (non-admin): range selection for booking request */
-          if (!document.body.classList.contains('admin-mode')) {
+          /* Visitor (non-admin): only 'available' days are clickable */
+          if (!isAdmin) {
             if (isPast(key)) return;
-            var entry = getEntry(key);
             if (entry.status === 'booked') {
               showToast('That day is already booked');
               return;
             }
+            if (entry.status === 'unavailable') {
+              showToast('That day isn\u2019t available \u2014 pick a blue day');
+              return;
+            }
+            /* Bounce feedback only for a valid click */
+            cell.classList.remove('dal-bounce');
+            void cell.offsetWidth;
+            cell.classList.add('dal-bounce');
+            setTimeout(function() { cell.classList.remove('dal-bounce'); }, 520);
             handleVisitorPick(key);
             return;
           }
 
-          /* Admin: edit availability */
+          /* Admin: open state picker for any non-past day */
           if (isPast(key)) return;
-          var entry = getEntry(key);
-          if (entry.status === 'unavailable') {
-            commitEntry(key, cell, { status: 'available', dogName: null, dropOff: null, pickUp: null });
-          } else if (entry.status === 'available') {
-            openBookingModal(key, cell, entry);
-          } else if (entry.status === 'booked') {
-            if (confirm('Clear the booking for ' + key + '?')) {
-              commitEntry(key, cell, { status: 'unavailable', dogName: null, dropOff: null, pickUp: null });
-            }
-          }
+          cell.classList.remove('dal-bounce');
+          void cell.offsetWidth;
+          cell.classList.add('dal-bounce');
+          setTimeout(function() { cell.classList.remove('dal-bounce'); }, 520);
+          openStatePicker(key, cell, entry);
         });
         grid.appendChild(cell);
       }(day));
@@ -1084,6 +1133,67 @@
       }
     });
   }
+
+  /* ── State picker modal (admin) ─────────────── */
+  var stateModal       = document.getElementById('state-modal');
+  var stateCurrent     = document.getElementById('state-modal-current');
+  var stateBtnAvail    = document.getElementById('state-btn-available');
+  var stateBtnUnavail  = document.getElementById('state-btn-unavailable');
+  var stateBtnBooked   = document.getElementById('state-btn-booked');
+  var stateCancelBtn   = document.getElementById('state-cancel-btn');
+
+  function openStatePicker(key, cell, entry) {
+    /* Display current state as a readable label */
+    var currentLabel;
+    if (entry.status === 'booked') {
+      currentLabel = 'Booked' + (entry.dogName ? ' \u2014 ' + entry.dogName : '');
+    } else if (entry.status === 'available') {
+      currentLabel = 'Available';
+    } else {
+      currentLabel = 'Unavailable';
+    }
+    stateCurrent.textContent = currentLabel;
+
+    /* Grey out the button for the current state so the admin can tell
+       at a glance which state this day is already in */
+    [stateBtnAvail, stateBtnUnavail, stateBtnBooked].forEach(function (b) {
+      b.classList.remove('is-current');
+    });
+    if (entry.status === 'available')   stateBtnAvail.classList.add('is-current');
+    if (entry.status === 'unavailable') stateBtnUnavail.classList.add('is-current');
+    if (entry.status === 'booked')      stateBtnBooked.classList.add('is-current');
+
+    /* Label the boarding button "Edit boarding" when already booked */
+    stateBtnBooked.innerHTML = entry.status === 'booked'
+      ? 'Edit boarding details \u2192'
+      : 'Mark as Boarding \u2192';
+
+    /* Wire buttons (re-assign onclick each time so closure captures the right cell/key) */
+    stateBtnAvail.onclick = function () {
+      closeStatePicker();
+      commitEntry(key, cell, { status: 'available', dogName: null, dropOff: null, pickUp: null });
+    };
+    stateBtnUnavail.onclick = function () {
+      closeStatePicker();
+      commitEntry(key, cell, { status: 'unavailable', dogName: null, dropOff: null, pickUp: null });
+    };
+    stateBtnBooked.onclick = function () {
+      closeStatePicker();
+      /* openBookingModal accepts a prefill object with dogName/dropOff/pickUp */
+      openBookingModal(key, cell, entry);
+    };
+
+    stateModal.classList.add('open');
+  }
+
+  function closeStatePicker() {
+    stateModal.classList.remove('open');
+  }
+
+  stateCancelBtn.addEventListener('click', closeStatePicker);
+  stateModal.addEventListener('click', function (e) {
+    if (e.target === stateModal) closeStatePicker();
+  });
 
   /* ── Booking modal ──────────────────────────── */
   var bookingModal      = document.getElementById('booking-modal');
