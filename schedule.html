@@ -589,6 +589,67 @@
     .btn-req-approve:disabled, .btn-req-decline:disabled { opacity: .55; cursor: wait; }
     .req-empty { font-family: var(--font-body); font-size: 13px; color: var(--text-3); font-style: italic; }
 
+    /* ── ADMIN AWAITING-PAYMENT PANEL ────────────── */
+    /* Same shape as pending panel but a gold-washed card to signal
+       "money stage" — bookings sit here between approval and paid. */
+    .admin-payments {
+      display: none;
+      background: linear-gradient(180deg, #ffffff 0%, #FEF9E7 100%);
+      border: 1px solid #F0D580; border-left: 4px solid var(--yellow);
+      border-radius: var(--radius-md); box-shadow: var(--shadow-sm);
+      padding: 22px 24px; margin-bottom: 32px;
+    }
+    body.admin-mode .admin-payments { display: block; }
+    .admin-payments h3 {
+      font-family: var(--font-head); font-size: 20px; font-weight: 600;
+      color: var(--text); margin: 0 0 4px;
+    }
+    .admin-payments .pay-count {
+      font-family: var(--font-body); font-size: 12px; color: var(--text-3);
+      margin: 0 0 16px;
+    }
+    .pay-list { display: flex; flex-direction: column; gap: 12px; }
+    .pay-card {
+      border: 1px solid #F0D580; border-radius: var(--radius-sm);
+      padding: 14px 16px; background: #ffffff;
+    }
+    .pay-card-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 6px;
+    }
+    .pay-card-dog { font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--text); margin: 0; }
+    .pay-card-ref {
+      font-family: Consolas, Menlo, monospace;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .5px; color: var(--yellow);
+      background: var(--yellow-pale); padding: 3px 9px; border-radius: var(--radius-full);
+      border: 1px solid #F0D580;
+    }
+    .pay-card-amount {
+      font-family: var(--font-head); font-size: 22px; font-weight: 600;
+      color: var(--blue); margin: 4px 0 8px;
+    }
+    .pay-card-line { font-family: var(--font-body); font-size: 13px; color: var(--text-2); margin: 2px 0; line-height: 1.5; }
+    .pay-card-line strong { color: var(--text); font-weight: 600; }
+    .pay-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .btn-pay-mark {
+      flex: 1;
+      background-color: var(--yellow);
+      background-image: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%);
+      color: #fff;
+      font-family: var(--font-body); font-size: 13px; font-weight: 700;
+      padding: 10px 14px; border-radius: var(--radius-full); border: none;
+      cursor: pointer;
+      transition: transform .14s, box-shadow .14s;
+      box-shadow: 0 3px 10px rgba(212,160,23,.22);
+    }
+    .btn-pay-mark:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 16px rgba(212,160,23,.35);
+    }
+    .btn-pay-mark:disabled { opacity: .55; cursor: wait; transform: none; box-shadow: none; }
+    .pay-empty { font-family: var(--font-body); font-size: 13px; color: var(--text-3); font-style: italic; }
+
     .admin-instructions {
       background: var(--yellow-pale); border: 1px solid #f0d580; border-radius: var(--radius-md);
       padding: 16px 20px; margin-bottom: 28px; display: none;
@@ -794,6 +855,13 @@
     <h3>Pending booking requests</h3>
     <p class="req-count" id="req-count">Loading&hellip;</p>
     <div class="req-list" id="req-list"></div>
+  </div>
+
+  <!-- ADMIN: AWAITING PAYMENT (approved but not yet paid) -->
+  <div class="admin-payments" id="admin-payments">
+    <h3>Awaiting payment</h3>
+    <p class="pay-count" id="pay-count">Loading&hellip;</p>
+    <div class="pay-list" id="pay-list"></div>
   </div>
 
   <!-- CALENDAR FIRST -->
@@ -1412,8 +1480,9 @@
     adminFab.style.background = '#1B4F8C';
     adminFab.style.color = '#fff';
     showToast('Admin mode active \u2014 click days to edit');
-    /* Pull pending booking requests so the panel populates */
+    /* Pull pending booking requests AND awaiting-payment list */
     loadPendingRequests();
+    loadAwaitingPayment();
   }
 
   function rejectPin() {
@@ -1870,10 +1939,137 @@
         if (action === 'approve') {
           /* Re-pull the calendar so the newly booked dates render */
           cloudFetchAvailability().then(function (ok2) { if (ok2) renderCalendars(); });
+          /* Re-pull the awaiting-payment list so the just-approved
+             booking appears there immediately. */
+          loadAwaitingPayment();
         }
       })
       .catch(function () {
         btns.forEach(function (b) { b.disabled = false; });
+        showToast('\u26A0 Network error');
+      });
+  }
+
+  /* ── Admin awaiting-payment panel ────────────── */
+  /* Lists approved bookings that haven't been marked paid yet. Each
+     row gets a "Mark Paid" button that calls dal_mark_booking_paid,
+     which fires the "You're all set" email to the client. */
+  var payList  = document.getElementById('pay-list');
+  var payCount = document.getElementById('pay-count');
+
+  /* Duplicate the pricing table from the SQL backend so we can show
+     a per-row total in the admin panel without adding another RPC. */
+  var PAY_RATES = {
+    boarding:     { unit: 'night', price: 90,  perNight: true  },
+    housesitting: { unit: 'night', price: 100, perNight: true  },
+    daycare:      { unit: 'day',   price: 50,  perNight: false },
+    dropin:       { unit: 'visit', price: 45,  perNight: false },
+    walking:      { unit: 'walk',  price: 25,  perNight: false }
+  };
+  function calcBookingTotal(row) {
+    var rate = PAY_RATES[row.service];
+    if (!rate) return null;
+    var n = nightsBetween(row.start_date, row.end_date);
+    var qty = rate.perNight ? Math.max(n, 1) : (n + 1);
+    return { qty: qty, unit: rate.unit, price: rate.price, total: qty * rate.price };
+  }
+  function paymentRef(id) {
+    return 'DAL-' + String(id || '').slice(0, 8).toUpperCase();
+  }
+
+  function loadAwaitingPayment() {
+    var s = supa();
+    if (!s || !ADMIN_PIN_MEM) return;
+    payCount.textContent = 'Loading\u2026';
+    payList.innerHTML = '';
+    fetch(s.url + '/rest/v1/rpc/dal_list_awaiting_payment', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM })
+    }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (rows) {
+        if (!rows) {
+          payCount.textContent = 'Couldn\u2019t load payment queue.';
+          return;
+        }
+        renderAwaitingPayment(rows);
+      })
+      .catch(function () {
+        payCount.textContent = 'Couldn\u2019t load payment queue.';
+      });
+  }
+
+  function renderAwaitingPayment(rows) {
+    payList.innerHTML = '';
+    if (!rows.length) {
+      payCount.textContent = 'No bookings awaiting payment.';
+      return;
+    }
+    payCount.textContent = rows.length + ' awaiting payment';
+    rows.forEach(function (row) {
+      payList.appendChild(buildPaymentCard(row));
+    });
+  }
+
+  function buildPaymentCard(row) {
+    var card = document.createElement('div');
+    card.className = 'pay-card';
+    var range = row.start_date === row.end_date
+      ? row.start_date
+      : row.start_date + ' \u2192 ' + row.end_date;
+    var pricing = calcBookingTotal(row);
+    var totalLine = pricing
+      ? '$' + pricing.total + ' <span style="font-size:12px;color:#8C94B0;font-weight:500">(' + pricing.qty + ' ' + pricing.unit + (pricing.qty === 1 ? '' : 's') + ' \u00d7 $' + pricing.price + ')</span>'
+      : '&mdash;';
+
+    card.innerHTML =
+      '<div class="pay-card-head">' +
+        '<p class="pay-card-dog">' + escHtml(row.dog_name) + '</p>' +
+        '<span class="pay-card-ref">' + escHtml(paymentRef(row.id)) + '</span>' +
+      '</div>' +
+      '<p class="pay-card-amount">' + totalLine + '</p>' +
+      '<p class="pay-card-line"><strong>Service:</strong> ' + escHtml(row.service) + '</p>' +
+      '<p class="pay-card-line"><strong>Dates:</strong> ' + escHtml(range) + ' (' + fmtTime(row.drop_off) + ' \u2192 ' + fmtTime(row.pick_up) + ')</p>' +
+      '<p class="pay-card-line"><strong>Client:</strong> ' + escHtml(row.client_name) + ' &middot; <a href="mailto:' + escHtml(row.client_email) + '">' + escHtml(row.client_email) + '</a>' +
+        (row.client_phone ? ' &middot; ' + escHtml(row.client_phone) : '') + '</p>' +
+      '<div class="pay-card-actions">' +
+        '<button class="btn-pay-mark" type="button">Mark Paid &mdash; send confirmation email</button>' +
+      '</div>';
+
+    var btn = card.querySelector('.btn-pay-mark');
+    btn.addEventListener('click', function () {
+      if (!confirm('Mark this booking as paid and send the confirmation email to ' + row.client_name + '?')) return;
+      markBookingPaid(row.id, card);
+    });
+    return card;
+  }
+
+  function markBookingPaid(id, card) {
+    var s = supa();
+    if (!s || !ADMIN_PIN_MEM) return;
+    var btn = card.querySelector('.btn-pay-mark');
+    btn.disabled = true;
+    btn.textContent = 'Sending confirmation\u2026';
+    fetch(s.url + '/rest/v1/rpc/dal_mark_booking_paid', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_id: id })
+    }).then(function (r) { return r.ok; })
+      .then(function (ok) {
+        if (!ok) {
+          btn.disabled = false;
+          btn.textContent = 'Mark Paid \u2014 send confirmation email';
+          showToast('\u26A0 Couldn\u2019t mark paid');
+          return;
+        }
+        showToast('Paid \u2014 confirmation email sent');
+        card.remove();
+        if (!payList.children.length) payCount.textContent = 'No bookings awaiting payment.';
+        else payCount.textContent = payList.children.length + ' awaiting payment';
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Mark Paid \u2014 send confirmation email';
         showToast('\u26A0 Network error');
       });
   }

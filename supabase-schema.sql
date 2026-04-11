@@ -339,14 +339,22 @@ create table if not exists public.booking_requests (
   notes         text,
   decided_at    timestamptz,
   decided_by    text,
+  paid_at       timestamptz,
+  paid_by       text,
   created_at    timestamptz default now()
 );
 
+-- Add payment-tracking columns for databases that were created
+-- before they existed (no-op on fresh installs).
+alter table public.booking_requests add column if not exists paid_at timestamptz;
+alter table public.booking_requests add column if not exists paid_by text;
+
 comment on table public.booking_requests is
-  'Visitor-submitted booking requests. Owner approves/declines via PIN-gated RPC.';
+  'Visitor-submitted booking requests. Owner approves/declines via PIN-gated RPC. paid_at marks the booking as confirmed after Venmo/Zelle payment received.';
 
 create index if not exists booking_requests_status_idx on public.booking_requests(status);
 create index if not exists booking_requests_dates_idx  on public.booking_requests(start_date, end_date);
+create index if not exists booking_requests_paid_idx   on public.booking_requests(paid_at) where paid_at is null;
 
 alter table public.booking_requests enable row level security;
 -- Zero policies. All reads/writes go through SECURITY DEFINER RPCs below.
@@ -523,14 +531,20 @@ grant  execute on function public.dal_decide_booking_request(text, uuid, text)  
 --          GMAIL_USER=dogsandllamasservice@gmail.com \
 --          GMAIL_APP_PASSWORD=<16-char app password> \
 --          EDGE_SHARED_SECRET=<32+ random chars>
---   5. Insert the app_config rows:
+--   5. Insert the app_config rows (Gmail relay + payment handles):
 --        insert into public.app_config(key, value) values
---          ('owner_email',     'dogsandllamasservice@gmail.com'),
---          ('owner_name',      'Lorenzo Llamas'),
---          ('sender_email',    'dogsandllamasservice@gmail.com'),
---          ('sender_name',     'Dogs & Llamas'),
---          ('email_fn_url',    'https://nizvndjuzyblsewobkru.supabase.co/functions/v1/send-email'),
---          ('email_fn_secret', '<same EDGE_SHARED_SECRET as step 4>')
+--          ('owner_email',           'dogsandllamasservice@gmail.com'),
+--          ('owner_name',            'Lorenzo Llamas'),
+--          ('sender_email',          'dogsandllamasservice@gmail.com'),
+--          ('sender_name',           'Dogs & Llamas'),
+--          ('email_fn_url',          'https://nizvndjuzyblsewobkru.supabase.co/functions/v1/send-email'),
+--          ('email_fn_secret',       '<same EDGE_SHARED_SECRET as step 4>'),
+--          -- PAYMENT HANDLES — mock values below. Replace with real ones
+--          -- when your accounts are registered. DO NOT COMMIT real values
+--          -- to git; keep them only in Supabase.
+--          ('venmo_handle',          'dogsandllamas'),               -- just the username, no '@'
+--          ('zelle_display',         'dogsandllamasservice@gmail.com'), -- email OR phone
+--          ('zelle_display_type',    'email')                         -- 'email' or 'phone'
 --        on conflict (key) do update set value = excluded.value;
 --   6. Re-run this whole file so the triggers pick up the new config.
 --
@@ -732,9 +746,9 @@ create trigger trg_notify_owner_of_request
 
 -- ── 9b. CLIENT-FACING DECISION EMAIL ──────────────────────────────
 -- Sent from dal_decide_booking_request when Lorenzo approves or declines.
--- On approve, includes a (currently mocked) Stripe Checkout link placeholder.
--- TODO: replace v_pay_link with a real Stripe Checkout Session URL once
---       Stripe is fully wired up.
+-- On approve, the email includes Venmo + Zelle payment instructions.
+-- The client pays manually; Lorenzo then marks the booking as paid via
+-- dal_mark_booking_paid which fires the final "You're all set" email.
 
 create or replace function public.dal_notify_client_of_decision(
   v_req     public.booking_requests,
@@ -746,22 +760,29 @@ security definer
 set search_path = public, extensions
 as $$
 declare
-  v_sender_email  text;
-  v_sender_name   text;
-  v_fn_url        text;
-  v_fn_secret     text;
-  v_pgnet_ok      boolean;
-  v_subject       text;
-  v_html          text;
-  v_payload       jsonb;
-  v_pay_link      text;
-  v_service_label text;
-  v_unit_price    integer;
-  v_unit_label    text;
-  v_quantity      integer;
-  v_total         integer;
-  v_total_line    text;
-  v_schedule_url  text := 'https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html';
+  v_sender_email     text;
+  v_sender_name      text;
+  v_fn_url           text;
+  v_fn_secret        text;
+  v_pgnet_ok         boolean;
+  v_subject          text;
+  v_html             text;
+  v_payload          jsonb;
+  v_service_label    text;
+  v_unit_price       integer;
+  v_unit_label       text;
+  v_quantity         integer;
+  v_total            integer;
+  v_total_line       text;
+  v_venmo_handle     text;
+  v_zelle_display    text;
+  v_zelle_type       text;
+  v_venmo_url        text;
+  v_venmo_block      text;
+  v_zelle_block      text;
+  v_zelle_label      text;
+  v_payment_ref      text;
+  v_schedule_url     text := 'https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html';
 begin
   select exists (
     select 1 from pg_proc p
@@ -774,9 +795,16 @@ begin
   select value into v_sender_name  from public.app_config where key = 'sender_name';
   select value into v_fn_url       from public.app_config where key = 'email_fn_url';
   select value into v_fn_secret    from public.app_config where key = 'email_fn_secret';
+  select value into v_venmo_handle  from public.app_config where key = 'venmo_handle';
+  select value into v_zelle_display from public.app_config where key = 'zelle_display';
+  select value into v_zelle_type    from public.app_config where key = 'zelle_display_type';
   if v_fn_url is null or v_fn_secret is null or v_req.client_email is null then
     return;
   end if;
+
+  -- Short ID the client includes in the Venmo/Zelle payment note so
+  -- Lorenzo can match the payment back to this booking.
+  v_payment_ref := 'DAL-' || upper(substring(v_req.id::text, 1, 8));
 
   -- Pretty service label
   v_service_label := case lower(coalesce(v_req.service, ''))
@@ -829,8 +857,47 @@ begin
     v_total_line := '';
   end if;
 
-  -- MOCK Stripe payment link. Replace with a real Checkout Session URL later.
-  v_pay_link := 'https://llllamas.github.io/Dog-Newsletter-and-Store/pay-mock?booking=' || substring(v_req.id::text, 1, 8);
+  -- Venmo deep-link: opens the Venmo app on mobile or venmo.com on desktop,
+  -- pre-fills the recipient, amount, and payment note (payment ref).
+  -- Falls back to empty Venmo card when no venmo_handle is configured.
+  if v_venmo_handle is not null and length(trim(v_venmo_handle)) > 0 then
+    v_venmo_url :=
+      'https://venmo.com/' || v_venmo_handle
+      || '?txn=pay'
+      || '&amount=' || coalesce(v_total, 0)::text
+      || '&note=' || replace(replace(v_payment_ref || ' ' || coalesce(v_service_label, ''), ' ', '%20'), '&', '%26');
+
+    v_venmo_block :=
+      $H$<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 12px;background-color:#FFFFFF;border:1.5px solid #E4EAFA;border-left:4px solid #D4A017;border-radius:8px;"><tr><td style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="margin:0 0 4px;font-size:10px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#D4A017;">Option 1 &middot; Venmo</p><p style="margin:0 0 14px;font-size:17px;font-weight:700;color:#1A1D26;">@$H$
+      || v_venmo_handle
+      || $H$</p><p style="margin:0 0 14px;font-size:13px;color:#4C5470;line-height:1.55;">Tap the button below &mdash; it opens the Venmo app (or venmo.com) with the amount and reference pre-filled.</p><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td><a href="$H$
+      || v_venmo_url
+      || $H$" style="display:inline-block;background-color:#3D95CE;background-image:linear-gradient(150deg,#3D95CE 0%,#2775C9 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:12px 26px;border-radius:99px;letter-spacing:0.3px;">Pay &#36;$H$
+      || v_total::text
+      || $H$ on Venmo &rarr;</a></td></tr></table></td></tr></table>$H$;
+  else
+    v_venmo_block := '';
+  end if;
+
+  -- Zelle "card": plain identifier the client copies into their bank app.
+  -- Zelle has no deep-link; we just show the email/phone prominently.
+  if v_zelle_display is not null and length(trim(v_zelle_display)) > 0 then
+    v_zelle_label := case lower(coalesce(v_zelle_type, 'email'))
+      when 'phone' then 'Phone number'
+      else 'Email'
+    end;
+
+    v_zelle_block :=
+      $H$<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 12px;background-color:#FFFFFF;border:1.5px solid #E4EAFA;border-left:4px solid #1B4F8C;border-radius:8px;"><tr><td style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="margin:0 0 4px;font-size:10px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#1B4F8C;">Option 2 &middot; Zelle</p><p style="margin:0 0 10px;font-size:11px;font-weight:600;letter-spacing:0.3px;color:#8C94B0;text-transform:uppercase;">$H$
+      || v_zelle_label
+      || $H$</p><p style="margin:0 0 14px;font-size:17px;font-weight:700;color:#1A1D26;word-break:break-all;">$H$
+      || v_zelle_display
+      || $H$</p><p style="margin:0;font-size:13px;color:#4C5470;line-height:1.55;">Open your bank&rsquo;s app, choose <strong>Send money with Zelle</strong>, and send <strong>&#36;$H$
+      || v_total::text
+      || $H$</strong> to the address above.</p></td></tr></table>$H$;
+  else
+    v_zelle_block := '';
+  end if;
 
   if p_action = 'approve' then
     v_subject := 'Almost there — complete payment to confirm your stay';
@@ -855,9 +922,12 @@ begin
       || coalesce(to_char(v_req.pick_up, 'FMHH12:MI AM'), '—')
       || $H$</td></tr>$H$
       || v_total_line
-      || $H$</table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 10px;"><tr><td align="center"><a href="$H$
-      || v_pay_link
-      || $H$" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Pay &amp; reserve your spot &rarr;</a></td></tr></table><p style="margin:14px 0 28px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-align:center;font-style:italic;">This is a placeholder payment link &mdash; full Stripe checkout is coming soon.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">What Happens Next</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">1.</strong> &nbsp;<strong>Complete payment</strong> using the button above &mdash; your dates are held while we wait for it.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">2.</strong> &nbsp;As soon as payment clears, we&rsquo;ll send a <strong>final confirmation email</strong> with the address and last-minute details.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">3.</strong> &nbsp;Reply to either email with anything Lorenzo should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0;"><strong style="color:#1B4F8C;">4.</strong> &nbsp;Bring food, leash, and any comfort item &mdash; we&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;">Can&rsquo;t wait to host $H$
+      || $H$</table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">How to Pay</p><p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.65;color:#4C5470;">Pick whichever you&rsquo;re already set up for &mdash; Venmo or Zelle. Either one locks in your booking the moment Lorenzo sees it land.</p>$H$
+      || v_venmo_block
+      || v_zelle_block
+      || $H$<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:6px 0 24px;background-color:#FEF9E7;border:1.5px dashed #D4A017;border-radius:6px;"><tr><td style="padding:12px 18px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#7A5E0D;line-height:1.55;text-align:center;"><strong>Important:</strong> include the reference <span style="display:inline-block;background:#ffffff;border:1px solid #D4A017;border-radius:4px;padding:2px 8px;font-family:Consolas,Menlo,monospace;font-size:13px;color:#1A1D26;letter-spacing:0.5px;">$H$
+      || v_payment_ref
+      || $H$</span> in the payment note so we can match it to your booking.</td></tr></table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">What Happens Next</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">1.</strong> &nbsp;<strong>Send payment</strong> via Venmo or Zelle above &mdash; your dates are held while we wait for it.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">2.</strong> &nbsp;As soon as Lorenzo sees the payment land, you&rsquo;ll get a <strong>final confirmation email</strong> with the address and drop-off details.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">3.</strong> &nbsp;Reply to either email with anything Lorenzo should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0;"><strong style="color:#1B4F8C;">4.</strong> &nbsp;Bring food, leash, and any comfort item &mdash; we&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;">Can&rsquo;t wait to host $H$
       || coalesce(v_req.dog_name, 'your dog')
       || $H$!</p><p style="margin:0 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
   else
@@ -901,6 +971,209 @@ $$;
 
 -- This helper is called only from dal_decide_booking_request, so no anon grant needed.
 revoke all on function public.dal_notify_client_of_decision(public.booking_requests, text) from anon, authenticated;
+
+
+-- ═══════════════════════════════════════════════════════════════════
+-- 10. PAYMENT CONFIRMATION FLOW (Venmo / Zelle manual handoff)
+-- ═══════════════════════════════════════════════════════════════════
+-- After Lorenzo approves a booking, the client receives the Venmo/Zelle
+-- payment instructions. Once the client pays and Lorenzo sees the money
+-- land, Lorenzo clicks "Mark Paid" in the admin panel, which:
+--   1. Sets paid_at = now() on the booking_request
+--   2. Fires dal_notify_client_of_payment() to send the final
+--      "You're all set!" confirmation email
+--
+-- Security: the mark-paid RPC is PIN-gated (same hardcoded '1234' pattern
+-- as dal_decide_booking_request) and refuses to flip the state of
+-- anything that isn't currently 'approved' + unpaid, so double-marking
+-- or marking pending/declined rows is impossible.
+
+-- ── 10a. CLIENT "YOU'RE ALL SET" EMAIL ────────────────────────────
+create or replace function public.dal_notify_client_of_payment(
+  v_req public.booking_requests
+)
+returns void
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_sender_email  text;
+  v_sender_name   text;
+  v_fn_url        text;
+  v_fn_secret     text;
+  v_pgnet_ok      boolean;
+  v_subject       text;
+  v_html          text;
+  v_payload       jsonb;
+  v_service_label text;
+begin
+  select exists (
+    select 1 from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('net','extensions') and p.proname = 'http_post'
+  ) into v_pgnet_ok;
+  if not v_pgnet_ok then return; end if;
+
+  select value into v_sender_email from public.app_config where key = 'sender_email';
+  select value into v_sender_name  from public.app_config where key = 'sender_name';
+  select value into v_fn_url       from public.app_config where key = 'email_fn_url';
+  select value into v_fn_secret    from public.app_config where key = 'email_fn_secret';
+  if v_fn_url is null or v_fn_secret is null or v_req.client_email is null then
+    return;
+  end if;
+
+  v_service_label := case lower(coalesce(v_req.service, ''))
+    when 'boarding'     then 'Overnight boarding'
+    when 'daycare'      then 'Daycare'
+    when 'dropin'       then 'Drop-in visit'
+    when 'walking'      then 'Dog walk'
+    when 'housesitting' then 'House-sitting'
+    else coalesce(initcap(v_req.service), '—')
+  end;
+
+  v_subject := 'You''re all set! Your stay with Dogs & Llamas is confirmed';
+
+  v_html :=
+    $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Booking confirmed</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">Payment received &mdash; $H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$&rsquo;s stay with Dogs &amp; Llamas is fully confirmed.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">Booking Confirmed</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">You&rsquo;re all set &mdash; we can&rsquo;t wait to meet $H$
+    || coalesce(v_req.dog_name, 'your pup')
+    || $H$</p></td></tr><tr><td style="padding:36px 40px 8px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;"><tr><td align="center"><div style="display:inline-block;width:68px;height:68px;border-radius:50%;background-image:linear-gradient(150deg,#D4A017 0%,#b8880f 100%);color:#ffffff;font-size:36px;line-height:68px;font-weight:bold;text-align:center;box-shadow:0 6px 22px rgba(212,160,23,0.35);">&#10003;</div></td></tr></table><p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;text-align:center;">Hi $H$
+    || coalesce(v_req.client_name, 'there')
+    || $H$,</p><p style="margin:0 0 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;text-align:center;">Your payment came through &mdash; <strong>$H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$&rsquo;s</strong> stay with us is officially on the books. We&rsquo;re so excited!</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Confirmed Booking</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;border-left:4px solid #D4A017;"><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;width:92px;vertical-align:top;">Service</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || v_service_label
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dog</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(v_req.dog_name, '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Dates</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(v_req.start_date, 'FMMon FMDD'), '—')
+    || $H$ &nbsp;&rarr;&nbsp; $H$
+    || coalesce(to_char(v_req.end_date, 'FMMon FMDD, YYYY'), '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Drop-off</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(v_req.drop_off, 'FMHH12:MI AM'), '—')
+    || $H$</td></tr><tr><td style="padding:6px 0 6px 16px;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;text-transform:uppercase;letter-spacing:0.8px;vertical-align:top;">Pick-up</td><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;font-weight:600;">$H$
+    || coalesce(to_char(v_req.pick_up, 'FMHH12:MI AM'), '—')
+    || $H$</td></tr></table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Before You Drop Off</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">&bull;</strong> &nbsp;Lorenzo will reach out the day before drop-off with the address and any last-minute details.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">&bull;</strong> &nbsp;Reply to this email with anything we should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0;"><strong style="color:#1B4F8C;">&bull;</strong> &nbsp;Bring food, leash, and any comfort item. We&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;text-align:center;">Thank you for trusting us with $H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$!</p><p style="margin:0 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;text-align:center;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
+
+  v_payload := jsonb_build_object(
+    'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
+                                   'email', coalesce(v_sender_email, 'no-reply@dogsandllamas.com')),
+    'to',      jsonb_build_array(jsonb_build_object('email', v_req.client_email,
+                                                    'name',  coalesce(v_req.client_name, ''))),
+    'subject', v_subject,
+    'htmlContent', v_html
+  );
+
+  begin
+    perform net.http_post(
+      url     := v_fn_url,
+      headers := jsonb_build_object('Content-Type', 'application/json', 'x-edge-secret', v_fn_secret),
+      body    := v_payload
+    );
+  exception when others then
+    raise warning 'dal_notify_client_of_payment: edge POST failed: %', SQLERRM;
+  end;
+end;
+$$;
+
+-- Helper called only from dal_mark_booking_paid — no anon grant needed.
+revoke all on function public.dal_notify_client_of_payment(public.booking_requests) from anon, authenticated;
+
+
+-- ── 10b. LIST AWAITING PAYMENT (admin) ────────────────────────────
+-- Lists all bookings that are approved but haven't been marked paid yet.
+-- PIN-gated; returns nothing unless the caller knows the PIN.
+drop function if exists public.dal_list_awaiting_payment(text);
+
+create or replace function public.dal_list_awaiting_payment(p_pin text)
+returns setof public.booking_requests
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_admin_pin text := '1234';
+begin
+  if p_pin is null or p_pin <> v_admin_pin then
+    return;
+  end if;
+  return query
+    select *
+    from public.booking_requests
+    where status = 'approved'
+      and paid_at is null
+    order by decided_at desc nulls last, created_at desc;
+end;
+$$;
+
+comment on function public.dal_list_awaiting_payment(text)
+  is 'Admin-only: returns approved bookings that have not yet been marked paid.';
+
+
+-- ── 10c. MARK BOOKING PAID (admin) ────────────────────────────────
+-- Flips an approved booking to "paid" and fires the confirmation email.
+drop function if exists public.dal_mark_booking_paid(text, uuid);
+
+create or replace function public.dal_mark_booking_paid(
+  p_pin text,
+  p_id  uuid
+)
+returns public.booking_requests
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_admin_pin text := '1234';
+  v_req       public.booking_requests;
+begin
+  if p_pin is null or p_pin <> v_admin_pin then
+    raise exception 'unauthorized';
+  end if;
+
+  -- Lock the row so two clicks can't race each other
+  select * into v_req
+    from public.booking_requests
+    where id = p_id
+    for update;
+
+  if not found then
+    raise exception 'booking % not found', p_id;
+  end if;
+  if v_req.status <> 'approved' then
+    raise exception 'booking % is not approved (status=%)', p_id, v_req.status;
+  end if;
+  if v_req.paid_at is not null then
+    -- Already marked paid — idempotent no-op; return current row.
+    return v_req;
+  end if;
+
+  update public.booking_requests
+    set paid_at = now(),
+        paid_by = 'owner'
+    where id = p_id
+    returning * into v_req;
+
+  -- Fire the "You're all set" confirmation email (fire-and-forget).
+  begin
+    perform public.dal_notify_client_of_payment(v_req);
+  exception when others then
+    raise warning 'dal_mark_booking_paid: notify failed: %', SQLERRM;
+  end;
+
+  return v_req;
+end;
+$$;
+
+comment on function public.dal_mark_booking_paid(text, uuid)
+  is 'Admin-only: flips an approved booking to paid, fires the final confirmation email.';
+
+grant execute on function public.dal_list_awaiting_payment(text)        to anon, authenticated;
+grant execute on function public.dal_mark_booking_paid(text, uuid)      to anon, authenticated;
 
 
 -- ═══════════════════════════════════════════════════════════════════
