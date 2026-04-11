@@ -82,45 +82,55 @@
     .hero p { font-family: var(--font-body); font-size: 15px; color: rgba(255,255,255,.85); margin: 0 auto; max-width: 480px; line-height: 1.7; }
 
     /* ── PAGE ────────────────────────────────────── */
-    .page-wrap { max-width: 900px; margin: 0 auto; padding: 48px 28px 96px; }
+    .page-wrap { max-width: 900px; margin: 0 auto; padding: 40px 28px 72px; }
 
     /* ── SECTION HEADERS ─────────────────────────── */
     .section-eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--blue-mid); margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
     .section-eyebrow::after { content: ''; flex: 0 0 32px; height: 2px; background: var(--yellow); border-radius: 2px; }
-    .section-title { font-family: var(--font-head); font-size: 28px; font-weight: 400; color: var(--text); margin: 0 0 28px; line-height: 1.25; }
+    .section-title { font-family: var(--font-head); font-size: 28px; font-weight: 400; color: var(--text); margin: 0 0 20px; line-height: 1.25; }
     hr.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
 
     /* ── SERVICE PICKER ──────────────────────────── */
     .service-picker {
       background: var(--surface); border-radius: var(--radius-md);
       border: 1px solid var(--border); box-shadow: var(--shadow-sm);
-      padding: 26px 28px; margin-top: 40px;
+      padding: 32px 32px 28px; margin-top: 28px;
+      text-align: center;
+      position: relative;
     }
-    .service-picker-label {
-      font-family: var(--font-body); font-size: 11px; font-weight: 700;
-      letter-spacing: 2px; text-transform: uppercase; color: var(--blue);
-      margin: 0 0 10px; display: flex; align-items: center; gap: 8px;
+    /* Subtle decorative accent line at the top of the tile */
+    .service-picker::before {
+      content: '';
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 56px; height: 3px;
+      background: linear-gradient(90deg, var(--yellow) 0%, var(--yellow-light) 100%);
+      border-radius: 0 0 3px 3px;
     }
-    .service-picker-label::after { content: ''; flex: 0 0 26px; height: 2px; background: var(--yellow); border-radius: 2px; }
     .service-picker h3 {
-      font-family: var(--font-head); font-size: 22px; font-weight: 600;
-      color: var(--text); margin: 0 0 6px; line-height: 1.25; letter-spacing: -0.2px;
+      font-family: var(--font-head); font-size: 26px; font-weight: 600;
+      color: var(--text); margin: 4px 0 6px; line-height: 1.2; letter-spacing: -0.4px;
     }
     .service-picker-sub {
       font-family: var(--font-body); font-size: 14px; color: var(--text-2);
-      margin: 0 0 20px; line-height: 1.6;
+      margin: 0 auto 18px; line-height: 1.55; max-width: 460px;
     }
-    .service-select-wrap { position: relative; max-width: 440px; }
+    .service-select-wrap {
+      position: relative;
+      max-width: 440px;
+      margin: 0 auto;
+    }
     .service-select {
       appearance: none; -webkit-appearance: none;
-      width: 100%; padding: 14px 44px 14px 18px;
-      background: var(--blue-pale); color: var(--text);
+      width: 100%; padding: 14px 44px 14px 20px;
+      background-color: var(--blue-pale); color: var(--text);
       border: 1.5px solid var(--blue-light); border-radius: var(--radius-sm);
       font-family: var(--font-body); font-size: 15px; font-weight: 500;
-      cursor: pointer; outline: none;
-      transition: border-color .15s, background .15s;
+      cursor: pointer; outline: none; text-align: center;
+      text-align-last: center;
+      transition: border-color .15s, background-color .15s, box-shadow .15s;
     }
-    .service-select:hover { background: #d8e8f8; border-color: var(--blue-mid); }
+    .service-select:hover { background-color: #d8e8f8; border-color: var(--blue-mid); }
     .service-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(27,79,140,.15); }
     .service-select-wrap::after {
       content: '▾'; position: absolute; right: 18px; top: 50%;
@@ -128,17 +138,19 @@
       color: var(--blue); font-size: 13px;
     }
     .service-detail {
-      margin-top: 22px; padding: 20px 22px;
+      margin: 16px auto 0; padding: 16px 20px;
       background: var(--yellow-pale); border-left: 4px solid var(--yellow);
       border-radius: var(--radius-sm);
+      max-width: 500px;
+      text-align: left;
       display: none;
     }
     .service-detail.show { display: block; }
-    .service-detail-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
-    .service-detail-name { font-family: var(--font-head); font-size: 20px; font-weight: 600; color: var(--text); margin: 0; letter-spacing: -0.2px; }
-    .service-detail-price { font-family: var(--font-head); font-size: 26px; font-weight: 600; color: var(--blue); margin: 0; white-space: nowrap; }
+    .service-detail-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+    .service-detail-name { font-family: var(--font-head); font-size: 19px; font-weight: 600; color: var(--text); margin: 0; letter-spacing: -0.2px; }
+    .service-detail-price { font-family: var(--font-head); font-size: 24px; font-weight: 600; color: var(--blue); margin: 0; white-space: nowrap; }
     .service-detail-price em { font-style: normal; font-size: 13px; font-weight: 500; color: var(--text-2); margin-left: 2px; }
-    .service-detail-desc { font-family: var(--font-body); font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+    .service-detail-desc { font-family: var(--font-body); font-size: 13.5px; color: var(--text-2); line-height: 1.6; margin: 0; }
     .service-detail-focus {
       display: inline-block;
       background: var(--yellow); color: var(--text);
@@ -149,7 +161,7 @@
     }
 
     /* ── LEGEND ──────────────────────────────────── */
-    .legend { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .legend { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
     .legend-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 13px; color: var(--text-2); }
     .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
     .legend-dot.available   { background: var(--blue); }
@@ -258,40 +270,103 @@
     .admin-banner { display: none; background: var(--yellow); color: var(--text); font-family: var(--font-body); font-size: 13px; font-weight: 600; text-align: center; padding: 8px 20px; }
     body.admin-mode .admin-banner { display: block; }
 
-    /* ── BOOK CTA ─────────────────────────────────── */
-    .book-section {
-      background: var(--blue); border-radius: var(--radius-lg);
-      padding: 40px 44px; text-align: center; margin-top: 48px;
-      box-shadow: var(--shadow-lg);
+    /* ── BOOK CTA (merged into service-picker tile) ─────────── */
+    .service-picker-cta {
+      margin: 22px -32px -28px;
+      padding: 24px 32px 24px;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      text-align: center;
+      background: linear-gradient(180deg, transparent 0%, #F8FAFE 100%);
+      border-top: 1px solid var(--bg-2);
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      transition: background .35s ease;
     }
-    .book-section h2 { font-family: var(--font-head); font-size: 28px; font-weight: 600; color: #fff; margin: 0 0 12px; letter-spacing: -0.3px; }
-    .book-section p { font-family: var(--font-body); font-size: 14.5px; color: rgba(255,255,255,.85); margin: 0 0 24px; line-height: 1.7; max-width: 480px; margin-left: auto; margin-right: auto; }
-    .btn-book {
-      display: inline-block; background: var(--yellow); color: var(--text);
-      font-family: var(--font-body); font-size: 15px; font-weight: 700;
-      text-decoration: none; padding: 14px 36px; border-radius: var(--radius-full);
-      letter-spacing: .3px; transition: background .15s, transform .15s;
+    .service-picker-cta > * { margin: 0; }
+    /* When ready, the CTA subsection softens to a warm yellow wash */
+    .service-picker-cta.is-ready {
+      background: linear-gradient(180deg, var(--yellow-pale) 0%, #FEF4D5 100%);
     }
-    .btn-book:hover { background: var(--yellow-light); transform: translateY(-2px); color: var(--text); }
-    .btn-book:disabled {
-      background: rgba(255,255,255,.18); color: rgba(255,255,255,.55);
-      cursor: not-allowed; transform: none; box-shadow: none;
-    }
-    .btn-book:disabled:hover { background: rgba(255,255,255,.18); transform: none; color: rgba(255,255,255,.55); }
-    .book-note { font-family: var(--font-body); font-size: 12px; color: rgba(255,255,255,.45); margin: 14px 0 0; }
     .booking-summary {
-      font-family: var(--font-body); font-size: 13.5px; color: rgba(255,255,255,.85);
-      background: rgba(255,255,255,.08); border: 1px dashed rgba(255,255,255,.22);
-      border-radius: var(--radius-sm); padding: 10px 16px; margin: 0 auto 18px;
-      max-width: 460px; line-height: 1.55;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 13.5px; color: var(--text-2);
+      background: rgba(255,255,255,.7); border: 1px dashed var(--border);
+      border-radius: var(--radius-full); padding: 8px 18px;
+      line-height: 1.4;
+      max-width: 100%;
+      transition: border-color .25s, background-color .25s, color .25s;
     }
-    .booking-summary.has-selection { color: #fff; border-color: var(--yellow-light); background: rgba(212,160,23,.18); }
+    .booking-summary strong { color: var(--text); font-weight: 700; }
+    .booking-summary.has-selection {
+      color: var(--text);
+      border-color: var(--yellow);
+      background: #fff;
+      border-style: solid;
+      box-shadow: 0 2px 10px rgba(212,160,23,.12);
+    }
+    .btn-book {
+      display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+      min-width: 240px;
+      background-color: var(--blue);
+      background-image: linear-gradient(150deg, var(--blue) 0%, var(--blue-mid) 100%);
+      color: #fff;
+      font-family: var(--font-body); font-size: 15px; font-weight: 700;
+      text-decoration: none; padding: 15px 36px; border: none;
+      border-radius: var(--radius-full);
+      letter-spacing: .3px;
+      box-shadow: 0 4px 14px rgba(27,79,140,.22);
+      cursor: pointer;
+      transition: background-color .15s, background-image .15s, transform .15s, box-shadow .2s;
+    }
+    .btn-book:hover {
+      background-color: var(--blue-mid);
+      background-image: linear-gradient(150deg, var(--blue-mid) 0%, #3a7bc2 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(27,79,140,.32);
+      color: #fff;
+    }
+    .btn-book:disabled {
+      background-color: var(--bg-2);
+      background-image: none;
+      color: var(--text-3);
+      cursor: not-allowed; transform: none;
+      box-shadow: none;
+    }
+    .btn-book:disabled:hover {
+      background-color: var(--bg-2);
+      background-image: none;
+      transform: none; color: var(--text-3);
+      box-shadow: none;
+    }
+    /* Ready state: both dates + service picked — highlight the CTA.
+       Uses explicit background-image/background-color (not the shorthand)
+       so the Chrome parser doesn't choke on commas inside the gradient. */
+    .btn-book.ready {
+      background-color: var(--yellow);
+      background-image: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%);
+      color: #fff;
+      min-width: 280px;
+      box-shadow: 0 0 0 0 rgba(212,160,23,.55), 0 8px 26px rgba(212,160,23,.4);
+      animation: dal-cta-ready 2.2s ease-out infinite;
+      cursor: pointer;
+    }
+    .btn-book.ready:hover {
+      background-color: var(--yellow-light);
+      background-image: linear-gradient(150deg, var(--yellow-light) 0%, var(--yellow) 100%);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(212,160,23,.5);
+      animation-play-state: paused;
+      color: var(--text);
+    }
+    .book-note {
+      font-family: var(--font-body); font-size: 11.5px; color: var(--text-3);
+      margin: 12px 0 0; line-height: 1.5; letter-spacing: .1px;
+    }
     .rover-alt {
-      font-family: var(--font-body); font-size: 12.5px;
-      color: rgba(255,255,255,.55); margin: 18px 0 0;
+      font-family: var(--font-body); font-size: 12px;
+      color: var(--text-3); margin: 10px 0 0;
     }
-    .rover-alt a { color: var(--yellow-light); text-decoration: none; font-weight: 600; }
-    .rover-alt a:hover { color: #fff; text-decoration: underline; }
+    .rover-alt a { color: var(--blue); text-decoration: none; font-weight: 600; }
+    .rover-alt a:hover { color: var(--blue-mid); text-decoration: underline; }
 
     /* ── ADMIN PANEL ─────────────────────────────── */
     .admin-fab {
@@ -365,7 +440,10 @@
       display: block; font-family: var(--font-body); font-size: 11px;
       font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
       color: var(--blue); margin: 6px 0 4px;
+      transition: color .25s ease;
     }
+    /* Label turns gold once its field has been filled in */
+    .booking-label.is-filled { color: var(--yellow); }
     .booking-time-row { display: flex; gap: 10px; }
     .booking-time-row > div { flex: 1; }
     .booking-time-row input[type="time"] { margin-bottom: 4px; }
@@ -373,42 +451,96 @@
     #booking-modal .modal h3 { margin-bottom: 4px; }
     #booking-modal .modal p { margin-bottom: 14px; }
 
-    /* Visitor confirm modal — wider, scrollable, but uses the same .modal style */
+    /* ── VISITOR CONFIRM MODAL ───────────────────────────────── */
     #visitor-modal .modal {
-      max-width: 420px;
+      max-width: 440px;
       max-height: 92vh; overflow-y: auto;
+      padding: 34px 32px 28px;
+      position: relative;
     }
-    #visitor-modal .modal h3 { margin-bottom: 4px; }
+    /* Gold accent bar at the top center (matches the service-picker tile) */
+    #visitor-modal .modal::before {
+      content: '';
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 56px; height: 3px;
+      background: linear-gradient(90deg, var(--yellow) 0%, var(--yellow-light) 100%);
+      border-radius: 0 0 3px 3px;
+    }
+    #visitor-modal .modal h3 {
+      margin: 0 0 4px;
+      font-size: 23px;
+      text-align: center;
+      letter-spacing: -0.3px;
+    }
+    #visitor-modal .modal > div > p:first-of-type {
+      text-align: center; margin: 0 0 18px;
+      font-size: 13.5px;
+    }
     .vm-summary {
-      background: var(--blue-pale); border-radius: var(--radius-sm);
-      padding: 10px 14px; margin: 0 0 14px;
+      background-image: linear-gradient(135deg, var(--blue-pale) 0%, #F7FBFF 100%);
+      background-color: var(--blue-pale);
+      border-left: 4px solid var(--yellow);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px; margin: 0 0 22px;
       font-family: var(--font-body); font-size: 13.5px; color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
     }
     .vm-summary .vm-line { display: block; }
+    .vm-summary .vm-line + .vm-line { margin-top: 3px; }
     .vm-summary .vm-line-label {
-      font-size: 10.5px; font-weight: 700; letter-spacing: .8px;
-      text-transform: uppercase; color: var(--blue); margin-right: 4px;
+      font-size: 10px; font-weight: 700; letter-spacing: .9px;
+      text-transform: uppercase; color: var(--blue-mid); margin-right: 8px;
+    }
+    /* Inputs inside the visitor modal get a subtle gold focus ring, plus
+       a soft surface tint so the form feels cohesive with the yellow accent */
+    #visitor-modal input,
+    #visitor-modal textarea {
+      background-color: #FDFDFE;
+    }
+    #visitor-modal input:focus,
+    #visitor-modal textarea:focus {
+      border-color: var(--yellow);
+      box-shadow: 0 0 0 3px rgba(212,160,23,.14);
     }
     #visitor-modal textarea {
       width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
       border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 14px;
-      color: var(--text); outline: none; transition: border-color .15s;
+      color: var(--text); outline: none;
+      transition: border-color .15s, box-shadow .15s;
       margin-bottom: 12px; resize: vertical; min-height: 60px;
-      background: #fff;
     }
-    #visitor-modal textarea:focus { border-color: var(--blue); }
     #vm-success {
-      display: none; text-align: center; padding: 6px 4px 0;
+      display: none; text-align: center; padding: 10px 4px 2px;
     }
     #vm-success-icon {
-      width: 52px; height: 52px; border-radius: 50%;
-      background: var(--blue-pale); color: var(--blue);
+      width: 58px; height: 58px; border-radius: 50%;
+      background-image: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%);
+      color: #fff;
       display: flex; align-items: center; justify-content: center;
-      font-size: 26px; margin: 0 auto 12px; font-weight: 700;
+      font-size: 28px; margin: 0 auto 14px; font-weight: 700;
+      box-shadow: 0 6px 22px rgba(212,160,23,.38);
     }
-    #vm-success h4 { font-family: var(--font-head); font-size: 19px; margin: 0 0 8px; color: var(--text); }
+    #vm-success h4 { font-family: var(--font-head); font-size: 21px; margin: 0 0 8px; color: var(--text); }
     #vm-success p { font-family: var(--font-body); font-size: 13.5px; color: var(--text-2); line-height: 1.6; margin: 0 0 16px; }
+
+    /* Send-request button takes on the same gold "ready" pulse as the
+       main Confirm Booking CTA when all required fields are filled */
+    .btn-modal-ok.ready {
+      background-color: var(--yellow);
+      background-image: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%);
+      color: #fff;
+      box-shadow: 0 0 0 0 rgba(212,160,23,.55), 0 6px 20px rgba(212,160,23,.35);
+      animation: dal-cta-ready 2.2s ease-out infinite;
+    }
+    .btn-modal-ok.ready:hover {
+      background-color: var(--yellow-light);
+      background-image: linear-gradient(150deg, var(--yellow-light) 0%, var(--yellow) 100%);
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 8px 26px rgba(212,160,23,.45);
+      animation-play-state: paused;
+      color: var(--text);
+    }
 
     /* ── ADMIN PENDING REQUESTS PANEL ────────────── */
     .admin-requests {
@@ -513,6 +645,11 @@
     @keyframes dal-fade-up       { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes dal-pop           { 0% { transform: scale(1); } 45% { transform: scale(1.28); } 100% { transform: scale(1); } }
     @keyframes dal-pulse         { 0% { box-shadow: 0 0 0 0 rgba(212,160,23,.55); } 80% { box-shadow: 0 0 0 18px rgba(212,160,23,0); } 100% { box-shadow: 0 0 0 0 rgba(212,160,23,0); } }
+    @keyframes dal-cta-ready {
+      0%   { box-shadow: 0 0 0 0 rgba(212,160,23,.55), 0 6px 22px rgba(212,160,23,.35); transform: translateY(0); }
+      50%  { box-shadow: 0 0 0 12px rgba(212,160,23,0),  0 10px 28px rgba(212,160,23,.45); transform: translateY(-2px); }
+      100% { box-shadow: 0 0 0 0 rgba(212,160,23,0),     0 6px 22px rgba(212,160,23,.35); transform: translateY(0); }
+    }
     @keyframes dal-wiggle        { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
     @keyframes dal-cal-bounce    { 0% { transform: scale(1); } 30% { transform: scale(1.35); } 60% { transform: scale(.92); } 100% { transform: scale(1); } }
     @keyframes dal-month-slide   { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
@@ -548,8 +685,7 @@
     /* Service select hover lift */
     .service-select:hover { transform: translateY(-1px); }
 
-    /* Book CTA attention pulse */
-    .btn-book { animation: dal-pulse 2.4s ease-out 2; }
+    /* Book CTA press feedback */
     .btn-book:active { transform: translateY(0) scale(.96); }
 
     /* Admin FAB gentle spin on hover */
@@ -673,9 +809,8 @@
   <!-- CALENDAR (rendered by JS) -->
   <div class="calendar-months" id="calendar-months"></div>
 
-  <!-- SERVICE PICKER (BELOW CALENDAR) -->
+  <!-- SERVICE PICKER + BOOK CTA (one unified tile below calendar) -->
   <div class="service-picker">
-    <p class="service-picker-label">Step 2</p>
     <h3>What service are you looking for?</h3>
     <p class="service-picker-sub">Pick one and we&rsquo;ll show the rate. Boarding &amp; Doggy Day Care are our favorites &mdash; we especially love repeat pups.</p>
 
@@ -697,21 +832,19 @@
       </div>
       <p class="service-detail-desc" id="service-detail-desc"></p>
     </div>
-  </div>
 
-  <!-- BOOK CTA -->
-  <div class="book-section">
-    <h2>Ready to book?</h2>
-    <p>Click dates on the calendar above to pick your range, choose a service, then confirm. Lorenzo will email you within 24 hours.</p>
-    <p class="booking-summary" id="booking-summary">No dates selected yet.</p>
-    <button class="btn-book" id="confirm-booking-btn" type="button" disabled>
-      Confirm Booking &rarr;
-    </button>
-    <p class="book-note">No account needed &middot; payment handled after approval</p>
-    <p class="rover-alt">
-      Prefer a third-party platform? You can also
-      <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">book us on Rover &#8599;</a>
-    </p>
+    <!-- Booking summary + Confirm CTA (merged into same tile) -->
+    <div class="service-picker-cta">
+      <p class="booking-summary" id="booking-summary">No dates selected yet.</p>
+      <button class="btn-book" id="confirm-booking-btn" type="button" disabled>
+        Confirm Booking &rarr;
+      </button>
+      <p class="book-note">No account needed &middot; payment handled after approval &middot; Lorenzo replies within 24 hours</p>
+      <p class="rover-alt">
+        Prefer a third-party platform? You can also
+        <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">book us on Rover &#8599;</a>
+      </p>
+    </div>
   </div>
 
 </div>
@@ -1485,7 +1618,11 @@
     }
     bookingSummary.innerHTML = parts.join(' &middot; ');
     bookingSummary.classList.toggle('has-selection', hasDates);
-    confirmBookingBtn.disabled = !(hasDates && svc);
+    var ready = !!(hasDates && svc);
+    confirmBookingBtn.disabled = !ready;
+    confirmBookingBtn.classList.toggle('ready', ready);
+    var ctaBlock = document.querySelector('.service-picker-cta');
+    if (ctaBlock) ctaBlock.classList.toggle('is-ready', ready);
   }
 
   /* Visitor confirm modal — uses the same .modal style as the PIN modal */
@@ -1509,6 +1646,39 @@
   function isEmailish(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
   function vmShowError(msg) { vmError.textContent = msg; vmError.classList.add('show'); }
 
+  /* ── Visitor-modal "filled" feedback ──────────────
+     As each field is filled, its label flips from blue to gold, and
+     the Send Request button lights up with the same gold "ready"
+     pulse as the Confirm Booking button once the required fields
+     (dog + your name + valid email) are all valid. */
+  var vmAllInputs = [vmDog, vmName, vmEmail, vmPhone, vmDropoff, vmPickup, vmNotes];
+
+  function vmSyncLabel(input) {
+    var label = document.querySelector('label[for="' + input.id + '"]');
+    if (!label) return;
+    var hasValue = (input.value || '').trim().length > 0;
+    label.classList.toggle('is-filled', hasValue);
+  }
+
+  function vmSyncSendReady() {
+    var dogOk   = (vmDog.value   || '').trim().length > 0;
+    var nameOk  = (vmName.value  || '').trim().length > 0;
+    var emailOk = isEmailish((vmEmail.value || '').trim());
+    vmSendBtn.classList.toggle('ready', dogOk && nameOk && emailOk);
+  }
+
+  function vmResetFieldStates() {
+    vmAllInputs.forEach(vmSyncLabel);
+    vmSyncSendReady();
+  }
+
+  vmAllInputs.forEach(function (el) {
+    el.addEventListener('input', function () {
+      vmSyncLabel(el);
+      vmSyncSendReady();
+    });
+  });
+
   function openVisitorModal() {
     if (!visitorPick.start || !serviceSelect.value) return;
     var startK = visitorPick.start;
@@ -1526,6 +1696,7 @@
     vmSuccess.style.display = 'none';
     vmSendBtn.disabled = false;
     vmSendBtn.textContent = 'Send request';
+    vmResetFieldStates();
     visitorModal.classList.add('open');
     setTimeout(function () { vmDog.focus(); }, 80);
   }
