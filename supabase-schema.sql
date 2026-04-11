@@ -802,8 +802,9 @@ begin
     return;
   end if;
 
-  -- Short ID the client includes in the Venmo/Zelle payment note so
-  -- Lorenzo can match the payment back to this booking.
+  -- Short internal reference (not shown to the client anymore — we pre-fill
+  -- the Venmo note with the dog name instead so clients don't have to copy
+  -- anything manually). Kept here only for logging / admin-side lookups.
   v_payment_ref := 'DAL-' || upper(substring(v_req.id::text, 1, 8));
 
   -- Pretty service label
@@ -858,14 +859,18 @@ begin
   end if;
 
   -- Venmo deep-link: opens the Venmo app on mobile or venmo.com on desktop,
-  -- pre-fills the recipient, amount, and payment note (payment ref).
-  -- Falls back to empty Venmo card when no venmo_handle is configured.
+  -- pre-fills the recipient, amount, and a friendly note (dog name + service).
+  -- The client just taps the button — no copying required.
   if v_venmo_handle is not null and length(trim(v_venmo_handle)) > 0 then
     v_venmo_url :=
       'https://venmo.com/' || v_venmo_handle
       || '?txn=pay'
       || '&amount=' || coalesce(v_total, 0)::text
-      || '&note=' || replace(replace(v_payment_ref || ' ' || coalesce(v_service_label, ''), ' ', '%20'), '&', '%26');
+      || '&note=' || replace(
+                       replace(
+                         coalesce(v_req.dog_name, 'Dog') || $Z$'s stay with Dogs & Llamas$Z$,
+                         ' ', '%20'),
+                       '&', '%26');
 
     v_venmo_block :=
       $H$<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 12px;background-color:#FFFFFF;border:1.5px solid #E4EAFA;border-left:4px solid #D4A017;border-radius:8px;"><tr><td style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="margin:0 0 4px;font-size:10px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#D4A017;">Option 1 &middot; Venmo</p><p style="margin:0 0 14px;font-size:17px;font-weight:700;color:#1A1D26;">@$H$
@@ -890,11 +895,11 @@ begin
     v_zelle_block :=
       $H$<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 12px;background-color:#FFFFFF;border:1.5px solid #E4EAFA;border-left:4px solid #1B4F8C;border-radius:8px;"><tr><td style="padding:18px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="margin:0 0 4px;font-size:10px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#1B4F8C;">Option 2 &middot; Zelle</p><p style="margin:0 0 10px;font-size:11px;font-weight:600;letter-spacing:0.3px;color:#8C94B0;text-transform:uppercase;">$H$
       || v_zelle_label
-      || $H$</p><p style="margin:0 0 14px;font-size:17px;font-weight:700;color:#1A1D26;word-break:break-all;">$H$
+      || $H$</p><p style="margin:0 0 12px;font-size:17px;font-weight:700;color:#1A1D26;word-break:break-all;">$H$
       || v_zelle_display
-      || $H$</p><p style="margin:0;font-size:13px;color:#4C5470;line-height:1.55;">Open your bank&rsquo;s app, choose <strong>Send money with Zelle</strong>, and send <strong>&#36;$H$
+      || $H$</p><p style="margin:0;font-size:13px;color:#4C5470;line-height:1.55;">Open your bank&rsquo;s app and send <strong>&#36;$H$
       || v_total::text
-      || $H$</strong> to the address above.</p></td></tr></table>$H$;
+      || $H$</strong> via Zelle to the address above. No account setup needed on our end &mdash; we&rsquo;ll see it land right away.</p></td></tr></table>$H$;
   else
     v_zelle_block := '';
   end if;
@@ -925,9 +930,7 @@ begin
       || $H$</table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">How to Pay</p><p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.65;color:#4C5470;">Pick whichever you&rsquo;re already set up for &mdash; Venmo or Zelle. Either one locks in your booking the moment Lorenzo sees it land.</p>$H$
       || v_venmo_block
       || v_zelle_block
-      || $H$<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:6px 0 24px;background-color:#FEF9E7;border:1.5px dashed #D4A017;border-radius:6px;"><tr><td style="padding:12px 18px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#7A5E0D;line-height:1.55;text-align:center;"><strong>Important:</strong> include the reference <span style="display:inline-block;background:#ffffff;border:1px solid #D4A017;border-radius:4px;padding:2px 8px;font-family:Consolas,Menlo,monospace;font-size:13px;color:#1A1D26;letter-spacing:0.5px;">$H$
-      || v_payment_ref
-      || $H$</span> in the payment note so we can match it to your booking.</td></tr></table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">What Happens Next</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">1.</strong> &nbsp;<strong>Send payment</strong> via Venmo or Zelle above &mdash; your dates are held while we wait for it.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">2.</strong> &nbsp;As soon as Lorenzo sees the payment land, you&rsquo;ll get a <strong>final confirmation email</strong> with the address and drop-off details.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">3.</strong> &nbsp;Reply to either email with anything Lorenzo should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0;"><strong style="color:#1B4F8C;">4.</strong> &nbsp;Bring food, leash, and any comfort item &mdash; we&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;">Can&rsquo;t wait to host $H$
+      || $H$<p style="margin:16px 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#8C94B0;text-align:center;line-height:1.55;font-style:italic;">That&rsquo;s all &mdash; pick whichever is easier for you and we&rsquo;ll take it from there.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">What Happens Next</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">1.</strong> &nbsp;<strong>Send payment</strong> via Venmo or Zelle above &mdash; your dates are held while we wait for it.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">2.</strong> &nbsp;As soon as Lorenzo sees the payment land, you&rsquo;ll get a <strong>final confirmation email</strong> with the address and drop-off details.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">3.</strong> &nbsp;Reply to either email with anything Lorenzo should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0;"><strong style="color:#1B4F8C;">4.</strong> &nbsp;Bring food, leash, and any comfort item &mdash; we&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;">Can&rsquo;t wait to host $H$
       || coalesce(v_req.dog_name, 'your dog')
       || $H$!</p><p style="margin:0 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
   else
@@ -1172,8 +1175,67 @@ $$;
 comment on function public.dal_mark_booking_paid(text, uuid)
   is 'Admin-only: flips an approved booking to paid, fires the final confirmation email.';
 
+-- ── 10d. CANCEL BOOKING REQUEST (admin) ──────────────────────────
+-- Soft-cancels a pending or approved booking and frees up any
+-- availability rows that were locked in on approve. Used for
+-- "client ghosted us after approval" situations.
+drop function if exists public.dal_cancel_booking_request(text, uuid);
+
+create or replace function public.dal_cancel_booking_request(
+  p_pin text,
+  p_id  uuid
+)
+returns public.booking_requests
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_admin_pin text := '1234';
+  v_req       public.booking_requests;
+  v_short     text;
+begin
+  if p_pin is null or p_pin <> v_admin_pin then
+    raise exception 'unauthorized';
+  end if;
+
+  select * into v_req
+    from public.booking_requests
+    where id = p_id
+    for update;
+
+  if not found then
+    raise exception 'booking % not found', p_id;
+  end if;
+  if v_req.status not in ('pending', 'approved') then
+    raise exception 'booking % is already %, cannot cancel', p_id, v_req.status;
+  end if;
+
+  -- Free the calendar dates locked by the approval (if any). We match
+  -- by the 'Booking #<short_id>' tag that dal_decide_booking_request
+  -- writes into availability.notes, scoped to the booking's date range.
+  v_short := substring(v_req.id::text, 1, 8);
+  delete from public.availability
+    where day between v_req.start_date and v_req.end_date
+      and notes = 'Booking #' || v_short;
+
+  update public.booking_requests
+    set status     = 'cancelled',
+        decided_at = coalesce(decided_at, now()),
+        decided_by = coalesce(decided_by, 'owner')
+    where id = p_id
+    returning * into v_req;
+
+  return v_req;
+end;
+$$;
+
+comment on function public.dal_cancel_booking_request(text, uuid)
+  is 'Admin-only: soft-cancels a pending/approved booking and frees any locked calendar dates.';
+
 grant execute on function public.dal_list_awaiting_payment(text)        to anon, authenticated;
 grant execute on function public.dal_mark_booking_paid(text, uuid)      to anon, authenticated;
+grant execute on function public.dal_cancel_booking_request(text, uuid) to anon, authenticated;
 
 
 -- ═══════════════════════════════════════════════════════════════════

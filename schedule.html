@@ -618,22 +618,15 @@
       gap: 12px; flex-wrap: wrap; margin-bottom: 6px;
     }
     .pay-card-dog { font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--text); margin: 0; }
-    .pay-card-ref {
-      font-family: Consolas, Menlo, monospace;
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .5px; color: var(--yellow);
-      background: var(--yellow-pale); padding: 3px 9px; border-radius: var(--radius-full);
-      border: 1px solid #F0D580;
-    }
     .pay-card-amount {
       font-family: var(--font-head); font-size: 22px; font-weight: 600;
       color: var(--blue); margin: 4px 0 8px;
     }
     .pay-card-line { font-family: var(--font-body); font-size: 13px; color: var(--text-2); margin: 2px 0; line-height: 1.5; }
     .pay-card-line strong { color: var(--text); font-weight: 600; }
-    .pay-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .pay-card-actions { display: flex; gap: 8px; margin-top: 14px; }
     .btn-pay-mark {
-      flex: 1;
+      flex: 1.6;
       background-color: var(--yellow);
       background-image: linear-gradient(150deg, var(--yellow) 0%, #b8880f 100%);
       color: #fff;
@@ -648,6 +641,21 @@
       box-shadow: 0 5px 16px rgba(212,160,23,.35);
     }
     .btn-pay-mark:disabled { opacity: .55; cursor: wait; transform: none; box-shadow: none; }
+    .btn-pay-cancel {
+      flex: 1;
+      background: #ffffff;
+      color: var(--text-2);
+      border: 1.5px solid var(--border);
+      font-family: var(--font-body); font-size: 13px; font-weight: 600;
+      padding: 10px 14px; border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: border-color .14s, color .14s, background .14s;
+    }
+    .btn-pay-cancel:hover {
+      border-color: #c0392b; color: #c0392b;
+      background: #fdf4f3;
+    }
+    .btn-pay-cancel:disabled { opacity: .55; cursor: wait; }
     .pay-empty { font-family: var(--font-body); font-size: 13px; color: var(--text-3); font-style: italic; }
 
     .admin-instructions {
@@ -1973,9 +1981,6 @@
     var qty = rate.perNight ? Math.max(n, 1) : (n + 1);
     return { qty: qty, unit: rate.unit, price: rate.price, total: qty * rate.price };
   }
-  function paymentRef(id) {
-    return 'DAL-' + String(id || '').slice(0, 8).toUpperCase();
-  }
 
   function loadAwaitingPayment() {
     var s = supa();
@@ -2025,7 +2030,6 @@
     card.innerHTML =
       '<div class="pay-card-head">' +
         '<p class="pay-card-dog">' + escHtml(row.dog_name) + '</p>' +
-        '<span class="pay-card-ref">' + escHtml(paymentRef(row.id)) + '</span>' +
       '</div>' +
       '<p class="pay-card-amount">' + totalLine + '</p>' +
       '<p class="pay-card-line"><strong>Service:</strong> ' + escHtml(row.service) + '</p>' +
@@ -2034,12 +2038,18 @@
         (row.client_phone ? ' &middot; ' + escHtml(row.client_phone) : '') + '</p>' +
       '<div class="pay-card-actions">' +
         '<button class="btn-pay-mark" type="button">Mark Paid &mdash; send confirmation email</button>' +
+        '<button class="btn-pay-cancel" type="button">Cancel booking</button>' +
       '</div>';
 
-    var btn = card.querySelector('.btn-pay-mark');
-    btn.addEventListener('click', function () {
+    var btnMark   = card.querySelector('.btn-pay-mark');
+    var btnCancel = card.querySelector('.btn-pay-cancel');
+    btnMark.addEventListener('click', function () {
       if (!confirm('Mark this booking as paid and send the confirmation email to ' + row.client_name + '?')) return;
       markBookingPaid(row.id, card);
+    });
+    btnCancel.addEventListener('click', function () {
+      if (!confirm('Cancel ' + row.client_name + '\u2019s booking for ' + row.dog_name + '?\n\nThis frees the calendar dates and does NOT send any email to the client.')) return;
+      cancelBookingPayment(row.id, card);
     });
     return card;
   }
@@ -2047,9 +2057,11 @@
   function markBookingPaid(id, card) {
     var s = supa();
     if (!s || !ADMIN_PIN_MEM) return;
-    var btn = card.querySelector('.btn-pay-mark');
-    btn.disabled = true;
-    btn.textContent = 'Sending confirmation\u2026';
+    var btnMark   = card.querySelector('.btn-pay-mark');
+    var btnCancel = card.querySelector('.btn-pay-cancel');
+    btnMark.disabled = true;
+    if (btnCancel) btnCancel.disabled = true;
+    btnMark.textContent = 'Sending confirmation\u2026';
     fetch(s.url + '/rest/v1/rpc/dal_mark_booking_paid', {
       method:  'POST',
       headers: supaHeaders(s),
@@ -2057,8 +2069,9 @@
     }).then(function (r) { return r.ok; })
       .then(function (ok) {
         if (!ok) {
-          btn.disabled = false;
-          btn.textContent = 'Mark Paid \u2014 send confirmation email';
+          btnMark.disabled = false;
+          if (btnCancel) btnCancel.disabled = false;
+          btnMark.textContent = 'Mark Paid \u2014 send confirmation email';
           showToast('\u26A0 Couldn\u2019t mark paid');
           return;
         }
@@ -2068,8 +2081,45 @@
         else payCount.textContent = payList.children.length + ' awaiting payment';
       })
       .catch(function () {
-        btn.disabled = false;
-        btn.textContent = 'Mark Paid \u2014 send confirmation email';
+        btnMark.disabled = false;
+        if (btnCancel) btnCancel.disabled = false;
+        btnMark.textContent = 'Mark Paid \u2014 send confirmation email';
+        showToast('\u26A0 Network error');
+      });
+  }
+
+  function cancelBookingPayment(id, card) {
+    var s = supa();
+    if (!s || !ADMIN_PIN_MEM) return;
+    var btnMark   = card.querySelector('.btn-pay-mark');
+    var btnCancel = card.querySelector('.btn-pay-cancel');
+    if (btnMark)   btnMark.disabled = true;
+    btnCancel.disabled = true;
+    btnCancel.textContent = 'Cancelling\u2026';
+    fetch(s.url + '/rest/v1/rpc/dal_cancel_booking_request', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_id: id })
+    }).then(function (r) { return r.ok; })
+      .then(function (ok) {
+        if (!ok) {
+          if (btnMark)   btnMark.disabled = false;
+          btnCancel.disabled = false;
+          btnCancel.textContent = 'Cancel booking';
+          showToast('\u26A0 Couldn\u2019t cancel booking');
+          return;
+        }
+        showToast('Booking cancelled \u2014 calendar dates freed');
+        card.remove();
+        if (!payList.children.length) payCount.textContent = 'No bookings awaiting payment.';
+        else payCount.textContent = payList.children.length + ' awaiting payment';
+        /* Re-pull the calendar so the freed dates revert to unavailable */
+        cloudFetchAvailability().then(function (ok2) { if (ok2) renderCalendars(); });
+      })
+      .catch(function () {
+        if (btnMark)   btnMark.disabled = false;
+        btnCancel.disabled = false;
+        btnCancel.textContent = 'Cancel booking';
         showToast('\u26A0 Network error');
       });
   }
