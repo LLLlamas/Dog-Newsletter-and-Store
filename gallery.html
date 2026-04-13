@@ -154,35 +154,58 @@
       padding: 24px;
     }
     .lightbox.open { display: flex; }
-    .lightbox-inner { position: relative; max-width: 900px; width: 100%; }
-    .lightbox-img { width: 100%; height: auto; border-radius: var(--radius-md); display: block; max-height: 80vh; object-fit: contain; }
-    .lightbox-caption { text-align: center; margin-top: 14px; }
-    .lightbox-caption .caption-name { font-family: var(--font-head); font-size: 19px; font-weight: 600; color: #fff; margin: 0 0 4px; }
-    .lightbox-caption .caption-tag  { font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.5); margin: 0; }
+    .lightbox-inner {
+      position: relative;
+      max-width: 960px; width: 95%;
+      display: flex; align-items: stretch; gap: 0;
+      background: rgba(10,30,61,.85);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .lightbox-img-wrap {
+      flex: 1 1 50%; min-width: 0;
+      display: flex; flex-direction: column;
+    }
+    .lightbox-img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      min-height: 300px;
+    }
+    .lightbox-caption {
+      padding: 14px 18px;
+      background: rgba(0,0,0,.35);
+    }
+    .lightbox-caption .caption-name { font-family: var(--font-head); font-size: 18px; font-weight: 600; color: #fff; margin: 0 0 3px; }
+    .lightbox-caption .caption-tag  { font-family: var(--font-body); font-size: 12px; color: rgba(255,255,255,.6); margin: 0; }
 
-    /* Review card in lightbox */
+    /* Review panel — right side of the lightbox */
     .lightbox-review {
-      margin: 18px auto 0; max-width: 560px;
-      background: rgba(255,255,255,.08);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: var(--radius-md);
-      padding: 20px 24px;
+      flex: 1 1 45%; min-width: 0;
+      padding: 32px 28px;
+      display: flex; flex-direction: column; justify-content: center;
       text-align: left;
     }
     .review-stars {
-      font-size: 16px; color: var(--yellow-light);
-      letter-spacing: 2px; margin-bottom: 10px;
+      font-size: 18px; color: var(--yellow-light);
+      letter-spacing: 3px; margin-bottom: 16px;
     }
     .review-text {
-      font-family: var(--font-body); font-size: 14.5px;
-      color: rgba(255,255,255,.88); line-height: 1.7;
-      margin: 0 0 10px; font-style: italic;
+      font-family: var(--font-body); font-size: 15px;
+      color: rgba(255,255,255,.9); line-height: 1.75;
+      margin: 0 0 16px; font-style: italic;
     }
     .review-author {
-      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      font-family: var(--font-body); font-size: 13px; font-weight: 600;
       color: var(--yellow-light); margin: 0;
       letter-spacing: .3px;
+    }
+
+    /* Mobile: stack vertically */
+    @media (max-width: 700px) {
+      .lightbox-inner { flex-direction: column; max-height: 92vh; overflow-y: auto; }
+      .lightbox-img { max-height: 50vh; }
+      .lightbox-review { padding: 22px 20px; }
     }
     .lightbox-close {
       position: absolute; top: -14px; right: -14px;
@@ -386,10 +409,12 @@
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
   <div class="lightbox-inner">
     <button class="lightbox-close" id="lightbox-close" aria-label="Close photo">&times;</button>
-    <img id="lightbox-img" src="" alt="" class="lightbox-img">
-    <div class="lightbox-caption">
-      <p class="caption-name" id="lightbox-name"></p>
-      <p class="caption-tag"  id="lightbox-tag"></p>
+    <div class="lightbox-img-wrap">
+      <img id="lightbox-img" src="" alt="" class="lightbox-img">
+      <div class="lightbox-caption">
+        <p class="caption-name" id="lightbox-name"></p>
+        <p class="caption-tag"  id="lightbox-tag"></p>
+      </div>
     </div>
     <div class="lightbox-review" id="lightbox-review" style="display:none;">
       <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
@@ -569,15 +594,18 @@
     lbName.textContent = item.getAttribute('data-name') || '';
     lbTag.textContent  = item.getAttribute('data-caption') || '';
 
-    /* Show review if the photo has one */
+    /* Show review panel if the photo has one; otherwise image goes full-width */
     var idx = item.getAttribute('data-idx');
     var photo = idx !== null ? GALLERY[parseInt(idx)] : null;
+    var imgWrap = document.querySelector('.lightbox-img-wrap');
     if (photo && photo.review && photo.review.text) {
       lbReviewText.textContent = photo.review.text;
       lbReviewAuthor.textContent = '\u2014 ' + photo.review.author;
-      lbReview.style.display = 'block';
+      lbReview.style.display = 'flex';
+      imgWrap.style.flex = '1 1 50%';
     } else {
       lbReview.style.display = 'none';
+      imgWrap.style.flex = '1 1 100%';
     }
 
     lightbox.classList.add('open');
