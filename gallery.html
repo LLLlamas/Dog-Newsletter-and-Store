@@ -135,15 +135,15 @@
       color: #fff; margin: 0 0 2px;
     }
     .caption-tag {
-      font-family: var(--font-body); font-size: 11.5px; font-weight: 400;
-      letter-spacing: .2px; text-transform: none;
-      color: rgba(255,255,255,.75); margin: 0;
-      line-height: 1.4;
+      font-family: var(--font-body); font-size: 12.5px; font-weight: 400;
+      letter-spacing: .15px; text-transform: none;
+      color: rgba(255,255,255,.8); margin: 0;
+      line-height: 1.45;
       max-height: 0; overflow: hidden; opacity: 0;
-      transition: max-height .25s ease, opacity .2s ease;
+      transition: max-height .3s ease, opacity .2s ease;
     }
     .gallery-item:hover .caption-tag {
-      max-height: 40px; opacity: 1;
+      max-height: 80px; opacity: 1;
     }
 
     /* ── LIGHTBOX ────────────────────────────────── */
@@ -159,6 +159,31 @@
     .lightbox-caption { text-align: center; margin-top: 14px; }
     .lightbox-caption .caption-name { font-family: var(--font-head); font-size: 19px; font-weight: 600; color: #fff; margin: 0 0 4px; }
     .lightbox-caption .caption-tag  { font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.5); margin: 0; }
+
+    /* Review card in lightbox */
+    .lightbox-review {
+      margin: 18px auto 0; max-width: 560px;
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      text-align: left;
+    }
+    .review-stars {
+      font-size: 16px; color: var(--yellow-light);
+      letter-spacing: 2px; margin-bottom: 10px;
+    }
+    .review-text {
+      font-family: var(--font-body); font-size: 14.5px;
+      color: rgba(255,255,255,.88); line-height: 1.7;
+      margin: 0 0 10px; font-style: italic;
+    }
+    .review-author {
+      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      color: var(--yellow-light); margin: 0;
+      letter-spacing: .3px;
+    }
     .lightbox-close {
       position: absolute; top: -14px; right: -14px;
       width: 36px; height: 36px; border-radius: 50%;
@@ -323,16 +348,16 @@
   <div class="hero-inner">
     <p class="hero-eyebrow">Dog Boarding Gallery</p>
     <h1>Real Dogs. Real Stays. Real Trust.</h1>
-    <p>Every photo on this page is from an actual boarding, daycare, or walking session. No stock photos, no staged shots &mdash; just dogs being dogs while we take care of them.</p>
+    <p>Every photo here is from an actual stay. No stock images &mdash; just dogs being dogs while we take care of them. Click any photo to read what their owner had to say.</p>
   </div>
 </section>
 
 <!-- ── MAIN ──────────────────────────────────────────── -->
 <div class="page-wrap">
 
-  <p class="section-eyebrow">Dogs I&rsquo;ve Cared For</p>
-  <h2 class="section-title">Every dog I sit becomes family</h2>
-  <p class="section-sub">From high-energy Aussies to four-pound Chihuahuas, every stay gets the same level of attention. These are some of the pups who&rsquo;ve trusted us with their care &mdash; and their owners trusted us with the photos.</p>
+  <p class="section-eyebrow">The Dogs We&rsquo;ve Cared For</p>
+  <h2 class="section-title">Familiar Faces</h2>
+  <p class="section-sub">From 80-pound couch stealers to four-pound Chihuahuas who won&rsquo;t let go of your hand. Click any photo to see the full image and what their owner said about the stay.</p>
 
   <!-- FILTER BAR -->
   <div class="filter-bar" role="group" aria-label="Filter photos">
@@ -366,6 +391,11 @@
       <p class="caption-name" id="lightbox-name"></p>
       <p class="caption-tag"  id="lightbox-tag"></p>
     </div>
+    <div class="lightbox-review" id="lightbox-review" style="display:none;">
+      <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="review-text" id="lightbox-review-text"></p>
+      <p class="review-author" id="lightbox-review-author"></p>
+    </div>
   </div>
 </div>
 
@@ -390,58 +420,77 @@
      Run `npm run photos` first to generate optimized files
      in media/ and media/thumbs/ from media/originals/.
      ════════════════════════════════════════════════════════ */
+  /* ════════════════════════════════════════════════════════
+     GALLERY CONFIG
+     ─ review: { author, text } — shown in the lightbox overlay
+     ─ To add a photo: drop into media/originals, run npm run photos,
+       then add one object here.
+     ════════════════════════════════════════════════════════ */
   var GALLERY = [
-    // ── Turbo · Australian Shepherd ──
-    { src: 'turbo-outside.jpg',              name: 'Turbo',              breed: 'Australian Shepherd', tags: 'outdoors action',    caption: 'Knows sit, stay, spin, and go-between-your-legs \u2014 still pulls on the harness though',  alt: 'Turbo the Australian Shepherd running outdoors during a dog boarding stay in Queens NYC' },
-    { src: 'turbo-sleeping.jpg',             name: 'Turbo',              breed: 'Australian Shepherd', tags: 'rest portraits',     caption: 'Three puzzle toys and a two-mile run later',  alt: 'Turbo the Australian Shepherd napping after a full day of activity and mental stimulation' },
+    // ── Turbo · Australian Shepherd ── (Review: Shauna S.)
+    { src: 'turbo-outside.jpg',  name: 'Turbo',  breed: 'Australian Shepherd', tags: 'outdoors action', caption: 'Sit, stay, spin, go-between-your-legs \u2014 and still pulls on the harness', alt: 'Turbo the Australian Shepherd running outdoors during a dog boarding stay in Queens NYC',
+      review: { author: 'Shauna S.', text: 'I cannot recommend Lorenzo highly enough. Turbo is a high-energy dog, and Lorenzo always makes sure she gets plenty of exercise and playtime. He always sends me pictures and videos throughout the day. I have never had a worry about leaving Turbo with Lorenzo.' } },
+    { src: 'turbo-sleeping.jpg', name: 'Turbo',  breed: 'Australian Shepherd', tags: 'rest portraits',  caption: 'Three puzzle toys and a two-mile run later', alt: 'Turbo the Australian Shepherd napping after a full day of activity and mental stimulation',
+      review: { author: 'Shauna S.', text: 'He takes the time to get to know my dog and tailored her care to her specific needs. Turbo has some special needs, and Lorenzo is always careful to follow my instructions exactly. He is truly a professional.' } },
 
-    // ── Troy · Husky ──
-    { src: 'troy.jpg',                       name: 'Troy',               breed: 'Husky',               tags: 'portraits',          caption: 'Got out of the yard twice \u2014 came back both times with that look on his face', alt: 'Troy the Husky with bright blue eyes during an overnight dog boarding stay' },
+    // ── Troy · Husky ── (Review: Steven L.)
+    { src: 'troy.jpg', name: 'Troy', breed: 'Husky', tags: 'portraits', caption: 'Escaped the yard twice. Came back both times with zero regrets.', alt: 'Troy the Husky with bright blue eyes during overnight dog boarding in Queens NYC',
+      review: { author: 'Steven L.', text: 'Lorenzo has proven to be extremely reliable and trustworthy. He takes very good care of my Troy and is always reliable. Troy gets excited every time Lorenzo comes over to walk him and Troy always comes home happy.' } },
 
     // ── Dakota · Sheltie ──
-    { src: 'dakota-and-me.jpg',              name: 'Dakota & Lorenzo',   breed: 'Sheltie',             tags: 'portraits outdoors', caption: 'Tiny enough to carry, sweet enough to spoil',  alt: 'Lorenzo Llamas holding Dakota the Sheltie during a dog sitting visit in Queens NYC' },
-    { src: 'dakota-lying-down-couch.jpg',    name: 'Dakota',             breed: 'Sheltie',             tags: 'rest portraits',     caption: 'The kind of guest who makes your couch look better', alt: 'Dakota the Sheltie relaxing on the couch during an overnight boarding stay' },
-    { src: 'dakota-sitting-solo.jpg',        name: 'Dakota',             breed: 'Sheltie',             tags: 'portraits',          caption: 'Didn\u2019t need a single treat to hold this pose', alt: 'Dakota the Sheltie sitting for a portrait during a dog sitting session' },
+    { src: 'dakota-and-me.jpg',           name: 'Dakota & Lorenzo', breed: 'Sheltie', tags: 'portraits outdoors', caption: 'Small enough to carry, sweet enough to spoil', alt: 'Lorenzo Llamas holding Dakota the Sheltie during a dog sitting visit in Queens NYC' },
+    { src: 'dakota-lying-down-couch.jpg', name: 'Dakota',           breed: 'Sheltie', tags: 'rest portraits',     caption: 'Makes every couch look better just by being on it', alt: 'Dakota the Sheltie relaxing on the couch during an overnight boarding stay' },
+    { src: 'dakota-sitting-solo.jpg',     name: 'Dakota',           breed: 'Sheltie', tags: 'portraits',          caption: 'Held this pose without a single treat', alt: 'Dakota the Sheltie sitting for a portrait during a dog sitting session' },
 
-    // ── Ace ──
-    { src: 'ace.jpg',                        name: 'Ace',                breed: '',                    tags: 'portraits',          caption: 'Walked in like he owned the place \u2014 honestly, we let him', alt: 'Ace the dog posing for a portrait during a boarding stay with Dogs and Llamas' },
-    { src: 'ace-smiling-sitting-solo.jpg',   name: 'Ace',                breed: '',                    tags: 'portraits',          caption: 'Hard not to smile back at this one',      alt: 'Ace smiling during a dog sitting session with professional sitter Lorenzo Llamas' },
+    // ── Ace ── (Review: Monique T.) — one photo only (removed duplicate)
+    { src: 'ace-smiling-sitting-solo.jpg', name: 'Ace', breed: '', tags: 'portraits', caption: 'Walked in like he owned the place \u2014 and honestly, we let him', alt: 'Ace smiling during a professional dog boarding stay with Dogs and Llamas in Queens NYC',
+      review: { author: 'Monique T.', text: 'Lorenzo and his wife took great care of Ace. They were responsive and sent pictures. Also very accommodating with things I\u2019d had them for. Would book again!' } },
 
-    // ── Mango · Corgi ──
-    { src: 'mango-outside.jpg',              name: 'Mango',              breed: 'Corgi',               tags: 'outdoors action',    caption: 'Will fetch anything you throw \u2014 and a few things you didn\u2019t', alt: 'Mango the Corgi playing fetch outdoors during dog boarding in Queens NYC' },
-    { src: 'mango-outside,-sunny.jpg',       name: 'Mango',              breed: 'Corgi',               tags: 'outdoors action',    caption: 'Corgi legs, marathon energy',             alt: 'Mango the Corgi outside on a sunny day during a professional dog care session' },
-    { src: 'mango-and-harley-1.jpg',         name: 'Mango & Harley',     breed: 'Corgi & French Bulldog', tags: 'portraits action', caption: 'Two weeks over Christmas \u2014 showed up strangers, left as best friends', alt: 'Mango the Corgi and Harley the French Bulldog together during a two-week holiday boarding stay' },
+    // ── Mango · Corgi ── (one photo only, removed duplicate)
+    { src: 'mango-outside.jpg', name: 'Mango', breed: 'Corgi', tags: 'outdoors action', caption: 'Will fetch anything you throw \u2014 and a few things you didn\u2019t', alt: 'Mango the Corgi playing fetch outdoors during dog boarding in Queens NYC' },
+    { src: 'mango-and-harley-1.jpg', name: 'Mango & Harley', breed: 'Corgi & French Bulldog', tags: 'portraits action', caption: 'Two weeks over Christmas \u2014 strangers at drop-off, best friends by day three', alt: 'Mango and Harley together during a two-week holiday boarding stay in Queens NYC' },
 
     // ── Harley · French Bulldog ──
-    { src: 'harley-lying-down-floor.jpg',    name: 'Harley',             breed: 'French Bulldog',      tags: 'rest portraits',     caption: 'Came in needing potty training \u2014 left with real progress and a routine', alt: 'Harley the French Bulldog resting on the floor during an extended boarding stay for training' },
+    { src: 'harley-lying-down-floor.jpg', name: 'Harley', breed: 'French Bulldog', tags: 'rest portraits', caption: 'Came in needing potty training. Left with a real routine.', alt: 'Harley the French Bulldog resting during an extended boarding stay for training' },
 
-    // ── Teddy · Chihuahua ──
-    { src: 'teddy.jpg',                      name: 'Teddy',              breed: 'Chihuahua',           tags: 'portraits rest',     caption: 'Four pounds of pure opinion',             alt: 'Teddy the Chihuahua relaxing during a professional dog sitting session' },
-    { src: 'teddy-and-me.jpg',              name: 'Teddy & Lorenzo',    breed: 'Chihuahua',           tags: 'portraits',          caption: 'Wouldn\u2019t let go of my hand the entire first night', alt: 'Lorenzo Llamas holding Teddy the Chihuahua during an overnight dog boarding stay' },
-    { src: 'teddy-lying-down-with-kong-holding-hand.jpg', name: 'Teddy', breed: 'Chihuahua',          tags: 'rest',               caption: 'KONG in one paw, my hand in the other \u2014 wouldn\u2019t trade either', alt: 'Teddy the Chihuahua with his KONG toy holding Lorenzo\u2019s hand during a dog care session' },
+    // ── Teddy · Chihuahua ── (Review: Scott E.)
+    { src: 'teddy-and-me.jpg', name: 'Teddy & Lorenzo', breed: 'Chihuahua', tags: 'portraits', caption: 'Wouldn\u2019t let go of my hand the entire first night', alt: 'Lorenzo Llamas holding Teddy the Chihuahua during an overnight dog boarding stay',
+      review: { author: 'Scott E.', text: 'Lorenzo was great with our anxious dog!' } },
+    { src: 'teddy-lying-down-with-kong-holding-hand.jpg', name: 'Teddy', breed: 'Chihuahua', tags: 'rest', caption: 'KONG in one paw, my hand in the other', alt: 'Teddy the Chihuahua with his KONG toy holding Lorenzo\u2019s hand during a dog care session' },
 
     // ── Pretzel ──
-    { src: 'pretzel-sleeping.jpg',           name: 'Pretzel',            breed: '',                    tags: 'rest',               caption: 'Eighty pounds of gentle \u2014 fell asleep mid belly rub', alt: 'Pretzel the large dog sleeping peacefully during an overnight boarding stay' },
-    { src: 'pretzel-sleeping-in-comfortable-bed.jpg', name: 'Pretzel',   breed: '',                    tags: 'rest',               caption: 'Claimed the good bed in under a minute',  alt: 'Pretzel sleeping comfortably in a dog bed during professional overnight care' },
-    { src: 'me-and-pretzel-lying-down.jpg',  name: 'Pretzel & Lorenzo',  breed: '',                    tags: 'rest portraits',     caption: 'Strong enough to pull you down the block, soft enough to fall asleep in your arms', alt: 'Lorenzo Llamas lying with Pretzel during a dog boarding session showing trust and bonding' },
+    { src: 'pretzel-sleeping.jpg', name: 'Pretzel', breed: '', tags: 'rest', caption: 'Eighty pounds \u2014 fell asleep mid belly rub', alt: 'Pretzel sleeping peacefully during an overnight boarding stay in Queens NYC' },
+    { src: 'pretzel-sleeping-in-comfortable-bed.jpg', name: 'Pretzel', breed: '', tags: 'rest', caption: 'Found the best bed in the house in under a minute', alt: 'Pretzel sleeping comfortably in a dog bed during professional overnight care' },
+    { src: 'me-and-pretzel-lying-down.jpg', name: 'Pretzel & Lorenzo', breed: '', tags: 'rest portraits', caption: 'Strong enough to pull you down the block. Soft enough to fall asleep in your arms.', alt: 'Lorenzo Llamas lying with Pretzel during a dog boarding session' },
 
-    // ── Athena ──
-    { src: 'athena-walk.jpg',               name: 'Athena',             breed: '',                    tags: 'outdoors action',    caption: 'Two miles wasn\u2019t enough \u2014 she looked at me like we were just warming up', alt: 'Athena the large dog on a long walk during a professional dog walking session in Queens NYC' },
+    // ── Athena ── (Review: Gabrielle B.)
+    { src: 'athena-walk.jpg', name: 'Athena', breed: '', tags: 'outdoors action', caption: 'Two miles in and she looked at me like we were just warming up', alt: 'Athena on a long walk during a professional dog walking session in Queens NYC',
+      review: { author: 'Gabrielle B.', text: 'Lorenzo made my Athena\u2019s first sitter experience very pleasant. As a pup dealing with separation anxiety, he made her feel loved and cared for. She had someone to play with and in no time, she felt right at home. He took her outside for walks and to the dog park. Highly recommend Lorenzo!' } },
 
     // ── Logan ──
-    { src: 'logan-lying-down-on-couch.jpg', name: 'Logan',              breed: '',                    tags: 'rest portraits',     caption: 'Older, wiser, and knows exactly which cushion is the comfiest', alt: 'Logan the older dog resting on the couch during a gentle overnight dog boarding stay' },
+    { src: 'logan-lying-down-on-couch.jpg', name: 'Logan', breed: '', tags: 'rest portraits', caption: 'Older, wiser, and knows exactly which cushion is the good one', alt: 'Logan the older dog resting on the couch during a gentle overnight dog boarding stay' },
 
-    // ── Palmer ──
-    { src: 'palmer-comfortable-in-bed.jpg', name: 'Palmer',             breed: '',                    tags: 'rest',               caption: 'Quietest guest we\u2019ve ever had \u2014 and the most gorgeous hair in the house', alt: 'Palmer the small long-haired dog comfortable in bed during a professional dog sitting stay' },
+    // ── Palmer ── (Review: Maxwell & Gloria F.)
+    { src: 'palmer-comfortable-in-bed.jpg', name: 'Palmer', breed: '', tags: 'rest', caption: 'Quietest guest we\u2019ve ever had. Gorgeous hair, zero drama.', alt: 'Palmer the small long-haired dog comfortable in bed during a professional dog sitting stay',
+      review: { author: 'Maxwell & Gloria F.', text: 'Lorenzo is such a great sitter! Our dog is often scared of men but he warmed up to Lorenzo right away. Lorenzo is very responsive, sent adorable photos, and was very understanding about our quirky little guy. I\u2019m so happy to have a great sitter in the neighborhood!' } },
 
-    // ── Pumba ──
-    { src: 'pumba-smiling-on-couch.jpg',    name: 'Pumba',              breed: '',                    tags: 'rest portraits',     caption: 'Hid behind the couch when he arrived \u2014 this was two hours later', alt: 'Pumba the dog smiling on the couch after settling in during a boarding stay with Dogs and Llamas' },
+    // ── Pumba ── (Review: Kerice D.)
+    { src: 'pumba-smiling-on-couch.jpg', name: 'Pumba', breed: '', tags: 'rest portraits', caption: 'Hid behind the couch when he arrived. This was two hours later.', alt: 'Pumba smiling on the couch after settling in during a boarding stay with Dogs and Llamas',
+      review: { author: 'Kerice D.', text: 'Lorenzo provided updates throughout the day and sent pictures. He was quick to respond any time I reached out. Pumbaa has a great day in Lorenzo\u2019s care.' } },
 
     // ── Zephyr ──
-    { src: 'zephyr-and-me-walk.jpg',        name: 'Zephyr & Lorenzo',   breed: '',                    tags: 'outdoors action',    caption: 'Tiny legs, zero quit \u2014 kept pace the whole way',  alt: 'Lorenzo Llamas walking Zephyr the small dog during a professional dog walking session' },
+    { src: 'zephyr-and-me-walk.jpg', name: 'Zephyr & Lorenzo', breed: '', tags: 'outdoors action', caption: 'Tiny legs, zero quit', alt: 'Lorenzo Llamas walking Zephyr the small dog during a professional dog walking session' },
+
+    // ── Frankie ── (Review: Jordan K.)
+    { src: 'frankie-lying-down-on-couch.jpg', name: 'Frankie', breed: '', tags: 'rest portraits', caption: 'Made himself at home before we even finished the tour', alt: 'Frankie the small white dog lying comfortably on the couch during a boarding stay in Queens NYC',
+      review: { author: 'Jordan K.', text: 'Lorenzo was great with our anxious dog!' } },
+
+    // ── Milo ── (Review: Michaila M.)
+    { src: 'milo-solo.jpg', name: 'Milo', breed: '', tags: 'portraits', caption: 'Small, cuddly, and gives the best face', alt: 'Milo the small black dog posing during a professional dog boarding stay in Queens NYC',
+      review: { author: 'Michaila M.', text: '' } },
 
     // ── Coco ──
-    { src: 'coco.jpg',                      name: 'Coco',               breed: '',                    tags: 'portraits',          caption: 'Sat still for exactly one photo \u2014 nailed it',  alt: 'Coco the dog posing for a portrait during a dog boarding stay with Dogs and Llamas' }
+    { src: 'coco.jpg', name: 'Coco', breed: '', tags: 'portraits', caption: 'Sat still for exactly one photo. Nailed it.', alt: 'Coco posing for a portrait during a dog boarding stay with Dogs and Llamas' }
   ];
 
   /* ── Render gallery from config ────────────── */
@@ -449,12 +498,13 @@
 
   function renderGallery() {
     galleryGrid.innerHTML = '';
-    GALLERY.forEach(function(photo) {
+    GALLERY.forEach(function(photo, idx) {
       var item = document.createElement('div');
       item.className = 'gallery-item';
       item.setAttribute('data-tags', photo.tags);
       item.setAttribute('data-name', photo.name);
       item.setAttribute('data-caption', photo.caption);
+      item.setAttribute('data-idx', idx);
 
       var img = document.createElement('img');
       img.src = './media/thumbs/' + photo.src;
@@ -499,11 +549,14 @@
   });
 
   /* ── Lightbox ────────────────────────────────── */
-  var lightbox = document.getElementById('lightbox');
-  var lbImg    = document.getElementById('lightbox-img');
-  var lbName   = document.getElementById('lightbox-name');
-  var lbTag    = document.getElementById('lightbox-tag');
-  var lbClose  = document.getElementById('lightbox-close');
+  var lightbox      = document.getElementById('lightbox');
+  var lbImg         = document.getElementById('lightbox-img');
+  var lbName        = document.getElementById('lightbox-name');
+  var lbTag         = document.getElementById('lightbox-tag');
+  var lbClose       = document.getElementById('lightbox-close');
+  var lbReview      = document.getElementById('lightbox-review');
+  var lbReviewText  = document.getElementById('lightbox-review-text');
+  var lbReviewAuthor= document.getElementById('lightbox-review-author');
 
   galleryGrid.addEventListener('click', function(e) {
     var item = e.target.closest('.gallery-item');
@@ -515,6 +568,18 @@
     lbImg.alt = img.alt;
     lbName.textContent = item.getAttribute('data-name') || '';
     lbTag.textContent  = item.getAttribute('data-caption') || '';
+
+    /* Show review if the photo has one */
+    var idx = item.getAttribute('data-idx');
+    var photo = idx !== null ? GALLERY[parseInt(idx)] : null;
+    if (photo && photo.review && photo.review.text) {
+      lbReviewText.textContent = photo.review.text;
+      lbReviewAuthor.textContent = '\u2014 ' + photo.review.author;
+      lbReview.style.display = 'block';
+    } else {
+      lbReview.style.display = 'none';
+    }
+
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
   });
