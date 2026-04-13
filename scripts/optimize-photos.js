@@ -61,11 +61,11 @@ async function processFile(inputPath) {
   const fullStat = fs.statSync(outFull);
   console.log(`    → media/${safeName}.jpg (${(fullStat.size / 1024).toFixed(0)} KB)`);
 
-  // Thumbnail (max 400px wide)
+  // Thumbnail (400×400 square crop, center-weighted so the dog stays in frame)
   await img
     .clone()
-    .resize({ width: THUMB_WIDTH, withoutEnlargement: true })
-    .jpeg({ quality: 75, mozjpeg: true })
+    .resize({ width: THUMB_WIDTH, height: THUMB_WIDTH, fit: 'cover', position: 'attention' })
+    .jpeg({ quality: 78, mozjpeg: true })
     .toFile(outThumb);
 
   const thumbStat = fs.statSync(outThumb);
