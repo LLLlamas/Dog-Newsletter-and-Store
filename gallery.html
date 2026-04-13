@@ -369,27 +369,17 @@
 <!-- ── HERO ──────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-inner">
-    <p class="hero-eyebrow">Dog Boarding Gallery</p>
-    <h1>Real Dogs. Real Stays. Real Trust.</h1>
-    <p>Every photo here is from an actual stay. No stock images &mdash; just dogs being dogs while we take care of them. Click any photo to read what their owner had to say.</p>
+    <p class="hero-eyebrow">Familiar Faces</p>
+    <h1>Dogs &amp; Llamas</h1>
+    <p>From 80-pound couch stealers to four-pound Chihuahuas who won&rsquo;t let go of your hand. Click any photo to see what their owner had to say.</p>
   </div>
 </section>
 
 <!-- ── MAIN ──────────────────────────────────────────── -->
 <div class="page-wrap">
 
-  <p class="section-eyebrow">The Dogs We&rsquo;ve Cared For</p>
-  <h2 class="section-title">Familiar Faces</h2>
-  <p class="section-sub">From 80-pound couch stealers to four-pound Chihuahuas who won&rsquo;t let go of your hand. Click any photo to see the full image and what their owner said about the stay.</p>
-
-  <!-- FILTER BAR -->
-  <div class="filter-bar" role="group" aria-label="Filter photos">
-    <button class="filter-btn active" data-filter="all" type="button">All Photos</button>
-    <button class="filter-btn" data-filter="outdoors"  type="button">&#127774; Outdoors</button>
-    <button class="filter-btn" data-filter="portraits" type="button">&#128247; Portraits</button>
-    <button class="filter-btn" data-filter="action"    type="button">&#9889; Action</button>
-    <button class="filter-btn" data-filter="rest"      type="button">&#128564; Rest &amp; Play</button>
-  </div>
+  <p class="section-eyebrow">Gallery</p>
+  <h2 class="section-title">Dogs we&rsquo;ve cared for</h2>
 
   <!-- GALLERY GRID — rendered by JS from the GALLERY array below -->
   <div class="gallery-grid" id="gallery-grid"></div>
@@ -455,8 +445,6 @@
     // ── Turbo · Australian Shepherd ── (Review: Shauna S.)
     { src: 'turbo-outside.jpg',  name: 'Turbo',  breed: 'Australian Shepherd', tags: 'outdoors action', caption: 'Sit, stay, spin, go-between-your-legs \u2014 and still pulls on the harness', alt: 'Turbo the Australian Shepherd running outdoors during a dog boarding stay in Queens NYC',
       review: { author: 'Shauna S.', text: 'I cannot recommend Lorenzo highly enough. Turbo is a high-energy dog, and Lorenzo always makes sure she gets plenty of exercise and playtime. He always sends me pictures and videos throughout the day. I have never had a worry about leaving Turbo with Lorenzo.' } },
-    { src: 'turbo-sleeping.jpg', name: 'Turbo',  breed: 'Australian Shepherd', tags: 'rest portraits',  caption: 'Three puzzle toys and a two-mile run later', alt: 'Turbo the Australian Shepherd napping after a full day of activity and mental stimulation',
-      review: { author: 'Shauna S.', text: 'He takes the time to get to know my dog and tailored her care to her specific needs. Turbo has some special needs, and Lorenzo is always careful to follow my instructions exactly. He is truly a professional.' } },
 
     // ── Troy · Husky ── (Review: Steven L.)
     { src: 'troy.jpg', name: 'Troy', breed: 'Husky', tags: 'portraits', caption: 'Escaped the yard twice. Came back both times with zero regrets.', alt: 'Troy the Husky with bright blue eyes during overnight dog boarding in Queens NYC',
@@ -550,28 +538,6 @@
     });
   }
   renderGallery();
-
-  /* ── Filter ──────────────────────────────────── */
-  var filterBtns = document.querySelectorAll('.filter-btn');
-
-  filterBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      btn.classList.remove('dal-pop');
-      void btn.offsetWidth;
-      btn.classList.add('dal-pop');
-      setTimeout(function() { btn.classList.remove('dal-pop'); }, 420);
-
-      filterBtns.forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      var filter = btn.getAttribute('data-filter');
-      var items = galleryGrid.querySelectorAll('.gallery-item');
-      items.forEach(function(item) {
-        var tags = item.getAttribute('data-tags') || '';
-        var show = filter === 'all' || tags.indexOf(filter) !== -1;
-        item.classList.toggle('hidden', !show);
-      });
-    });
-  });
 
   /* ── Lightbox ────────────────────────────────── */
   var lightbox      = document.getElementById('lightbox');
