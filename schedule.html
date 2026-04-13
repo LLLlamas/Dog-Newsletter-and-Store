@@ -4,8 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <title>Schedule &amp; Availability — Dogs &amp; Llamas</title>
-  <meta name="description" content="Check Lorenzo Llamas's availability for dog boarding, drop-in visits, and dog walking. Request a booking directly with us.">
+  <title>Dog Boarding Schedule &amp; Availability — Woodside &amp; Sunnyside, Queens NYC</title>
+  <meta name="description" content="Check open dates for dog boarding, daycare, drop-in visits, and dog walking in Woodside, Sunnyside, and western Queens. Book directly with Lorenzo Llamas — no platform fees.">
+  <meta name="keywords" content="dog boarding availability Woodside, book dog sitter Sunnyside, dog daycare Queens NYC, dog walking Astoria, dog walking Long Island City, Dogs and Llamas schedule, Lorenzo Llamas, book dog sitter near me Queens">
+  <link rel="canonical" href="https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Dog Boarding Schedule & Availability — Dogs & Llamas">
+  <meta property="og:description" content="Check open dates and book directly with Lorenzo in Woodside/Sunnyside Queens. Overnight boarding, daycare, drop-ins, and walks.">
+  <meta property="og:image" content="https://llllamas.github.io/Dog-Newsletter-and-Store/media/turbo-outside.jpg">
+  <meta property="og:url" content="https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html">
+  <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2082,14 +2091,52 @@
           return;
         }
         showToast('Paid \u2014 confirmation email sent');
-        card.remove();
-        if (!payList.children.length) payCount.textContent = 'No bookings awaiting payment.';
-        else payCount.textContent = payList.children.length + ' awaiting payment';
+        /* Replace the card with a follow-up mini card */
+        var dogName = card.querySelector('.pay-card-dog') ? card.querySelector('.pay-card-dog').textContent : '';
+        card.innerHTML =
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">' +
+            '<p style="margin:0;font-family:var(--font-body);font-size:14px;color:var(--text);"><strong style="color:var(--blue);">\u2713 Paid</strong> &mdash; ' + escHtml(dogName) + '</p>' +
+            '<button class="btn-pay-mark" type="button" style="flex:none;padding:8px 18px;font-size:12px;">Send follow-up email</button>' +
+          '</div>';
+        var followBtn = card.querySelector('.btn-pay-mark');
+        followBtn.addEventListener('click', function () {
+          sendFollowUp(id, followBtn);
+        });
+        if (!payList.querySelectorAll('.pay-card-dog').length) payCount.textContent = 'All caught up \u2014 nice work!';
+        else payCount.textContent = payList.querySelectorAll('.pay-card-dog').length + ' awaiting payment';
       })
       .catch(function () {
         btnMark.disabled = false;
         if (btnCancel) btnCancel.disabled = false;
         btnMark.textContent = 'Mark Paid \u2014 send confirmation email';
+        showToast('\u26A0 Network error');
+      });
+  }
+
+  function sendFollowUp(id, btn) {
+    var s = supa();
+    if (!s || !ADMIN_PIN_MEM) return;
+    btn.disabled = true;
+    btn.textContent = 'Sending\u2026';
+    fetch(s.url + '/rest/v1/rpc/dal_send_followup', {
+      method:  'POST',
+      headers: supaHeaders(s),
+      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_id: id })
+    }).then(function (r) { return r.ok; })
+      .then(function (ok) {
+        if (!ok) {
+          btn.disabled = false;
+          btn.textContent = 'Send follow-up email';
+          showToast('\u26A0 Couldn\u2019t send follow-up');
+          return;
+        }
+        btn.textContent = 'Follow-up sent \u2713';
+        btn.style.opacity = '.5';
+        showToast('Follow-up email sent with product picks + PUPS10');
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Send follow-up email';
         showToast('\u26A0 Network error');
       });
   }

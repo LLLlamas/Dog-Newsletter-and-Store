@@ -7,13 +7,103 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
 
-  <title>Dogs &amp; Llamas — Dog Care Updates &amp; Curated Picks</title>
-  <meta name="description" content="Monthly dog-care updates, early booking access, and trusted product picks from a professional dog sitter. Subscribe free.">
-  <meta property="og:title" content="Dogs &amp; Llamas">
-  <meta property="og:description" content="Monthly dog-care updates, honest tips, and early booking access from a trusted local sitter.">
+  <title>Dogs &amp; Llamas — Dog Boarding &amp; Walking in Woodside, Sunnyside &amp; Queens NYC</title>
+  <meta name="description" content="Professional dog boarding, daycare, walking, and house sitting in Woodside, Sunnyside, Astoria, and Long Island City, Queens. Lorenzo & Catalina Llamas — Rover Star Sitters serving western Queens and Midtown Manhattan.">
+  <meta name="keywords" content="dog boarding Woodside, dog boarding Sunnyside, dog sitter Queens NYC, dog walking Astoria, dog daycare Long Island City, pet care Queens New York, dog boarding near me NYC, Dogs and Llamas, Lorenzo Llamas, Rover Star Sitter, house sitting Queens">
+  <link rel="canonical" href="https://llllamas.github.io/Dog-Newsletter-and-Store/">
+  <meta property="og:title" content="Dogs & Llamas — Dog Boarding & Walking in Queens NYC">
+  <meta property="og:description" content="Dog boarding, walking, and care in Woodside, Sunnyside & Queens NYC. Book directly with Lorenzo & Catalina — no platform fees.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://[YOUR-GITHUB-USERNAME].github.io/[REPO-NAME]/">
-  <meta property="og:image" content="https://[YOUR-GITHUB-USERNAME].github.io/[REPO-NAME]/media/Turbo%20Outside.jpg">
+  <meta property="og:url" content="https://llllamas.github.io/Dog-Newsletter-and-Store/">
+  <meta property="og:image" content="https://llllamas.github.io/Dog-Newsletter-and-Store/media/turbo-outside.jpg">
+
+  <!-- Structured Data: LocalBusiness + PetCare services -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Dogs & Llamas",
+    "description": "Professional dog boarding, daycare, walking, drop-in visits, and house sitting in Woodside, Sunnyside, Astoria, Long Island City (Queens) and Midtown Manhattan by Lorenzo & Catalina Llamas. Rover Star Sitters.",
+    "url": "https://llllamas.github.io/Dog-Newsletter-and-Store/",
+    "image": "https://llllamas.github.io/Dog-Newsletter-and-Store/media/turbo-outside.jpg",
+    "email": "dogsandllamasservice@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Woodside",
+      "addressRegion": "NY",
+      "addressCountry": "US"
+    },
+    "areaServed": [
+      { "@type": "City", "name": "New York" },
+      { "@type": "Place", "name": "Woodside, Queens, NY" },
+      { "@type": "Place", "name": "Sunnyside, Queens, NY" },
+      { "@type": "Place", "name": "Astoria, Queens, NY" },
+      { "@type": "Place", "name": "Long Island City, Queens, NY" },
+      { "@type": "Place", "name": "Midtown Manhattan, NY" }
+    ],
+    "founder": {
+      "@type": "Person",
+      "name": "Lorenzo Llamas"
+    },
+    "makesOffer": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Overnight Dog Boarding",
+          "description": "Your dog stays in our home overnight with full attention, walks, backyard play, and photo updates."
+        },
+        "price": "90.00",
+        "priceCurrency": "USD",
+        "unitText": "per night"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Doggy Day Care",
+          "description": "Same-day drop-off and pickup at our home. Your dog spends the day with us getting walks, play, and attention."
+        },
+        "price": "50.00",
+        "priceCurrency": "USD",
+        "unitText": "per day"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Dog Walking",
+          "description": "A 30-60 minute walk in your neighborhood with photo updates."
+        },
+        "price": "25.00",
+        "priceCurrency": "USD",
+        "unitText": "per walk"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Drop-In Visits",
+          "description": "We come to your home for a 30-minute visit including feeding, a walk or play, and a photo update."
+        },
+        "price": "45.00",
+        "priceCurrency": "USD",
+        "unitText": "per visit"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "House Sitting",
+          "description": "We stay at your home overnight so your dog sleeps in their own space."
+        },
+        "price": "100.00",
+        "priceCurrency": "USD",
+        "unitText": "per night"
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -618,6 +708,60 @@
       font-size: 12px; color: var(--text-3); margin: 3px 0 0;
     }
 
+    /* ── GALLERY PREVIEW STRIP ────────────────────── */
+    .gallery-preview {
+      margin: 48px 0;
+    }
+    .gallery-preview-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .gallery-preview-header .section-title { margin-bottom: 0; }
+    .gallery-preview-link {
+      font-family: var(--font-body); font-size: 14px; font-weight: 600;
+      color: var(--blue); text-decoration: none;
+      white-space: nowrap; padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      transition: border-color .15s, color .15s;
+    }
+    .gallery-preview-link:hover { border-color: var(--blue); color: var(--blue-mid); }
+    .gallery-preview-strip {
+      display: flex; gap: 14px;
+      overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 0 16px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .gallery-preview-strip::-webkit-scrollbar { height: 6px; }
+    .gallery-preview-strip::-webkit-scrollbar-track { background: transparent; }
+    .gallery-preview-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .gallery-preview-item {
+      flex: 0 0 170px;
+      scroll-snap-align: start;
+      border-radius: var(--radius-md); overflow: hidden;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s ease, box-shadow .2s ease;
+      cursor: pointer;
+    }
+    .gallery-preview-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(27,79,140,.18);
+    }
+    .gallery-preview-item img {
+      width: 170px; height: 170px;
+      object-fit: cover; display: block;
+    }
+    .gallery-preview-name {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 6px 10px;
+      background: linear-gradient(transparent, rgba(10,30,61,.7));
+      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      color: #fff; letter-spacing: .3px;
+    }
+
     /* ── STORE TEASER ────────────────────────────── */
     .store-teaser {
       background: var(--green);
@@ -1181,10 +1325,9 @@
 
       <div class="dog-card reveal reveal-d1">
         <div class="dog-card-photo-wrap">
-          <div class="dog-card-placeholder" aria-hidden="true">
-            <span class="ph-icon">&#128054;</span>
-            <span class="ph-note">Photo coming soon</span>
-          </div>
+          <img src="./media/ace.jpg"
+               alt="Ace posing for the camera"
+               class="dog-card-photo" loading="lazy" width="148" height="184">
         </div>
         <div class="dog-card-footer">
           <p class="dog-card-name">Ace</p>
@@ -1193,10 +1336,9 @@
 
       <div class="dog-card reveal reveal-d2">
         <div class="dog-card-photo-wrap">
-          <div class="dog-card-placeholder" aria-hidden="true">
-            <span class="ph-icon">&#128054;</span>
-            <span class="ph-note">Photo coming soon</span>
-          </div>
+          <img src="./media/mango-outside.jpg"
+               alt="Mango enjoying the outdoors"
+               class="dog-card-photo" loading="lazy" width="148" height="184">
         </div>
         <div class="dog-card-footer">
           <p class="dog-card-name">Mango</p>
@@ -1205,26 +1347,44 @@
 
       <div class="dog-card reveal reveal-d3">
         <div class="dog-card-photo-wrap">
-          <div class="dog-card-placeholder" aria-hidden="true">
-            <span class="ph-icon">&#128054;</span>
-            <span class="ph-note">Photo coming soon</span>
-          </div>
+          <img src="./media/teddy.jpg"
+               alt="Teddy relaxing"
+               class="dog-card-photo" loading="lazy" width="148" height="184">
         </div>
         <div class="dog-card-footer">
-          <p class="dog-card-name">Harley</p>
-          <p class="dog-card-note">French Bulldog</p>
+          <p class="dog-card-name">Teddy</p>
         </div>
       </div>
 
     </div>
 
-    <!--
-      To activate Ace and Mango when ready:
-      1. Convert Ace.DNG / Mango Outside.DNG → .jpg at cloudconvert.com
-      2. Place in /media
-      3. Replace placeholder div with <img src="./media/Ace.jpg" class="dog-card-photo" loading="lazy">
-    -->
+    <!-- All dog photos are now optimized via `npm run photos` from media/originals/ -->
     <p class="photo-legal reveal">&#x2022; Photos shared with client permission only. Photos of sitter shared with consent.</p>
+  </section>
+
+  <!-- GALLERY PREVIEW STRIP -->
+  <section class="gallery-preview reveal" aria-labelledby="gallery-preview-heading">
+    <div class="gallery-preview-header">
+      <div>
+        <p class="section-eyebrow">From the Gallery</p>
+        <h2 class="section-title" id="gallery-preview-heading">Moments from recent stays</h2>
+      </div>
+      <a href="gallery.html" class="gallery-preview-link">View all photos &rarr;</a>
+    </div>
+    <div class="gallery-preview-strip">
+      <div class="gallery-preview-item"><img src="./media/thumbs/turbo-outside.jpg" alt="Turbo outdoors" loading="lazy"><span class="gallery-preview-name">Turbo</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/mango-and-harley-1.jpg" alt="Mango and Harley together" loading="lazy"><span class="gallery-preview-name">Mango & Harley</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/athena-walk.jpg" alt="Athena on a walk" loading="lazy"><span class="gallery-preview-name">Athena</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/pretzel-sleeping.jpg" alt="Pretzel sleeping" loading="lazy"><span class="gallery-preview-name">Pretzel</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/troy.jpg" alt="Troy the Husky" loading="lazy"><span class="gallery-preview-name">Troy</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/teddy-lying-down-with-kong-holding-hand.jpg" alt="Teddy with his KONG" loading="lazy"><span class="gallery-preview-name">Teddy</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/pumba-smiling-on-couch.jpg" alt="Pumba smiling" loading="lazy"><span class="gallery-preview-name">Pumba</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/dakota-and-me.jpg" alt="Dakota with Lorenzo" loading="lazy"><span class="gallery-preview-name">Dakota</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/me-and-pretzel-lying-down.jpg" alt="Lorenzo with Pretzel" loading="lazy"><span class="gallery-preview-name">Pretzel</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/logan-lying-down-on-couch.jpg" alt="Logan on the couch" loading="lazy"><span class="gallery-preview-name">Logan</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/ace-smiling-sitting-solo.jpg" alt="Ace smiling" loading="lazy"><span class="gallery-preview-name">Ace</span></div>
+      <div class="gallery-preview-item"><img src="./media/thumbs/zephyr-and-me-walk.jpg" alt="Zephyr on a walk" loading="lazy"><span class="gallery-preview-name">Zephyr</span></div>
+    </div>
   </section>
 
   <hr class="divider">

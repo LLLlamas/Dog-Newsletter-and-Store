@@ -1066,7 +1066,7 @@ begin
     || coalesce(to_char(v_req.pick_up, 'FMHH12:MI AM'), '—')
     || $H$</td></tr></table><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">Before You Drop Off</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#E4F0FB;border-radius:6px;"><tr><td style="padding:18px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1D26;line-height:1.7;"><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">&bull;</strong> &nbsp;Lorenzo will reach out the day before drop-off with the address and any last-minute details.</p><p style="margin:0 0 8px;"><strong style="color:#1B4F8C;">&bull;</strong> &nbsp;Reply to this email with anything we should know &mdash; feeding schedule, meds, routines, quirks.</p><p style="margin:0;"><strong style="color:#1B4F8C;">&bull;</strong> &nbsp;Bring food, leash, and any comfort item. We&rsquo;ll handle the rest.</p></td></tr></table><p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1A1D26;line-height:1.7;text-align:center;">Thank you for trusting us with $H$
     || coalesce(v_req.dog_name, 'your dog')
-    || $H$!</p><p style="margin:0 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;text-align:center;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
+    || $H$!</p><p style="margin:0 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;text-align:center;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:20px 40px;background-color:#FEF9E7;border-top:1px solid #F0D580;text-align:center;"><p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#7A5E0D;line-height:1.55;"><strong>Returning client perk:</strong> mention <strong style="color:#D4A017;">PUPS10</strong> next time you book for <strong>10% off</strong> your next stay.</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
 
   v_payload := jsonb_build_object(
     'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
@@ -1329,9 +1329,113 @@ $$;
 comment on function public.dal_cancel_booking_request(text, uuid)
   is 'Admin-only: soft-cancels a pending/approved booking and frees any locked calendar dates.';
 
+-- ── 10e. POST-STAY FOLLOW-UP EMAIL ────────────────────────────────
+-- Manual trigger: admin clicks "Send follow-up" on a paid booking.
+-- Email includes a warm thank-you, 2 top product picks with affiliate
+-- links, the PUPS10 loyalty code, and a rebook CTA.
+drop function if exists public.dal_send_followup(text, uuid);
+
+create or replace function public.dal_send_followup(
+  p_pin text,
+  p_id  uuid
+)
+returns void
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_admin_pin    text := '1234';
+  v_req          public.booking_requests;
+  v_sender_email text;
+  v_sender_name  text;
+  v_fn_url       text;
+  v_fn_secret    text;
+  v_pgnet_ok     boolean;
+  v_subject      text;
+  v_html         text;
+  v_payload      jsonb;
+  v_schedule_url text := 'https://llllamas.github.io/Dog-Newsletter-and-Store/schedule.html';
+  v_store_url    text := 'https://llllamas.github.io/Dog-Newsletter-and-Store/store.html';
+begin
+  if p_pin is null or p_pin <> v_admin_pin then
+    raise exception 'unauthorized';
+  end if;
+
+  select * into v_req from public.booking_requests where id = p_id;
+  if not found then
+    raise exception 'booking % not found', p_id;
+  end if;
+  if v_req.paid_at is null then
+    raise exception 'booking % has not been marked paid yet', p_id;
+  end if;
+
+  select exists (
+    select 1 from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('net','extensions') and p.proname = 'http_post'
+  ) into v_pgnet_ok;
+  if not v_pgnet_ok then return; end if;
+
+  select value into v_sender_email from public.app_config where key = 'sender_email';
+  select value into v_sender_name  from public.app_config where key = 'sender_name';
+  select value into v_fn_url       from public.app_config where key = 'email_fn_url';
+  select value into v_fn_secret    from public.app_config where key = 'email_fn_secret';
+  if v_fn_url is null or v_fn_secret is null or v_req.client_email is null then
+    return;
+  end if;
+
+  v_subject := 'Thanks for trusting us with ' || coalesce(v_req.dog_name, 'your pup') || '!';
+
+  v_html :=
+    $H$<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Thanks for staying</title></head><body style="margin:0;padding:0;background-color:#F2F5FB;font-family:Arial,Helvetica,sans-serif;"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F2F5FB;">We loved having $H$
+    || coalesce(v_req.dog_name, 'your pup')
+    || $H$ &mdash; here are a few things we thought you&rsquo;d like.</div><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF;border-radius:10px;overflow:hidden;max-width:560px;"><tr><td style="background-color:#1B4F8C;background-image:linear-gradient(150deg,#0A1E3D 0%,#1B4F8C 55%,#2B6CB0 100%);padding:36px 40px 32px;text-align:center;"><p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;font-weight:bold;">Post-Stay Note</p><h1 style="margin:0;font-family:Georgia,serif;font-size:28px;font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">Dogs &amp; Llamas</h1><p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">We loved having $H$
+    || coalesce(v_req.dog_name, 'your pup')
+    || $H$</p></td></tr><tr><td style="padding:36px 40px 8px;"><p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Hi $H$
+    || coalesce(v_req.client_name, 'there')
+    || $H$,</p><p style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#1A1D26;">Just wanted to say <strong>thank you</strong> for trusting us with <strong>$H$
+    || coalesce(v_req.dog_name, 'your pup')
+    || $H$</strong>. We genuinely loved every minute &mdash; the walks, the play sessions, and yes, even the zoomies. You&rsquo;ve got an amazing dog.</p><p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#1B4F8C;">A Couple of Picks for $H$
+    || coalesce(v_req.dog_name, 'Your Pup')
+    || $H$</p><p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.65;color:#4C5470;">Based on what we noticed during the stay, here are a couple of products we think $H$
+    || coalesce(v_req.dog_name, 'your dog')
+    || $H$ would love:</p><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 12px;background-color:#FFFFFF;border:1.5px solid #E4EAFA;border-left:4px solid #D4A017;border-radius:8px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="margin:0 0 4px;font-size:15px;font-weight:700;color:#1A1D26;">KONG Classic Stuffable Toy</p><p style="margin:0 0 10px;font-size:13px;color:#4C5470;line-height:1.55;">Frozen with peanut butter, it keeps even the most restless dogs happily occupied for 30+ minutes.</p><a href="https://www.amazon.com/KONG-Classic-Durable-Natural-Rubber/dp/B0002AR0I8" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#1B4F8C;text-decoration:none;" target="_blank" rel="noopener noreferrer sponsored">View on Amazon &rarr;</a></td></tr></table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#FFFFFF;border:1.5px solid #E4EAFA;border-left:4px solid #D4A017;border-radius:8px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="margin:0 0 4px;font-size:15px;font-weight:700;color:#1A1D26;">Chuckit! Ultra Ball</p><p style="margin:0 0 10px;font-size:13px;color:#4C5470;line-height:1.55;">The most durable fetch ball I&rsquo;ve found &mdash; it bounces higher, floats, and doesn&rsquo;t grind down tooth enamel like tennis balls.</p><a href="https://www.amazon.com/Chuckit-Ultra-Squeaker-Ball-Medium/dp/B00UNLOWK0" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#1B4F8C;text-decoration:none;" target="_blank" rel="noopener noreferrer sponsored">View on Amazon &rarr;</a></td></tr></table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background-color:#FEF9E7;border:1.5px solid #F0D580;border-radius:6px;"><tr><td style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#7A5E0D;line-height:1.6;text-align:center;"><strong style="color:#1A1D26;">Returning client perk:</strong> mention <strong style="color:#D4A017;">PUPS10</strong> when you book your next stay for <strong>10% off</strong>. We&rsquo;d love to have $H$
+    || coalesce(v_req.dog_name, 'your pup')
+    || $H$ back.</td></tr></table><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center" style="padding:0 0 8px;"><a href="$H$
+    || v_schedule_url
+    || $H$" style="display:inline-block;background-color:#1B4F8C;background-image:linear-gradient(150deg,#1B4F8C 0%,#2B6CB0 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:99px;letter-spacing:0.5px;">Book again &rarr;</a></td></tr><tr><td align="center"><a href="$H$
+    || v_store_url
+    || $H$" style="display:inline-block;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#1B4F8C;text-decoration:none;padding:8px 20px;">Browse all sitter picks &rarr;</a></td></tr></table><p style="margin:20px 0 4px;font-family:Georgia,serif;font-size:15px;color:#1A1D26;font-style:italic;text-align:center;">&mdash; Lorenzo &amp; Catalina</p></td></tr><tr><td style="padding:24px 40px 32px;border-top:1px solid #E7ECF5;text-align:center;"><p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#1B4F8C;font-weight:600;letter-spacing:0.3px;">Dogs &amp; Llamas</p><p style="margin:4px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#8C94B0;line-height:1.6;">Lorenzo &amp; Catalina Llamas &middot; All bookings handled in-house</p></td></tr></table></td></tr></table></body></html>$H$;
+
+  v_payload := jsonb_build_object(
+    'sender',  jsonb_build_object('name', coalesce(v_sender_name, 'Dogs & Llamas'),
+                                   'email', coalesce(v_sender_email, 'no-reply@dogsandllamas.com')),
+    'to',      jsonb_build_array(jsonb_build_object('email', v_req.client_email,
+                                                    'name',  coalesce(v_req.client_name, ''))),
+    'subject', v_subject,
+    'htmlContent', v_html
+  );
+
+  begin
+    perform net.http_post(
+      url     := v_fn_url,
+      headers := jsonb_build_object('Content-Type', 'application/json', 'x-edge-secret', v_fn_secret),
+      body    := v_payload
+    );
+  exception when others then
+    raise warning 'dal_send_followup: edge POST failed: %', SQLERRM;
+  end;
+end;
+$$;
+
+comment on function public.dal_send_followup(text, uuid)
+  is 'Admin-only: sends the post-stay follow-up email with product recommendations and PUPS10 loyalty code.';
+
 grant execute on function public.dal_list_awaiting_payment(text)        to anon, authenticated;
 grant execute on function public.dal_mark_booking_paid(text, uuid)      to anon, authenticated;
 grant execute on function public.dal_cancel_booking_request(text, uuid) to anon, authenticated;
+grant execute on function public.dal_send_followup(text, uuid)          to anon, authenticated;
 
 
 -- ═══════════════════════════════════════════════════════════════════

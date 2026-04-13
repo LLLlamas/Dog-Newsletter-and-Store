@@ -1,0 +1,13 @@
+# Raw originals (large files, not for git)
+media/originals/
+
+# Node
+node_modules/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Supabase local
+.supabase/

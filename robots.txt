@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://llllamas.github.io/Dog-Newsletter-and-Store/sitemap.xml

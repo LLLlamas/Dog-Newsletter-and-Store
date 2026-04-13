@@ -6,10 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
-  <title>Curated Top Picks — Dogs &amp; Llamas</title>
-  <meta name="description" content="Trusted dog gear picks from a professional sitter — filtered by size, age, and habits.">
-  <meta property="og:title" content="Curated Top Picks — Dogs &amp; Llamas">
-  <meta property="og:description" content="Gear tested across real dogs. Filter by size, age, or activity.">
+  <title>Best Dog Products &amp; Gear — Sitter-Tested Picks — Dogs &amp; Llamas</title>
+  <meta name="description" content="Dog beds, toys, food, and grooming gear tested on real dogs by a professional sitter. Filtered by size and activity. Honest picks, not sponsored lists.">
+  <meta name="keywords" content="best dog products, dog toy recommendations, dog bed reviews, sitter recommended dog gear, KONG toy, Chuckit ball, dog grooming Queens NYC, Dogs and Llamas store, dog sitter product picks">
+  <link rel="canonical" href="https://llllamas.github.io/Dog-Newsletter-and-Store/store.html">
+  <meta property="og:title" content="Best Dog Products & Gear — Sitter-Tested Picks">
+  <meta property="og:description" content="Beds, toys, food, and grooming gear tested on real dogs. Honest picks from a professional sitter.">
+  <meta property="og:image" content="https://llllamas.github.io/Dog-Newsletter-and-Store/media/turbo-outside.jpg">
+  <meta property="og:url" content="https://llllamas.github.io/Dog-Newsletter-and-Store/store.html">
   <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -199,6 +203,30 @@
       color: var(--text-2); line-height: 1.72; margin: 0; padding-top: 6px;
     }
 
+    /* ── LOYALTY BANNER ─────────────────────────── */
+    .loyalty-banner {
+      background: linear-gradient(135deg, #FEF9E7 0%, #FAEBC8 100%);
+      border: 1.5px solid #F0D580;
+      border-radius: var(--radius-md);
+      padding: 18px 22px; margin-bottom: 28px;
+    }
+    .loyalty-inner {
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .loyalty-icon {
+      font-size: 24px; flex-shrink: 0; line-height: 1;
+      margin-top: 2px;
+    }
+    .loyalty-headline {
+      font-family: var(--font-head); font-size: 16px; font-weight: 600;
+      color: var(--text); margin: 0 0 4px; letter-spacing: -0.2px;
+    }
+    .loyalty-sub {
+      font-family: var(--font-body); font-size: 13.5px;
+      color: #7A5E0D; line-height: 1.6; margin: 0;
+    }
+    .loyalty-sub strong { color: var(--text); }
+
     /* ── SECTION EYEBROW ─────────────────────────── */
     .section-eyebrow {
       font-family: var(--font-body); font-size: 11px; font-weight: 600;
@@ -352,10 +380,20 @@
     .product-card.hidden { display: none; }
 
     .product-img {
-      height: 82px; background: var(--green-pale);
+      height: 180px; background: #ffffff;
       display: flex; align-items: center; justify-content: center;
       font-size: 34px; position: relative; flex-shrink: 0;
       border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      padding: 12px;
+    }
+    .product-img img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+      transition: transform .25s ease;
+    }
+    .product-card:hover .product-img img {
+      transform: scale(1.05);
     }
     .badge {
       position: absolute; top: 8px; right: 8px;
@@ -701,9 +739,9 @@
 <!-- ── HERO ──────────────────────────────────────────── -->
 <section class="hero" aria-label="Curated Top Picks">
   <div class="hero-inner">
-    <p class="hero-eyebrow">Curated Top Picks</p>
-    <h1>Gear worth having</h1>
-    <p>Tested across real dogs. Filter by your dog's size, age, or activity — every pick earns its place.</p>
+    <p class="hero-eyebrow">Sitter-Tested Dog Gear</p>
+    <h1>Products I actually use &mdash; on dogs I actually sit</h1>
+    <p>Every item on this page has been through a real stay. Turbo chewed through three toys before we found the ones that last. Pretzel tested every bed. These are the survivors.</p>
   </div>
 </section>
 
@@ -735,7 +773,18 @@
   <!-- SITTER NOTE -->
   <div class="sitter-note">
     <span class="sitter-note-icon" aria-hidden="true">&#128054;</span>
-    <p>I've cared for a lot of dogs — big ones, anxious ones, power chewers, seniors, puppies. These are the products that actually make a difference. Filter by your dog's profile, or scroll through all picks below.</p>
+    <p>From Turbo&rsquo;s puzzle toys to Pretzel&rsquo;s orthopedic bed, I&rsquo;ve tried a lot of gear across a lot of very different dogs. These are the products that held up, made a real difference, and that I&rsquo;d buy again without hesitating. Filter by your dog&rsquo;s size or activity, or just scroll.</p>
+  </div>
+
+  <!-- LOYALTY BANNER -->
+  <div class="loyalty-banner">
+    <div class="loyalty-inner">
+      <span class="loyalty-icon">&#127775;</span>
+      <div>
+        <p class="loyalty-headline">Returning client? You get a perk.</p>
+        <p class="loyalty-sub">Mention <strong>PUPS10</strong> when you book your next stay for <strong>10% off</strong>. Thanks for coming back &mdash; it means the world to us.</p>
+      </div>
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════
@@ -760,15 +809,15 @@
 
     <!-- Big Barker | large sleeping senior -->
     <article class="product-card" data-tags="large sleeping senior">
-      <div class="product-img" aria-hidden="true">
-        &#128719;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/81Mn+PoaJdL._AC_SL300_.jpg" alt="Big Barker 7-inch Orthopedic Dog Bed" loading="lazy">
         <span class="badge badge-pick">Sitter's Pick</span>
       </div>
       <div class="product-body">
         <p class="product-brand">Big Barker</p>
         <h3 class="product-name">7&Prime; Orthopedic Bed with Headrest</h3>
         <p class="product-desc">Therapeutic foam, 10-year no-flatten guarantee, washable microsuede cover. Vet-recommended for large breeds and seniors.</p>
-        <div class="product-why"><p>Heavy dogs compress cheap foam within weeks — this is clinically tested to keep its shape long-term.</p></div>
+        <div class="product-why"><p>Pretzel weighs 80 lbs and flattened two cheaper beds in a month. This one still looks new after six months of nightly use.</p></div>
         <div class="product-tags">
           <span class="product-tag">Large</span>
           <span class="product-tag">Sleeping</span>
@@ -785,8 +834,8 @@
 
     <!-- MidWest iCrate | small medium large puppy sleeping all -->
     <article class="product-card" data-tags="small medium large puppy sleeping all">
-      <div class="product-img" aria-hidden="true">
-        &#128274;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/71lSEYTHEhL._AC_SL300_.jpg" alt="MidWest iCrate Folding Metal Dog Crate" loading="lazy">
         <span class="badge badge-value">Best Value</span>
       </div>
       <div class="product-body">
@@ -810,7 +859,9 @@
 
     <!-- Diggs Snooz Pad | small medium large puppy sleeping all -->
     <article class="product-card" data-tags="small medium large puppy sleeping all">
-      <div class="product-img" aria-hidden="true">&#128167;</div>
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/71A7JaqVDuL._AC_SL300_.jpg" alt="Diggs Snooz Memory Foam Crate Pad" loading="lazy">
+      </div>
       <div class="product-body">
         <p class="product-brand">Diggs</p>
         <h3 class="product-name">Snooz Crate Pad — Memory Foam</h3>
@@ -831,15 +882,15 @@
 
     <!-- KONG Classic | small medium large puppy teething chewing all -->
     <article class="product-card" data-tags="small medium large puppy teething chewing all">
-      <div class="product-img" aria-hidden="true">
-        &#129354;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/71kpVyfVMNL._AC_SL300_.jpg" alt="KONG Classic Stuffable Dog Toy" loading="lazy">
         <span class="badge badge-popular">100K+ Reviews</span>
       </div>
       <div class="product-body">
         <p class="product-brand">KONG</p>
         <h3 class="product-name">Classic Stuffable Dog Toy</h3>
         <p class="product-desc">Natural rubber, hollow for stuffing with treats, erratic bounce. The #1 trainer recommendation for 40+ years.</p>
-        <div class="product-why"><p>Frozen with peanut butter, it occupies a dog for 30+ minutes — the most effective tool I know for separation anxiety.</p></div>
+        <div class="product-why"><p>Teddy won&rsquo;t let go of his. Harley needed one during his two-week stay to stay calm when we left the room. Frozen with peanut butter, it buys you 30+ solid minutes.</p></div>
         <div class="product-tags">
           <span class="product-tag">All Sizes</span>
           <span class="product-tag">Puppies</span>
@@ -856,15 +907,15 @@
 
     <!-- Benebone Wishbone | medium large teething chewing -->
     <article class="product-card" data-tags="medium large teething chewing">
-      <div class="product-img" aria-hidden="true">
-        &#128585;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/71gRFDBfURL._AC_SL300_.jpg" alt="Benebone Wishbone Real Bacon Chew Toy" loading="lazy">
         <span class="badge badge-pick">Aggressive Chewers</span>
       </div>
       <div class="product-body">
         <p class="product-brand">Benebone</p>
         <h3 class="product-name">Wishbone Chew Toy — Real Bacon</h3>
         <p class="product-desc">Real bacon infused throughout, not just coated. Curved shape dogs grip naturally with their paws. Made in USA.</p>
-        <div class="product-why"><p>Lasting flavor keeps aggressive chewers focused on the bone instead of furniture.</p></div>
+        <div class="product-why"><p>Turbo destroyed three other chew toys in a week. This one lasted the entire stay &mdash; the bacon flavor kept her locked in instead of going after the couch.</p></div>
         <div class="product-tags">
           <span class="product-tag">Medium</span>
           <span class="product-tag">Large</span>
@@ -881,7 +932,9 @@
 
     <!-- West Paw Hurley | small medium large chewing -->
     <article class="product-card" data-tags="small medium large chewing">
-      <div class="product-img" aria-hidden="true">&#127774;</div>
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/61V1UcaK2mL._AC_SL300_.jpg" alt="West Paw Zogoflex Hurley Chew Toy" loading="lazy">
+      </div>
       <div class="product-body">
         <p class="product-brand">West Paw</p>
         <h3 class="product-name">Zogoflex Hurley Chew Toy</h3>
@@ -902,8 +955,8 @@
 
     <!-- Blue Buffalo | medium large adult -->
     <article class="product-card" data-tags="medium large adult">
-      <div class="product-img" aria-hidden="true">
-        &#127857;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/81j6FUmtXhL._AC_SL300_.jpg" alt="Blue Buffalo Life Protection Chicken and Brown Rice" loading="lazy">
         <span class="badge badge-popular">Most Popular</span>
       </div>
       <div class="product-body">
@@ -927,8 +980,8 @@
 
     <!-- Purina Pro Plan Sensitive | medium large sensitive adult -->
     <article class="product-card" data-tags="medium large sensitive adult">
-      <div class="product-img" aria-hidden="true">
-        &#129424;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/81Mn4WBSqaL._AC_SL300_.jpg" alt="Purina Pro Plan Sensitive Skin Salmon and Rice" loading="lazy">
         <span class="badge badge-pick">Sensitive Skin</span>
       </div>
       <div class="product-body">
@@ -952,7 +1005,9 @@
 
     <!-- Wellness CORE | medium large adult active -->
     <article class="product-card" data-tags="medium large adult active">
-      <div class="product-img" aria-hidden="true">&#129311;</div>
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/81ncxNbSCUL._AC_SL300_.jpg" alt="Wellness CORE Grain Free Turkey and Chicken Dog Food" loading="lazy">
+      </div>
       <div class="product-body">
         <p class="product-brand">Wellness CORE</p>
         <h3 class="product-name">Grain-Free Turkey &amp; Chicken Formula</h3>
@@ -973,15 +1028,15 @@
 
     <!-- Chuckit Ultra Ball | small medium large fetch -->
     <article class="product-card" data-tags="small medium large fetch">
-      <div class="product-img" aria-hidden="true">
-        &#127944;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/81QOLkJBDhL._AC_SL300_.jpg" alt="Chuckit Ultra Ball High-Bounce Fetch Ball" loading="lazy">
         <span class="badge badge-popular">Best Seller</span>
       </div>
       <div class="product-body">
         <p class="product-brand">Chuckit!</p>
         <h3 class="product-name">Ultra Ball — High-Bounce Fetch Ball</h3>
         <p class="product-desc">2× as durable as a tennis ball. Rubber, textured grip, floats. Works with any Chuckit! launcher.</p>
-        <div class="product-why"><p>Tennis ball fuzz acts like sandpaper on tooth enamel — smooth rubber gives the same fetch experience with far less wear.</p></div>
+        <div class="product-why"><p>Mango will fetch until you physically stop throwing. We switched from tennis balls after learning the fuzz grinds down enamel &mdash; this one bounces higher, floats, and has survived hundreds of Mango sessions.</p></div>
         <div class="product-tags">
           <span class="product-tag">All Sizes</span>
           <span class="product-tag">Fetch</span>
@@ -998,15 +1053,15 @@
 
     <!-- Chuckit 26L | large fetch active -->
     <article class="product-card" data-tags="large fetch active">
-      <div class="product-img" aria-hidden="true">
-        &#129351;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/71UGUjqDu5L._AC_SL300_.jpg" alt="Chuckit Sport 26L Ball Launcher" loading="lazy">
         <span class="badge badge-pick">High-Energy Dogs</span>
       </div>
       <div class="product-body">
         <p class="product-brand">Chuckit!</p>
         <h3 class="product-name">Sport 26L Ball Launcher</h3>
         <p class="product-desc">Throws 2–3× farther than by hand. Slim handle, hands-free pickup. Ball included. For dogs 60–100 lbs.</p>
-        <div class="product-why"><p>20 minutes with this gives the same exercise as an hour walk for a high-drive dog like Turbo.</p></div>
+        <div class="product-why"><p>Twenty minutes of fetch with this launcher tires Athena out the way an hour walk does. For high-energy dogs like Turbo and Troy, it&rsquo;s the most efficient exercise tool I own.</p></div>
         <div class="product-tags">
           <span class="product-tag">Large</span>
           <span class="product-tag">Fetch</span>
@@ -1023,7 +1078,9 @@
 
     <!-- West Paw Zisc | medium large fetch active -->
     <article class="product-card" data-tags="medium large fetch active">
-      <div class="product-img" aria-hidden="true">&#127950;</div>
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/61VK1SXTJ2L._AC_SL300_.jpg" alt="West Paw Zogoflex Zisc Flying Disc" loading="lazy">
+      </div>
       <div class="product-body">
         <p class="product-brand">West Paw</p>
         <h3 class="product-name">Zogoflex Zisc Flying Disc 8.5&Prime;</h3>
@@ -1045,15 +1102,15 @@
 
     <!-- Earth Rated Wipes | small medium large puppy sensitive all -->
     <article class="product-card" data-tags="small medium large puppy sensitive all">
-      <div class="product-img" aria-hidden="true">
-        &#129529;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/81a6yKu7sDL._AC_SL300_.jpg" alt="Earth Rated Pet Wipes Unscented 100 Count" loading="lazy">
         <span class="badge badge-popular">#1 Grooming Wipes</span>
       </div>
       <div class="product-body">
         <p class="product-brand">Earth Rated</p>
         <h3 class="product-name">Pet Wipes — Unscented, 100 Count</h3>
         <p class="product-desc">Amazon's #1 grooming wipe. Thick 8&Prime;×8&Prime;, unscented, alcohol-free, USDA-certified 98% biobased.</p>
-        <div class="product-why"><p>Dogs track allergens and pollen in on their paws every walk — wiping at the door reduces paw licking and spreading.</p></div>
+        <div class="product-why"><p>Mango licks his paws constantly after walks. Wiping them at the door cut that habit in half. We go through a pack every couple of weeks during boarding season &mdash; worth every cent.</p></div>
         <div class="product-tags">
           <span class="product-tag">All Sizes</span>
           <span class="product-tag">Sensitive Skin</span>
@@ -1070,15 +1127,15 @@
 
     <!-- Puomue Towel | small medium large puppy all -->
     <article class="product-card" data-tags="small medium large puppy all">
-      <div class="product-img" aria-hidden="true">
-        &#128700;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/71ZNzW+mH8L._AC_SL300_.jpg" alt="Puomue Microfiber Dog Drying Towel 2 Pack" loading="lazy">
         <span class="badge badge-value">Best Value</span>
       </div>
       <div class="product-body">
         <p class="product-brand">Puomue</p>
         <h3 class="product-name">Microfiber Drying Towel — 2 Pack</h3>
         <p class="product-desc">Absorbs 6× its weight in water. Dries a wet dog in half the time of a regular towel. Machine washable.</p>
-        <div class="product-why"><p>A dog left wet develops skin irritation and odor from bacterial growth — especially true for double-coat breeds.</p></div>
+        <div class="product-why"><p>Turbo and Zephyr both shed like crazy, and a wet double coat makes it ten times worse. This towel absorbs fast enough that they&rsquo;re dry before the zoomies start.</p></div>
         <div class="product-tags">
           <span class="product-tag">All Sizes</span>
           <span class="product-tag">Post-Bath</span>
@@ -1093,8 +1150,8 @@
 
     <!-- Sweet Paws Towel | small medium large all -->
     <article class="product-card" data-tags="small medium large all">
-      <div class="product-img" aria-hidden="true">
-        &#128116;
+      <div class="product-img">
+        <img src="https://m.media-amazon.com/images/I/71sMKPIQ7NL._AC_SL300_.jpg" alt="Sweet Paws Portable Paw Towel with Leash Clip" loading="lazy">
         <span class="badge badge-pick">Walk Essential</span>
       </div>
       <div class="product-body">
