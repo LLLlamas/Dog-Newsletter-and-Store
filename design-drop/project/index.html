@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dogs &amp; Llamas — Dog Boarding, Walking &amp; Care in Queens NYC</title>
+<meta name="description" content="Professional dog boarding, daycare, walking, and house sitting in Woodside, Sunnyside, Astoria & LIC. Lorenzo & Catalina Llamas — Rover Star Sitters." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   DOGS & LLAMAS — homepage
+   Palette: warm navy + sun gold + cream + terracotta blush
+   Type:   Playfair Display (brand + headings) + DM Sans (UI/body) + DM Mono (meta/numbers)
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Core (dog-visible blue + gold, warmed) */
+  --navy:       #132A4E;
+  --navy-deep:  #0A1A34;
+  --navy-soft:  #25437B;
+  --gold:       #E0A02F;
+  --gold-soft:  #F3CB6A;
+  --gold-pale:  #F8E9C4;
+  --blush:      #E69A6F;
+  --blush-pale: #F7D9C6;
+
+  /* Neutrals (warm) */
+  --cream:      #F6EFE3;
+  --cream-2:    #EFE6D3;
+  --paper:      #FBF7EE;
+  --ink:        #171716;
+  --ink-2:      #43413B;
+  --ink-3:      #8A867C;
+  --rule:       #D6CDB9;
+
+  --radius-xs: 4px;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 44px;
+
+  --shadow-sm: 0 2px 6px rgba(19,42,78,.06), 0 1px 2px rgba(19,42,78,.04);
+  --shadow-md: 0 8px 28px rgba(19,42,78,.12), 0 2px 6px rgba(19,42,78,.06);
+  --shadow-lg: 0 24px 60px rgba(19,42,78,.18), 0 4px 12px rgba(19,42,78,.08);
+  --shadow-photo: 0 30px 80px -20px rgba(19,42,78,.35), 0 10px 24px -8px rgba(19,42,78,.2);
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-sans:    'DM Sans', system-ui, sans-serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-mono:    'DM Mono', ui-monospace, monospace;
+
+  /* Navy gradient tokens */
+  --grad-navy: linear-gradient(135deg, #0A1A34 0%, #132A4E 45%, #25437B 100%);
+  --grad-navy-h: linear-gradient(90deg, #0A1A34 0%, #1B3460 50%, #25437B 100%);
+
+  --max: 1240px;
+  --nav-h: 72px;
+}
+
+/* ── reset ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+
+/* ── subtle paper grain everywhere ─────────────── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(224,160,47,.015) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(230,154,111,.015) 0%, transparent 50%);
+  mix-blend-mode:multiply;
+}
+
+/* ═══════════ NAV ═══════════ */
+.nav{
+  position:sticky;top:0;z-index:200;
+  height:var(--nav-h);
+  background:rgba(251,247,238,.82);
+  backdrop-filter:blur(18px) saturate(1.1);
+  -webkit-backdrop-filter:blur(18px) saturate(1.1);
+  border-bottom:1px solid rgba(214,205,185,.5);
+}
+.nav-inner{
+  max-width:var(--max);margin:0 auto;
+  height:100%;padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.brand{
+  font-family:var(--font-display);
+  font-size:26px;line-height:1;color:var(--navy);
+  display:flex;align-items:center;gap:10px;
+}
+.brand .amp{
+  color:var(--gold);font-style:italic;font-weight:400;
+  transform:translateY(-2px);font-size:30px;
+}
+.brand-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 0 4px var(--gold-pale);
+  animation:pulseDot 2.4s ease-in-out infinite;
+}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 4px var(--gold-pale)}50%{box-shadow:0 0 0 7px rgba(243,203,106,.3)}}
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-link{
+  font-family:var(--font-sans);font-weight:500;font-size:14.5px;
+  color:var(--ink-2);padding:8px 14px;border-radius:999px;
+  transition:color .18s,background .18s;
+}
+.nav-link:hover{color:var(--navy);background:var(--cream-2)}
+.nav-cta{
+  font-family:var(--font-sans);font-weight:600;font-size:14px;
+  color:#fff;background:var(--grad-navy);padding:10px 22px;border-radius:999px;
+  margin-left:8px;
+  transition:transform .18s,background .18s,box-shadow .18s;
+  box-shadow:0 2px 0 var(--navy-deep);
+}
+.nav-cta:hover{transform:translateY(-1px);background:var(--navy-soft);box-shadow:0 3px 0 var(--navy-deep)}
+
+/* ═══════════ SEASONAL BANNER ═══════════ */
+.banner{
+  background:var(--grad-navy-h);color:var(--gold-soft);
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.8px;
+  padding:9px 32px;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  position:relative;overflow:hidden;
+}
+.banner::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(243,203,106,.08),transparent);
+  transform:translateX(-100%);animation:sweep 8s ease-in-out infinite;
+}
+@keyframes sweep{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+.banner strong{color:#fff;font-weight:500;letter-spacing:1.2px}
+.banner-pulse{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--blush);animation:pulseBanner 1.8s ease-in-out infinite;
+}
+@keyframes pulseBanner{0%,100%{box-shadow:0 0 0 0 rgba(230,154,111,.6)}50%{box-shadow:0 0 0 8px rgba(230,154,111,0)}}
+
+/* ═══════════ HERO ═══════════ */
+.hero{
+  position:relative;
+  padding:64px 32px 80px;
+  background:
+    radial-gradient(ellipse 900px 600px at 85% 10%, rgba(224,160,47,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 800px 700px at 10% 90%, rgba(230,154,111,.12) 0%, transparent 60%),
+    linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);
+  overflow:hidden;
+}
+.hero::before{
+  /* faint halftone pattern */
+  content:'';position:absolute;inset:0;opacity:.4;pointer-events:none;
+  background-image:radial-gradient(circle, rgba(19,42,78,.05) 1px, transparent 1px);
+  background-size:22px 22px;
+}
+.hero-inner{
+  max-width:var(--max);margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
+  position:relative;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:2px;
+  color:var(--navy);text-transform:uppercase;
+  background:var(--gold-pale);
+  padding:7px 14px;border-radius:999px;
+  border:1px solid rgba(224,160,47,.4);
+}
+.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.hero-title{
+  font-family:var(--font-display);font-weight:500;
+  font-size:clamp(48px, 7vw, 96px);
+  line-height:1;letter-spacing:-.02em;
+  margin:18px 0 0;color:var(--navy);
+}
+.hero-title em{
+  font-style:italic;color:var(--blush);
+  font-family:var(--font-display);font-weight:400;
+  display:block;
+}
+.hero-title .sig{
+  display:inline-block;
+  background:linear-gradient(180deg, transparent 62%, var(--gold-soft) 62%, var(--gold-soft) 88%, transparent 88%);
+  padding:0 4px;
+}
+.hero-sub{
+  font-family:var(--font-body);font-size:17px;line-height:1.6;
+  color:var(--ink-2);margin:28px 0 36px;max-width:440px;
+}
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:18px 28px;
+  margin-bottom:36px;
+}
+.hero-meta div{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.hero-meta strong{display:block;font-family:var(--font-sans);font-weight:600;font-size:14px;letter-spacing:0;color:var(--navy);text-transform:none;margin-top:3px}
+
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.btn{
+  font-family:var(--font-sans);font-weight:600;font-size:15px;
+  padding:14px 26px;border-radius:999px;border:none;
+  display:inline-flex;align-items:center;gap:10px;
+  transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,background .2s;
+}
+.btn-primary{background:var(--grad-navy);color:#fff;box-shadow:0 3px 0 var(--navy-deep)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--navy-deep);filter:brightness(1.08)}
+.btn-secondary{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+.btn-secondary:hover{background:var(--navy);color:#fff;transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 3px 0 #b07f1f}
+.btn-gold:hover{transform:translateY(-2px);background:var(--gold-soft);box-shadow:0 5px 0 #b07f1f}
+.btn-arrow{transition:transform .2s}
+.btn:hover .btn-arrow{transform:translateX(3px)}
+
+/* ── hero featured dog ── */
+.featured{
+  position:relative;
+  aspect-ratio:4/5;
+  max-width:520px;
+  margin-left:auto;
+}
+.featured-photo{
+  position:relative;
+  width:100%;height:100%;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  box-shadow:var(--shadow-photo);
+  transform:rotate(-1.5deg);
+  transition:transform .6s cubic-bezier(.2,.8,.2,1);
+}
+.featured:hover .featured-photo{transform:rotate(0)}
+.featured-photo img{
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  transition:opacity .5s ease;
+}
+.featured-photo img.leaving{opacity:0}
+.featured-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 55%, rgba(10,26,52,.55) 100%);
+  pointer-events:none;
+}
+.featured-tag{
+  position:absolute;
+  bottom:24px;left:24px;right:24px;
+  color:#fff;z-index:2;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+}
+.featured-name{
+  font-family:var(--font-display);font-style:italic;
+  font-size:44px;line-height:1;margin:0;
+}
+.featured-desc{
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;
+  color:rgba(255,255,255,.85);margin:4px 0 0;max-width:240px;
+}
+.featured-stamp{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;text-align:right;
+  color:var(--gold-soft);
+  border:1px solid rgba(243,203,106,.6);
+  padding:5px 10px;border-radius:4px;
+  background:rgba(10,26,52,.4);
+  backdrop-filter:blur(6px);
+}
+
+/* polaroid tape */
+.featured::before{
+  content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);
+  width:120px;height:24px;
+  background:rgba(243,203,106,.6);
+  border:1px dashed rgba(224,160,47,.4);
+  z-index:3;
+}
+
+/* dog cycler nav dots (inside photo, bottom right) */
+.dog-nav{
+  position:absolute;bottom:14px;right:14px;z-index:4;
+  display:flex;align-items:center;gap:6px;
+  background:rgba(10,26,52,.45);backdrop-filter:blur(8px);
+  padding:6px 10px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.15);
+}
+.dog-nav button{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.4);border:none;padding:0;
+  transition:background .2s,transform .2s;cursor:pointer;
+}
+.dog-nav button.active{background:var(--gold-soft);transform:scale(1.4)}
+.dog-nav button:hover{background:#fff}
+.dog-nav .dog-arrow{
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(255,255,255,.18);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:13px;line-height:1;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.dog-nav .dog-arrow:hover{background:var(--gold);color:var(--navy)}
+
+/* hero floating orbs (soft animated) */
+.hero-orbs{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-orb{
+  position:absolute;border-radius:50%;
+  filter:blur(60px);opacity:.4;
+  animation:float 14s ease-in-out infinite;
+}
+.hero-orb.o1{width:280px;height:280px;background:var(--blush);top:-80px;left:40%;animation-delay:0s}
+.hero-orb.o2{width:220px;height:220px;background:var(--gold-soft);bottom:-60px;left:20%;animation-delay:-7s}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-40px)}}
+
+/* ═══════════ TRUST STRIP ═══════════ */
+.trust{
+  background:var(--grad-navy-h);color:#fff;
+  padding:24px 32px;position:relative;overflow:hidden;
+  border-top:1px solid var(--navy-deep);
+  border-bottom:1px solid var(--navy-deep);
+}
+.trust-inner{
+  max-width:var(--max);margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;
+}
+.trust-stat{
+  display:flex;align-items:baseline;gap:10px;
+}
+.trust-num{
+  font-family:var(--font-display);font-size:44px;line-height:1;color:var(--gold-soft);
+}
+.trust-label{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:1.6px;
+  text-transform:uppercase;color:rgba(255,255,255,.85);
+}
+.trust-sep{height:32px;width:1px;background:rgba(255,255,255,.15)}
+
+/* ═══════════ SECTION ═══════════ */
+section{padding:100px 32px;position:relative}
+.section-inner{max-width:var(--max);margin:0 auto}
+.section-header{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:40px;
+  margin-bottom:56px;flex-wrap:wrap;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--blush);
+  margin-bottom:16px;
+}
+.eyebrow::before{
+  content:'';width:24px;height:1.5px;background:var(--blush);
+}
+.section-title{
+  font-family:var(--font-display);font-weight:400;
+  font-size:clamp(40px,5.5vw,72px);
+  line-height:1.02;letter-spacing:-.02em;
+  color:var(--navy);margin:0;max-width:720px;
+}
+.section-title em{font-style:italic;color:var(--blush)}
+.section-sub{
+  font-family:var(--font-body);font-size:16px;color:var(--ink-2);
+  max-width:360px;line-height:1.6;
+}
+
+/* ═══════════ SERVICES (stacked CTAs) ═══════════ */
+.services-bg{background:var(--cream)}
+.services{
+  display:grid;grid-template-columns:1fr;gap:0;
+  border-top:1.5px solid var(--navy);
+}
+.svc{
+  display:grid;
+  grid-template-columns:80px minmax(200px,1.4fr) 2fr 1fr auto;
+  align-items:center;gap:32px;
+  padding:28px 12px;
+  border-bottom:1.5px solid var(--navy);
+  position:relative;
+  transition:background .3s;
+}
+.svc:hover{background:rgba(224,160,47,.08)}
+.svc-num{
+  font-family:var(--font-mono);font-size:13px;color:var(--ink-3);letter-spacing:1.5px;
+}
+.svc-name{
+  font-family:var(--font-display);font-size:clamp(28px,3.5vw,48px);
+  line-height:1;color:var(--navy);letter-spacing:-.01em;
+}
+.svc-name em{font-style:italic;color:var(--blush);font-size:.8em}
+.svc-desc{
+  font-family:var(--font-body);font-size:14.5px;color:var(--ink-2);line-height:1.55;
+}
+.svc-price{
+  font-family:var(--font-display);font-size:32px;color:var(--navy);
+  line-height:1;
+}
+.svc-price small{
+  font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3);
+  letter-spacing:1px;display:block;margin-top:4px;
+}
+.svc-cta{
+  font-family:var(--font-sans);font-weight:600;font-size:13.5px;
+  color:var(--navy);
+  background:#fff;
+  padding:11px 22px;border-radius:999px;
+  border:1.5px solid var(--navy);
+  white-space:nowrap;
+  transition:all .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.svc-cta:hover{background:var(--navy);color:#fff;transform:translateX(4px)}
+.svc-cta svg{width:14px;height:14px}
+.svc:hover .svc-cta{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+/* ═══════════ MARQUEE OF DOGS (scroll-driven) ═══════════ */
+.marquee-section{
+  padding:80px 0;
+  background:var(--grad-navy);
+  color:#fff;
+  overflow:hidden;
+}
+.marquee-label{
+  text-align:center;
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold-soft);
+  margin-bottom:36px;
+  text-shadow:0 1px 0 rgba(10,26,52,.25);
+}
+.marquee-title{
+  font-family:var(--font-display);font-weight:400;
+  font-size:clamp(36px,5vw,64px);line-height:1.05;text-align:center;
+  max-width:900px;margin:0 auto 60px;padding:0 32px;
+  color:#fff;
+}
+.marquee-title em{font-style:italic;color:var(--gold-soft)}
+.marquee-wrap{position:relative;overflow:hidden}
+.marquee{
+  display:flex;gap:18px;
+  width:max-content;
+  cursor:grab;
+  will-change:transform;
+  user-select:none;
+}
+.marquee.dragging{cursor:grabbing}
+.marquee.dragging .marquee-card{pointer-events:none}
+@keyframes scroll-x{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+/* Play/Pause control */
+.marquee-controls{
+  position:absolute;top:50%;transform:translateY(-50%);right:24px;z-index:5;
+  display:flex;flex-direction:column;gap:8px;
+}
+.marquee-btn{
+  width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);
+  background:rgba(10,26,52,.6);backdrop-filter:blur(8px);
+  color:#fff;font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.marquee-btn:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.marquee-status{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  color:rgba(255,255,255,.55);text-align:center;margin-top:2px;
+}
+.marquee-card{
+  flex:0 0 240px;
+  aspect-ratio:3/4;
+  position:relative;border-radius:var(--radius-md);
+  overflow:hidden;background:var(--cream-2);
+  cursor:pointer;
+  box-shadow:var(--shadow-md);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.marquee-card:hover{transform:translateY(-8px) scale(1.02)}
+.marquee-card img{width:100%;height:100%;object-fit:cover}
+.marquee-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 50%, rgba(0,0,0,.75) 100%);
+}
+.marquee-card .cap{
+  position:absolute;bottom:14px;left:16px;right:16px;
+  color:#fff;z-index:2;
+  font-family:var(--font-display);font-style:italic;font-size:26px;line-height:1;
+}
+.marquee-card .cap small{
+  display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--gold-soft);font-style:normal;margin-top:4px;
+}
+
+/* ═══════════ BOOKING CALENDAR PREVIEW ═══════════ */
+.cal-section{background:var(--paper)}
+.cal-wrap{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center;
+}
+.cal{
+  background:#fff;border-radius:var(--radius-md);padding:32px;
+  box-shadow:var(--shadow-md);
+  border:1px solid var(--rule);
+}
+.cal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--rule);
+}
+.cal-month{
+  font-family:var(--font-display);font-size:26px;color:var(--navy);
+}
+.cal-month small{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;
+  color:var(--ink-3);text-transform:uppercase;display:block;
+}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);
+  background:#fff;color:var(--navy);
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:all .18s;
+}
+.cal-nav button:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.cal-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+  font-family:var(--font-mono);
+}
+.cal-dow{
+  font-size:10px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--ink-3);text-align:center;padding:6px 0;
+}
+.cal-day{
+  aspect-ratio:1;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--ink-2);
+  border-radius:var(--radius-sm);
+  transition:all .15s;
+  position:relative;cursor:pointer;
+}
+.cal-day:hover{background:var(--cream-2)}
+.cal-day.muted{color:var(--ink-3);opacity:.4;pointer-events:none}
+.cal-day.booked{background:var(--navy);color:#fff;cursor:not-allowed}
+.cal-day.booked:hover{background:var(--navy)}
+.cal-day.available::after{
+  content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:var(--gold);
+}
+.cal-day.today{background:rgba(199,90,79,.12);border:1.5px solid var(--blush);color:var(--blush);font-weight:700}
+.cal-day.today::before{content:'TODAY';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.8px;color:var(--blush);font-weight:700}
+.cal-day.holiday{background:rgba(224,160,47,.18);border:1px dashed var(--gold)}
+.cal-day.holiday::before{content:'+25%';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.5px;color:#8b5a1a;font-weight:700}
+.cal-day.selected{background:var(--gold);color:var(--navy);font-weight:600}
+.cal-legend{
+  display:flex;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);
+}
+.cal-legend span{display:inline-flex;align-items:center;gap:6px}
+.cal-legend .dot{width:8px;height:8px;border-radius:50%}
+.cal-legend .dot.g{background:var(--gold)}
+.cal-legend .dot.n{background:var(--navy)}
+.cal-legend .dot.b{background:rgba(199,90,79,.5);border:1.5px solid var(--blush)}
+.cal-legend .dot.h{background:rgba(224,160,47,.4);border:1px dashed var(--gold)}
+
+/* ═══════════ ABOUT (Lorenzo + Catalina) ═══════════ */
+.about-section{background:var(--cream-2)}
+.about-wrap{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:72px;align-items:center;
+}
+.about-photos{
+  position:relative;aspect-ratio:1;
+}
+.about-photo{
+  position:absolute;border-radius:var(--radius-md);overflow:hidden;
+  box-shadow:var(--shadow-photo);
+}
+.about-photo img{width:100%;height:100%;object-fit:cover}
+.about-photo.a1{top:0;left:0;width:62%;aspect-ratio:3/4;transform:rotate(-3deg);z-index:2}
+.about-photo.a2{bottom:0;right:0;width:58%;aspect-ratio:4/5;transform:rotate(2deg);z-index:1}
+.about-badge{
+  position:absolute;top:18%;left:64%;z-index:5;
+  transform:translate(-50%,-50%);
+  width:104px;height:104px;
+}
+.about-badge-spin{
+  width:100%;height:100%;border-radius:50%;
+  background:var(--gold);color:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  animation:badge-rotate 18s linear infinite;
+  box-shadow:var(--shadow-md);
+  position:relative;
+}
+.about-badge-spin svg{position:absolute;inset:0;width:100%;height:100%}
+.about-badge-spin .star{font-family:var(--font-display);font-size:28px;position:relative;z-index:2;animation:badge-rotate 18s linear infinite reverse}
+@keyframes badge-rotate{to{transform:rotate(360deg)}}
+.about-body p{
+  font-family:var(--font-body);font-size:17px;line-height:1.7;color:var(--ink-2);
+  margin:0 0 20px;
+}
+.about-body p:first-of-type{
+  font-family:var(--font-body);font-size:20px;line-height:1.5;color:var(--navy);font-weight:500;
+}
+.signature{
+  font-family:var(--font-display);font-style:italic;font-size:28px;color:var(--navy);
+  margin-top:24px;
+}
+.signature small{
+  display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.5px;
+  color:var(--ink-3);text-transform:uppercase;margin-top:4px;font-style:normal;
+}
+
+/* ═══════════ TESTIMONIALS ═══════════ */
+.testi-section{background:var(--paper)}
+.testi-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.testi{
+  background:#fff;border-radius:var(--radius-md);
+  padding:28px 26px;box-shadow:var(--shadow-sm);
+  border:1px solid var(--rule);
+  position:relative;
+  transition:transform .3s,box-shadow .3s;
+}
+.testi:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.testi-mark{
+  position:absolute;top:-16px;left:24px;
+  width:40px;height:40px;border-radius:50%;
+  background:var(--gold);color:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:28px;line-height:1;
+  font-style:italic;
+}
+.testi-quote{
+  font-family:var(--font-body);font-size:16px;line-height:1.55;color:var(--navy);font-weight:500;
+  margin:16px 0 24px;
+}
+.testi-footer{
+  display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--rule);
+}
+.testi-avatar{
+  width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;
+  background:var(--cream-2);
+}
+.testi-avatar img{width:100%;height:100%;object-fit:cover}
+.testi-who{font-family:var(--font-sans);font-size:13.5px;font-weight:600;color:var(--navy)}
+.testi-who small{
+  display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--ink-3);font-weight:400;margin-top:2px;
+}
+.testi-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-left:auto}
+
+/* ═══════════ PROCESS ═══════════ */
+.process-section{background:var(--grad-navy);color:#fff;position:relative;overflow:hidden}
+.process-section::before{
+  content:'';position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(circle, rgba(243,203,106,.05) 1px, transparent 1px);
+  background-size:24px 24px;
+}
+.process-section .eyebrow{color:var(--gold-soft)}
+.process-section .eyebrow::before{background:var(--gold-soft)}
+.process-section .section-title{color:#fff}
+.process-section .section-title em{color:var(--gold-soft)}
+.process-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:4px;position:relative;
+}
+.p-step{
+  padding:32px 24px;border-left:1px solid rgba(255,255,255,.15);
+  position:relative;
+}
+.p-step:first-child{border-left:none;padding-left:0}
+.p-num{
+  font-family:var(--font-display);font-size:72px;line-height:.9;
+  color:var(--gold-soft);font-style:italic;
+  margin-bottom:16px;
+}
+.p-title{
+  font-family:var(--font-sans);font-weight:600;font-size:18px;
+  color:#fff;margin:0 0 8px;
+}
+.p-desc{
+  font-family:var(--font-body);font-size:14px;line-height:1.6;
+  color:rgba(255,255,255,.7);
+}
+
+/* ═══════════ STORE TEASE ═══════════ */
+.store-tease{background:var(--cream-2)}
+.store-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+}
+.store-card{
+  background:#fff;border-radius:var(--radius-md);padding:20px;
+  box-shadow:var(--shadow-sm);border:1px solid var(--rule);
+  transition:transform .2s, box-shadow .2s;
+  display:flex;flex-direction:column;gap:12px;
+}
+.store-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.store-badge{
+  display:inline-block;font-family:var(--font-mono);font-size:9.5px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  background:var(--gold-pale);color:var(--navy);padding:3px 9px;border-radius:4px;
+  align-self:flex-start;
+}
+.store-emoji{
+  aspect-ratio:1.3/1;background:linear-gradient(135deg,var(--cream) 0%,var(--cream-2) 100%);
+  border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:48px;color:var(--navy);font-style:italic;
+}
+.store-brand{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-3);text-transform:uppercase}
+.store-name{font-family:var(--font-sans);font-weight:600;font-size:14.5px;color:var(--navy);margin:0;line-height:1.3}
+.store-reason{font-family:var(--font-body);font-size:12.5px;color:var(--ink-2);line-height:1.5;margin:0;flex:1}
+.store-endorse{
+  font-family:var(--font-display);font-style:italic;font-size:13px;
+  color:var(--blush);padding:8px 0 0;border-top:1px dashed var(--rule);
+}
+.store-endorse small{font-family:var(--font-mono);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-3);font-style:normal;display:block;margin-top:2px}
+
+/* ═══════════ FAQ ═══════════ */
+.faq-section{background:var(--paper)}
+.faq-list{
+  max-width:820px;margin:0 auto;
+  border-top:1.5px solid var(--navy);
+}
+.faq-item{border-bottom:1.5px solid var(--navy);position:relative}
+.faq-q{
+  width:100%;text-align:left;
+  background:transparent;border:none;
+  padding:26px 44px 26px 0;
+  font-family:var(--font-display);font-size:clamp(20px,2.2vw,28px);
+  color:var(--navy);line-height:1.25;
+  transition:color .2s;
+}
+.faq-q:hover{color:var(--blush)}
+.faq-toggle{
+  position:absolute;right:0;top:28px;
+  width:32px;height:32px;border-radius:50%;
+  border:1.5px solid var(--navy);background:transparent;color:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s;
+  pointer-events:none;
+}
+.faq-item.open .faq-toggle{background:var(--gold);border-color:var(--gold);transform:rotate(45deg)}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s cubic-bezier(.2,.8,.2,1);
+}
+.faq-a-inner{
+  padding:0 80px 28px 0;
+  font-family:var(--font-body);font-size:15.5px;line-height:1.7;color:var(--ink-2);
+}
+.faq-item.open .faq-a{max-height:500px}
+
+/* ═══════════ SUBSCRIBE ═══════════ */
+.sub-section{
+  background:var(--grad-navy);
+  color:#fff;position:relative;overflow:hidden;
+}
+.sub-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 600px 400px at 20% 50%, rgba(224,160,47,.18) 0%, transparent 60%),
+             radial-gradient(ellipse 500px 500px at 90% 80%, rgba(230,154,111,.12) 0%, transparent 60%);
+}
+.sub-wrap{
+  max-width:820px;margin:0 auto;text-align:center;position:relative;
+}
+.sub-section .eyebrow{color:var(--gold-soft);justify-content:center}
+.sub-section .eyebrow::before{background:var(--gold-soft)}
+.sub-title{
+  font-family:var(--font-display);font-size:clamp(40px,5.5vw,72px);
+  font-weight:400;line-height:1.02;color:#fff;letter-spacing:-.02em;
+  margin:16px 0 18px;
+}
+.sub-title em{font-style:italic;color:var(--gold-soft)}
+.sub-desc{
+  font-family:var(--font-body);font-size:17px;line-height:1.6;
+  color:rgba(255,255,255,.78);max-width:540px;margin:0 auto 36px;
+}
+.sub-form{
+  display:flex;flex-wrap:wrap;gap:10px;max-width:480px;margin:0 auto;
+}
+.sub-form input{
+  flex:1;min-width:200px;padding:16px 22px;border-radius:999px;
+  background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);
+  color:#fff;font-family:var(--font-body);font-size:15px;outline:none;
+  transition:border-color .2s, background .2s;
+}
+.sub-form input::placeholder{color:rgba(255,255,255,.5)}
+.sub-form input:focus{border-color:var(--gold-soft);background:rgba(255,255,255,.12)}
+.sub-form button{
+  padding:16px 30px;border-radius:999px;border:none;
+  background:var(--gold);color:var(--navy);font-family:var(--font-sans);font-weight:700;font-size:15px;
+  transition:transform .2s, background .2s;
+  box-shadow:0 3px 0 #b07f1f;
+}
+.sub-form button:hover{transform:translateY(-2px);background:var(--gold-soft);box-shadow:0 5px 0 #b07f1f}
+.sub-perks{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:24px;margin-top:32px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;
+  text-transform:uppercase;color:rgba(255,255,255,.6);
+}
+.sub-perks span{display:inline-flex;align-items:center;gap:6px}
+.sub-perks span::before{content:'◆';color:var(--gold)}
+
+/* ═══════════ FOOTER ═══════════ */
+footer{
+  background:var(--navy-deep);color:rgba(255,255,255,.7);
+  padding:56px 32px 32px;
+}
+.foot-inner{
+  max-width:var(--max);margin:0 auto;
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;
+  padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.1);
+}
+.foot-brand{
+  font-family:var(--font-display);font-size:32px;color:#fff;
+}
+.foot-brand .amp{color:var(--gold-soft);font-style:italic}
+.foot-tagline{
+  font-family:var(--font-body);font-size:13px;color:rgba(255,255,255,.55);
+  margin:12px 0 20px;max-width:260px;line-height:1.6;
+}
+.foot-section h4{
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.8px;
+  text-transform:uppercase;color:var(--gold-soft);margin:0 0 16px;
+  font-weight:500;
+}
+.foot-section a{
+  display:block;font-family:var(--font-body);font-size:14px;color:rgba(255,255,255,.7);
+  padding:4px 0;transition:color .15s;
+}
+.foot-section a:hover{color:var(--gold-soft)}
+.foot-bottom{
+  max-width:var(--max);margin:0 auto;padding-top:24px;
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;color:rgba(255,255,255,.4);
+}
+
+/* ═══════════ SUBSCRIBER CODE INPUT (always visible, top right of nav) ═══════════ */
+.brand-group{display:flex;align-items:center;gap:14px}
+.sub-code{
+  display:flex;align-items:center;gap:6px;
+}
+.sub-code-submit{
+  font-family:var(--font-sans);font-weight:600;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;
+  background:var(--navy);color:#fff;border:none;padding:5px 10px;border-radius:999px;
+  cursor:pointer;transition:all .2s;
+  display:none;
+}
+.sub-code.has-text .sub-code-submit{display:inline-flex;animation:dal-pop .25s cubic-bezier(.2,1.4,.2,1)}
+.sub-code-submit:hover{background:var(--gold);color:var(--navy)}
+.sub-code.active .sub-code-submit{display:none}
+.sub-code input{
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;
+  background:rgba(214,205,185,.35);
+  border:1.5px solid var(--rule);
+  color:var(--navy);
+  padding:7px 12px;border-radius:999px;
+  width:108px;outline:none;
+  transition:all .2s;
+}
+.sub-code input::placeholder{color:var(--ink-3);letter-spacing:1.5px;text-transform:uppercase}
+.sub-code input:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(224,160,47,.15)}
+.sub-code.active{
+  background:linear-gradient(90deg,var(--gold-pale),var(--cream));
+  padding:4px 4px 4px 12px;border-radius:999px;
+  border:1px solid rgba(224,160,47,.4);
+}
+.sub-code.active input{display:none}
+.sub-code-chip{
+  display:none;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:1.3px;color:var(--navy);
+}
+.sub-code.active .sub-code-chip{display:inline-flex}
+.sub-code-chip strong{color:var(--blush);font-weight:500;letter-spacing:.5px;font-family:var(--font-sans);text-transform:none;font-size:13px}
+.sub-code-chip .code{background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:1.5px}
+.sub-code-chip .x{
+  background:var(--navy);color:#fff;border:none;width:22px;height:22px;border-radius:50%;
+  font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  transition:background .2s;font-family:var(--font-mono);
+}
+.sub-code-chip .x:hover{background:var(--blush)}
+@media (max-width:780px){.sub-code input{width:84px}}
+
+/* ═══════════ BOOKING MODAL ═══════════ */
+.booking-modal{position:fixed;inset:0;z-index:999;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.booking-modal.open{display:flex;animation:dal-fade-in .25s ease}
+.booking-backdrop{position:fixed;inset:0;background:rgba(10,26,52,.55);backdrop-filter:blur(4px)}
+.booking-card{position:relative;background:var(--paper);border-radius:var(--radius-lg);max-width:640px;width:100%;padding:40px 44px 36px;box-shadow:var(--shadow-lg);border:1px solid var(--rule);animation:dal-fade-up .35s cubic-bezier(.2,.8,.2,1)}
+.booking-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--ink-2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.booking-close:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.booking-steps{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid var(--rule);padding-bottom:16px}
+.booking-step{flex:1;display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--ink-3);transition:color .3s}
+.booking-step span{width:26px;height:26px;border-radius:50%;background:var(--cream-2);color:var(--ink-3);display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;transition:all .3s}
+.booking-step.active{color:var(--navy)}
+.booking-step.active span{background:var(--grad-navy);color:#fff}
+.booking-step.done span{background:var(--gold);color:var(--navy)}
+.booking-title{font-family:var(--font-display);font-size:36px;line-height:1.1;color:var(--navy);margin:0 0 8px;font-weight:500}
+.booking-sub{font-family:var(--font-body);font-size:14.5px;line-height:1.6;color:var(--ink-2);margin:0 0 24px}
+.booking-dates{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:14px;margin:12px 0 22px}
+.booking-dates label{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase;margin-bottom:6px}
+.booking-date-display{font-family:var(--font-display);font-size:20px;color:var(--navy);background:#fff;border:1.5px solid var(--rule);padding:12px 16px;border-radius:10px;min-height:48px;display:flex;align-items:center}
+.booking-date-display.filled{border-color:var(--gold);background:var(--gold-pale)}
+.booking-arrow{font-family:var(--font-display);font-style:italic;font-size:26px;color:var(--blush);padding-bottom:10px}
+
+/* Date display becomes button (clickable) */
+.booking-date-display{cursor:pointer;text-align:left;width:100%;font-family:var(--font-sans);font-weight:600;}
+.booking-date-display:hover{border-color:var(--navy)}
+.booking-date-display:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(224,160,47,.15)}
+
+/* Time inputs */
+.booking-time-input{width:100%;font-family:var(--font-sans);font-weight:600;font-size:15px;color:var(--navy);background:#fff;border:1.5px solid var(--rule);padding:12px 14px;border-radius:10px;outline:none;transition:all .2s}
+.booking-time-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(224,160,47,.15)}
+
+/* Mini calendar popup */
+.booking-mini-cal{background:#fff;border:1.5px solid var(--rule);border-radius:14px;padding:14px 16px;margin:0 0 22px;box-shadow:var(--shadow-md);animation:dal-fade-up .2s ease}
+.mini-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mini-cal-head strong{font-family:var(--font-display);font-size:18px;color:var(--navy);font-weight:500}
+.mini-cal-head button{width:30px;height:30px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--navy);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.mini-cal-head button:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mini-cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.mini-cal-dow span{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.8px;color:var(--ink-3);text-align:center;padding:4px 0;text-transform:uppercase}
+.mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.mini-cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;color:var(--navy);border-radius:6px;cursor:pointer;border:1px solid transparent;position:relative;transition:all .15s}
+.mini-cal-day:hover{background:var(--gold-pale);border-color:var(--gold)}
+.mini-cal-day.muted{color:var(--ink-3);opacity:.35;pointer-events:none}
+.mini-cal-day.disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+.mini-cal-day.today{border:1.5px solid var(--blush);color:var(--blush);font-weight:700}
+.mini-cal-day.holiday{background:rgba(224,160,47,.18);border:1px dashed var(--gold)}
+.mini-cal-day.holiday::after{content:'+25%';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);font-size:6px;color:#8b5a1a;font-weight:700}
+.mini-cal-day.selected{background:var(--gold);color:var(--navy);font-weight:700;border-color:var(--gold)}
+.mini-cal-day.in-range{background:var(--gold-pale);color:var(--navy)}
+.mini-cal-day.range-end{background:var(--blush);color:#fff;font-weight:700;border-color:var(--blush)}
+.mini-cal-hint{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;color:var(--ink-3);text-transform:uppercase;text-align:center;margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--rule)}
+
+/* Holiday breakdown line in summary */
+.booking-summary{flex-direction:column;align-items:stretch;gap:8px}
+.booking-summary-row{display:flex;justify-content:space-between;align-items:center;width:100%}
+.booking-summary-extra{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;color:var(--blush);text-transform:uppercase;border-top:1px dashed var(--rule);padding-top:8px;display:none}
+.booking-summary-extra.show{display:block}
+.booking-label{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase;margin:16px 0 10px}
+.booking-label small{font-size:10px;letter-spacing:1px;color:var(--ink-3);text-transform:none}
+.booking-services{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.booking-svc{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1.5px solid var(--rule);border-radius:12px;cursor:pointer;background:#fff;transition:all .2s}
+.booking-svc:hover{border-color:var(--navy)}
+.booking-svc input{margin:0;accent-color:var(--navy)}
+.booking-svc:has(input:checked){border-color:var(--navy);background:linear-gradient(90deg,var(--gold-pale),#fff)}
+.booking-svc strong{display:block;font-family:var(--font-display);font-size:18px;color:var(--navy);line-height:1.2}
+.booking-svc span{font-family:var(--font-body);font-size:13px;color:var(--ink-2)}
+.booking-summary{display:flex;justify-content:space-between;align-items:center;background:var(--cream);border:1px dashed var(--rule);padding:14px 18px;border-radius:10px;margin-bottom:20px}
+.booking-summary span{font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase}
+.booking-summary strong{font-family:var(--font-display);font-size:24px;color:var(--navy)}
+.booking-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+.booking-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.booking-field{margin-bottom:12px}
+.booking-field label{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase;margin-bottom:6px}
+.booking-field input,.booking-field textarea{font-family:var(--font-body);font-size:14.5px;color:var(--ink);background:#fff;border:1.5px solid var(--rule);padding:11px 14px;border-radius:10px;width:100%;outline:none;resize:vertical}
+.booking-field input:focus,.booking-field textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(19,42,78,.1)}
+.booking-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.booking-chip{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--rule);padding:8px 14px;border-radius:999px;cursor:pointer;font-family:var(--font-body);font-size:13px;color:var(--ink-2);transition:all .2s}
+.booking-chip input{display:none}
+.booking-chip:hover{border-color:var(--navy);color:var(--navy)}
+.booking-chip:has(input:checked){background:var(--navy);color:#fff;border-color:var(--navy)}
+.booking-review{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin:10px 0 20px}
+.booking-review-row{display:flex;justify-content:space-between;padding:8px 0;font-family:var(--font-body);font-size:14px;color:var(--ink-2);border-top:1px dashed var(--rule)}
+.booking-review-row:first-child{border-top:none}
+.booking-review-row span{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase}
+.booking-review-row strong{color:var(--navy);font-family:var(--font-sans);font-weight:600;font-size:14px;letter-spacing:.1px}
+.booking-consent{display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:13.5px;color:var(--ink-2);line-height:1.5;margin:4px 0 0;cursor:pointer}
+.booking-consent input{margin-top:3px;accent-color:var(--navy)}
+.booking-success{padding:8px 0}
+.booking-check{display:flex;justify-content:center;color:var(--gold);margin-bottom:20px;animation:dal-pop .6s cubic-bezier(.2,1.4,.2,1)}
+.booking-confirm-card{background:var(--grad-navy);color:#fff;padding:22px 26px;border-radius:14px;margin:20px 0}
+.booking-confirm-row{display:flex;justify-content:space-between;padding:8px 0;border-top:1px dashed rgba(255,255,255,.15);font-family:var(--font-body);font-size:14px}
+.booking-confirm-row:first-child{border-top:none}
+.booking-confirm-row span{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.3px;color:var(--gold-soft);text-transform:uppercase}
+.booking-confirm-row strong{color:#fff;font-family:var(--font-sans);font-weight:600;font-size:15px;letter-spacing:.2px}
+.booking-next{font-family:var(--font-body);font-size:14px;color:var(--ink-2);margin:16px 0 0}
+.booking-next a{color:var(--navy);text-decoration:underline;font-weight:500}
+@keyframes dal-fade-in{from{opacity:0}to{opacity:1}}
+@keyframes dal-pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@media (max-width:620px){.booking-card{padding:28px 24px}.booking-dates{grid-template-columns:1fr;gap:8px}.booking-arrow{display:none}.booking-field-row{grid-template-columns:1fr}.booking-steps{gap:4px}.booking-step{font-size:10px;gap:6px}.booking-title{font-size:28px}}
+
+/* ═══════════ TWEAKS PANEL ═══════════ */
+.tweaks{
+  position:fixed;bottom:20px;right:20px;z-index:500;
+  background:#fff;border-radius:var(--radius-md);
+  padding:18px 20px;
+  box-shadow:var(--shadow-lg);
+  border:1px solid var(--rule);
+  max-width:280px;
+  display:none;
+  font-family:var(--font-body);
+}
+.tweaks.on{display:block;animation:dal-fade-up .3s ease}
+.tweaks h5{
+  margin:0 0 12px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--ink-3);
+  display:flex;align-items:center;gap:8px;
+}
+.tweaks h5::before{
+  content:'';width:8px;height:8px;border-radius:50%;background:var(--gold);
+}
+.tweaks-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:8px 0;border-top:1px solid var(--rule);
+}
+.tweaks-row:first-of-type{border-top:none}
+.tweaks-row label{font-size:13px;color:var(--ink-2);font-weight:500}
+.tweaks-btn{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:1px;
+  background:var(--cream-2);color:var(--navy);
+  padding:5px 10px;border-radius:6px;border:none;
+}
+.tweaks-btn:hover{background:var(--gold-pale)}
+.tweaks-toggle{
+  width:40px;height:22px;border-radius:11px;background:var(--rule);
+  position:relative;cursor:pointer;border:none;transition:background .2s;
+  padding:0;
+}
+.tweaks-toggle::after{
+  content:'';position:absolute;top:2px;left:2px;
+  width:18px;height:18px;border-radius:50%;background:#fff;
+  transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.tweaks-toggle.on{background:var(--navy)}
+.tweaks-toggle.on::after{transform:translateX(18px)}
+
+/* ═══════════ SUBSCRIBER DASHBOARD (conditional) ═══════════ */
+.dashboard{display:none !important}
+body.dal-in .dashboard{display:block !important}
+body.dal-in .dashboard-bar{display:flex !important}
+.dashboard-bar{
+  background:var(--grad-navy-h);
+  color:#fff;padding:10px 32px;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;
+  display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;
+}
+.dashboard-bar strong{color:var(--gold-soft);font-weight:500;letter-spacing:1px}
+.dashboard-bar .chip{
+  background:var(--gold);color:var(--navy);
+  padding:2px 10px;border-radius:4px;font-weight:700;letter-spacing:1.5px;
+}
+
+/* Personal dog section (subscriber only) */
+.my-dog{
+  background:linear-gradient(135deg, var(--cream) 0%, var(--gold-pale) 100%);
+  padding:0;
+}
+.my-dog-wrap{
+  display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:center;
+  padding:0 0 0 0;
+}
+.my-dog-photo{
+  aspect-ratio:4/5;border-radius:var(--radius-md);overflow:hidden;
+  box-shadow:var(--shadow-photo);
+  position:relative;
+}
+.my-dog-photo img{width:100%;height:100%;object-fit:cover}
+.my-dog-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 60%, rgba(10,26,52,.4) 100%);
+}
+.my-dog-name{
+  position:absolute;bottom:24px;left:24px;color:#fff;
+  font-family:var(--font-display);font-style:italic;font-size:52px;line-height:1;
+}
+.my-dog-greeting{
+  font-family:var(--font-display);font-size:clamp(36px,4vw,56px);
+  line-height:1.05;color:var(--navy);margin:0 0 20px;letter-spacing:-.01em;
+}
+.my-dog-greeting em{color:var(--blush);font-style:italic}
+.my-dog-tips{display:flex;flex-direction:column;gap:14px;margin-top:28px}
+.my-dog-tip{
+  background:#fff;border-radius:var(--radius-sm);
+  padding:16px 20px;display:flex;gap:14px;align-items:flex-start;
+  border-left:3px solid var(--gold);
+  box-shadow:var(--shadow-sm);
+}
+.my-dog-tip-num{
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.5px;
+  color:var(--blush);flex-shrink:0;margin-top:3px;
+}
+.my-dog-tip p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+.my-dog-tip strong{color:var(--navy)}
+
+/* ═══════════ REVEAL ANIM ═══════════ */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.08s}
+.reveal-d2{transition-delay:.16s}
+.reveal-d3{transition-delay:.24s}
+.reveal-d4{transition-delay:.32s}
+
+@keyframes dal-fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* parallax media */
+.parallax-card{will-change:transform}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media (max-width: 980px){
+  .hero-inner,.cal-wrap,.about-wrap,.my-dog-wrap{grid-template-columns:1fr;gap:40px}
+  .featured{max-width:none;margin:0}
+  .testi-grid{grid-template-columns:1fr;gap:24px}
+  .store-grid{grid-template-columns:repeat(2,1fr)}
+  .process-steps{grid-template-columns:repeat(2,1fr)}
+  .p-step:nth-child(3){border-left:none;padding-left:0}
+  .foot-inner{grid-template-columns:1fr 1fr;gap:32px}
+  .svc{grid-template-columns:60px 1fr auto;gap:16px}
+  .svc-desc,.svc-price{display:none}
+  section{padding:72px 24px}
+  .nav-links .nav-link:not(:last-child){display:none}
+}
+@media (max-width: 640px){
+  .trust-inner{justify-content:center;gap:16px 24px}
+  .trust-sep{display:none}
+  .foot-inner{grid-template-columns:1fr}
+  .featured-name{font-size:32px}
+  .store-grid,.process-steps{grid-template-columns:1fr}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Seasonal banner -->
+<div class="banner" id="seasonalBanner">
+  <span class="banner-pulse"></span>
+  <span>Memorial Day weekend <strong>→</strong> <strong>3 overnight spots left</strong> · book by May 15</span>
+  <span style="opacity:.5">·</span>
+  <span>Summer holiday waitlist now open</span>
+</div>
+
+<!-- Subscriber dashboard bar (hidden by default) -->
+<div class="dashboard-bar dashboard" id="dashboardBar">
+  <span>◐ Welcome back, <strong id="subName">friend</strong></span>
+  <span>·</span>
+  <span>Returning-client perk active</span>
+  <span class="chip">DL10</span>
+  <span>·</span>
+  <span>Priority booking unlocked</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand-group">
+      <a href="index.html" class="brand">
+        <span class="brand-dot"></span>
+        Dogs <span class="amp">&</span> Llamas
+      </a>
+      <div class="sub-code" id="subCode">
+        <input type="text" id="subCodeInput" placeholder="Code" maxlength="10" aria-label="Subscriber code" />
+        <button class="sub-code-submit" id="subCodeSubmit" type="button" aria-label="Submit code">Enter</button>
+        <div class="sub-code-chip">
+          <strong id="subNameChip">Maya</strong>
+          <span class="code" id="subCodeChip">DL10</span>
+          <button class="x" id="subCodeClear" title="Sign out" aria-label="Sign out">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="#services">Services</a>
+      <a class="nav-link" href="#pack">The Pack</a>
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="store.html">Store</a>
+      <a class="nav-link" href="monthly-issue-01.html">Newsletter</a>
+      <a class="nav-cta" href="#book">Book a Stay →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:80px">
+  <div class="hero-orbs"><div class="hero-orb o1"></div><div class="hero-orb o2"></div></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="hero-eyebrow reveal"><span class="dot"></span>Rover Star Sitters · Queens NYC</span>
+      <h1 class="hero-title reveal reveal-d1">
+        Your dog's second<br>
+        <em>favorite family.</em>
+      </h1>
+      <p class="hero-sub reveal reveal-d2">
+        Boarding, walking, and care by <strong>Lorenzo &amp; Catalina Llamas</strong> — Rover Star Sitters serving Woodside, Sunnyside, Astoria, LIC, and Midtown. Real photos, real backyard, real updates.
+      </p>
+
+      <div class="hero-meta reveal reveal-d3">
+        <div>Since<strong>2022</strong></div>
+        <div>Rover rating<strong>5.0 ★★★★★</strong></div>
+        <div>Dogs cared for<strong>70+ across NYC</strong></div>
+      </div>
+
+      <div class="hero-ctas reveal reveal-d3">
+        <a class="btn btn-primary" href="#services">See services <span class="btn-arrow">→</span></a>
+        <a class="btn btn-secondary" href="#book">Check availability</a>
+      </div>
+    </div>
+
+    <div class="featured reveal reveal-d2" id="featured">
+      <div class="featured-photo">
+        <img id="featuredImg" src="media/turbo-outside.jpg" alt="Turbo on an outdoor walk" />
+      </div>
+      <div class="featured-tag">
+        <div>
+          <h3 class="featured-name" id="featuredName">Turbo</h3>
+          <p class="featured-desc" id="featuredDesc">High-energy athlete · knows sit, stay, spin · sheds with joy</p>
+        </div>
+        <span class="featured-stamp" id="featuredStamp">Stay #47</span>
+      </div>
+      <div class="dog-nav" id="dogNav">
+        <button class="dog-arrow" onclick="prevDog()" aria-label="Previous dog">‹</button>
+        <div class="dog-nav-dots" id="dogNavDots" style="display:flex;gap:6px;align-items:center"></div>
+        <button class="dog-arrow" onclick="cycleDog()" aria-label="Next dog">›</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-stat"><span class="trust-num">70+</span><span class="trust-label">Dogs<br>in the pack</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">5.0</span><span class="trust-label">Rover<br>rating</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">24/7</span><span class="trust-label">Photo<br>updates</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">3</span><span class="trust-label">Subway lines<br>to our door</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">∞</span><span class="trust-label">Belly rubs<br>per day</span></div>
+  </div>
+</div>
+
+<!-- PERSONAL "my dog" panel — subscriber only -->
+<section class="my-dog dashboard" id="myDogSection" style="padding:80px 32px">
+  <div class="section-inner">
+    <div class="my-dog-wrap">
+      <div class="my-dog-photo">
+        <img id="myDogPhoto" src="media/teddy-and-me.jpg" alt="" />
+        <div class="my-dog-name" id="myDogName">Teddy</div>
+      </div>
+      <div>
+        <span class="eyebrow">Just for <span id="subNameEcho">you</span></span>
+        <h2 class="my-dog-greeting">Three tips<br>tailored to <em id="myDogNameEm">Teddy</em></h2>
+        <p style="font-family:var(--font-body);font-size:15.5px;line-height:1.6;color:var(--ink-2);margin:0;max-width:500px">
+          Based on what we know about your pup, here's what's on our radar this month:
+        </p>
+        <div class="my-dog-tips" id="myDogTips">
+          <!-- filled in by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-bg" id="services">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">What we offer</span>
+        <h2 class="section-title reveal">Services, <em>stacked by how much time</em> you need away.</h2>
+      </div>
+      <p class="section-sub reveal reveal-d1">
+        Every service includes photo updates, a full onboarding call, and zero platform fees when booked direct for returning clients.
+      </p>
+    </div>
+
+    <div class="services">
+      <a class="svc reveal" href="#book">
+        <div class="svc-num">01</div>
+        <div class="svc-name">Overnight <em>boarding</em></div>
+        <div class="svc-desc">Your dog stays in our home. Full attention, backyard play, long walks, and photo updates throughout the day.</div>
+        <div class="svc-price">$90<small>per night</small></div>
+        <span class="svc-cta">Book overnight <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+      <a class="svc reveal" href="#book">
+        <div class="svc-num">02</div>
+        <div class="svc-name">Doggy <em>daycare</em></div>
+        <div class="svc-desc">Same-day drop-off and pickup. Your dog hangs out with us, gets walks, play, and company while you're at work.</div>
+        <div class="svc-price">$50<small>per day</small></div>
+        <span class="svc-cta">Book a day <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+      <a class="svc reveal" href="#book">
+        <div class="svc-num">03</div>
+        <div class="svc-name">Dog <em>walking</em></div>
+        <div class="svc-desc">30–60 minute walks in your neighborhood. Photo updates, GPS route, and a short note after every walk.</div>
+        <div class="svc-price">$25<small>per walk</small></div>
+        <span class="svc-cta">Book a walk <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+      <a class="svc reveal" href="#book">
+        <div class="svc-num">04</div>
+        <div class="svc-name">Drop-in <em>visits</em></div>
+        <div class="svc-desc">We come to your place for 30 minutes. Feeding, potty break, a quick walk or play, and a photo update.</div>
+        <div class="svc-price">$45<small>per visit</small></div>
+        <span class="svc-cta">Book a visit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+      <a class="svc reveal" href="#book">
+        <div class="svc-num">05</div>
+        <div class="svc-name">House <em>sitting</em></div>
+        <div class="svc-desc">We stay at your place overnight so your dog sleeps in their own bed. Plants watered, mail taken in, house feels lived in.</div>
+        <div class="svc-price">$100<small>per night</small></div>
+        <span class="svc-cta">Book house-sit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE "THE PACK" -->
+<section class="marquee-section" id="pack" style="padding-left:0;padding-right:0">
+  <p class="marquee-label">◆ &nbsp;The pack · 2022–2026 &nbsp;◆</p>
+  <h2 class="marquee-title">Seventy-plus dogs. Every one of them<br>goes home <em>happier than they arrived.</em></h2>
+  <div class="marquee-wrap">
+    <div class="marquee" id="marquee">
+      <!-- duplicated set for infinite scroll -->
+    </div>
+    <div class="marquee-controls">
+      <button class="marquee-btn" id="marqueePlayPause" title="Pause" aria-label="Pause carousel">
+        <svg id="mqIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="section-inner">
+    <div class="about-wrap">
+      <div class="about-photos reveal">
+        <div class="about-photo a1 parallax-card" data-parallax="0.3"><img src="media/me-and-pretzel-lying-down.jpg" alt="Lorenzo with Pretzel" /></div>
+        <div class="about-photo a2 parallax-card" data-parallax="0.18"><img src="media/teddy-and-me.jpg" alt="Lorenzo with Teddy" /></div>
+        <div class="about-badge">
+          <div class="about-badge-spin">
+            <svg viewBox="0 0 120 120"><defs><path id="txt" d="M 60,60 m -45,0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0"/></defs><text><textPath href="#txt" style="font-family:'DM Mono';font-size:10.5px;letter-spacing:1.5px;fill:var(--navy)">★ Rover Star Sitter · Since 2022 ★ Rover Star Sitter · Since 2022 ·</textPath></text></svg>
+            <span class="star">★</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-body reveal reveal-d1">
+        <span class="eyebrow">The humans</span>
+        <h2 class="section-title" style="margin:0 0 24px">Lorenzo <em>&amp;</em> Catalina.</h2>
+        <p>
+          "We started Dogs &amp; Llamas in 2022 because our whole apartment revolved around dogs anyway — might as well open the door."
+        </p>
+        <p>
+          Lorenzo handles pickups, walks around the Gantry waterfront, and the long weekend boarding stays. Catalina does daytime drop-ins, backyard play, and the dreaded bath after a muddy Roosevelt Island run. We both write you back within an hour.
+        </p>
+        <p>
+          We've cared for seventy-plus dogs across Queens and Midtown. Chihuahuas, pit mixes, corgis, a French Bully who hated being alone, and a pair of large dogs boarded together for two weeks at Christmas. Everyone leaves the same way: a little tired, a little happier.
+        </p>
+        <div class="signature">
+          Lorenzo &amp; Catalina
+          <small>Woodside, Queens · Rover ★ Sitters</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS section removed (can be added back later) -->
+
+<!-- BOOKING CALENDAR -->
+<section class="cal-section" id="book">
+  <div class="section-inner">
+    <div class="cal-wrap">
+      <div class="cal reveal">
+        <div class="cal-head">
+          <div class="cal-month">May <span style="color:var(--blush)">2026</span><small>Tap an open date to request</small></div>
+          <div class="cal-nav">
+            <button aria-label="previous month">‹</button>
+            <button aria-label="next month">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span><span class="dot g"></span>Available</span>
+          <span><span class="dot n"></span>Booked</span>
+          <span><span class="dot b"></span>Today</span>
+          <span><span class="dot h"></span>Holiday +25%</span>
+          <span><span class="dot b"></span>Today</span>
+        </div>
+      </div>
+      <div class="reveal reveal-d1">
+        <span class="eyebrow">Live availability</span>
+        <h2 class="section-title">Spots <em>fill fast</em> around holidays.</h2>
+        <p style="font-family:var(--font-body);font-size:16px;line-height:1.6;color:var(--ink-2);margin:20px 0 28px">
+          We hold a few priority slots each month for returning and newsletter clients. If you don't see your dates, reply anyway — we often have a waitlist cancellation.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a class="btn btn-primary" href="https://www.rover.com/members/lorenzo-l-1" target="_blank" rel="noopener">Book on Rover <span class="btn-arrow">→</span></a>
+          <a class="btn btn-gold" href="mailto:dogsandllamasservice@gmail.com">Message us directly</a>
+        </div>
+        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;margin-top:24px">
+          Typical reply time: <strong style="color:var(--navy)">under 1 hour</strong>, 8am–9pm EST
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">Kind words</span>
+        <h2 class="section-title reveal">What our <em>returning clients</em> say.</h2>
+      </div>
+      <p class="section-sub reveal reveal-d1">
+        All testimonials are real. First names only — we respect our clients' privacy, same way we respect their dogs.
+      </p>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi reveal">
+        <div class="testi-mark">"</div>
+        <p class="testi-quote">Lorenzo sent me a photo of Turbo asleep on the couch with his legs in the air. I knew she was in the right place.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar"><img src="media/turbo-outside.jpg" alt="" /></div>
+          <div class="testi-who">Maya L.<small>Turbo's human · Sunnyside</small></div>
+          <span class="testi-stars">★★★★★</span>
+        </div>
+      </div>
+      <div class="testi reveal reveal-d1">
+        <div class="testi-mark">"</div>
+        <p class="testi-quote">Pretzel is 85 pounds of enthusiasm. Lorenzo handled him like it was nothing. We've booked him five times since.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar"><img src="media/pretzel-sleeping.jpg" alt="" /></div>
+          <div class="testi-who">Dan &amp; Priya<small>Pretzel's humans · LIC</small></div>
+          <span class="testi-stars">★★★★★</span>
+        </div>
+      </div>
+      <div class="testi reveal reveal-d2">
+        <div class="testi-mark">"</div>
+        <p class="testi-quote">Boarded Teddy for a week while we were in Italy. The daily photos were the best part of our trip. Second best, I mean.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar"><img src="media/teddy.jpg" alt="" /></div>
+          <div class="testi-who">Elena R.<small>Teddy's human · Astoria</small></div>
+          <span class="testi-stars">★★★★★</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORE TEASE -->
+<section class="store-tease">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">From the store</span>
+        <h2 class="section-title reveal">Gear we've <em>watched dogs actually love.</em></h2>
+      </div>
+      <a class="btn btn-secondary reveal reveal-d1" href="store.html">Browse all picks <span class="btn-arrow">→</span></a>
+    </div>
+
+    <div class="store-grid">
+      <a href="store.html" class="store-card reveal">
+        <span class="store-badge">◆ Sitter pick</span>
+        <div class="store-emoji">K</div>
+        <span class="store-brand">KONG</span>
+        <p class="store-name">KONG Classic (Large)</p>
+        <p class="store-reason">Stuffed with peanut butter, frozen overnight. The workhorse of the kennel.</p>
+        <div class="store-endorse">Teddy approved.<small>after 14 boarding stays</small></div>
+      </a>
+      <a href="store.html" class="store-card reveal reveal-d1">
+        <span class="store-badge">◆ Most gifted</span>
+        <div class="store-emoji">B</div>
+        <span class="store-brand">Chuckit!</span>
+        <p class="store-name">Ultra Ball (3-pack)</p>
+        <p class="store-reason">Bouncy, durable, fits the launcher. Athena demands fetch every time she visits.</p>
+        <div class="store-endorse">Athena approved.<small>never stops fetching</small></div>
+      </a>
+      <a href="store.html" class="store-card reveal reveal-d2">
+        <span class="store-badge">◆ Best value</span>
+        <div class="store-emoji">L</div>
+        <span class="store-brand">Lickimat</span>
+        <p class="store-name">Soother Slow Feeder</p>
+        <p class="store-reason">Smear with wet food or yogurt. Calms nervous dogs for 10 quiet minutes.</p>
+        <div class="store-endorse">Pumba approved.<small>anxiety ↓ in minutes</small></div>
+      </a>
+      <a href="store.html" class="store-card reveal reveal-d3">
+        <span class="store-badge">◆ Walking essential</span>
+        <div class="store-emoji">H</div>
+        <span class="store-brand">Ruffwear</span>
+        <p class="store-name">Front-Range Harness</p>
+        <p class="store-reason">The harness that finally stopped Turbo's front-left pulling. Two leash points.</p>
+        <div class="store-endorse">Turbo approved.<small>after graduating prong</small></div>
+      </a>
+    </div>
+    <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:1px;color:var(--ink-3);text-align:center;margin-top:32px">
+      ◆ &nbsp;Some store links may be paid — I only recommend what I've used with dogs I've cared for. &nbsp;◆
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-inner">
+    <div class="section-header" style="justify-content:center;text-align:center;flex-direction:column;align-items:center;margin-bottom:40px">
+      <span class="eyebrow">Before you book</span>
+      <h2 class="section-title reveal" style="text-align:center">Questions, <em>answered.</em></h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">What does a typical boarding day look like?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Morning walk around 8am (longer if it's cool out), breakfast, then couch-and-backyard time. Mid-day play or second walk. Dinner around 6pm. Evening walk and settle time. You'll get photo updates morning and evening, plus whenever something cute happens — which is often.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you take multiple dogs at once?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Yes, with a compatibility check. We've had two dogs boarded together for two weeks (Mango and Harley last Christmas — they became friends). If your dog doesn't love other dogs, we'll book solo days.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What's your cancellation policy?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          We follow Rover's flexible policy for Rover bookings: full refund if you cancel by 5pm the day before. For direct returning clients, we're more flexible — just let us know as early as you can so we can offer the spot to someone on the waitlist.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Where are you located? How does pickup work?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          We're in Woodside, Queens — two blocks from the 61st St-Woodside 7/LIRR station. Pickup and drop-off at our home is easiest. For a small fee we can also pickup within ~2 miles (Sunnyside, Astoria, LIC, Jackson Heights).
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Are you bonded and insured?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Rover-booked stays are covered under the Rover Guarantee (up to $25k in vet coverage, premium insurance). For house-sitting, we carry a separate liability policy — happy to share on request.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What if my dog has medication or special needs?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          We handle pills, injections (insulin included), elderly dogs, post-surgery care, and anxious pups. Walk us through the routine on the meet &amp; greet. We log every dose and photograph it so you can verify.
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBSCRIBE -->
+<section class="sub-section" id="subscribe">
+  <div class="section-inner sub-wrap">
+    <span class="eyebrow">Pup Notes</span>
+    <h2 class="sub-title reveal">Monthly notes. <em>Priority spots.</em></h2>
+    <p class="sub-desc reveal reveal-d1">
+      One email a month. Availability for returning clients before it goes public, a seasonal dog tip, and one product I've actually used. Unsubscribe anytime — no hard feelings.
+    </p>
+    <form class="sub-form reveal reveal-d2" onsubmit="event.preventDefault(); subscribe(this)">
+      <input type="email" name="email" placeholder="your@email.com" required />
+      <button>Join Pup Notes →</button>
+    </form>
+    <div class="sub-perks reveal reveal-d3">
+      <span>Priority booking</span>
+      <span>Returning-client rate</span>
+      <span>No spam, ever</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-brand">Dogs <span class="amp">&</span> Llamas</div>
+      <p class="foot-tagline">Professional dog boarding, walking, and care in Queens NYC. Lorenzo &amp; Catalina Llamas, Rover Star Sitters since 2022.</p>
+    </div>
+    <div class="foot-section">
+      <h4>Services</h4>
+      <a href="#services">Overnight boarding</a>
+      <a href="#services">Doggy daycare</a>
+      <a href="#services">Dog walking</a>
+      <a href="#services">Drop-in visits</a>
+      <a href="#services">House sitting</a>
+    </div>
+    <div class="foot-section">
+      <h4>The brand</h4>
+      <a href="#about">About</a>
+      <a href="#pack">The pack</a>
+      <a href="store.html">Store</a>
+      <a href="monthly-issue-01.html">Newsletter</a>
+      <a href="welcome-email.html">Welcome email</a>
+    </div>
+    <div class="foot-section">
+      <h4>Say hello</h4>
+      <a href="mailto:dogsandllamasservice@gmail.com">dogsandllamasservice@gmail.com</a>
+      <a href="https://www.rover.com" target="_blank">Book on Rover</a>
+      <a href="#">Woodside, Queens, NY</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 Dogs &amp; Llamas. Hugs administered daily.</div>
+    <div>Some store links may earn a commission · no extra cost to you</div>
+  </div>
+</footer>
+
+<!-- Booking flow modal -->
+<div class="booking-modal" id="bookingModal" aria-hidden="true">
+  <div class="booking-backdrop" onclick="closeBooking()"></div>
+  <div class="booking-card" role="dialog" aria-labelledby="bookingTitle">
+    <button class="booking-close" onclick="closeBooking()" aria-label="Close">×</button>
+
+    <!-- Step indicator -->
+    <div class="booking-steps">
+      <div class="booking-step active" data-step="1"><span>01</span>Dates</div>
+      <div class="booking-step" data-step="2"><span>02</span>Your Dog</div>
+      <div class="booking-step" data-step="3"><span>03</span>Confirm</div>
+    </div>
+
+    <!-- STEP 1 · DATES -->
+    <div class="booking-panel" data-panel="1">
+      <span class="eyebrow" style="margin-bottom:10px">Step 01 · Dates &amp; Service</span>
+      <h3 class="booking-title" id="bookingTitle">Pick Your Dates.</h3>
+      <p class="booking-sub" id="bookingDatesIntro">Tap an arrival date, then a departure date. We'll hold it for 24 hours.</p>
+
+      <!-- DATE MODE: Boarding (range) -->
+      <div class="booking-dates" id="dateModeRange">
+        <div>
+          <label>Arrival</label>
+          <button type="button" class="booking-date-display" id="arrivalDisplay" data-which="arrival">— Select a date —</button>
+        </div>
+        <div class="booking-arrow">→</div>
+        <div>
+          <label>Departure</label>
+          <button type="button" class="booking-date-display" id="departureDisplay" data-which="departure">— Select a date —</button>
+        </div>
+      </div>
+
+      <!-- DATE MODE: Single day (daycare / walks) -->
+      <div class="booking-dates booking-single" id="dateModeSingle" style="display:none;grid-template-columns:1fr;gap:12px">
+        <div>
+          <label>Date</label>
+          <button type="button" class="booking-date-display" id="singleDateDisplay" data-which="single">— Select a date —</button>
+        </div>
+        <div class="booking-time-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label>Drop-off time</label>
+            <input type="time" id="timeArrive" class="booking-time-input" value="09:00" />
+          </div>
+          <div>
+            <label>Pick-up time</label>
+            <input type="time" id="timeDepart" class="booking-time-input" value="17:00" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini calendar popup -->
+      <div class="booking-mini-cal" id="miniCal" style="display:none">
+        <div class="mini-cal-head">
+          <button type="button" id="miniPrev" aria-label="Previous month">‹</button>
+          <strong id="miniMonth">May 2026</strong>
+          <button type="button" id="miniNext" aria-label="Next month">›</button>
+        </div>
+        <div class="mini-cal-dow"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+        <div class="mini-cal-grid" id="miniGrid"></div>
+        <p class="mini-cal-hint" id="miniHint">Pick an arrival date</p>
+      </div>
+
+      <label class="booking-label">Service type</label>
+      <div class="booking-services">
+        <label class="booking-svc">
+          <input type="radio" name="svc" value="overnight" checked>
+          <div>
+            <strong>Overnight Boarding</strong>
+            <span>$80 / night · includes walks &amp; meals</span>
+          </div>
+        </label>
+        <label class="booking-svc">
+          <input type="radio" name="svc" value="daycare">
+          <div>
+            <strong>Daytime Daycare</strong>
+            <span>$55 / day · 9am – 6pm</span>
+          </div>
+        </label>
+        <label class="booking-svc">
+          <input type="radio" name="svc" value="walks">
+          <div>
+            <strong>Drop-in &amp; Walks</strong>
+            <span>$30 / 30-min visit</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="booking-summary" id="summary1">
+        <div class="booking-summary-row">
+          <span>Estimated total</span>
+          <strong id="estimate">—</strong>
+        </div>
+        <div class="booking-summary-extra" id="summaryHolidays">+25% holiday surcharge applied</div>
+        <div class="booking-summary-extra" id="summaryPuppy">+10% puppy rate applied</div>
+      </div>
+
+      <div class="booking-actions">
+        <button class="btn btn-secondary" onclick="closeBooking()">Cancel</button>
+        <button class="btn btn-primary" onclick="bookingStep(2)" id="toStep2">Next: Your Dog →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 · DOG -->
+    <div class="booking-panel" data-panel="2" style="display:none">
+      <span class="eyebrow" style="margin-bottom:10px">Step 02 · Your Dog</span>
+      <h3 class="booking-title">Tell Us About Your Pup.</h3>
+      <p class="booking-sub">The more we know, the better the stay. You can add details on the meet &amp; greet.</p>
+
+      <div class="booking-field-row">
+        <div class="booking-field">
+          <label>Dog's name</label>
+          <input type="text" id="bookDogName" placeholder="e.g. Teddy" />
+        </div>
+        <div class="booking-field">
+          <label>Breed &amp; weight</label>
+          <input type="text" id="bookBreed" placeholder="e.g. Chihuahua, 8 lbs" />
+        </div>
+      </div>
+
+      <label class="booking-label">Any of these apply? <small>(optional)</small></label>
+      <div class="booking-chips">
+        <label class="booking-chip"><input type="checkbox"><span>Takes medication</span></label>
+        <label class="booking-chip"><input type="checkbox"><span>Nervous with new people</span></label>
+        <label class="booking-chip"><input type="checkbox"><span>Good with other dogs</span></label>
+        <label class="booking-chip"><input type="checkbox"><span>Senior (8+ yrs)</span></label>
+        <label class="booking-chip" id="puppyChip"><input type="checkbox" id="isPuppy"><span>Puppy (under 1 yr) <em style="color:var(--blush);font-style:normal;font-weight:600;margin-left:4px">+10%</em></span></label>
+      </div>
+
+      <div class="booking-field" style="margin-top:16px">
+        <label>Anything else we should know?</label>
+        <textarea id="bookNotes" rows="3" placeholder="Feeding schedule, allergies, favorite toys, quirks..."></textarea>
+      </div>
+
+      <div class="booking-actions">
+        <button class="btn btn-secondary" onclick="bookingStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="bookingStep(3)">Next: Confirm →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 · CONFIRM -->
+    <div class="booking-panel" data-panel="3" style="display:none">
+      <span class="eyebrow" style="margin-bottom:10px">Step 03 · Confirm</span>
+      <h3 class="booking-title">Your Details.</h3>
+      <p class="booking-sub">We'll reply within the hour, 8am – 9pm EST.</p>
+
+      <div class="booking-field-row">
+        <div class="booking-field">
+          <label>Your name</label>
+          <input type="text" id="bookYourName" placeholder="Maya L." />
+        </div>
+        <div class="booking-field">
+          <label>Email</label>
+          <input type="email" id="bookEmail" placeholder="you@email.com" required />
+        </div>
+      </div>
+      <div class="booking-field">
+        <label>Phone (optional)</label>
+        <input type="tel" id="bookPhone" placeholder="(212) 555-0123" />
+      </div>
+
+      <div class="booking-review" id="bookingReview"></div>
+
+      <label class="booking-consent">
+        <input type="checkbox" id="bookConsent" checked>
+        <span>Send me Pup Notes, our monthly newsletter. (You can unsubscribe anytime.)</span>
+      </label>
+
+      <div class="booking-actions">
+        <button class="btn btn-secondary" onclick="bookingStep(2)">← Back</button>
+        <button class="btn btn-primary" onclick="submitBooking()">Request Booking →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 · CONFIRMATION -->
+    <div class="booking-panel" data-panel="4" style="display:none">
+      <div class="booking-success">
+        <div class="booking-check">
+          <svg viewBox="0 0 52 52" width="44" height="44"><circle cx="26" cy="26" r="25" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 27 l8 8 l16 -18"/></svg>
+        </div>
+        <h3 class="booking-title" style="text-align:center">Request Sent.</h3>
+        <p class="booking-sub" style="text-align:center;max-width:360px;margin-inline:auto">
+          You'll get a confirmation email at <strong id="confirmEmail">your inbox</strong> within the hour. If we're free for your dates, we'll send a calendar invite.
+        </p>
+
+        <div class="booking-confirm-card">
+          <div class="booking-confirm-row">
+            <span>Reference</span><strong id="confirmRef">DL-0000</strong>
+          </div>
+          <div class="booking-confirm-row">
+            <span>Dog</span><strong id="confirmDog">—</strong>
+          </div>
+          <div class="booking-confirm-row">
+            <span>Service</span><strong id="confirmSvc">—</strong>
+          </div>
+          <div class="booking-confirm-row">
+            <span>Dates</span><strong id="confirmDates">—</strong>
+          </div>
+          <div class="booking-confirm-row">
+            <span>Estimate</span><strong id="confirmEstimate">—</strong>
+          </div>
+        </div>
+
+        <p class="booking-next" style="text-align:center">
+          While you wait — <a href="store.html">check out the store</a> or <a href="#subscribe">join Pup Notes</a>.
+        </p>
+
+        <div class="booking-actions" style="justify-content:center">
+          <button class="btn btn-gold" onclick="closeBooking()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tweaks panel (removed) -->
+
+<!-- Scripts -->
+<script>
+/* ═══════════ TWEAKS DEFAULTS ═══════════ */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "featuredIndex": 7,
+  "subscriber": false,
+  "subName": "Maya",
+  "myDog": "Turbo"
+}/*EDITMODE-END*/;
+
+let tweaks = JSON.parse(JSON.stringify(TWEAK_DEFAULTS));
+
+/* ═══════════ DOG ROSTER ═══════════ */
+const DOGS = [
+  { name: 'Turbo',   img: 'media/turbo-outside.jpg', stamp: 'Stay #47', desc: 'High-energy athlete · knows sit, stay, spin · sheds with joy' },
+  { name: 'Pretzel', img: 'media/me-and-pretzel-lying-down.jpg', stamp: 'Stay #23', desc: 'Eighty-five pounds of enthusiasm · loves belly rubs · couch connoisseur' },
+  { name: 'Teddy',   img: 'media/teddy-and-me.jpg', stamp: 'Stay #19', desc: 'Chihuahua royalty · Kong evangelist · bag dog · extremely cuddly' },
+  { name: 'Mango',   img: 'media/mango-outside.jpg', stamp: 'Stay #31', desc: 'Corgi with a big bark · fetch fanatic · licks his paws poetically' },
+  { name: 'Athena',  img: 'media/athena-walk.jpg', stamp: 'Stay #12', desc: 'Large dog · long walks, longer naps · world-class fetch player' },
+  { name: 'Dakota',  img: 'media/dakota-sitting-solo.jpg', stamp: 'Stay #08', desc: 'Tiny · extremely cute · low maintenance · tiny-accessory eligible' },
+  { name: 'Pumba',   img: 'media/pumba-smiling-on-couch.jpg', stamp: 'Stay #14', desc: 'Nervous for five minutes · then a couch potato for the rest of it' },
+  { name: 'Logan',   img: 'media/logan-lying-down-on-couch.jpg', stamp: 'Stay #17', desc: 'Elder statesman · loves the walk, loves the lounge more · kind' }
+];
+
+const PACK_PHOTOS = [
+  { img: 'media/turbo-outside.jpg', name: 'Turbo', role: 'Boarded' },
+  { img: 'media/teddy-and-me.jpg', name: 'Teddy', role: 'Regular' },
+  { img: 'media/pretzel-sleeping-in-comfortable-bed.jpg', name: 'Pretzel', role: 'Boarded' },
+  { img: 'media/mango-outside.jpg', name: 'Mango', role: 'Christmas stay' },
+  { img: 'media/dakota-and-me.jpg', name: 'Dakota', role: 'Day care' },
+  { img: 'media/pumba-smiling-on-couch.jpg', name: 'Pumba', role: 'Weekly walker' },
+  { img: 'media/athena-walk.jpg', name: 'Athena', role: 'Fetch champion' },
+  { img: 'media/logan-lying-down-on-couch.jpg', name: 'Logan', role: 'Drop-in visits' },
+  { img: 'media/frankie-lying-down-on-couch.jpg', name: 'Frankie', role: 'Boarded' },
+  { img: 'media/milo-solo.jpg', name: 'Milo', role: 'Walks' },
+  { img: 'media/ace.jpg', name: 'Ace', role: 'Day care' },
+  { img: 'media/coco.jpg', name: 'Coco', role: 'Boarded' },
+  { img: 'media/troy.jpg', name: 'Troy', role: 'Strong walker' },
+  { img: 'media/palmer-comfortable-in-bed.jpg', name: 'Palmer', role: 'Overnight' },
+  { img: 'media/zephyr-and-me-walk.jpg', name: 'Zephyr', role: 'Weekly walks' },
+  { img: 'media/mango-and-harley-1.jpg', name: 'Mango + Harley', role: 'Two-week stay' }
+];
+
+const DOG_TIPS = {
+  'Teddy': [
+    { label: 'Warm-weather tip', text: 'Chihuahuas like Teddy lose heat fast — <strong>sweater for morning walks below 45°F.</strong>' },
+    { label: 'Enrichment', text: 'Kong + frozen peanut butter = 20 minutes of calm. Teddy has graduated to the medium size.' },
+    { label: 'Travel', text: 'The <strong>K&amp;H Travel Carrier</strong> we recommend fits perfectly on an Amtrak tray.' }
+  ],
+  'Turbo': [
+    { label: 'Energy', text: 'Turbo needs <strong>2× 45-minute walks</strong> minimum. Try the long-line at Forest Park off-hours.' },
+    { label: 'Puzzle', text: 'The <strong>Outward Hound Hide-a-Squirrel</strong> kept her busy for 40 minutes last visit.' },
+    { label: 'Training', text: 'Her sit-stay-spin combo is sharp. Keep treats tiny to avoid overfeeding on cue.' }
+  ],
+  'Pretzel': [
+    { label: 'Walking gear', text: 'The <strong>front-range harness</strong> + hands-free leash changed our Pretzel walks completely.' },
+    { label: 'Sleep', text: 'He picks the couch every time. An <strong>orthopedic bolster bed</strong> helps his elbows.' },
+    { label: 'Belly rubs', text: 'Non-negotiable. Five minutes minimum after every walk.' }
+  ],
+  'Mango': [
+    { label: 'Feeder', text: 'Mango inhales food — <strong>slow feeder bowl</strong> adds 4 minutes and stops the post-meal zoomies.' },
+    { label: 'Fetch', text: 'He prefers the <strong>Chuckit! Ultra Ball</strong> medium. Tennis balls bore him now.' },
+    { label: 'Paws', text: 'Watch the licking. If it escalates, try the lick mat with yogurt instead.' }
+  ]
+};
+
+/* ═══════════ FEATURED DOG ═══════════ */
+function renderFeatured(i){
+  const dog = DOGS[i % DOGS.length];
+  const img = document.getElementById('featuredImg');
+  const name = document.getElementById('featuredName');
+  const desc = document.getElementById('featuredDesc');
+  const stamp = document.getElementById('featuredStamp');
+
+  img.classList.add('leaving');
+  setTimeout(()=>{
+    img.src = dog.img;
+    img.alt = dog.name;
+    name.textContent = dog.name;
+    desc.innerHTML = dog.desc;
+    stamp.textContent = dog.stamp;
+    img.classList.remove('leaving');
+  }, 300);
+
+  [...document.querySelectorAll('#dogNavDots button')].forEach((b,j)=>b.classList.toggle('active', j===i));
+  tweaks.featuredIndex = i;
+  persist();
+}
+function cycleDog(){ renderFeatured((tweaks.featuredIndex+1) % DOGS.length) }
+
+/* ═══════════ BUILD DOG NAV DOTS ═══════════ */
+(function(){
+  const nav = document.getElementById('dogNavDots');
+  DOGS.forEach((_,i)=>{
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', `Featured dog ${i+1}`);
+    b.addEventListener('click', ()=>renderFeatured(i));
+    nav.appendChild(b);
+  });
+})();
+
+/* auto-cycle featured dog */
+let cycleInterval = setInterval(cycleDog, 5500);
+document.getElementById('featured').addEventListener('mouseenter', ()=>clearInterval(cycleInterval));
+document.getElementById('featured').addEventListener('mouseleave', ()=>{
+  clearInterval(cycleInterval);
+  cycleInterval = setInterval(cycleDog, 5500);
+});
+
+/* ═══════════ BUILD MARQUEE ═══════════ */
+(function(){
+  const mq = document.getElementById('marquee');
+  const all = [...PACK_PHOTOS, ...PACK_PHOTOS]; // double for loop
+  all.forEach((p,i)=>{
+    const c = document.createElement('div');
+    c.className = 'marquee-card';
+    c.dataset.idx = i % PACK_PHOTOS.length;
+    c.innerHTML = `<img src="${p.img}" alt="${p.name}" loading="lazy"/>
+      <div class="cap">${p.name}<small>${p.role}</small></div>`;
+    mq.appendChild(c);
+  });
+
+  /* JS-driven scroll (so we can pause/drag/click) */
+  const SPEED = 0.55; // px per frame at 60fps (~33px/s) — slow scroll
+  let offset = 0;
+  let playing = true;
+  let raf;
+  let dragging = false;
+  let dragStartX = 0;
+  let dragStartOffset = 0;
+  let dragMoved = false;
+  let halfWidth = 0;
+
+  function measure(){
+    halfWidth = mq.scrollWidth / 2;
+  }
+  // wait for images so width is correct
+  const imgs = mq.querySelectorAll('img');
+  let loaded = 0;
+  imgs.forEach(img=>{
+    if(img.complete) loaded++;
+    else img.addEventListener('load', ()=>{ loaded++; if(loaded===imgs.length) measure(); });
+  });
+  measure();
+  setTimeout(measure, 1500);
+
+  function frame(){
+    if(playing && !dragging){
+      offset -= SPEED;
+      if(halfWidth && Math.abs(offset) >= halfWidth) offset += halfWidth;
+      mq.style.transform = `translateX(${offset}px)`;
+    }
+    raf = requestAnimationFrame(frame);
+  }
+  raf = requestAnimationFrame(frame);
+
+  /* Play/Pause */
+  const btn = document.getElementById('marqueePlayPause');
+  const icon = document.getElementById('mqIcon');
+  function setPlay(p){
+    playing = p;
+    btn.title = p ? 'Pause' : 'Play';
+    btn.setAttribute('aria-label', p ? 'Pause carousel' : 'Play carousel');
+    icon.innerHTML = p
+      ? '<rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/>'
+      : '<path d="M3 2 L11 7 L3 12 Z"/>';
+  }
+  btn.addEventListener('click', ()=>setPlay(!playing));
+
+  /* Drag (mouse + touch) */
+  function onDown(x){
+    dragging = true;
+    dragStartX = x;
+    dragStartOffset = offset;
+    dragMoved = false;
+    mq.classList.add('dragging');
+  }
+  function onMove(x){
+    if(!dragging) return;
+    const dx = x - dragStartX;
+    if(Math.abs(dx) > 3) dragMoved = true;
+    offset = dragStartOffset + dx;
+    if(halfWidth){
+      while(offset <= -halfWidth) offset += halfWidth;
+      while(offset > 0) offset -= halfWidth;
+    }
+    mq.style.transform = `translateX(${offset}px)`;
+  }
+  function onUp(){
+    if(!dragging) return;
+    dragging = false;
+    mq.classList.remove('dragging');
+  }
+  mq.addEventListener('mousedown', e=>{ e.preventDefault(); onDown(e.clientX); });
+  window.addEventListener('mousemove', e=>onMove(e.clientX));
+  window.addEventListener('mouseup', onUp);
+  mq.addEventListener('touchstart', e=>onDown(e.touches[0].clientX), {passive:true});
+  mq.addEventListener('touchmove', e=>onMove(e.touches[0].clientX), {passive:true});
+  mq.addEventListener('touchend', onUp);
+
+  /* Click a card => set as featured dog */
+  mq.addEventListener('click', e=>{
+    if(dragMoved) return;
+    const card = e.target.closest('.marquee-card');
+    if(!card) return;
+    const idx = +card.dataset.idx;
+    const dog = PACK_PHOTOS[idx];
+    // Match name to DOGS roster if possible
+    const dogIdx = DOGS.findIndex(d=>d.name.toLowerCase() === dog.name.toLowerCase());
+    if(dogIdx >= 0){
+      renderFeatured(dogIdx);
+      // Smooth-scroll to the featured dog (without scrollIntoView)
+      const fsec = document.getElementById('featured');
+      if(fsec){
+        const rect = fsec.getBoundingClientRect();
+        const y = window.scrollY + rect.top - 100;
+        window.scrollTo({ top:y, behavior:'smooth' });
+      }
+    } else {
+      // Fallback: gentle pulse on the clicked card
+      card.animate([{transform:'scale(1.08)'},{transform:'scale(1)'}], {duration:300,easing:'cubic-bezier(.2,1.4,.2,1)'});
+    }
+  });
+})();
+
+/* ═══════════ CALENDAR ═══════════ */
+(function(){
+  const grid = document.getElementById('calGrid');
+  const dows = ['S','M','T','W','T','F','S'];
+  dows.forEach(d=>{
+    const e = document.createElement('div'); e.className='cal-dow'; e.textContent=d; grid.appendChild(e);
+  });
+  // May 2026 starts Friday (day-of-week 5)
+  const daysInMonth = 31;
+  const firstDow = 5;
+  const today = 17;
+  const booked = new Set([4,5,11,14,18,19,20,25,26,27]);
+  const avail = new Set([1,6,7,8,9,12,13,15,21,22,28,29,30]);
+  for(let i=0;i<firstDow;i++){
+    const e = document.createElement('div'); e.className='cal-day muted'; e.textContent=30-firstDow+i+1; grid.appendChild(e);
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const e = document.createElement('div');
+    e.className = 'cal-day';
+    if(booked.has(d)) e.classList.add('booked');
+    else if(avail.has(d)) e.classList.add('available');
+    if(d===today) e.classList.add('today');
+    // Mark federal holidays in May 2026 (Memorial Day = 25)
+    if(d===25) e.classList.add('holiday');
+    e.textContent = d;
+    e.addEventListener('click', ()=>{
+      if(e.classList.contains('booked')||e.classList.contains('muted')) return;
+      [...grid.querySelectorAll('.cal-day')].forEach(x=>x.classList.remove('selected'));
+      e.classList.add('selected');
+    });
+    grid.appendChild(e);
+  }
+  // trailing muted days
+  const total = firstDow + daysInMonth;
+  const trail = (7-(total%7))%7;
+  for(let i=1;i<=trail;i++){
+    const e = document.createElement('div'); e.className='cal-day muted'; e.textContent=i; grid.appendChild(e);
+  }
+})();
+
+/* ═══════════ FAQ TOGGLE ═══════════ */
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click', ()=>{
+    q.parentElement.classList.toggle('open');
+  });
+});
+
+/* ═══════════ SCROLL REVEAL ═══════════ */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ═══════════ PARALLAX PHOTOS ═══════════ */
+const parallaxEls = document.querySelectorAll('[data-parallax]');
+let ticking = false;
+function onScroll(){
+  if(!ticking){
+    requestAnimationFrame(()=>{
+      parallaxEls.forEach(el=>{
+        const r = el.getBoundingClientRect();
+        const center = r.top + r.height/2;
+        const off = (window.innerHeight/2 - center) * parseFloat(el.dataset.parallax);
+        el.style.transform = el.classList.contains('a1')
+          ? `rotate(-3deg) translateY(${off}px)`
+          : el.classList.contains('a2')
+          ? `rotate(2deg) translateY(${off}px)`
+          : `translateY(${off}px)`;
+      });
+      ticking = false;
+    });
+    ticking = true;
+  }
+}
+window.addEventListener('scroll', onScroll, { passive:true });
+
+/* ═══════════ SUBSCRIBER TOGGLE (tweak) ═══════════ */
+function toggleSubscriber(){
+  tweaks.subscriber = !tweaks.subscriber;
+  applySubscriber();
+  persist();
+}
+function applySubscriber(){
+  document.body.classList.toggle('dal-in', tweaks.subscriber);
+  const codeEl = document.getElementById('subCode');
+  if(codeEl) codeEl.classList.toggle('active', tweaks.subscriber);
+  if(tweaks.subscriber){
+    document.getElementById('subName').textContent = tweaks.subName || 'friend';
+    document.getElementById('subNameChip').textContent = tweaks.subName || 'friend';
+    document.getElementById('subCodeChip').textContent = tweaks.code || 'DL10';
+    const myDog = tweaks.myDog || 'Teddy';
+    const echo = document.getElementById('subNameEcho'); if(echo) echo.textContent = tweaks.subName || 'you';
+    const md = document.getElementById('myDogName'); if(md) md.textContent = myDog;
+    const mdEm = document.getElementById('myDogNameEm'); if(mdEm) mdEm.textContent = myDog;
+    const tips = (typeof DOG_TIPS !== 'undefined' && DOG_TIPS[myDog]) || (typeof DOG_TIPS !== 'undefined' && DOG_TIPS['Teddy']) || [];
+    const photoMap = {
+      'Teddy': 'media/teddy-and-me.jpg',
+      'Turbo': 'media/turbo-outside.jpg',
+      'Pretzel': 'media/me-and-pretzel-lying-down.jpg',
+      'Mango': 'media/mango-outside.jpg'
+    };
+    const ph = document.getElementById('myDogPhoto'); if(ph) ph.src = photoMap[myDog] || 'media/teddy-and-me.jpg';
+    const box = document.getElementById('myDogTips');
+    if(box && tips.length) box.innerHTML = tips.map((t,i)=>`
+      <div class="my-dog-tip">
+        <span class="my-dog-tip-num">0${i+1} · ${t.label}</span>
+        <p>${t.text}</p>
+      </div>`).join('');
+  }
+}
+
+/* ═══════════ PERSIST + EDIT MODE ═══════════ */
+function persist(){
+  try{ localStorage.setItem('dal-tweaks', JSON.stringify(tweaks)); }catch{}
+  try{
+    window.parent.postMessage({ type:'__edit_mode_set_keys', edits: {
+      featuredIndex: tweaks.featuredIndex,
+      subscriber: tweaks.subscriber,
+      subName: tweaks.subName,
+      myDog: tweaks.myDog
+    }}, '*');
+  }catch{}
+}
+try{
+  const saved = JSON.parse(localStorage.getItem('dal-tweaks'));
+  if(saved) tweaks = { ...tweaks, ...saved };
+}catch{}
+
+window.addEventListener('message', (ev)=>{
+  // keep listener in case host sends these, no visible panel anymore
+});
+try{ window.parent.postMessage({ type:'__edit_mode_available' }, '*'); }catch{}
+
+/* ═══════════ SUBSCRIBER CODE LOGIN ═══════════ */
+const VALID_CODES = {
+  'DL10':   { name: 'Maya',    dog: 'Turbo'   },
+  'PACK22': { name: 'Dan',     dog: 'Pretzel' },
+  'PAWS':   { name: 'Elena',   dog: 'Teddy'   },
+  'VIP':    { name: 'Friend',  dog: 'Teddy'   }
+};
+const codeInput = document.getElementById('subCodeInput');
+function trySubCode(){
+  if(!codeInput) return;
+  const v = (codeInput.value || '').trim().toUpperCase();
+  if(VALID_CODES[v]){
+    tweaks.subscriber = true;
+    tweaks.code = v;
+    tweaks.subName = VALID_CODES[v].name;
+    tweaks.myDog = VALID_CODES[v].dog;
+    applySubscriber();
+    persist();
+  } else {
+    codeInput.style.borderColor = 'var(--blush)';
+    codeInput.value = '';
+    codeInput.placeholder = 'Try DL10';
+    setTimeout(()=>{ codeInput.style.borderColor=''; codeInput.placeholder='Code'; }, 1800);
+  }
+}
+if(codeInput){
+  codeInput.addEventListener('keydown', e=>{
+    if(e.key === 'Enter'){ e.preventDefault(); trySubCode(); }
+  });
+  codeInput.addEventListener('input', ()=>{
+    const wrap = document.getElementById('subCode');
+    if(wrap) wrap.classList.toggle('has-text', !!codeInput.value.trim());
+  });
+}
+const subSubmit = document.getElementById('subCodeSubmit');
+if(subSubmit){
+  subSubmit.addEventListener('click', trySubCode);
+}
+const clearBtn = document.getElementById('subCodeClear');
+if(clearBtn){
+  clearBtn.addEventListener('click', ()=>{
+    tweaks.subscriber = false;
+    applySubscriber();
+    persist();
+    if(codeInput) codeInput.value = '';
+  });
+}
+
+/* ═══════════ INIT ═══════════ */
+renderFeatured(tweaks.featuredIndex || 0);
+applySubscriber();
+
+/* ═══════════ PREV DOG (for nav arrow) ═══════════ */
+function prevDog(){ renderFeatured((tweaks.featuredIndex - 1 + DOGS.length) % DOGS.length) }
+
+/* ═══════════ BOOKING MODAL ═══════════ */
+const bookingState = { arrival:null, departure:null, single:null, service:'overnight', timeArrive:'09:00', timeDepart:'17:00' };
+const SERVICE_PRICE = { overnight:80, daycare:55, walks:30 };
+const SERVICE_LABEL = { overnight:'Overnight Boarding', daycare:'Daytime Daycare', walks:'Drop-in & Walks' };
+// 2026 US Federal Holidays (m,d) within visible months
+const FED_HOLIDAYS_2026 = [
+  {m:1,d:1,name:'New Year\'s Day'},{m:1,d:19,name:'MLK Day'},
+  {m:2,d:16,name:'Presidents\' Day'},{m:5,d:25,name:'Memorial Day'},
+  {m:6,d:19,name:'Juneteenth'},{m:7,d:3,name:'Independence Day (obs)'},{m:7,d:4,name:'Independence Day'},
+  {m:9,d:7,name:'Labor Day'},{m:10,d:12,name:'Columbus Day'},
+  {m:11,d:11,name:'Veterans Day'},{m:11,d:26,name:'Thanksgiving'},
+  {m:12,d:25,name:'Christmas'}
+];
+function isHoliday(d){ return FED_HOLIDAYS_2026.some(h=>h.m===d.m && h.d===d.d); }
+
+function openBooking(){ document.getElementById('bookingModal').classList.add('open'); document.body.style.overflow='hidden'; bookingStep(1); applyServiceMode(); updateEstimate(); }
+function closeBooking(){ document.getElementById('bookingModal').classList.remove('open'); document.body.style.overflow=''; closeMiniCal(); }
+function bookingStep(n){
+  document.querySelectorAll('.booking-panel').forEach(p=>p.style.display = p.dataset.panel == n ? 'block' : 'none');
+  document.querySelectorAll('.booking-step').forEach(s=>{
+    const sn = +s.dataset.step;
+    s.classList.toggle('active', sn === n);
+    s.classList.toggle('done', sn < n);
+  });
+  if(n===3) renderReview();
+}
+function fmtDate(d){ if(!d) return null; const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return `${m[d.m-1]} ${d.d}`; }
+function fmtTime(t){ if(!t) return ''; const [h,mm]=t.split(':'); const hh=+h; const ap=hh>=12?'pm':'am'; const dh=hh%12||12; return `${dh}:${mm}${ap}`; }
+function nightsBetween(a,b){ if(!a||!b) return 1; return Math.max(1, (b.d - a.d)); }
+function holidaysInRange(a,b){
+  if(!a||!b) return [];
+  const out=[];
+  for(let d=a.d; d<b.d; d++){ // count nights, not departure day
+    if(isHoliday({m:a.m,d})) out.push({m:a.m,d});
+  }
+  return out;
+}
+
+function applyServiceMode(){
+  const svc = document.querySelector('input[name="svc"]:checked')?.value || 'overnight';
+  bookingState.service = svc;
+  const range = document.getElementById('dateModeRange');
+  const single = document.getElementById('dateModeSingle');
+  const intro = document.getElementById('bookingDatesIntro');
+  if(svc === 'overnight'){
+    range.style.display = 'grid';
+    single.style.display = 'none';
+    if(intro) intro.textContent = "Tap an arrival date, then a departure date. Holidays add +25%/day.";
+  } else {
+    range.style.display = 'none';
+    single.style.display = 'grid';
+    if(intro) intro.textContent = svc === 'daycare' ? 'Pick a date and your drop-off / pick-up window.' : 'Pick a date and your visit window.';
+  }
+}
+
+function calcPrice(){
+  const svc = bookingState.service;
+  let base, holidaysCount=0, units=1;
+  if(svc === 'overnight'){
+    units = nightsBetween(bookingState.arrival, bookingState.departure);
+    holidaysCount = holidaysInRange(bookingState.arrival, bookingState.departure).length;
+    base = SERVICE_PRICE.overnight * units;
+    base += SERVICE_PRICE.overnight * 0.25 * holidaysCount;
+  } else {
+    base = SERVICE_PRICE[svc];
+  }
+  const isPuppy = !!document.getElementById('isPuppy')?.checked;
+  if(isPuppy) base = base * 1.10;
+  return { total: Math.round(base), units, holidaysCount, isPuppy };
+}
+
+function updateEstimate(){
+  const svc = bookingState.service;
+  const { total, units, holidaysCount, isPuppy } = calcPrice();
+  let unitLabel;
+  if(svc === 'overnight'){ unitLabel = `${units} night${units>1?'s':''}`; }
+  else if(svc === 'daycare'){ unitLabel = '1 day'; }
+  else { unitLabel = '1 visit'; }
+  document.getElementById('estimate').textContent = `$${total} · ${unitLabel}`;
+  const arrEl = document.getElementById('arrivalDisplay');
+  const depEl = document.getElementById('departureDisplay');
+  const sglEl = document.getElementById('singleDateDisplay');
+  if(arrEl){ arrEl.textContent = fmtDate(bookingState.arrival) || '— Select a date —'; arrEl.classList.toggle('filled', !!bookingState.arrival); }
+  if(depEl){ depEl.textContent = fmtDate(bookingState.departure) || '— Select a date —'; depEl.classList.toggle('filled', !!bookingState.departure); }
+  if(sglEl){ sglEl.textContent = fmtDate(bookingState.single) || '— Select a date —'; sglEl.classList.toggle('filled', !!bookingState.single); }
+  const sumH = document.getElementById('summaryHolidays');
+  const sumP = document.getElementById('summaryPuppy');
+  if(sumH) sumH.classList.toggle('show', holidaysCount > 0);
+  if(sumH && holidaysCount > 0) sumH.textContent = `+25% holiday surcharge · ${holidaysCount} day${holidaysCount>1?'s':''}`;
+  if(sumP) sumP.classList.toggle('show', isPuppy);
+}
+document.querySelectorAll('input[name="svc"]').forEach(r=>r.addEventListener('change', ()=>{ applyServiceMode(); updateEstimate(); }));
+document.getElementById('isPuppy')?.addEventListener('change', updateEstimate);
+document.getElementById('timeArrive')?.addEventListener('change', e=>{ bookingState.timeArrive = e.target.value; });
+document.getElementById('timeDepart')?.addEventListener('change', e=>{ bookingState.timeDepart = e.target.value; });
+
+/* ===== MINI CALENDAR ===== */
+let miniMonth = 5, miniYear = 2026, miniWhich = 'arrival';
+function openMiniCal(which, anchor){
+  miniWhich = which;
+  const mc = document.getElementById('miniCal');
+  mc.style.display = 'block';
+  // anchor it after the date row
+  const ref = bookingState[which] || bookingState.arrival;
+  if(ref){ miniMonth = ref.m; miniYear = 2026; }
+  renderMiniCal();
+  document.getElementById('miniHint').textContent = which === 'arrival' ? 'Pick an arrival date' : which === 'departure' ? 'Pick a departure date' : 'Pick a date';
+}
+function closeMiniCal(){ const mc = document.getElementById('miniCal'); if(mc) mc.style.display='none'; }
+function renderMiniCal(){
+  const monthName = ['January','February','March','April','May','June','July','August','September','October','November','December'][miniMonth-1];
+  document.getElementById('miniMonth').textContent = `${monthName} ${miniYear}`;
+  const grid = document.getElementById('miniGrid');
+  grid.innerHTML = '';
+  const firstDow = new Date(miniYear, miniMonth-1, 1).getDay();
+  const daysInMonth = new Date(miniYear, miniMonth, 0).getDate();
+  const today = { m:5, d:15 }; // mock 'today'
+  for(let i=0;i<firstDow;i++){ const e=document.createElement('div'); e.className='mini-cal-day muted'; grid.appendChild(e); }
+  for(let d=1; d<=daysInMonth; d++){
+    const cell = document.createElement('div');
+    cell.className = 'mini-cal-day';
+    cell.textContent = d;
+    const here = { m: miniMonth, d };
+    if(miniMonth===today.m && d===today.d) cell.classList.add('today');
+    if(isHoliday(here)) cell.classList.add('holiday');
+    // selection states
+    if(miniWhich==='single' && bookingState.single && bookingState.single.m===miniMonth && bookingState.single.d===d) cell.classList.add('selected');
+    if(miniWhich!=='single'){
+      if(bookingState.arrival && bookingState.arrival.m===miniMonth && bookingState.arrival.d===d) cell.classList.add('selected');
+      if(bookingState.departure && bookingState.departure.m===miniMonth && bookingState.departure.d===d) cell.classList.add('range-end');
+      if(bookingState.arrival && bookingState.departure && miniMonth===bookingState.arrival.m && d>bookingState.arrival.d && d<bookingState.departure.d) cell.classList.add('in-range');
+      // disable departure dates before/equal to arrival when picking departure
+      if(miniWhich==='departure' && bookingState.arrival && miniMonth===bookingState.arrival.m && d<=bookingState.arrival.d) cell.classList.add('disabled');
+    }
+    cell.addEventListener('click', ()=>{
+      if(cell.classList.contains('disabled')) return;
+      if(miniWhich==='single'){ bookingState.single = here; bookingState.arrival = here; bookingState.departure = here; }
+      else if(miniWhich==='arrival'){
+        bookingState.arrival = here;
+        if(bookingState.departure && (bookingState.departure.m<here.m || (bookingState.departure.m===here.m && bookingState.departure.d<=here.d))) bookingState.departure = null;
+      } else { // departure
+        bookingState.departure = here;
+      }
+      updateEstimate();
+      renderMiniCal();
+      setTimeout(closeMiniCal, 250);
+    });
+    grid.appendChild(cell);
+  }
+}
+document.getElementById('miniPrev')?.addEventListener('click', ()=>{ miniMonth--; if(miniMonth<1){miniMonth=12;miniYear--;} renderMiniCal(); });
+document.getElementById('miniNext')?.addEventListener('click', ()=>{ miniMonth++; if(miniMonth>12){miniMonth=1;miniYear++;} renderMiniCal(); });
+// Open mini-cal when clicking date displays
+document.querySelectorAll('.booking-date-display').forEach(btn=>{
+  btn.addEventListener('click', e=>{ e.stopPropagation(); openMiniCal(btn.dataset.which, btn); });
+});
+// Close on outside click
+document.addEventListener('click', e=>{
+  if(!e.target.closest('#miniCal') && !e.target.closest('.booking-date-display')) closeMiniCal();
+});
+
+function renderReview(){
+  const dogName = document.getElementById('bookDogName').value || '(no name)';
+  const breed = document.getElementById('bookBreed').value || '—';
+  const svc = bookingState.service;
+  const { total, holidaysCount, isPuppy } = calcPrice();
+  let dates;
+  if(svc==='overnight'){
+    dates = bookingState.arrival && bookingState.departure ? `${fmtDate(bookingState.arrival)} – ${fmtDate(bookingState.departure)}` : 'TBD';
+  } else {
+    const day = bookingState.single || bookingState.arrival;
+    dates = day ? `${fmtDate(day)} · ${fmtTime(bookingState.timeArrive)}–${fmtTime(bookingState.timeDepart)}` : 'TBD';
+  }
+  let extras = '';
+  if(holidaysCount > 0) extras += `<div class="booking-review-row"><span>Holiday Surcharge</span><strong>+25% × ${holidaysCount} day${holidaysCount>1?'s':''}</strong></div>`;
+  if(isPuppy) extras += `<div class="booking-review-row"><span>Puppy Rate</span><strong>+10%</strong></div>`;
+  document.getElementById('bookingReview').innerHTML = `
+    <div class="booking-review-row"><span>Dog</span><strong>${dogName} · ${breed}</strong></div>
+    <div class="booking-review-row"><span>Service</span><strong>${SERVICE_LABEL[svc]}</strong></div>
+    <div class="booking-review-row"><span>${svc==='overnight'?'Dates':'Date & Time'}</span><strong>${dates}</strong></div>
+    ${extras}
+    <div class="booking-review-row"><span>Estimate</span><strong>$${total}</strong></div>
+  `;
+}
+
+function submitBooking(){
+  const email = document.getElementById('bookEmail').value;
+  if(!email){ document.getElementById('bookEmail').style.borderColor='var(--blush)'; return; }
+  const dogName = document.getElementById('bookDogName').value || 'Your dog';
+  const svc = bookingState.service;
+  const { total } = calcPrice();
+  const ref = 'DL-' + String(Math.floor(1000 + Math.random()*8999));
+  let dates;
+  if(svc==='overnight'){
+    dates = bookingState.arrival && bookingState.departure ? `${fmtDate(bookingState.arrival)} – ${fmtDate(bookingState.departure)}` : 'TBD';
+  } else {
+    const day = bookingState.single || bookingState.arrival;
+    dates = day ? `${fmtDate(day)} · ${fmtTime(bookingState.timeArrive)}–${fmtTime(bookingState.timeDepart)}` : 'TBD';
+  }
+  document.getElementById('confirmEmail').textContent = email;
+  document.getElementById('confirmRef').textContent = ref;
+  document.getElementById('confirmDog').textContent = dogName;
+  document.getElementById('confirmSvc').textContent = SERVICE_LABEL[svc];
+  document.getElementById('confirmDates').textContent = dates;
+  document.getElementById('confirmEstimate').textContent = '$' + total;
+  bookingStep(4);
+  document.querySelectorAll('.booking-step').forEach(s=>s.classList.add('done'));
+}
+
+// Open booking from primary CTA
+document.querySelectorAll('a[href="#book"]').forEach(a=>{
+  a.addEventListener('click', e=>{ setTimeout(openBooking, 400); });
+});
+// Calendar day click in main calendar = open modal pre-set
+document.addEventListener('click', e=>{
+  const day = e.target.closest('.cal-day.available, .cal-day.selected');
+  if(day){
+    const d = parseInt(day.textContent, 10);
+    bookingState.arrival = { m:5, d };
+    bookingState.departure = null;
+    updateEstimate();
+    setTimeout(openBooking, 150);
+  }
+});
+window.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeBooking(); });
+
+/* ═══════════ SUBSCRIBE STUB ═══════════ */
+function subscribe(form){
+  form.querySelector('button').textContent = '✓ You\'re in';
+  setTimeout(()=>{ form.reset(); form.querySelector('button').textContent = 'Join Pup Notes →'; }, 2400);
+}
+</script>
+
+</body>
+</html>

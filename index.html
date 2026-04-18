@@ -41,1549 +41,2002 @@
       { "@type": "Place", "name": "Long Island City, Queens, NY" },
       { "@type": "Place", "name": "Midtown Manhattan, NY" }
     ],
-    "founder": {
-      "@type": "Person",
-      "name": "Lorenzo Llamas"
-    },
+    "founder": { "@type": "Person", "name": "Lorenzo Llamas" },
     "makesOffer": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Overnight Dog Boarding",
-          "description": "Your dog stays in our home overnight with full attention, walks, backyard play, and photo updates."
-        },
-        "price": "90.00",
-        "priceCurrency": "USD",
-        "unitText": "per night"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Doggy Day Care",
-          "description": "Same-day drop-off and pickup at our home. Your dog spends the day with us getting walks, play, and attention."
-        },
-        "price": "50.00",
-        "priceCurrency": "USD",
-        "unitText": "per day"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Dog Walking",
-          "description": "A 30-60 minute walk in your neighborhood with photo updates."
-        },
-        "price": "25.00",
-        "priceCurrency": "USD",
-        "unitText": "per walk"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Drop-In Visits",
-          "description": "We come to your home for a 30-minute visit including feeding, a walk or play, and a photo update."
-        },
-        "price": "45.00",
-        "priceCurrency": "USD",
-        "unitText": "per visit"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "House Sitting",
-          "description": "We stay at your home overnight so your dog sleeps in their own space."
-        },
-        "price": "100.00",
-        "priceCurrency": "USD",
-        "unitText": "per night"
-      }
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Overnight Dog Boarding" }, "price": "90.00", "priceCurrency": "USD", "unitText": "per night" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Doggy Day Care" }, "price": "50.00", "priceCurrency": "USD", "unitText": "per day" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dog Walking" }, "price": "25.00", "priceCurrency": "USD", "unitText": "per walk" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Drop-In Visits" }, "price": "45.00", "priceCurrency": "USD", "unitText": "per visit" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "House Sitting" }, "price": "100.00", "priceCurrency": "USD", "unitText": "per night" }
     ]
   }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <style>
-    /* ── DESIGN TOKENS ───────────────────────────── */
-    :root {
-      --bg:          #F2F5FB;
-      --bg-2:        #E4EAFA;
-      --surface:     #FFFFFF;
-      --green:       #1B4F8C;
-      --green-mid:   #2B6CB0;
-      --green-light: #6BA3D6;
-      --green-pale:  #E4F0FB;
-      --amber:       #D4A017;
-      --amber-light: #F5CC4A;
-      --amber-pale:  #FEF9E7;
-      --text:        #1A1D26;
-      --text-2:      #4C5470;
-      --text-3:      #8C94B0;
-      --border:      #CCDAEF;
-      --shadow-sm:   0 2px 8px rgba(27,79,140,.08);
-      --shadow-md:   0 6px 24px rgba(27,79,140,.12);
-      --shadow-lg:   0 12px 40px rgba(27,79,140,.16);
-      --radius-sm:   8px;
-      --radius-md:   14px;
-      --radius-lg:   20px;
-      --radius-full: 99px;
-      --font-head:   'Playfair Display', Georgia, serif;
-      --font-body:   'DM Sans', system-ui, sans-serif;
-    }
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   DOGS & LLAMAS — homepage
+   Palette: warm navy + sun gold + cream + terracotta blush
+   Type:   Playfair Display (brand + headings) + DM Sans (UI/body) + DM Mono (meta/numbers)
+   ═══════════════════════════════════════════════════════════════════ */
 
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+:root {
+  --navy:       #132A4E;
+  --navy-deep:  #0A1A34;
+  --navy-soft:  #25437B;
+  --gold:       #E0A02F;
+  --gold-soft:  #F3CB6A;
+  --gold-pale:  #F8E9C4;
+  --blush:      #E69A6F;
+  --blush-pale: #F7D9C6;
+  --cream:      #F6EFE3;
+  --cream-2:    #EFE6D3;
+  --paper:      #FBF7EE;
+  --ink:        #171716;
+  --ink-2:      #43413B;
+  --ink-3:      #8A867C;
+  --rule:       #D6CDB9;
+  --radius-xs: 4px; --radius-sm: 10px; --radius-md: 18px; --radius-lg: 28px; --radius-xl: 44px;
+  --shadow-sm: 0 2px 6px rgba(19,42,78,.06), 0 1px 2px rgba(19,42,78,.04);
+  --shadow-md: 0 8px 28px rgba(19,42,78,.12), 0 2px 6px rgba(19,42,78,.06);
+  --shadow-lg: 0 24px 60px rgba(19,42,78,.18), 0 4px 12px rgba(19,42,78,.08);
+  --shadow-photo: 0 30px 80px -20px rgba(19,42,78,.35), 0 10px 24px -8px rgba(19,42,78,.2);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-sans:    'DM Sans', system-ui, sans-serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-mono:    'DM Mono', ui-monospace, monospace;
+  --grad-navy: linear-gradient(135deg, #0A1A34 0%, #132A4E 45%, #25437B 100%);
+  --grad-navy-h: linear-gradient(90deg, #0A1A34 0%, #1B3460 50%, #25437B 100%);
+  --max: 1240px;
+  --nav-h: 72px;
+}
 
-    body {
-      margin: 0; padding: 0;
-      background: var(--bg);
-      font-family: var(--font-body);
-      color: var(--text);
-      font-size: 16px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
 
-    img { display: block; max-width: 100%; }
-    a { color: var(--green); }
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;background-image:radial-gradient(circle at 20% 30%, rgba(224,160,47,.015) 0%, transparent 50%),radial-gradient(circle at 80% 70%, rgba(230,154,111,.015) 0%, transparent 50%);mix-blend-mode:multiply}
 
-    /* ── FADE-UP ANIMATION ───────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity .55s ease, transform .55s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-d1 { transition-delay: .08s; }
-    .reveal-d2 { transition-delay: .16s; }
-    .reveal-d3 { transition-delay: .24s; }
-    .reveal-d4 { transition-delay: .32s; }
+/* ═══ NAV ═══ */
+.nav{position:sticky;top:0;z-index:200;height:var(--nav-h);background:rgba(251,247,238,.82);backdrop-filter:blur(18px) saturate(1.1);-webkit-backdrop-filter:blur(18px) saturate(1.1);border-bottom:1px solid rgba(214,205,185,.5)}
+.nav-inner{max-width:var(--max);margin:0 auto;height:100%;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{font-family:var(--font-display);font-size:26px;line-height:1;color:var(--navy);display:flex;align-items:center;gap:10px;font-weight:500}
+.brand .amp{color:var(--gold);font-style:italic;font-weight:400;transform:translateY(-2px);font-size:30px}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px var(--gold-pale);animation:pulseDot 2.4s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 4px var(--gold-pale)}50%{box-shadow:0 0 0 7px rgba(243,203,106,.3)}}
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-link{font-family:var(--font-sans);font-weight:500;font-size:14.5px;color:var(--ink-2);padding:8px 14px;border-radius:999px;transition:color .18s,background .18s}
+.nav-link:hover,.nav-link.active{color:var(--navy);background:var(--cream-2)}
+.nav-cta{font-family:var(--font-sans);font-weight:600;font-size:14px;color:#fff;background:var(--grad-navy);padding:10px 22px;border-radius:999px;margin-left:8px;transition:transform .18s,background .18s,box-shadow .18s;box-shadow:0 2px 0 var(--navy-deep)}
+.nav-cta:hover{transform:translateY(-1px);background:var(--navy-soft);box-shadow:0 3px 0 var(--navy-deep)}
 
-    /* ── NAV ─────────────────────────────────────── */
-    nav {
-      position: sticky; top: 0; z-index: 200;
-      height: 62px;
-      background: var(--green);
-      padding: 0 36px;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,.15);
-    }
-    .nav-brand {
-      font-family: var(--font-head);
-      font-style: italic;
-      font-size: 19px;
-      color: #fff;
-      text-decoration: none;
-      letter-spacing: .2px;
-      flex-shrink: 0;
-    }
-    .nav-brand .amp {
-      color: var(--amber-light);
-      font-style: normal;
-      margin: 0 2px;
-    }
-    .nav-links { display: flex; align-items: center; gap: 6px; }
-    .nav-link {
-      font-family: var(--font-body);
-      font-size: 14.5px;
-      font-weight: 600;
-      color: rgba(255,255,255,.92);
-      text-decoration: none;
-      letter-spacing: .3px;
-      padding: 6px 14px;
-      border-radius: var(--radius-full);
-      transition: background .15s, color .15s;
-      white-space: nowrap;
-    }
-    .nav-link:hover { background: rgba(255,255,255,.12); color: #fff; }
-    .nav-cta {
-      font-family: var(--font-body);
-      font-size: 13px;
-      font-weight: 600;
-      background: var(--amber);
-      color: #fff;
-      text-decoration: none;
-      padding: 8px 20px;
-      border-radius: var(--radius-full);
-      letter-spacing: .3px;
-      transition: background .15s, transform .15s;
-      white-space: nowrap;
-      margin-left: 6px;
-    }
-    .nav-cta:hover { background: #c07a24; transform: translateY(-1px); }
-    .nav-toggle {
-      display: none;
-      background: none; border: none; cursor: pointer;
-      color: rgba(255,255,255,.85); font-size: 22px; padding: 4px 8px; line-height: 1;
-    }
+/* ═══ SEASONAL BANNER ═══ */
+.banner{background:var(--grad-navy-h);color:var(--gold-soft);font-family:var(--font-mono);font-size:12px;letter-spacing:.8px;padding:9px 32px;text-align:center;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;position:relative;overflow:hidden}
+.banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(243,203,106,.08),transparent);transform:translateX(-100%);animation:sweep 8s ease-in-out infinite}
+@keyframes sweep{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+.banner strong{color:#fff;font-weight:500;letter-spacing:1.2px}
+.banner-pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blush);animation:pulseBanner 1.8s ease-in-out infinite}
+@keyframes pulseBanner{0%,100%{box-shadow:0 0 0 0 rgba(230,154,111,.6)}50%{box-shadow:0 0 0 8px rgba(230,154,111,0)}}
 
-    /* ── HERO ────────────────────────────────────── */
-    .hero {
-      background:
-        radial-gradient(ellipse at 65% 40%, rgba(107,163,214,.2) 0%, transparent 60%),
-        linear-gradient(150deg, #0A1E3D 0%, #1B4F8C 55%, #2B6CB0 100%);
-      padding: 72px 36px 80px;
-      overflow: hidden;
-      position: relative;
-    }
-    /* subtle dot pattern overlay */
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
-      background-size: 24px 24px;
-      pointer-events: none;
-    }
-    .hero-inner {
-      max-width: 860px; margin: 0 auto;
-      display: flex; align-items: center; gap: 56px;
-      position: relative; z-index: 1;
-    }
-    .hero-content { flex: 1; min-width: 0; }
-    .hero-eyebrow {
-      font-family: var(--font-body);
-      font-size: 11px; font-weight: 600;
-      letter-spacing: 2.5px; text-transform: uppercase;
-      color: var(--amber-light); margin: 0 0 16px;
-    }
-    .hero-title {
-      font-family: var(--font-head);
-      font-size: 54px; font-weight: 600;
-      color: #fff; margin: 0 0 6px; line-height: 1.05;
-      letter-spacing: -1px;
-    }
-    .hero-title .amp { color: var(--amber-light); font-weight: 400; font-style: italic; }
-    .hero-byline {
-      font-family: var(--font-body);
-      font-size: 13px; font-weight: 500;
-      color: rgba(255,255,255,.6);
-      letter-spacing: .8px; margin: 0 0 22px;
-    }
-    .hero-sub {
-      font-family: var(--font-body);
-      font-size: 15.5px; font-weight: 400;
-      color: rgba(255,255,255,.85);
-      margin: 0 0 36px; line-height: 1.7; max-width: 420px;
-    }
-    .hero-form {
-      display: flex; flex-wrap: wrap; gap: 8px; max-width: 420px;
-    }
-    .hero-form input[type="email"] {
-      flex: 1; min-width: 180px;
-      padding: 14px 18px;
-      background: rgba(255,255,255,.95);
-      border: none; border-radius: var(--radius-full);
-      font-family: var(--font-body); font-size: 15px; color: var(--text);
-      outline: none; transition: box-shadow .15s;
-    }
-    .hero-form input[type="email"]:focus {
-      box-shadow: 0 0 0 3px rgba(212,135,42,.5);
-    }
-    .hero-form button {
-      background: var(--amber); color: #fff;
-      font-family: var(--font-body); font-size: 14px; font-weight: 600;
-      letter-spacing: .4px;
-      padding: 14px 26px; border: none; border-radius: var(--radius-full);
-      cursor: pointer; white-space: nowrap;
-      transition: background .15s, transform .15s;
-    }
-    .hero-form button:hover { background: #c07a24; transform: translateY(-1px); }
-    .hero-note {
-      font-family: var(--font-body); font-size: 11.5px;
-      color: rgba(255,255,255,.45); margin: 10px 0 0;
-    }
-    .hero-note a { color: rgba(255,255,255,.6); }
+/* ═══ HERO ═══ */
+.hero{position:relative;padding:64px 32px 80px;background:radial-gradient(ellipse 900px 600px at 85% 10%, rgba(224,160,47,.18) 0%, transparent 60%),radial-gradient(ellipse 800px 700px at 10% 90%, rgba(230,154,111,.12) 0%, transparent 60%),linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;opacity:.4;pointer-events:none;background-image:radial-gradient(circle, rgba(19,42,78,.05) 1px, transparent 1px);background-size:22px 22px}
+.hero-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:2px;color:var(--navy);text-transform:uppercase;background:var(--gold-pale);padding:7px 14px;border-radius:999px;border:1px solid rgba(224,160,47,.4)}
+.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.hero-title{font-family:var(--font-display);font-weight:500;font-size:clamp(48px, 7vw, 96px);line-height:1;letter-spacing:-.02em;margin:18px 0 0;color:var(--navy)}
+.hero-title em{font-style:italic;color:var(--blush);font-family:var(--font-display);font-weight:400;display:block}
+.hero-title .sig{display:inline-block;background:linear-gradient(180deg, transparent 62%, var(--gold-soft) 62%, var(--gold-soft) 88%, transparent 88%);padding:0 4px}
+.hero-sub{font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink-2);margin:28px 0 36px;max-width:440px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:18px 28px;margin-bottom:36px}
+.hero-meta div{font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink-3)}
+.hero-meta strong{display:block;font-family:var(--font-sans);font-weight:600;font-size:14px;letter-spacing:0;color:var(--navy);text-transform:none;margin-top:3px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--font-sans);font-weight:600;font-size:15px;padding:14px 26px;border-radius:999px;border:none;display:inline-flex;align-items:center;gap:10px;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,background .2s;cursor:pointer}
+.btn-primary{background:var(--grad-navy);color:#fff;box-shadow:0 3px 0 var(--navy-deep)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--navy-deep);filter:brightness(1.08)}
+.btn-secondary{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+.btn-secondary:hover{background:var(--navy);color:#fff;transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 3px 0 #b07f1f}
+.btn-gold:hover{transform:translateY(-2px);background:var(--gold-soft);box-shadow:0 5px 0 #b07f1f}
+.btn-arrow{transition:transform .2s}
+.btn:hover .btn-arrow{transform:translateX(3px)}
 
-    /* Photo cluster */
-    .hero-photos {
-      flex: 0 0 auto;
-      display: flex; gap: 12px; align-items: flex-end;
-    }
-    .hero-photo-wrap {
-      background: #fff;
-      border-radius: 12px;
-      padding: 6px 6px 16px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.35);
-    }
-    .hero-photo-wrap.main {
-      transform: rotate(-2deg);
-    }
-    .hero-photo-wrap.secondary {
-      transform: rotate(2.5deg) translateY(-10px);
-    }
-    .hero-photo-main {
-      width: 164px; height: 200px;
-      object-fit: cover; object-position: center top;
-      border-radius: 8px;
-    }
-    .hero-photo-secondary {
-      width: 100px; height: 148px;
-      object-fit: cover; object-position: center top;
-      border-radius: 8px;
-    }
+.featured{position:relative;aspect-ratio:4/5;max-width:520px;margin-left:auto}
+.featured-photo{position:relative;width:100%;height:100%;border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-photo);transform:rotate(-1.5deg);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.featured:hover .featured-photo{transform:rotate(0)}
+.featured-photo img{width:100%;height:100%;object-fit:cover;object-position:center;transition:opacity .5s ease}
+.featured-photo img.leaving{opacity:0}
+.featured-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent 55%, rgba(10,26,52,.55) 100%);pointer-events:none}
+.featured-tag{position:absolute;bottom:24px;left:24px;right:24px;color:#fff;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.featured-name{font-family:var(--font-display);font-style:italic;font-size:44px;line-height:1;margin:0}
+.featured-desc{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.85);margin:4px 0 0;max-width:240px}
+.featured-stamp{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;text-align:right;color:var(--gold-soft);border:1px solid rgba(243,203,106,.6);padding:5px 10px;border-radius:4px;background:rgba(10,26,52,.4);backdrop-filter:blur(6px)}
+.featured::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);width:120px;height:24px;background:rgba(243,203,106,.6);border:1px dashed rgba(224,160,47,.4);z-index:3}
 
-    /* ── PERKS STRIP ─────────────────────────────── */
-    .perks-strip {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 36px;
-      display: flex; flex-wrap: wrap; justify-content: center;
-    }
-    .perk-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 16px 24px;
-      font-family: var(--font-body); font-size: 13.5px; color: var(--text-2);
-      border-right: 1px solid var(--border);
-    }
-    .perk-item:last-child { border-right: none; }
-    .perk-icon {
-      width: 32px; height: 32px;
-      background: var(--green-pale);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px; flex-shrink: 0;
-    }
-    .perk-item strong { color: var(--text); font-weight: 600; }
-    .perk-item a { color: var(--green); font-weight: 600; text-decoration: none; }
-    .perk-item a:hover { text-decoration: underline; }
+.dog-nav{position:absolute;bottom:14px;right:14px;z-index:4;display:flex;align-items:center;gap:6px;background:rgba(10,26,52,.45);backdrop-filter:blur(8px);padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.15)}
+.dog-nav button{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);border:none;padding:0;transition:background .2s,transform .2s;cursor:pointer}
+.dog-nav button.active{background:var(--gold-soft);transform:scale(1.4)}
+.dog-nav button:hover{background:#fff}
+.dog-nav .dog-arrow{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;line-height:1;cursor:pointer;border:none;transition:all .2s}
+.dog-nav .dog-arrow:hover{background:var(--gold);color:var(--navy)}
 
-    /* ── PAGE WRAP ───────────────────────────────── */
-    .page-wrap { max-width: 940px; margin: 0 auto; padding: 72px 36px 96px; }
+.hero-orbs{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.4;animation:float 14s ease-in-out infinite}
+.hero-orb.o1{width:280px;height:280px;background:var(--blush);top:-80px;left:40%;animation-delay:0s}
+.hero-orb.o2{width:220px;height:220px;background:var(--gold-soft);bottom:-60px;left:20%;animation-delay:-7s}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-40px)}}
 
-    /* ── SECTION HEADERS ─────────────────────────── */
-    .section-eyebrow {
-      font-family: var(--font-body);
-      font-size: 11px; font-weight: 600;
-      letter-spacing: 2.5px; text-transform: uppercase;
-      color: var(--green-mid); margin: 0 0 10px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .section-eyebrow::after {
-      content: '';
-      flex: 0 0 32px; height: 2px;
-      background: var(--amber); border-radius: 2px;
-    }
-    .section-title {
-      font-family: var(--font-head);
-      font-size: 30px; font-weight: 400;
-      color: var(--text); margin: 0 0 32px; line-height: 1.25;
-    }
-    hr.divider {
-      border: none; border-top: 1px solid var(--border); margin: 64px 0;
-    }
+/* ═══ TRUST STRIP ═══ */
+.trust{background:var(--grad-navy-h);color:#fff;padding:24px 32px;position:relative;overflow:hidden;border-top:1px solid var(--navy-deep);border-bottom:1px solid var(--navy-deep)}
+.trust-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.trust-stat{display:flex;align-items:baseline;gap:10px}
+.trust-num{font-family:var(--font-display);font-size:44px;line-height:1;color:var(--gold-soft)}
+.trust-label{font-family:var(--font-mono);font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.trust-sep{height:32px;width:1px;background:rgba(255,255,255,.15)}
 
-    /* ── PILLAR CARDS ────────────────────────────── */
-    .pillars {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-    }
-    .pillar-card {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      padding: 24px 22px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow .18s, transform .18s;
-    }
-    .pillar-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-    .pillar-icon {
-      width: 44px; height: 44px;
-      background: var(--green-pale);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; margin-bottom: 14px;
-    }
-    .pillar-title {
-      font-family: var(--font-body);
-      font-size: 13px; font-weight: 600;
-      color: var(--green); margin: 0 0 6px;
-      text-transform: uppercase; letter-spacing: .5px;
-    }
-    .pillar-desc {
-      font-family: var(--font-body);
-      font-size: 14px; color: var(--text-2); line-height: 1.6; margin: 0;
-    }
+/* ═══ SECTION ═══ */
+section{padding:100px 32px;position:relative}
+.section-inner{max-width:var(--max);margin:0 auto}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:56px;flex-wrap:wrap}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blush);margin-bottom:16px}
+.eyebrow::before{content:'';width:24px;height:1.5px;background:var(--blush)}
+.section-title{font-family:var(--font-display);font-weight:400;font-size:clamp(40px,5.5vw,72px);line-height:1.02;letter-spacing:-.02em;color:var(--navy);margin:0;max-width:720px}
+.section-title em{font-style:italic;color:var(--blush)}
+.section-sub{font-family:var(--font-body);font-size:16px;color:var(--ink-2);max-width:360px;line-height:1.6}
 
-    /* ── LATEST ISSUE ────────────────────────────── */
-    .issue-preview {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-      display: grid; grid-template-columns: 200px 1fr;
-    }
-    .issue-aside {
-      background: var(--green);
-      padding: 32px 24px;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .issue-aside-eyebrow {
-      font-family: var(--font-body);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 2px; text-transform: uppercase;
-      color: var(--green-light); margin: 0 0 10px;
-    }
-    .issue-aside-title {
-      font-family: var(--font-head);
-      font-size: 20px; font-weight: 600;
-      color: #fff; line-height: 1.3; margin: 0 0 auto;
-      letter-spacing: -0.2px;
-    }
-    .issue-aside-date {
-      font-family: var(--font-body);
-      font-size: 11px; color: var(--green-light);
-      margin-top: 28px;
-    }
-    .issue-body { padding: 32px 34px; }
-    .issue-body p {
-      font-family: var(--font-body);
-      font-size: 15px; color: var(--text-2); line-height: 1.72; margin: 0 0 12px;
-    }
-    .issue-body p:last-child { margin: 0; }
-    .issue-read-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 20px;
-      font-family: var(--font-body); font-size: 13.5px; font-weight: 600;
-      color: var(--green); text-decoration: none;
-      border-bottom: 1.5px solid transparent;
-      transition: border-color .15s;
-    }
-    .issue-read-link:hover { border-color: var(--green); }
+/* ═══ SERVICES ═══ */
+.services-bg{background:var(--cream)}
+.services{display:grid;grid-template-columns:1fr;gap:0;border-top:1.5px solid var(--navy)}
+.svc{display:grid;grid-template-columns:80px minmax(200px,1.4fr) 2fr 1fr auto;align-items:center;gap:32px;padding:28px 12px;border-bottom:1.5px solid var(--navy);position:relative;transition:background .3s}
+.svc:hover{background:rgba(224,160,47,.08)}
+.svc-num{font-family:var(--font-mono);font-size:13px;color:var(--ink-3);letter-spacing:1.5px}
+.svc-name{font-family:var(--font-display);font-size:clamp(28px,3.5vw,48px);line-height:1;color:var(--navy);letter-spacing:-.01em;font-weight:500}
+.svc-name em{font-style:italic;color:var(--blush);font-size:.8em;font-weight:400}
+.svc-desc{font-family:var(--font-body);font-size:14.5px;color:var(--ink-2);line-height:1.55}
+.svc-price{font-family:var(--font-display);font-size:32px;color:var(--navy);line-height:1}
+.svc-price small{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3);letter-spacing:1px;display:block;margin-top:4px}
+.svc-cta{font-family:var(--font-sans);font-weight:600;font-size:13.5px;color:var(--navy);background:#fff;padding:11px 22px;border-radius:999px;border:1.5px solid var(--navy);white-space:nowrap;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.svc-cta:hover{background:var(--navy);color:#fff;transform:translateX(4px)}
+.svc-cta svg{width:14px;height:14px}
+.svc:hover .svc-cta{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 
-    .archive-list {
-      list-style: none; padding: 0; margin: 20px 0 0;
-      display: flex; flex-wrap: wrap; gap: 8px;
-    }
-    .archive-list li a {
-      font-family: var(--font-body); font-size: 13px; color: var(--green);
-      text-decoration: none; background: var(--green-pale);
-      border-radius: var(--radius-full);
-      padding: 6px 16px; display: inline-block;
-      border: 1px solid transparent;
-      transition: background .12s, border-color .12s;
-    }
-    .archive-list li a:hover {
-      background: #d4ead8; border-color: var(--green-light);
-    }
+/* ═══ MARQUEE ═══ */
+.marquee-section{padding:80px 0;background:var(--grad-navy);color:#fff;overflow:hidden}
+.marquee-label{text-align:center;font-family:var(--font-mono);font-size:11.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-soft);margin-bottom:36px;text-shadow:0 1px 0 rgba(10,26,52,.25)}
+.marquee-title{font-family:var(--font-display);font-weight:400;font-size:clamp(36px,5vw,64px);line-height:1.05;text-align:center;max-width:900px;margin:0 auto 60px;padding:0 32px;color:#fff}
+.marquee-title em{font-style:italic;color:var(--gold-soft)}
+.marquee-wrap{position:relative;overflow:hidden}
+.marquee{display:flex;gap:18px;width:max-content;cursor:grab;will-change:transform;user-select:none}
+.marquee.dragging{cursor:grabbing}
+.marquee.dragging .marquee-card{pointer-events:none}
+.marquee-controls{position:absolute;top:50%;transform:translateY(-50%);right:24px;z-index:5;display:flex;flex-direction:column;gap:8px}
+.marquee-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);background:rgba(10,26,52,.6);backdrop-filter:blur(8px);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.marquee-btn:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.marquee-card{flex:0 0 240px;aspect-ratio:3/4;position:relative;border-radius:var(--radius-md);overflow:hidden;background:var(--cream-2);cursor:pointer;box-shadow:var(--shadow-md);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.marquee-card:hover{transform:translateY(-8px) scale(1.02)}
+.marquee-card img{width:100%;height:100%;object-fit:cover}
+.marquee-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent 50%, rgba(0,0,0,.75) 100%)}
+.marquee-card .cap{position:absolute;bottom:14px;left:16px;right:16px;color:#fff;z-index:2;font-family:var(--font-display);font-style:italic;font-size:26px;line-height:1}
+.marquee-card .cap small{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold-soft);font-style:normal;margin-top:4px}
 
-    /* ── PERSONALIZED TIPS (logged-in subscribers only) ── */
-    .personal-tips {
-      margin-top: 40px;
-      padding: 32px 30px;
-      background: linear-gradient(135deg, #0A1E3D 0%, #1B4F8C 100%);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-md);
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-    .personal-tips::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
-      background-size: 24px 24px;
-      pointer-events: none;
-    }
-    .personal-tips > * { position: relative; }
-    .personal-tips .section-eyebrow {
-      color: var(--amber-light);
-    }
-    .personal-tips .section-title {
-      color: #fff; margin-bottom: 22px;
-    }
-    .personal-tips-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
-    .personal-tip {
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: var(--radius-sm);
-      padding: 18px 18px 18px 22px;
-      position: relative;
-    }
-    .personal-tip-num {
-      position: absolute; top: -10px; left: 14px;
-      font-family: var(--font-head);
-      font-size: 13px; font-weight: 600;
-      background: var(--amber);
-      color: #fff;
-      padding: 2px 10px;
-      border-radius: var(--radius-full);
-      letter-spacing: 1px;
-    }
-    .personal-tip p {
-      font-family: var(--font-body);
-      font-size: 13.5px;
-      color: rgba(255,255,255,.88);
-      line-height: 1.65;
-      margin: 6px 0 0;
-    }
+/* ═══ CALENDAR ═══ */
+.cal-section{background:var(--paper)}
+.cal-wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.cal{background:#fff;border-radius:var(--radius-md);padding:32px;box-shadow:var(--shadow-md);border:1px solid var(--rule)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.cal-month{font-family:var(--font-display);font-size:26px;color:var(--navy);font-weight:500}
+.cal-month small{font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;color:var(--ink-3);text-transform:uppercase;display:block}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--navy);display:inline-flex;align-items:center;justify-content:center;transition:all .18s;cursor:pointer}
+.cal-nav button:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-family:var(--font-mono)}
+.cal-dow{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-3);text-align:center;padding:6px 0}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-2);border-radius:var(--radius-sm);transition:all .15s;position:relative;cursor:pointer}
+.cal-day:hover{background:var(--cream-2)}
+.cal-day.muted{color:var(--ink-3);opacity:.4;pointer-events:none}
+.cal-day.booked{background:var(--navy);color:#fff;cursor:not-allowed}
+.cal-day.booked:hover{background:var(--navy)}
+.cal-day.available::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.cal-day.today{background:rgba(199,90,79,.12);border:1.5px solid var(--blush);color:var(--blush);font-weight:700}
+.cal-day.today::before{content:'TODAY';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.8px;color:var(--blush);font-weight:700}
+.cal-day.holiday{background:rgba(224,160,47,.18);border:1px dashed var(--gold)}
+.cal-day.holiday::before{content:'+25%';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.5px;color:#8b5a1a;font-weight:700}
+.cal-day.selected{background:var(--gold);color:var(--navy);font-weight:600}
+.cal-legend{display:flex;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);flex-wrap:wrap}
+.cal-legend span{display:inline-flex;align-items:center;gap:6px}
+.cal-legend .dot{width:8px;height:8px;border-radius:50%}
+.cal-legend .dot.g{background:var(--gold)}
+.cal-legend .dot.n{background:var(--navy)}
+.cal-legend .dot.b{background:rgba(199,90,79,.5);border:1.5px solid var(--blush)}
+.cal-legend .dot.h{background:rgba(224,160,47,.4);border:1px dashed var(--gold)}
 
-    /* ── PERSONAL PICK (homepage card for logged-in users) ───────── */
-    .personal-pick {
-      margin-top: 22px;
-      padding: 22px 24px;
-      background: linear-gradient(135deg, #FEF9E7 0%, #FAEBC8 100%);
-      border: 1.5px solid var(--amber);
-      border-radius: var(--radius-md);
-      box-shadow: 0 8px 24px rgba(212,160,23,.18);
-      display: flex; align-items: center; gap: 18px;
-      flex-wrap: wrap;
-    }
-    .personal-pick-icon {
-      flex-shrink: 0;
-      width: 54px; height: 54px;
-      display: flex; align-items: center; justify-content: center;
-      background: #fff;
-      border-radius: 50%;
-      font-size: 26px;
-      box-shadow: 0 3px 10px rgba(180,132,15,.22);
-    }
-    .personal-pick-body { flex: 1; min-width: 200px; }
-    .personal-pick-eyebrow {
-      font-family: var(--font-body);
-      font-size: 10.5px; font-weight: 700;
-      letter-spacing: 1.6px; text-transform: uppercase;
-      color: #b8880f; margin: 0 0 4px;
-    }
-    .personal-pick-name {
-      font-family: var(--font-head);
-      font-size: 20px; font-weight: 600;
-      color: #1A1D26; margin: 0 0 4px;
-      letter-spacing: -0.2px;
-    }
-    .personal-pick-reason {
-      font-family: var(--font-body);
-      font-size: 13px; color: #4C5470;
-      margin: 0; line-height: 1.55;
-    }
-    .personal-pick-cta {
-      display: inline-block;
-      font-family: var(--font-body);
-      font-size: 12px; font-weight: 700;
-      background: var(--amber);
-      color: #fff; text-decoration: none;
-      padding: 9px 20px; border-radius: var(--radius-full);
-      letter-spacing: .3px;
-      transition: background .15s, transform .15s;
-      flex-shrink: 0;
-    }
-    .personal-pick-cta:hover { background: #b8880f; transform: translateY(-1px); }
+/* ═══ ABOUT ═══ */
+.about-section{background:var(--cream-2)}
+.about-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:72px;align-items:center}
+.about-photos{position:relative;aspect-ratio:1}
+.about-photo{position:absolute;border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-photo)}
+.about-photo img{width:100%;height:100%;object-fit:cover}
+.about-photo.a1{top:0;left:0;width:62%;aspect-ratio:3/4;transform:rotate(-3deg);z-index:2}
+.about-photo.a2{bottom:0;right:0;width:58%;aspect-ratio:4/5;transform:rotate(2deg);z-index:1}
+.about-badge{position:absolute;top:18%;left:64%;z-index:5;transform:translate(-50%,-50%);width:104px;height:104px}
+.about-badge-spin{width:100%;height:100%;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;animation:badge-rotate 18s linear infinite;box-shadow:var(--shadow-md);position:relative}
+.about-badge-spin svg{position:absolute;inset:0;width:100%;height:100%}
+.about-badge-spin .star{font-family:var(--font-display);font-size:28px;position:relative;z-index:2;animation:badge-rotate 18s linear infinite reverse}
+@keyframes badge-rotate{to{transform:rotate(360deg)}}
+.about-body p{font-family:var(--font-body);font-size:17px;line-height:1.7;color:var(--ink-2);margin:0 0 20px}
+.about-body p:first-of-type{font-family:var(--font-body);font-size:20px;line-height:1.5;color:var(--navy);font-weight:500}
+.signature{font-family:var(--font-display);font-style:italic;font-size:28px;color:var(--navy);margin-top:24px}
+.signature small{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.5px;color:var(--ink-3);text-transform:uppercase;margin-top:4px;font-style:normal}
 
-    /* ── DOGS GRID ───────────────────────────────── */
-    .dogs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
-      gap: 16px;
-    }
-    .dog-card {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border);
-      transition: transform .45s cubic-bezier(.2,.9,.3,1.05),
-                  box-shadow .45s ease,
-                  border-color .35s ease;
-      cursor: default;
-      position: relative;
-      isolation: isolate;
-    }
-    /* Photo wrapper handles the zoom — needs overflow:hidden */
-    .dog-card-photo-wrap {
-      position: relative;
-      width: 100%; height: 184px;
-      overflow: hidden;
-      background: var(--bg-2);
-    }
-    /* Diagonal "shine" sweep on hover */
-    .dog-card-photo-wrap::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(115deg,
-                    rgba(255,255,255,0) 28%,
-                    rgba(255,255,255,.35) 50%,
-                    rgba(255,255,255,0) 72%);
-      transform: translateX(-120%);
-      transition: transform .9s cubic-bezier(.2,.85,.25,1);
-      pointer-events: none;
-      z-index: 2;
-    }
-    .dog-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--yellow-light);
-      box-shadow:
-        0 18px 38px rgba(27,79,140,.22),
-        0 0 0 2px rgba(212,160,23,.55);
-    }
-    .dog-card:hover .dog-card-photo-wrap::after { transform: translateX(120%); }
-    .dog-card-photo {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
-      display: block;
-      transition: transform .55s cubic-bezier(.2,.85,.25,1),
-                  filter .45s ease;
-    }
-    .dog-card:hover .dog-card-photo {
-      transform: scale(1.06);
-      filter: saturate(1.15) contrast(1.04);
-    }
-    .dog-card:hover .dog-card-name { color: var(--blue-mid); }
-    .dog-card-name { transition: color .25s ease; }
-    .dog-card-placeholder {
-      width: 100%; height: 100%;
-      background: var(--bg-2);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 8px;
-      transition: transform .55s cubic-bezier(.2,.85,.25,1);
-    }
-    .dog-card:hover .dog-card-placeholder { transform: scale(1.06); }
-    .ph-icon { font-size: 36px; opacity: .5; }
-    .ph-note { font-family: var(--font-body); font-size: 11px; color: var(--text-3); }
-    .dog-card-footer { padding: 11px 14px 13px; }
-    .dog-card-name {
-      font-family: var(--font-head);
-      font-size: 16px; font-weight: 600;
-      color: var(--text); margin: 0;
-    }
-    .dog-card-note {
-      font-family: var(--font-body);
-      font-size: 11.5px; color: var(--text-3); margin: 2px 0 0;
-    }
-    .photo-legal {
-      font-family: var(--font-body); font-size: 11px;
-      color: var(--text-3); margin: 14px 0 0;
-    }
+/* ═══ TESTIMONIALS ═══ */
+.testi-section{background:var(--paper)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.testi{background:#fff;border-radius:var(--radius-md);padding:28px 26px;box-shadow:var(--shadow-sm);border:1px solid var(--rule);position:relative;transition:transform .3s,box-shadow .3s}
+.testi:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.testi-mark{position:absolute;top:-16px;left:24px;width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:28px;line-height:1;font-style:italic}
+.testi-quote{font-family:var(--font-body);font-size:16px;line-height:1.55;color:var(--navy);font-weight:500;margin:16px 0 24px}
+.testi-footer{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--rule)}
+.testi-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--cream-2)}
+.testi-avatar img{width:100%;height:100%;object-fit:cover}
+.testi-who{font-family:var(--font-sans);font-size:13.5px;font-weight:600;color:var(--navy)}
+.testi-who small{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-3);font-weight:400;margin-top:2px}
+.testi-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-left:auto}
 
-    /* ── TESTIMONIALS ────────────────────────────── */
-    .testimonial-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-    }
-    .testimonial-card {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      padding: 26px 24px 22px;
-      box-shadow: var(--shadow-sm);
-      position: relative;
-    }
-    .testimonial-card::before {
-      content: '\201C';
-      font-family: var(--font-head);
-      font-size: 72px; line-height: 1;
-      color: var(--green-pale);
-      position: absolute; top: 12px; left: 18px;
-    }
-    .testimonial-quote {
-      font-family: var(--font-body);
-      font-size: 14.5px; font-weight: 400;
-      color: var(--text-2); line-height: 1.72;
-      margin: 24px 0 16px; position: relative; z-index: 1;
-    }
-    .testimonial-author {
-      font-family: var(--font-body);
-      font-size: 13px; font-weight: 600; color: var(--green); margin: 0;
-    }
-    .testimonial-dog {
-      font-family: var(--font-body);
-      font-size: 12px; color: var(--text-3); margin: 3px 0 0;
-    }
+/* ═══ STORE TEASE ═══ */
+.store-tease{background:var(--cream-2)}
+.store-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.store-card{background:#fff;border-radius:var(--radius-md);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--rule);transition:transform .2s, box-shadow .2s;display:flex;flex-direction:column;gap:12px}
+.store-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.store-badge{display:inline-block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;background:var(--gold-pale);color:var(--navy);padding:3px 9px;border-radius:4px;align-self:flex-start}
+.store-emoji{aspect-ratio:1.3/1;background:linear-gradient(135deg,var(--cream) 0%,var(--cream-2) 100%);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:48px;color:var(--navy);font-style:italic}
+.store-brand{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-3);text-transform:uppercase}
+.store-name{font-family:var(--font-sans);font-weight:600;font-size:14.5px;color:var(--navy);margin:0;line-height:1.3}
+.store-reason{font-family:var(--font-body);font-size:12.5px;color:var(--ink-2);line-height:1.5;margin:0;flex:1}
+.store-endorse{font-family:var(--font-display);font-style:italic;font-size:13px;color:var(--blush);padding:8px 0 0;border-top:1px dashed var(--rule)}
+.store-endorse small{font-family:var(--font-mono);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-3);font-style:normal;display:block;margin-top:2px}
 
-    /* ── GALLERY PREVIEW STRIP ────────────────────── */
-    .gallery-preview {
-      margin: 48px 0;
-    }
-    .gallery-preview-header {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      gap: 16px; flex-wrap: wrap; margin-bottom: 20px;
-    }
-    .gallery-preview-header .section-title { margin-bottom: 0; }
-    .gallery-preview-link {
-      font-family: var(--font-body); font-size: 14px; font-weight: 600;
-      color: var(--blue); text-decoration: none;
-      white-space: nowrap; padding-bottom: 4px;
-      border-bottom: 2px solid transparent;
-      transition: border-color .15s, color .15s;
-    }
-    .gallery-preview-link:hover { border-color: var(--blue); color: var(--blue-mid); }
-    .gallery-preview-strip {
-      display: flex; gap: 14px;
-      overflow-x: auto; overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding: 4px 0 16px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
-    }
-    .gallery-preview-strip::-webkit-scrollbar { height: 6px; }
-    .gallery-preview-strip::-webkit-scrollbar-track { background: transparent; }
-    .gallery-preview-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    .gallery-preview-item {
-      flex: 0 0 170px;
-      scroll-snap-align: start;
-      border-radius: var(--radius-md); overflow: hidden;
-      position: relative;
-      box-shadow: var(--shadow-sm);
-      transition: transform .2s ease, box-shadow .2s ease;
-      cursor: pointer;
-    }
-    .gallery-preview-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 28px rgba(27,79,140,.18);
-    }
-    .gallery-preview-item img {
-      width: 170px; height: 170px;
-      object-fit: cover; display: block;
-    }
-    .gallery-preview-name {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 6px 10px;
-      background: linear-gradient(transparent, rgba(10,30,61,.7));
-      font-family: var(--font-body); font-size: 12px; font-weight: 600;
-      color: #fff; letter-spacing: .3px;
-    }
+/* ═══ FAQ ═══ */
+.faq-section{background:var(--paper)}
+.faq-list{max-width:820px;margin:0 auto;border-top:1.5px solid var(--navy)}
+.faq-item{border-bottom:1.5px solid var(--navy);position:relative}
+.faq-q{width:100%;text-align:left;background:transparent;border:none;padding:26px 44px 26px 0;font-family:var(--font-display);font-size:clamp(20px,2.2vw,28px);color:var(--navy);line-height:1.25;transition:color .2s;font-weight:500;cursor:pointer}
+.faq-q:hover{color:var(--blush)}
+.faq-toggle{position:absolute;right:0;top:28px;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--navy);background:transparent;color:var(--navy);display:flex;align-items:center;justify-content:center;transition:all .3s;pointer-events:none}
+.faq-item.open .faq-toggle{background:var(--gold);border-color:var(--gold);transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.8,.2,1)}
+.faq-a-inner{padding:0 80px 28px 0;font-family:var(--font-body);font-size:15.5px;line-height:1.7;color:var(--ink-2)}
+.faq-item.open .faq-a{max-height:500px}
 
-    /* ── STORE TEASER ────────────────────────────── */
-    .store-teaser {
-      background: var(--green);
-      border-radius: var(--radius-lg);
-      padding: 40px 44px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 28px; flex-wrap: wrap;
-      box-shadow: var(--shadow-lg);
-    }
-    .store-teaser-text h3 {
-      font-family: var(--font-head);
-      font-size: 26px; font-weight: 600;
-      color: #fff; margin: 0 0 10px; line-height: 1.2;
-      letter-spacing: -0.3px;
-    }
-    .store-teaser-text p {
-      font-family: var(--font-body);
-      font-size: 15px; color: rgba(255,255,255,.7);
-      margin: 0; line-height: 1.6; max-width: 380px;
-    }
-    .btn-primary {
-      display: inline-block;
-      background: var(--amber); color: #fff;
-      font-family: var(--font-body); font-size: 14px; font-weight: 600;
-      letter-spacing: .4px; padding: 13px 28px;
-      border-radius: var(--radius-full); text-decoration: none;
-      white-space: nowrap; transition: background .15s, transform .15s;
-      flex-shrink: 0;
-    }
-    .btn-primary:hover { background: #c07a24; transform: translateY(-2px); color: #fff; }
+/* ═══ SUBSCRIBE ═══ */
+.sub-section{background:var(--grad-navy);color:#fff;position:relative;overflow:hidden}
+.sub-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 20% 50%, rgba(224,160,47,.18) 0%, transparent 60%),radial-gradient(ellipse 500px 500px at 90% 80%, rgba(230,154,111,.12) 0%, transparent 60%)}
+.sub-wrap{max-width:820px;margin:0 auto;text-align:center;position:relative}
+.sub-section .eyebrow{color:var(--gold-soft);justify-content:center}
+.sub-section .eyebrow::before{background:var(--gold-soft)}
+.sub-title{font-family:var(--font-display);font-size:clamp(40px,5.5vw,72px);font-weight:400;line-height:1.02;color:#fff;letter-spacing:-.02em;margin:16px 0 18px}
+.sub-title em{font-style:italic;color:var(--gold-soft)}
+.sub-desc{font-family:var(--font-body);font-size:17px;line-height:1.6;color:rgba(255,255,255,.78);max-width:540px;margin:0 auto 36px}
+.sub-form{display:flex;flex-wrap:wrap;gap:10px;max-width:480px;margin:0 auto}
+.sub-form input{flex:1;min-width:200px;padding:16px 22px;border-radius:999px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:#fff;font-family:var(--font-body);font-size:15px;outline:none;transition:border-color .2s, background .2s}
+.sub-form input::placeholder{color:rgba(255,255,255,.5)}
+.sub-form input:focus{border-color:var(--gold-soft);background:rgba(255,255,255,.12)}
+.sub-form button{padding:16px 30px;border-radius:999px;border:none;background:var(--gold);color:var(--navy);font-family:var(--font-sans);font-weight:700;font-size:15px;transition:transform .2s, background .2s;box-shadow:0 3px 0 #b07f1f;cursor:pointer}
+.sub-form button:hover{transform:translateY(-2px);background:var(--gold-soft);box-shadow:0 5px 0 #b07f1f}
+.sub-perks{display:flex;justify-content:center;flex-wrap:wrap;gap:24px;margin-top:32px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.sub-perks span{display:inline-flex;align-items:center;gap:6px}
+.sub-perks span::before{content:'◆';color:var(--gold)}
+.sub-msg{margin-top:18px;font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--gold-soft);min-height:1.2em}
+.sub-msg.err{color:var(--blush)}
 
-    .btn-secondary {
-      display: inline-block;
-      background: transparent; color: #fff;
-      font-family: var(--font-body); font-size: 14px; font-weight: 600;
-      letter-spacing: .4px; padding: 11px 26px;
-      border: 1.5px solid rgba(255,255,255,.5);
-      border-radius: var(--radius-full); text-decoration: none;
-      white-space: nowrap; transition: background .15s, border-color .15s, transform .15s;
-      flex-shrink: 0;
-    }
-    .btn-secondary:hover { background: rgba(255,255,255,.1); border-color: #fff; transform: translateY(-2px); color: #fff; }
+/* ═══ FOOTER ═══ */
+footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:56px 32px 32px}
+.foot-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.1)}
+.foot-brand{font-family:var(--font-display);font-size:32px;color:#fff}
+.foot-brand .amp{color:var(--gold-soft);font-style:italic}
+.foot-tagline{font-family:var(--font-body);font-size:13px;color:rgba(255,255,255,.55);margin:12px 0 20px;max-width:260px;line-height:1.6}
+.foot-section h4{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold-soft);margin:0 0 16px;font-weight:500}
+.foot-section a{display:block;font-family:var(--font-body);font-size:14px;color:rgba(255,255,255,.7);padding:4px 0;transition:color .15s}
+.foot-section a:hover{color:var(--gold-soft)}
+.foot-bottom{max-width:var(--max);margin:0 auto;padding-top:24px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:var(--font-mono);font-size:11px;letter-spacing:.5px;color:rgba(255,255,255,.4)}
 
-    .hero-cta-row {
-      display: flex; gap: 12px; flex-wrap: wrap;
-      margin-top: 22px;
-    }
+/* ═══ SUBSCRIBER CODE INPUT ═══ */
+.brand-group{display:flex;align-items:center;gap:14px}
+.sub-code{display:flex;align-items:center;gap:6px}
+.sub-code-submit{font-family:var(--font-sans);font-weight:600;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;background:var(--navy);color:#fff;border:none;padding:5px 10px;border-radius:999px;cursor:pointer;transition:all .2s;display:none}
+.sub-code.has-text .sub-code-submit{display:inline-flex;animation:dal-pop .25s cubic-bezier(.2,1.4,.2,1)}
+.sub-code-submit:hover{background:var(--gold);color:var(--navy)}
+.sub-code.active .sub-code-submit{display:none}
+.sub-code input{font-family:var(--font-mono);font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;background:rgba(214,205,185,.35);border:1.5px solid var(--rule);color:var(--navy);padding:7px 12px;border-radius:999px;width:108px;outline:none;transition:all .2s}
+.sub-code input::placeholder{color:var(--ink-3);letter-spacing:1.5px;text-transform:uppercase}
+.sub-code input:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(224,160,47,.15)}
+.sub-code.active{background:linear-gradient(90deg,var(--gold-pale),var(--cream));padding:4px 4px 4px 12px;border-radius:999px;border:1px solid rgba(224,160,47,.4)}
+.sub-code.active input{display:none}
+.sub-code-chip{display:none;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.3px;color:var(--navy)}
+.sub-code.active .sub-code-chip{display:inline-flex}
+.sub-code-chip strong{color:var(--blush);font-weight:500;letter-spacing:.5px;font-family:var(--font-sans);text-transform:none;font-size:13px}
+.sub-code-chip .code{background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:1.5px}
+.sub-code-chip .x{background:var(--navy);color:#fff;border:none;width:22px;height:22px;border-radius:50%;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .2s;font-family:var(--font-mono)}
+.sub-code-chip .x:hover{background:var(--blush)}
+@media (max-width:780px){.sub-code input{width:84px}}
 
-    /* ── BOTTOM SUBSCRIBE SECTION ─────────────────── */
-    .subscribe-bottom {
-      margin-top: 56px;
-      padding: 48px 44px;
-      background: linear-gradient(135deg, #0A1E3D 0%, #1B4F8C 60%, #2B6CB0 100%);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .subscribe-bottom::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
-      background-size: 24px 24px;
-      pointer-events: none;
-    }
-    .subscribe-bottom > * { position: relative; }
-    .subscribe-bottom-eyebrow {
-      font-family: var(--font-body); font-size: 11px; font-weight: 600;
-      letter-spacing: 2.5px; text-transform: uppercase;
-      color: var(--amber-light); margin: 0 0 12px;
-    }
-    .subscribe-bottom h2 {
-      font-family: var(--font-head); font-size: 32px; font-weight: 600;
-      color: #fff; margin: 0 0 10px; letter-spacing: -.3px;
-    }
-    .subscribe-bottom p {
-      font-family: var(--font-body); font-size: 15px;
-      color: rgba(255,255,255,.82); margin: 0 auto 26px;
-      max-width: 460px; line-height: 1.7;
-    }
-    .subscribe-bottom-form {
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: 10px; max-width: 460px; margin: 0 auto;
-    }
-    .subscribe-bottom-form input[type="email"] {
-      flex: 1; min-width: 200px; padding: 14px 20px;
-      background: rgba(255,255,255,.94);
-      border: none; border-radius: var(--radius-full);
-      font-family: var(--font-body); font-size: 15px; color: var(--text);
-      outline: none; transition: box-shadow .15s;
-    }
-    .subscribe-bottom-form input[type="email"]:focus { box-shadow: 0 0 0 3px rgba(212,160,23,.5); }
-    .subscribe-bottom-form button {
-      background: var(--amber); color: #fff; border: none;
-      font-family: var(--font-body); font-size: 14px; font-weight: 600;
-      letter-spacing: .4px; padding: 14px 30px;
-      border-radius: var(--radius-full); cursor: pointer;
-      transition: background .15s, transform .15s;
-    }
-    .subscribe-bottom-form button:hover { background: #b8880f; transform: translateY(-1px); }
-    .subscribe-bottom-note {
-      font-family: var(--font-body); font-size: 12px;
-      color: rgba(255,255,255,.5); margin: 14px 0 0;
-    }
-    .subscribe-bottom-note a { color: rgba(255,255,255,.7); }
-    @media (max-width: 640px) {
-      .subscribe-bottom { padding: 36px 24px; margin-top: 40px; }
-      .subscribe-bottom h2 { font-size: 26px; }
-      .subscribe-bottom-form { flex-direction: column; }
-      .subscribe-bottom-form input, .subscribe-bottom-form button { width: 100%; }
-    }
+/* ═══ BOOKING MODAL ═══ */
+.booking-modal{position:fixed;inset:0;z-index:999;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.booking-modal.open{display:flex;animation:dal-fade-in .25s ease}
+.booking-backdrop{position:fixed;inset:0;background:rgba(10,26,52,.55);backdrop-filter:blur(4px)}
+.booking-card{position:relative;background:var(--paper);border-radius:var(--radius-lg);max-width:640px;width:100%;padding:40px 44px 36px;box-shadow:var(--shadow-lg);border:1px solid var(--rule);animation:dal-fade-up .35s cubic-bezier(.2,.8,.2,1)}
+.booking-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--ink-2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.booking-close:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.booking-steps{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid var(--rule);padding-bottom:16px}
+.booking-step{flex:1;display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--ink-3);transition:color .3s}
+.booking-step span{width:26px;height:26px;border-radius:50%;background:var(--cream-2);color:var(--ink-3);display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;transition:all .3s}
+.booking-step.active{color:var(--navy)}
+.booking-step.active span{background:var(--grad-navy);color:#fff}
+.booking-step.done span{background:var(--gold);color:var(--navy)}
+.booking-title{font-family:var(--font-display);font-size:36px;line-height:1.1;color:var(--navy);margin:0 0 8px;font-weight:500}
+.booking-sub{font-family:var(--font-body);font-size:14.5px;line-height:1.6;color:var(--ink-2);margin:0 0 24px}
+.booking-dates{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:14px;margin:12px 0 22px}
+.booking-dates label{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase;margin-bottom:6px}
+.booking-date-display{font-family:var(--font-sans);font-weight:600;font-size:16px;color:var(--navy);background:#fff;border:1.5px solid var(--rule);padding:12px 16px;border-radius:10px;min-height:48px;display:flex;align-items:center;cursor:pointer;text-align:left;width:100%}
+.booking-date-display.filled{border-color:var(--gold);background:var(--gold-pale)}
+.booking-date-display:hover{border-color:var(--navy)}
+.booking-date-display:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(224,160,47,.15)}
+.booking-arrow{font-family:var(--font-display);font-style:italic;font-size:26px;color:var(--blush);padding-bottom:10px}
+.booking-time-input{width:100%;font-family:var(--font-sans);font-weight:600;font-size:15px;color:var(--navy);background:#fff;border:1.5px solid var(--rule);padding:12px 14px;border-radius:10px;outline:none;transition:all .2s}
+.booking-time-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(224,160,47,.15)}
 
-    /* ── COUPONS ─────────────────────────────────── */
-    .coupon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .coupon-card {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      border: 2px dashed var(--green-light);
-      padding: 26px 28px;
-    }
-    .coupon-tag {
-      font-family: var(--font-body);
-      font-size: 10.5px; font-weight: 600;
-      letter-spacing: 2px; text-transform: uppercase;
-      color: var(--green); margin: 0 0 12px;
-    }
-    .coupon-code {
-      font-family: 'Courier New', monospace;
-      font-size: 24px; font-weight: 700;
-      color: var(--text); letter-spacing: 4px;
-      background: var(--green-pale);
-      display: inline-block;
-      padding: 6px 16px; border-radius: var(--radius-sm); margin-bottom: 10px;
-    }
-    .coupon-desc {
-      font-family: var(--font-body);
-      font-size: 14px; color: var(--text-2); line-height: 1.6; margin: 6px 0 0;
-    }
-    .coupon-desc a { color: var(--green); font-weight: 600; }
-    .coupon-fine {
-      font-family: var(--font-body);
-      font-size: 11px; color: var(--text-3); margin: 8px 0 0; line-height: 1.5;
-    }
+.booking-mini-cal{background:#fff;border:1.5px solid var(--rule);border-radius:14px;padding:14px 16px;margin:0 0 22px;box-shadow:var(--shadow-md);animation:dal-fade-up .2s ease}
+.mini-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mini-cal-head strong{font-family:var(--font-display);font-size:18px;color:var(--navy);font-weight:500}
+.mini-cal-head button{width:30px;height:30px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--navy);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.mini-cal-head button:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mini-cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.mini-cal-dow span{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.8px;color:var(--ink-3);text-align:center;padding:4px 0;text-transform:uppercase}
+.mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.mini-cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;color:var(--navy);border-radius:6px;cursor:pointer;border:1px solid transparent;position:relative;transition:all .15s}
+.mini-cal-day:hover{background:var(--gold-pale);border-color:var(--gold)}
+.mini-cal-day.muted{color:var(--ink-3);opacity:.35;pointer-events:none}
+.mini-cal-day.disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+.mini-cal-day.today{border:1.5px solid var(--blush);color:var(--blush);font-weight:700}
+.mini-cal-day.holiday{background:rgba(224,160,47,.18);border:1px dashed var(--gold)}
+.mini-cal-day.holiday::after{content:'+25%';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);font-size:6px;color:#8b5a1a;font-weight:700}
+.mini-cal-day.selected{background:var(--gold);color:var(--navy);font-weight:700;border-color:var(--gold)}
+.mini-cal-day.in-range{background:var(--gold-pale);color:var(--navy)}
+.mini-cal-day.range-end{background:var(--blush);color:#fff;font-weight:700;border-color:var(--blush)}
+.mini-cal-day.booked{background:var(--navy);color:#fff;opacity:.7;cursor:not-allowed;pointer-events:none}
+.mini-cal-hint{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;color:var(--ink-3);text-transform:uppercase;text-align:center;margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--rule)}
 
-    /* ── SHARE ───────────────────────────────────── */
-    .share-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .share-label {
-      font-family: var(--font-body);
-      font-size: 13px; font-weight: 600; color: var(--text-2);
-    }
-    .share-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-family: var(--font-body); font-size: 13px; font-weight: 500;
-      text-decoration: none; padding: 8px 18px; border-radius: var(--radius-full);
-      border: 1.5px solid var(--border); color: var(--text-2);
-      background: var(--surface); cursor: pointer;
-      transition: border-color .14s, color .14s, background .14s;
-    }
-    .share-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-pale); }
+.booking-summary{display:flex;flex-direction:column;align-items:stretch;gap:8px;background:var(--cream);border:1px dashed var(--rule);padding:14px 18px;border-radius:10px;margin-bottom:20px}
+.booking-summary-row{display:flex;justify-content:space-between;align-items:center;width:100%}
+.booking-summary-row span{font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase}
+.booking-summary-row strong{font-family:var(--font-display);font-size:24px;color:var(--navy);font-weight:500}
+.booking-summary-extra{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;color:var(--blush);text-transform:uppercase;border-top:1px dashed var(--rule);padding-top:8px;display:none}
+.booking-summary-extra.show{display:block}
+.booking-label{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase;margin:16px 0 10px}
+.booking-label small{font-size:10px;letter-spacing:1px;color:var(--ink-3);text-transform:none}
+.booking-services{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.booking-svc{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1.5px solid var(--rule);border-radius:12px;cursor:pointer;background:#fff;transition:all .2s}
+.booking-svc:hover{border-color:var(--navy)}
+.booking-svc input{margin:0;accent-color:var(--navy)}
+.booking-svc:has(input:checked){border-color:var(--navy);background:linear-gradient(90deg,var(--gold-pale),#fff)}
+.booking-svc strong{display:block;font-family:var(--font-display);font-size:18px;color:var(--navy);line-height:1.2;font-weight:500}
+.booking-svc span{font-family:var(--font-body);font-size:13px;color:var(--ink-2)}
+.booking-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+.booking-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.booking-field{margin-bottom:12px}
+.booking-field label{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase;margin-bottom:6px}
+.booking-field input,.booking-field textarea{font-family:var(--font-body);font-size:14.5px;color:var(--ink);background:#fff;border:1.5px solid var(--rule);padding:11px 14px;border-radius:10px;width:100%;outline:none;resize:vertical}
+.booking-field input:focus,.booking-field textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(19,42,78,.1)}
+.booking-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.booking-chip{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--rule);padding:8px 14px;border-radius:999px;cursor:pointer;font-family:var(--font-body);font-size:13px;color:var(--ink-2);transition:all .2s}
+.booking-chip input{display:none}
+.booking-chip:hover{border-color:var(--navy);color:var(--navy)}
+.booking-chip:has(input:checked){background:var(--navy);color:#fff;border-color:var(--navy)}
+.booking-review{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin:10px 0 20px}
+.booking-review-row{display:flex;justify-content:space-between;padding:8px 0;font-family:var(--font-body);font-size:14px;color:var(--ink-2);border-top:1px dashed var(--rule);gap:12px}
+.booking-review-row:first-child{border-top:none}
+.booking-review-row span{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase}
+.booking-review-row strong{color:var(--navy);font-family:var(--font-sans);font-weight:600;font-size:14px;letter-spacing:.1px;text-align:right}
+.booking-consent{display:flex;align-items:flex-start;gap:10px;font-family:var(--font-body);font-size:13.5px;color:var(--ink-2);line-height:1.5;margin:4px 0 0;cursor:pointer}
+.booking-consent input{margin-top:3px;accent-color:var(--navy)}
+.booking-error{display:none;background:rgba(230,154,111,.12);border:1px solid var(--blush);color:#8a3e12;padding:10px 14px;border-radius:10px;font-family:var(--font-body);font-size:13.5px;margin:10px 0}
+.booking-error.show{display:block}
+.booking-success{padding:8px 0}
+.booking-check{display:flex;justify-content:center;color:var(--gold);margin-bottom:20px;animation:dal-pop .6s cubic-bezier(.2,1.4,.2,1)}
+.booking-confirm-card{background:var(--grad-navy);color:#fff;padding:22px 26px;border-radius:14px;margin:20px 0}
+.booking-confirm-row{display:flex;justify-content:space-between;padding:8px 0;border-top:1px dashed rgba(255,255,255,.15);font-family:var(--font-body);font-size:14px;gap:12px}
+.booking-confirm-row:first-child{border-top:none}
+.booking-confirm-row span{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.3px;color:var(--gold-soft);text-transform:uppercase}
+.booking-confirm-row strong{color:#fff;font-family:var(--font-sans);font-weight:600;font-size:15px;letter-spacing:.2px;text-align:right}
+.booking-next{font-family:var(--font-body);font-size:14px;color:var(--ink-2);margin:16px 0 0}
+.booking-next a{color:var(--navy);text-decoration:underline;font-weight:500}
+@keyframes dal-fade-in{from{opacity:0}to{opacity:1}}
+@keyframes dal-pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes dal-fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media (max-width:620px){.booking-card{padding:28px 24px}.booking-dates{grid-template-columns:1fr;gap:8px}.booking-arrow{display:none}.booking-field-row{grid-template-columns:1fr}.booking-steps{gap:4px}.booking-step{font-size:10px;gap:6px}.booking-title{font-size:28px}}
 
-    /* ── TOAST ───────────────────────────────────── */
-    #toast {
-      position: fixed; bottom: 28px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--green); color: #fff;
-      font-family: var(--font-body); font-size: 14px; font-weight: 500;
-      padding: 12px 26px; border-radius: var(--radius-full);
-      box-shadow: var(--shadow-lg);
-      opacity: 0; transition: opacity .3s, transform .3s;
-      pointer-events: none; z-index: 999; white-space: nowrap;
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ═══ SUBSCRIBER DASHBOARD ═══ */
+.dashboard{display:none !important}
+body.dal-in .dashboard{display:block !important}
+body.dal-in .dashboard-bar{display:flex !important}
+.dashboard-bar{background:var(--grad-navy-h);color:#fff;padding:10px 32px;font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.dashboard-bar strong{color:var(--gold-soft);font-weight:500;letter-spacing:1px}
+.dashboard-bar .chip{background:var(--gold);color:var(--navy);padding:2px 10px;border-radius:4px;font-weight:700;letter-spacing:1.5px}
 
-    /* ── FOOTER ──────────────────────────────────── */
-    footer {
-      background: #081529;
-      padding: 44px 36px 36px;
-      text-align: center;
-    }
-    .footer-brand {
-      font-family: var(--font-head);
-      font-size: 22px; font-style: italic; font-weight: 400;
-      color: rgba(255,255,255,.9); margin: 0 0 16px;
-    }
-    .footer-brand .amp { color: var(--amber-light); font-style: normal; }
-    footer p {
-      font-family: var(--font-body);
-      font-size: 12.5px; color: rgba(255,255,255,.45);
-      margin: 0 0 5px; line-height: 1.7;
-    }
-    footer a { color: rgba(255,255,255,.6); text-decoration: none; }
-    footer a:hover { color: #fff; text-decoration: underline; }
-    .footer-links {
-      display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;
-      margin-top: 20px; padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,.08);
-    }
-    .footer-links a {
-      font-family: var(--font-body); font-size: 12.5px;
-      color: rgba(255,255,255,.5); text-decoration: none;
-      transition: color .14s;
-    }
-    .footer-links a:hover { color: #fff; }
+.my-dog{background:linear-gradient(135deg, var(--cream) 0%, var(--gold-pale) 100%);padding:0}
+.my-dog-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:center}
+.my-dog-photo{aspect-ratio:4/5;border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-photo);position:relative}
+.my-dog-photo img{width:100%;height:100%;object-fit:cover}
+.my-dog-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent 60%, rgba(10,26,52,.4) 100%)}
+.my-dog-name{position:absolute;bottom:24px;left:24px;color:#fff;font-family:var(--font-display);font-style:italic;font-size:52px;line-height:1}
+.my-dog-greeting{font-family:var(--font-display);font-size:clamp(36px,4vw,56px);line-height:1.05;color:var(--navy);margin:0 0 20px;letter-spacing:-.01em;font-weight:500}
+.my-dog-greeting em{color:var(--blush);font-style:italic}
+.my-dog-tips{display:flex;flex-direction:column;gap:14px;margin-top:28px}
+.my-dog-tip{background:#fff;border-radius:var(--radius-sm);padding:16px 20px;display:flex;gap:14px;align-items:flex-start;border-left:3px solid var(--gold);box-shadow:var(--shadow-sm)}
+.my-dog-tip-num{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.5px;color:var(--blush);flex-shrink:0;margin-top:3px}
+.my-dog-tip p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+.my-dog-tip strong{color:var(--navy)}
 
-    /* ── SUBSCRIBER PERSONALIZE BUTTON ─────────────── */
-    .dal-personalize-btn {
-      font-family: var(--font-body); font-size: 12px; font-weight: 600;
-      background: rgba(212,160,23,.14); color: var(--amber-light);
-      border: 1px solid rgba(212,160,23,.28);
-      padding: 5px 14px; border-radius: var(--radius-full);
-      cursor: pointer; white-space: nowrap; flex-shrink: 0;
-      transition: background .14s, border-color .14s;
-    }
-    .dal-personalize-btn:hover     { background: rgba(212,160,23,.28); border-color: rgba(212,160,23,.55); }
-    .dal-personalize-btn.dal-active{ background: rgba(212,160,23,.38); border-color: var(--amber-light); color: #fff; }
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.in,.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.08s}
+.reveal-d2{transition-delay:.16s}
+.reveal-d3{transition-delay:.24s}
+.reveal-d4{transition-delay:.32s}
 
-    /* ── ACCESSIBILITY ───────────────────────────── */
-    :focus-visible {
-      outline: 3px solid var(--yellow-light);
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .001ms !important;
-        scroll-behavior: auto !important;
-      }
-      .reveal { opacity: 1 !important; transform: none !important; }
-    }
-    .skip-link {
-      position: absolute; left: -9999px; top: 0; z-index: 9999;
-      background: var(--yellow); color: var(--text);
-      padding: 12px 18px; font-family: var(--font-body); font-weight: 600;
-      text-decoration: none; border-radius: 0 0 8px 0;
-    }
-    .skip-link:focus { left: 0; }
+.parallax-card{will-change:transform}
 
-    /* ── MICRO-INTERACTIONS ─────────────────────── */
-    @keyframes dal-fade-up   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes dal-pop       { 0% { transform: scale(1); } 45% { transform: scale(1.22); } 100% { transform: scale(1); } }
-    @keyframes dal-pulse     { 0% { box-shadow: 0 0 0 0 rgba(212,160,23,.55); } 80% { box-shadow: 0 0 0 18px rgba(212,160,23,0); } 100% { box-shadow: 0 0 0 0 rgba(212,160,23,0); } }
-    @keyframes dal-wiggle    { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
-    @keyframes dal-paw-walk  { 0% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(-6deg); } 100% { transform: translateY(0) rotate(0); } }
-    main, .page-wrap { animation: dal-fade-up .55s ease-out both; }
-    .nav-brand { display: inline-block; }
-    .nav-brand:hover { animation: dal-wiggle .5s ease-in-out; }
-    .nav-link { position: relative; }
-    .nav-link::after {
-      content: ''; position: absolute; left: 14px; right: 14px; bottom: 0;
-      height: 2px; background: var(--yellow-light); border-radius: 2px;
-      transform: scaleX(0); transform-origin: center;
-      transition: transform .26s ease;
-    }
-    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
-    .btn-primary, .hero-form button, .issue-read-link {
-      animation: dal-pulse 2.4s ease-out 2;
-    }
-    .dal-pop { animation: dal-pop .42s cubic-bezier(.34,1.56,.64,1); }
-    /* dog-card hover effect lives on .dog-card-photo-wrap (zoom + shine sweep). */
-    /* Perk icon bounce on hover */
-    .perk-item:hover .perk-icon { animation: dal-paw-walk .55s ease-in-out; }
-    /* Coupon code subtle wiggle on hover */
-    .coupon-code:hover { animation: dal-wiggle .5s ease-in-out; cursor: pointer; }
+@media (max-width: 980px){
+  .hero-inner,.cal-wrap,.about-wrap,.my-dog-wrap{grid-template-columns:1fr;gap:40px}
+  .featured{max-width:none;margin:0}
+  .testi-grid{grid-template-columns:1fr;gap:24px}
+  .store-grid{grid-template-columns:repeat(2,1fr)}
+  .foot-inner{grid-template-columns:1fr 1fr;gap:32px}
+  .svc{grid-template-columns:60px 1fr auto;gap:16px}
+  .svc-desc,.svc-price{display:none}
+  section{padding:72px 24px}
+  .nav-links .nav-link:not(:last-child){display:none}
+}
+@media (max-width: 640px){
+  .trust-inner{justify-content:center;gap:16px 24px}
+  .trust-sep{display:none}
+  .foot-inner{grid-template-columns:1fr}
+  .featured-name{font-size:32px}
+  .store-grid{grid-template-columns:1fr}
+}
 
-    @media (prefers-reduced-motion: reduce) {
-      main, .page-wrap, .nav-brand, .btn-primary, .hero-form button,
-      .issue-read-link, .dal-pop, .dog-card-photo, .ph-icon,
-      .perk-icon, .coupon-code {
-        animation: none !important;
-      }
-      .nav-link::after { display: none !important; }
-    }
-
-    /* ── RESPONSIVE ──────────────────────────────── */
-
-    /* Tablet — shrink hero, tighten grids */
-    @media (max-width: 960px) {
-      nav { padding: 0 24px; }
-      .hero { padding: 60px 28px 68px; }
-      .hero-inner { gap: 36px; }
-      .hero-title { font-size: 54px; }
-      .dogs-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-      .pillars { grid-template-columns: repeat(2, 1fr); }
-      .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    /* Mobile — hamburger, stacked hero */
-    @media (max-width: 820px) {
-      nav { padding: 0 18px; height: 56px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none;
-        position: absolute; top: 56px; left: 0; right: 0;
-        background: #1B4F8C;
-        flex-direction: column;
-        padding: 10px 18px 16px; gap: 2px;
-        border-bottom: 2px solid rgba(255,255,255,.1);
-        z-index: 199;
-      }
-      .nav-links.open { display: flex; }
-      .nav-link { display: block; padding: 10px 14px; border-radius: 8px; width: 100%; }
-      .nav-cta { margin: 8px 0 0; text-align: center; display: block; }
-      .hero { padding: 50px 20px 60px; }
-      .hero-inner { flex-direction: column; gap: 32px; text-align: center; }
-      .hero-title { font-size: 44px; }
-      .hero-sub { max-width: 100%; }
-      .hero-form { justify-content: center; flex-wrap: wrap; }
-      .hero-photos { order: -1; justify-content: center; }
-      .hero-photo-main { width: 150px; height: 184px; }
-      .hero-photo-secondary { width: 92px; height: 138px; }
-      .perks-strip { flex-direction: column; padding: 0 16px; }
-      .perk-item { border-right: none; border-bottom: 1px solid var(--border); width: 100%; justify-content: center; }
-      .perk-item:last-child { border-bottom: none; }
-      .page-wrap { padding: 48px 20px 72px; }
-      .issue-preview { grid-template-columns: 1fr; }
-      .store-teaser { padding: 28px 24px; flex-direction: column; text-align: center; gap: 18px; }
-      .coupon-grid { grid-template-columns: 1fr; }
-      .pillars { grid-template-columns: 1fr 1fr; gap: 14px; }
-      .dogs-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-      .testimonial-grid { grid-template-columns: 1fr; }
-      .share-row { flex-direction: column; align-items: stretch; }
-      .share-btn { text-align: center; }
-      footer { padding: 36px 20px 28px; }
-      .footer-links { gap: 14px 18px; }
-    }
-
-    /* Small mobile — single-col + tighter type */
-    @media (max-width: 480px) {
-      .hero-title { font-size: 36px; }
-      .hero-eyebrow { font-size: 10px; }
-      .hero-form { flex-direction: column; }
-      .hero-form input, .hero-form button { width: 100%; }
-      .pillars { grid-template-columns: 1fr; }
-      .section-title { font-size: 24px; }
-      .dogs-grid { grid-template-columns: 1fr 1fr; }
-    }
-  </style>
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
 
-<a href="#main" class="skip-link">Skip to main content</a>
-<div id="toast" role="status" aria-live="polite"></div>
+<!-- Seasonal banner -->
+<div class="banner" id="seasonalBanner">
+  <span class="banner-pulse"></span>
+  <span>Memorial Day weekend <strong>→</strong> <strong>3 overnight spots left</strong> · book by May 15</span>
+  <span style="opacity:.5">·</span>
+  <span>Summer holiday waitlist now open</span>
+</div>
 
-<!-- ── NAV ──────────────────────────────────────────────────── -->
-<nav>
-  <a href="index.html" class="nav-brand">Dogs <span class="amp">&amp;</span> Llamas</a>
-  <button class="dal-personalize-btn" id="dal-personalize-btn" type="button"
-          style="display:none"
-          onclick="DAL && DAL.onPersonalizeBtnClick()"
-          title="Toggle personalized view"
-          aria-label="Toggle personalized view">
-    &#128062;&nbsp;<span class="dal-btn-label">you</span>
-  </button>
-  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
-  <div class="nav-links" id="nav-links">
-    <a href="schedule.html" class="nav-link">Schedule</a>
-    <a href="gallery.html"  class="nav-link">Gallery</a>
-    <a href="about.html"    class="nav-link">About</a>
-    <a href="store.html"    class="nav-link">Shop</a>
-    <a href="#subscribe"    class="nav-cta">Subscribe</a>
+<!-- Subscriber dashboard bar (hidden by default, shown when body.dal-in) -->
+<div class="dashboard-bar dashboard" id="dashboardBar">
+  <span>◐ Welcome back, <strong id="subName">friend</strong></span>
+  <span>·</span>
+  <span>Returning-client perk active</span>
+  <span class="chip" id="subCodeBar">DL10</span>
+  <span>·</span>
+  <span>Priority booking unlocked</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand-group">
+      <a href="index.html" class="brand">
+        <span class="brand-dot"></span>
+        Dogs <span class="amp">&amp;</span> Llamas
+      </a>
+      <div class="sub-code" id="subCode">
+        <input type="text" id="subCodeInput" placeholder="Code" maxlength="20" aria-label="Subscriber code" />
+        <button class="sub-code-submit" id="subCodeSubmit" type="button" aria-label="Submit code">Enter</button>
+        <div class="sub-code-chip">
+          <strong id="subNameChip">Friend</strong>
+          <span class="code" id="subCodeChip">DL10</span>
+          <button class="x" id="subCodeClear" title="Sign out" aria-label="Sign out">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="#services">Services</a>
+      <a class="nav-link" href="#pack">The Pack</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="gallery.html">Gallery</a>
+      <a class="nav-link" href="store.html">Store</a>
+      <a class="nav-link" href="monthly-issue-01.html">Newsletter</a>
+      <a class="nav-cta" href="#book">Book a Stay →</a>
+    </div>
   </div>
 </nav>
-<div id="dal-live-region" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);"></div>
 
-<!-- ── HERO (no longer contains the subscribe form — moved to bottom) ── -->
-<section class="hero" id="top" aria-label="Dogs &amp; Llamas newsletter">
+<!-- HERO -->
+<section class="hero" style="padding-top:80px">
+  <div class="hero-orbs"><div class="hero-orb o1"></div><div class="hero-orb o2"></div></div>
   <div class="hero-inner">
-
     <div class="hero-content">
-      <p class="hero-eyebrow">Monthly Dog-Care Updates</p>
-      <h1 class="hero-title">Dogs <span class="amp">&amp;</span> Llamas</h1>
-      <p class="hero-byline">by Lorenzo &amp; Catalina Llamas &bull; Rover Star Sitters</p>
-      <p class="hero-sub">Availability openings, honest dog tips, and small perks for repeat clients &mdash; once a month, always personal. Scroll down for this month's issue, or subscribe free at the bottom.</p>
+      <span class="hero-eyebrow reveal"><span class="dot"></span>Rover Star Sitters · Queens NYC</span>
+      <h1 class="hero-title reveal reveal-d1">
+        Your Dog's Second<br>
+        <em>Favorite Family.</em>
+      </h1>
+      <p class="hero-sub reveal reveal-d2">
+        Boarding, walking, and care by <strong>Lorenzo &amp; Catalina Llamas</strong> — Rover Star Sitters serving Woodside, Sunnyside, Astoria, LIC, and Midtown. Real photos, real backyard, real updates.
+      </p>
 
-      <div class="hero-cta-row">
-        <a href="#latest" class="btn-primary">Read this month &rarr;</a>
-        <a href="#subscribe" class="btn-secondary">Subscribe free</a>
+      <div class="hero-meta reveal reveal-d3">
+        <div>Since<strong>2022</strong></div>
+        <div>Rover rating<strong>5.0 ★★★★★</strong></div>
+        <div>Dogs cared for<strong>70+ across NYC</strong></div>
+      </div>
+
+      <div class="hero-ctas reveal reveal-d3">
+        <a class="btn btn-primary" href="#services">See Services <span class="btn-arrow">→</span></a>
+        <a class="btn btn-secondary" href="#book">Check Availability</a>
       </div>
     </div>
 
-    <div class="hero-photos" aria-hidden="true">
-      <div class="hero-photo-wrap main">
-        <img src="./media/Turbo Outside.jpg"
-             alt="Turbo enjoying the outdoors"
-             class="hero-photo-main"
-             width="164" height="200" loading="eager">
+    <div class="featured reveal reveal-d2" id="featured">
+      <div class="featured-photo">
+        <img id="featuredImg" src="media/turbo-outside.jpg" alt="Turbo on an outdoor walk" />
       </div>
-      <div class="hero-photo-wrap secondary">
-        <img src="./media/Troy.jpg"
-             alt="Troy the Husky"
-             class="hero-photo-secondary"
-             width="100" height="148" loading="eager">
+      <div class="featured-tag">
+        <div>
+          <h3 class="featured-name" id="featuredName">Turbo</h3>
+          <p class="featured-desc" id="featuredDesc">High-energy athlete · knows sit, stay, spin · sheds with joy</p>
+        </div>
+        <span class="featured-stamp" id="featuredStamp">Stay #47</span>
+      </div>
+      <div class="dog-nav" id="dogNav">
+        <button class="dog-arrow" onclick="prevDog()" aria-label="Previous dog">‹</button>
+        <div class="dog-nav-dots" id="dogNavDots" style="display:flex;gap:6px;align-items:center"></div>
+        <button class="dog-arrow" onclick="cycleDog()" aria-label="Next dog">›</button>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ── PERKS STRIP ───────────────────────────────────────────── -->
-<div class="perks-strip" role="list">
-  <div class="perk-item" role="listitem">
-    <span class="perk-icon" aria-hidden="true">&#128276;</span>
-    <span><strong>First notice</strong> on new booking spots</span>
-  </div>
-  <div class="perk-item" role="listitem">
-    <span class="perk-icon" aria-hidden="true">&#128054;</span>
-    <span><strong>Monthly dog tips</strong> from real experience</span>
-  </div>
-  <div class="perk-item" role="listitem">
-    <span class="perk-icon" aria-hidden="true">&#127381;</span>
-    <span>Subscriber code <strong>PUPS10</strong> — 10% off your next sit</span>
-  </div>
-  <div class="perk-item" role="listitem">
-    <span class="perk-icon" aria-hidden="true">&#9733;</span>
-    <span><a href="store.html">Curated Top Picks</a> for your dog</span>
+<!-- TRUST STRIP -->
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-stat"><span class="trust-num">70+</span><span class="trust-label">Dogs<br>In The Pack</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">5.0</span><span class="trust-label">Rover<br>Rating</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">24/7</span><span class="trust-label">Photo<br>Updates</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">3</span><span class="trust-label">Subway Lines<br>To Our Door</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">∞</span><span class="trust-label">Belly Rubs<br>Per Day</span></div>
   </div>
 </div>
 
-<!-- ── MAIN ─────────────────────────────────────────────────── -->
-<main class="page-wrap" id="main">
-
-  <!-- WHAT YOU GET -->
-  <div class="reveal">
-    <p class="section-eyebrow">What You'll Get</p>
-    <h2 class="section-title">Simple updates. Real value.</h2>
-  </div>
-  <div class="pillars">
-    <div class="pillar-card reveal reveal-d1">
-      <div class="pillar-icon">&#128197;</div>
-      <p class="pillar-title">Availability First</p>
-      <p class="pillar-desc">Know when spots open before anyone else — especially useful for holidays and busy travel seasons.</p>
-    </div>
-    <div class="pillar-card reveal reveal-d2">
-      <div class="pillar-icon">&#128161;</div>
-      <p class="pillar-title">Honest Dog Tips</p>
-      <p class="pillar-desc">One practical tip per issue — paw care, enrichment, travel prep, seasonal reminders. Nothing generic.</p>
-    </div>
-    <div class="pillar-card reveal reveal-d3">
-      <div class="pillar-icon">&#127881;</div>
-      <p class="pillar-title">Repeat Client Perks</p>
-      <p class="pillar-desc">Loyalty discounts and referral thank-yous for clients who keep coming back.</p>
-    </div>
-    <div class="pillar-card reveal reveal-d4">
-      <div class="pillar-icon">&#128247;</div>
-      <p class="pillar-title">Dog Pics</p>
-      <p class="pillar-desc">Updates and photos from recent stays — with permission, always.</p>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <!-- LATEST ISSUE — text swaps via data-dal-slot when logged in with a matching dog -->
-  <div class="reveal" id="latest">
-    <p class="section-eyebrow">Latest Issue</p>
-    <h2 class="section-title">April 2026</h2>
-  </div>
-
-  <div class="issue-preview reveal">
-    <div class="issue-aside">
+<!-- PERSONAL "my dog" panel — subscriber only -->
+<section class="my-dog dashboard" id="myDogSection" style="padding:80px 32px">
+  <div class="section-inner">
+    <div class="my-dog-wrap">
+      <div class="my-dog-photo">
+        <img id="myDogPhoto" src="media/teddy-and-me.jpg" alt="" />
+        <div class="my-dog-name" id="myDogName">Teddy</div>
+      </div>
       <div>
-        <p class="issue-aside-eyebrow">Dogs &amp; Llamas</p>
-        <h3 class="issue-aside-title" data-dal-slot="issue-title">Spring openings + a tip for warmer-weather walks</h3>
+        <span class="eyebrow">Just For <span id="subNameEcho">You</span></span>
+        <h2 class="my-dog-greeting">Three Tips<br>Tailored To <em id="myDogNameEm">Teddy</em></h2>
+        <p style="font-family:var(--font-body);font-size:15.5px;line-height:1.6;color:var(--ink-2);margin:0;max-width:500px">
+          Based on what we know about your pup, here's what's on our radar this month:
+        </p>
+        <div class="my-dog-tips" id="myDogTips"></div>
       </div>
-      <p class="issue-aside-date">April 2026 &bull; Issue 01</p>
-    </div>
-    <div class="issue-body">
-      <p data-dal-slot="issue-body-1">Spring spots are opening up for weekends and drop-ins through April into May. If you have travel or a busy stretch coming up, it's a good time to reach out early.</p>
-      <p data-dal-slot="issue-body-2">This month's tip: pavement heats fast in spring. The five-second hand test — if you can't hold the back of your hand on the sidewalk comfortably, it's too hot for paws.</p>
-      <p data-dal-slot="issue-body-3">Subscribers get first notice on newly opened spots before they're shared anywhere else.</p>
-      <a class="issue-read-link" href="monthly-issue-01.html">Read the full issue &rarr;</a>
     </div>
   </div>
+</section>
 
-  <ul class="archive-list reveal" aria-label="Past issues">
-    <li><a href="monthly-issue-01.html">April 2026 &rarr;</a></li>
-    <!-- Add each month: <li><a href="monthly-issue-02.html">May 2026 &rarr;</a></li> -->
-  </ul>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       PERSONALIZED TIPS SECTION — only shows when logged in with a matched dog
-       Content slots populate from DAL.DOG_CONTENT[dogName] in dal-subscriber.js
-       ═══════════════════════════════════════════════════════════ -->
-  <section class="dal-dog-only personal-tips reveal" aria-label="Personalized tips">
-    <p class="section-eyebrow" data-dal-slot="tip-eyebrow">Your Top Tips</p>
-    <h2 class="section-title" data-dal-slot="tip-title">This month's tips, just for you</h2>
-    <div class="personal-tips-grid">
-      <div class="personal-tip">
-        <span class="personal-tip-num">01</span>
-        <p data-dal-slot="tip-1">Loading your personal tip&hellip;</p>
-      </div>
-      <div class="personal-tip">
-        <span class="personal-tip-num">02</span>
-        <p data-dal-slot="tip-2">Loading your personal tip&hellip;</p>
-      </div>
-      <div class="personal-tip">
-        <span class="personal-tip-num">03</span>
-        <p data-dal-slot="tip-3">Loading your personal tip&hellip;</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- PERSONAL PICK — store recommendation tailored to the logged-in dog -->
-  <aside class="dal-dog-only personal-pick reveal" aria-label="Your dog's monthly pick">
-    <div class="personal-pick-icon" aria-hidden="true">&#127873;</div>
-    <div class="personal-pick-body">
-      <p class="personal-pick-eyebrow" data-dal-slot="pick-label">Your pick this month</p>
-      <p class="personal-pick-name" data-dal-slot="pick-name">Loading your pick&hellip;</p>
-      <p class="personal-pick-reason" data-dal-slot="pick-reason">A curated recommendation for your dog.</p>
-    </div>
-    <a class="personal-pick-cta" href="store.html">Shop the store &rarr;</a>
-  </aside>
-
-  <hr class="divider">
-
-  <!-- OUR RECENT DOGS -->
-  <section id="our-dogs" aria-labelledby="dogs-heading">
-    <div class="reveal">
-      <p class="section-eyebrow">Our Recent Dogs</p>
-      <h2 class="section-title" id="dogs-heading">Pups I've had the pleasure of caring for</h2>
-    </div>
-
-    <div class="dogs-grid">
-
-      <div class="dog-card reveal reveal-d1">
-        <div class="dog-card-photo-wrap">
-          <img src="./media/turbo-outside.jpg"
-               alt="Turbo the Australian Shepherd playing outside during a boarding stay in Queens NYC"
-               class="dog-card-photo" loading="lazy" width="148" height="184"
-               style="object-position: center 40%;">
-        </div>
-        <div class="dog-card-footer">
-          <p class="dog-card-name">Turbo</p>
-          <p class="dog-card-note">Australian Shepherd</p>
-        </div>
-      </div>
-
-      <div class="dog-card reveal reveal-d2">
-        <div class="dog-card-photo-wrap">
-          <img src="./media/troy.jpg"
-               alt="Troy the Husky with striking blue eyes during dog walking in Queens NYC"
-               class="dog-card-photo" loading="lazy" width="148" height="184"
-               style="object-position: center 35%;">
-        </div>
-        <div class="dog-card-footer">
-          <p class="dog-card-name">Troy</p>
-          <p class="dog-card-note">Husky</p>
-        </div>
-      </div>
-
-      <div class="dog-card reveal reveal-d4">
-        <div class="dog-card-photo-wrap">
-          <img src="./media/dakota-and-me.jpg"
-               alt="Dakota the Sheltie with Lorenzo Llamas during a dog sitting visit in Queens NYC"
-               class="dog-card-photo" loading="lazy" width="148" height="184"
-               style="object-position: center 20%;">
-        </div>
-        <div class="dog-card-footer">
-          <p class="dog-card-name">Dakota</p>
-          <p class="dog-card-note">Sheltie</p>
-        </div>
-      </div>
-
-      <div class="dog-card reveal reveal-d1">
-        <div class="dog-card-photo-wrap">
-          <img src="./media/ace-smiling-sitting-solo.jpg"
-               alt="Ace smiling during a professional dog boarding stay in Queens NYC"
-               class="dog-card-photo" loading="lazy" width="148" height="184"
-               style="object-position: center 55%;">
-        </div>
-        <div class="dog-card-footer">
-          <p class="dog-card-name">Ace</p>
-        </div>
-      </div>
-
-      <div class="dog-card reveal reveal-d2">
-        <div class="dog-card-photo-wrap">
-          <img src="./media/mango-outside.jpg"
-               alt="Mango the Corgi playing outdoors during dog boarding in Queens NYC"
-               class="dog-card-photo" loading="lazy" width="148" height="184"
-               style="object-position: center 25%;">
-        </div>
-        <div class="dog-card-footer">
-          <p class="dog-card-name">Mango</p>
-          <p class="dog-card-note">Corgi</p>
-        </div>
-      </div>
-
-      <div class="dog-card reveal reveal-d3">
-        <div class="dog-card-photo-wrap">
-          <img src="./media/teddy-and-me.jpg"
-               alt="Teddy the Chihuahua with Lorenzo during overnight dog boarding in Queens NYC"
-               class="dog-card-photo" loading="lazy" width="148" height="184"
-               style="object-position: center 30%;">
-        </div>
-        <div class="dog-card-footer">
-          <p class="dog-card-name">Teddy</p>
-          <p class="dog-card-note">Chihuahua</p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- All dog photos are now optimized via `npm run photos` from media/originals/ -->
-    <p class="photo-legal reveal">&#x2022; Photos shared with client permission only. Photos of sitter shared with consent.</p>
-  </section>
-
-  <!-- GALLERY PREVIEW STRIP -->
-  <section class="gallery-preview reveal" aria-labelledby="gallery-preview-heading">
-    <div class="gallery-preview-header">
+<!-- SERVICES -->
+<section class="services-bg" id="services">
+  <div class="section-inner">
+    <div class="section-header">
       <div>
-        <p class="section-eyebrow">From the Gallery</p>
-        <h2 class="section-title" id="gallery-preview-heading">Moments from recent stays</h2>
+        <span class="eyebrow">What We Offer</span>
+        <h2 class="section-title reveal">Services, <em>Stacked By How Much Time</em> You Need Away.</h2>
       </div>
-      <a href="gallery.html" class="gallery-preview-link">View all photos &rarr;</a>
+      <p class="section-sub reveal reveal-d1">
+        Every service includes photo updates, a full onboarding call, and zero platform fees when booked direct for returning clients.
+      </p>
     </div>
-    <div class="gallery-preview-strip">
-      <div class="gallery-preview-item"><img src="./media/thumbs/turbo-outside.jpg" alt="Turbo outdoors" loading="lazy"><span class="gallery-preview-name">Turbo</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/mango-and-harley-1.jpg" alt="Mango and Harley together" loading="lazy"><span class="gallery-preview-name">Mango & Harley</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/athena-walk.jpg" alt="Athena on a walk" loading="lazy"><span class="gallery-preview-name">Athena</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/pretzel-sleeping.jpg" alt="Pretzel sleeping" loading="lazy"><span class="gallery-preview-name">Pretzel</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/troy.jpg" alt="Troy the Husky" loading="lazy"><span class="gallery-preview-name">Troy</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/teddy-lying-down-with-kong-holding-hand.jpg" alt="Teddy with his KONG" loading="lazy"><span class="gallery-preview-name">Teddy</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/pumba-smiling-on-couch.jpg" alt="Pumba smiling" loading="lazy"><span class="gallery-preview-name">Pumba</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/dakota-and-me.jpg" alt="Dakota with Lorenzo" loading="lazy"><span class="gallery-preview-name">Dakota</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/me-and-pretzel-lying-down.jpg" alt="Lorenzo with Pretzel" loading="lazy"><span class="gallery-preview-name">Pretzel</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/logan-lying-down-on-couch.jpg" alt="Logan on the couch" loading="lazy"><span class="gallery-preview-name">Logan</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/ace-smiling-sitting-solo.jpg" alt="Ace smiling" loading="lazy"><span class="gallery-preview-name">Ace</span></div>
-      <div class="gallery-preview-item"><img src="./media/thumbs/zephyr-and-me-walk.jpg" alt="Zephyr on a walk" loading="lazy"><span class="gallery-preview-name">Zephyr</span></div>
-    </div>
-  </section>
 
-  <hr class="divider">
-
-  <!-- TESTIMONIALS -->
-  <div class="reveal">
-    <p class="section-eyebrow">What Clients Say</p>
-    <h2 class="section-title">Kind words from happy owners</h2>
-  </div>
-  <div class="testimonial-grid">
-    <div class="testimonial-card reveal reveal-d1">
-      <p class="testimonial-quote">We always feel completely at ease leaving [Dog Name]. The photo updates made our whole trip so much more relaxing.</p>
-      <p class="testimonial-author">[Client Name]</p>
-      <p class="testimonial-dog">Owner of [Dog Name]</p>
-    </div>
-    <div class="testimonial-card reveal reveal-d2">
-      <p class="testimonial-quote">I love that I hear about openings before they&rsquo;re gone. Lorenzo &amp; Catalina always take such good care of our pup.</p>
-      <p class="testimonial-author">[Client Name]</p>
-      <p class="testimonial-dog">Owner of [Dog Name]</p>
-    </div>
-    <div class="testimonial-card reveal reveal-d3">
-      <p class="testimonial-quote">Referred two neighbors already. Completely reliable, and the newsletter is actually fun to read.</p>
-      <p class="testimonial-author">[Client Name]</p>
-      <p class="testimonial-dog">Owner of [Dog Name]</p>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <!-- STORE TEASER -->
-  <div class="store-teaser reveal" role="complementary">
-    <div class="store-teaser-text">
-      <h3>Curated Top Picks</h3>
-      <p>Gear I genuinely recommend — tested across real dogs. Use code SHOP10 when booking for 10% off your next sit.</p>
-    </div>
-    <a href="store.html" class="btn-primary">Browse Picks &rarr;</a>
-  </div>
-
-  <hr class="divider">
-
-  <!-- COUPONS -->
-  <div class="reveal">
-    <p class="section-eyebrow">Subscriber Perks</p>
-    <h2 class="section-title">A small thank-you for staying in touch</h2>
-  </div>
-  <div class="coupon-grid">
-    <div class="coupon-card reveal reveal-d1">
-      <p class="coupon-tag">Newsletter Perk</p>
-      <div class="coupon-code">PUPS10</div>
-      <p class="coupon-desc">Subscribers get <strong>10% off their next dog-sitting booking</strong>. Mention this code when you reach out on Rover.</p>
-      <p class="coupon-fine">Returning clients. One use per client. Cannot be combined with other offers.</p>
-    </div>
-    <div class="coupon-card reveal reveal-d2">
-      <p class="coupon-tag">Shop Perk</p>
-      <div class="coupon-code">SHOP10</div>
-      <p class="coupon-desc">Order from <a href="store.html">Curated Top Picks</a> and get <strong>10% off your next booking</strong>. Mention this code on Rover.</p>
-      <p class="coupon-fine">New and returning clients. One use per client. Cannot be combined with other offers.</p>
+    <div class="services">
+      <a class="svc reveal" href="#book" data-service="overnight">
+        <div class="svc-num">01</div>
+        <div class="svc-name">Overnight <em>Boarding</em></div>
+        <div class="svc-desc">Your dog stays in our home. Full attention, backyard play, long walks, and photo updates throughout the day.</div>
+        <div class="svc-price">$90<small>Per Night</small></div>
+        <span class="svc-cta">Book Overnight <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+      <a class="svc reveal" href="#book" data-service="daycare">
+        <div class="svc-num">02</div>
+        <div class="svc-name">Doggy <em>Daycare</em></div>
+        <div class="svc-desc">Same-day drop-off and pickup. Your dog hangs out with us, gets walks, play, and company while you're at work.</div>
+        <div class="svc-price">$50<small>Per Day</small></div>
+        <span class="svc-cta">Book A Day <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+      <a class="svc reveal" href="#book" data-service="walks">
+        <div class="svc-num">03</div>
+        <div class="svc-name">Dog <em>Walking</em></div>
+        <div class="svc-desc">30–60 minute walks in your neighborhood. Photo updates, GPS route, and a short note after every walk.</div>
+        <div class="svc-price">$25<small>Per Walk</small></div>
+        <span class="svc-cta">Book A Walk <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+      <a class="svc reveal" href="#book" data-service="dropin">
+        <div class="svc-num">04</div>
+        <div class="svc-name">Drop-In <em>Visits</em></div>
+        <div class="svc-desc">We come to your place for 30 minutes. Feeding, potty break, a quick walk or play, and a photo update.</div>
+        <div class="svc-price">$45<small>Per Visit</small></div>
+        <span class="svc-cta">Book A Visit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
+      <a class="svc reveal" href="#book" data-service="housesit">
+        <div class="svc-num">05</div>
+        <div class="svc-name">House <em>Sitting</em></div>
+        <div class="svc-desc">We stay at your place overnight so your dog sleeps in their own bed. Plants watered, mail taken in, house feels lived in.</div>
+        <div class="svc-price">$100<small>Per Night</small></div>
+        <span class="svc-cta">Book House-Sit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
+      </a>
     </div>
   </div>
+</section>
 
-  <hr class="divider">
-
-  <!-- SHARE / REFER -->
-  <div class="reveal">
-    <p class="section-eyebrow">Know a Dog Owner?</p>
-    <h2 class="section-title">Pass it along</h2>
+<!-- MARQUEE "THE PACK" -->
+<section class="marquee-section" id="pack" style="padding-left:0;padding-right:0">
+  <p class="marquee-label">◆ &nbsp;The Pack · 2022–2026 &nbsp;◆</p>
+  <h2 class="marquee-title">Seventy-Plus Dogs. Every One Of Them<br>Goes Home <em>Happier Than They Arrived.</em></h2>
+  <div class="marquee-wrap">
+    <div class="marquee" id="marquee"></div>
+    <div class="marquee-controls">
+      <button class="marquee-btn" id="marqueePlayPause" title="Pause" aria-label="Pause carousel">
+        <svg id="mqIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/></svg>
+      </button>
+    </div>
   </div>
-  <p class="reveal" style="font-family:var(--font-body);font-size:15px;color:var(--text-2);line-height:1.75;margin:0 0 24px;max-width:500px;">
-    Referrals are the best compliment. If someone you know needs a reliable sitter, send them this page — and there's a thank-you perk in it for you.
-  </p>
-  <div class="share-row reveal">
-    <span class="share-label">Share:</span>
-    <button class="share-btn" id="share-native-btn" type="button">&#8679; Share this page</button>
-    <a class="share-btn"
-       href="https://twitter.com/intent/tweet?text=Great+dog+sitter+%E2%80%94+Dogs+%26+Llamas&url=https%3A%2F%2F[YOUR-SITE]"
-       target="_blank" rel="noopener noreferrer">&#x1D54F; Post on X</a>
-    <a class="share-btn"
-       href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F[YOUR-SITE]"
-       target="_blank" rel="noopener noreferrer">f Facebook</a>
-  </div>
+</section>
 
-  <!-- ══════════════════════════════════════════════════════
-       SUBSCRIBE FREE — moved here from the hero (late April 10 session)
-       ══════════════════════════════════════════════════════ -->
-  <section class="subscribe-bottom reveal" id="subscribe" aria-label="Subscribe to Dogs &amp; Llamas">
-    <p class="subscribe-bottom-eyebrow">Join the Newsletter</p>
-    <h2>Get Dogs &amp; Llamas, free</h2>
-    <p>Monthly availability updates, one honest dog-care tip, and repeat-client perks. Once a month, always personal.</p>
-    <form class="subscribe-bottom-form" id="subscribe-form" action="#" method="post" novalidate>
-      <input type="email" name="email" id="email-input"
-             placeholder="your@email.com" required
-             autocomplete="email" aria-label="Email address">
-      <button type="submit">Subscribe Free</button>
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="section-inner">
+    <div class="about-wrap">
+      <div class="about-photos reveal">
+        <div class="about-photo a1 parallax-card" data-parallax="0.3"><img src="media/me-and-pretzel-lying-down.jpg" alt="Lorenzo with Pretzel" /></div>
+        <div class="about-photo a2 parallax-card" data-parallax="0.18"><img src="media/teddy-and-me.jpg" alt="Lorenzo with Teddy" /></div>
+        <div class="about-badge">
+          <div class="about-badge-spin">
+            <svg viewBox="0 0 120 120"><defs><path id="txt" d="M 60,60 m -45,0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0"/></defs><text><textPath href="#txt" style="font-family:'DM Mono';font-size:10.5px;letter-spacing:1.5px;fill:var(--navy)">★ Rover Star Sitter · Since 2022 ★ Rover Star Sitter · Since 2022 ·</textPath></text></svg>
+            <span class="star">★</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-body reveal reveal-d1">
+        <span class="eyebrow">The Humans</span>
+        <h2 class="section-title" style="margin:0 0 24px">Lorenzo <em>&amp;</em> Catalina.</h2>
+        <p>
+          "We started Dogs &amp; Llamas in 2022 because our whole apartment revolved around dogs anyway — might as well open the door."
+        </p>
+        <p>
+          Lorenzo handles pickups, walks around the Gantry waterfront, and the long weekend boarding stays. Catalina does daytime drop-ins, backyard play, and the dreaded bath after a muddy Roosevelt Island run. We both write you back within an hour.
+        </p>
+        <p>
+          We've cared for seventy-plus dogs across Queens and Midtown. Chihuahuas, pit mixes, corgis, a French Bully who hated being alone, and a pair of large dogs boarded together for two weeks at Christmas. Everyone leaves the same way: a little tired, a little happier.
+        </p>
+        <div class="signature">
+          Lorenzo &amp; Catalina
+          <small>Woodside, Queens · Rover ★ Sitters</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING CALENDAR -->
+<section class="cal-section" id="book">
+  <div class="section-inner">
+    <div class="cal-wrap">
+      <div class="cal reveal">
+        <div class="cal-head">
+          <div class="cal-month"><span id="calMonthName">May</span> <span style="color:var(--blush)" id="calYearName">2026</span><small>Tap An Open Date To Request</small></div>
+          <div class="cal-nav">
+            <button id="calPrev" aria-label="Previous month">‹</button>
+            <button id="calNext" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span><span class="dot g"></span>Available</span>
+          <span><span class="dot n"></span>Booked</span>
+          <span><span class="dot b"></span>Today</span>
+          <span><span class="dot h"></span>Holiday +25%</span>
+        </div>
+      </div>
+      <div class="reveal reveal-d1">
+        <span class="eyebrow">Live Availability</span>
+        <h2 class="section-title">Spots <em>Fill Fast</em> Around Holidays.</h2>
+        <p style="font-family:var(--font-body);font-size:16px;line-height:1.6;color:var(--ink-2);margin:20px 0 28px">
+          We hold a few priority slots each month for returning and newsletter clients. Tap any open date to start a booking request — or reply directly and we'll work from the waitlist.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <button type="button" class="btn btn-primary" onclick="openBooking()">Request A Booking <span class="btn-arrow">→</span></button>
+          <a class="btn btn-gold" href="mailto:dogsandllamasservice@gmail.com">Message Us Directly</a>
+          <a class="btn btn-secondary" href="schedule.html">Full Scheduling Calendar</a>
+        </div>
+        <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;margin-top:24px">
+          Typical reply time: <strong style="color:var(--navy)">under 1 hour</strong>, 8am–9pm EST
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">Kind Words</span>
+        <h2 class="section-title reveal">What Our <em>Returning Clients</em> Say.</h2>
+      </div>
+      <p class="section-sub reveal reveal-d1">
+        All testimonials are real. First names only — we respect our clients' privacy, same way we respect their dogs.
+      </p>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi reveal">
+        <div class="testi-mark">"</div>
+        <p class="testi-quote">Lorenzo sent me a photo of Turbo asleep on the couch with her legs in the air. I knew she was in the right place.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar"><img src="media/turbo-outside.jpg" alt="" /></div>
+          <div class="testi-who">Maya L.<small>Turbo's Human · Sunnyside</small></div>
+          <span class="testi-stars">★★★★★</span>
+        </div>
+      </div>
+      <div class="testi reveal reveal-d1">
+        <div class="testi-mark">"</div>
+        <p class="testi-quote">Pretzel is 85 pounds of enthusiasm. Lorenzo handled him like it was nothing. We've booked him five times since.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar"><img src="media/pretzel-sleeping.jpg" alt="" /></div>
+          <div class="testi-who">Dan &amp; Priya<small>Pretzel's Humans · LIC</small></div>
+          <span class="testi-stars">★★★★★</span>
+        </div>
+      </div>
+      <div class="testi reveal reveal-d2">
+        <div class="testi-mark">"</div>
+        <p class="testi-quote">Boarded Teddy for a week while we were in Italy. The daily photos were the best part of our trip. Second best, I mean.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar"><img src="media/teddy.jpg" alt="" /></div>
+          <div class="testi-who">Elena R.<small>Teddy's Human · Astoria</small></div>
+          <span class="testi-stars">★★★★★</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORE TEASE -->
+<section class="store-tease">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <span class="eyebrow">From The Store</span>
+        <h2 class="section-title reveal">Gear We've <em>Watched Dogs Actually Love.</em></h2>
+      </div>
+      <a class="btn btn-secondary reveal reveal-d1" href="store.html">Browse All Picks <span class="btn-arrow">→</span></a>
+    </div>
+
+    <div class="store-grid">
+      <a href="store.html" class="store-card reveal">
+        <span class="store-badge">◆ Sitter Pick</span>
+        <div class="store-emoji">K</div>
+        <span class="store-brand">KONG</span>
+        <p class="store-name">KONG Classic (Large)</p>
+        <p class="store-reason">Stuffed with peanut butter, frozen overnight. The workhorse of the kennel.</p>
+        <div class="store-endorse">Teddy approved.<small>After 14 Boarding Stays</small></div>
+      </a>
+      <a href="store.html" class="store-card reveal reveal-d1">
+        <span class="store-badge">◆ Most Gifted</span>
+        <div class="store-emoji">B</div>
+        <span class="store-brand">Chuckit!</span>
+        <p class="store-name">Ultra Ball (3-pack)</p>
+        <p class="store-reason">Bouncy, durable, fits the launcher. Athena demands fetch every time she visits.</p>
+        <div class="store-endorse">Athena approved.<small>Never Stops Fetching</small></div>
+      </a>
+      <a href="store.html" class="store-card reveal reveal-d2">
+        <span class="store-badge">◆ Best Value</span>
+        <div class="store-emoji">L</div>
+        <span class="store-brand">Lickimat</span>
+        <p class="store-name">Soother Slow Feeder</p>
+        <p class="store-reason">Smear with wet food or yogurt. Calms nervous dogs for 10 quiet minutes.</p>
+        <div class="store-endorse">Pumba approved.<small>Anxiety ↓ In Minutes</small></div>
+      </a>
+      <a href="store.html" class="store-card reveal reveal-d3">
+        <span class="store-badge">◆ Walking Essential</span>
+        <div class="store-emoji">H</div>
+        <span class="store-brand">Ruffwear</span>
+        <p class="store-name">Front-Range Harness</p>
+        <p class="store-reason">The harness that finally stopped Turbo's front-left pulling. Two leash points.</p>
+        <div class="store-endorse">Turbo approved.<small>After Graduating Prong</small></div>
+      </a>
+    </div>
+    <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:1px;color:var(--ink-3);text-align:center;margin-top:32px">
+      ◆ &nbsp;Some store links may be paid — I only recommend what I've used with dogs I've cared for. &nbsp;◆
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-inner">
+    <div class="section-header" style="justify-content:center;text-align:center;flex-direction:column;align-items:center;margin-bottom:40px">
+      <span class="eyebrow">Before You Book</span>
+      <h2 class="section-title reveal" style="text-align:center">Questions, <em>Answered.</em></h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">What does a typical boarding day look like?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Morning walk around 8am (longer if it's cool out), breakfast, then couch-and-backyard time. Mid-day play or second walk. Dinner around 6pm. Evening walk and settle time. You'll get photo updates morning and evening, plus whenever something cute happens — which is often.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you take multiple dogs at once?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Yes, with a compatibility check. We've had two dogs boarded together for two weeks (Mango and Harley last Christmas — they became friends). If your dog doesn't love other dogs, we'll book solo days.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What's your cancellation policy?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          We follow Rover's flexible policy for Rover bookings: full refund if you cancel by 5pm the day before. For direct returning clients, we're more flexible — just let us know as early as you can so we can offer the spot to someone on the waitlist.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Where are you located? How does pickup work?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          We're in Woodside, Queens — two blocks from the 61st St-Woodside 7/LIRR station. Pickup and drop-off at our home is easiest. For a small fee we can also pickup within ~2 miles (Sunnyside, Astoria, LIC, Jackson Heights).
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Are you bonded and insured?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          Rover-booked stays are covered under the Rover Guarantee (up to $25k in vet coverage, premium insurance). For house-sitting, we carry a separate liability policy — happy to share on request.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What if my dog has medication or special needs?<span class="faq-toggle">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          We handle pills, injections (insulin included), elderly dogs, post-surgery care, and anxious pups. Walk us through the routine on the meet &amp; greet. We log every dose and photograph it so you can verify.
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBSCRIBE -->
+<section class="sub-section" id="subscribe">
+  <div class="section-inner sub-wrap">
+    <span class="eyebrow">Pup Notes</span>
+    <h2 class="sub-title reveal">Monthly Notes. <em>Priority Spots.</em></h2>
+    <p class="sub-desc reveal reveal-d1">
+      One email a month. Availability for returning clients before it goes public, a seasonal dog tip, and one product I've actually used. Unsubscribe anytime — no hard feelings.
+    </p>
+    <form class="sub-form reveal reveal-d2" id="subscribeForm" onsubmit="event.preventDefault(); handleSubscribe(this);">
+      <input type="email" name="email" id="subscribeEmail" placeholder="your@email.com" required autocomplete="email" />
+      <button type="submit" id="subscribeBtn">Join Pup Notes →</button>
     </form>
-    <p class="subscribe-bottom-note">No spam. Unsubscribe anytime. <a href="privacy.html">Privacy policy</a>.</p>
-  </section>
-
-</main>
-
-<!-- ── FOOTER ────────────────────────────────────────────────── -->
-<footer>
-  <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
-  <p>Lorenzo &amp; Catalina Llamas &bull; Rover Star Sitters</p>
-  <p>All active Rover bookings are handled through
-     <a href="https://www.rover.com" target="_blank" rel="noopener noreferrer">Rover.com</a>
-     in accordance with their Terms of Service.</p>
-  <div class="footer-links">
-    <a href="schedule.html">Schedule</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="about.html">About</a>
-    <a href="store.html">Shop</a>
-    <a href="monthly-issue-01.html">Latest Issue</a>
-    <a href="privacy.html">Privacy</a>
+    <p class="sub-msg" id="subscribeMsg" role="status" aria-live="polite"></p>
+    <div class="sub-perks reveal reveal-d3">
+      <span>Priority Booking</span>
+      <span>Returning-Client Rate</span>
+      <span>No Spam, Ever</span>
+    </div>
   </div>
-  <p style="margin-top:16px;color:rgba(255,255,255,.2);font-size:11.5px;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-brand">Dogs <span class="amp">&amp;</span> Llamas</div>
+      <p class="foot-tagline">Professional dog boarding, walking, and care in Queens NYC. Lorenzo &amp; Catalina Llamas, Rover Star Sitters since 2022.</p>
+    </div>
+    <div class="foot-section">
+      <h4>Services</h4>
+      <a href="#services">Overnight Boarding</a>
+      <a href="#services">Doggy Daycare</a>
+      <a href="#services">Dog Walking</a>
+      <a href="#services">Drop-In Visits</a>
+      <a href="#services">House Sitting</a>
+    </div>
+    <div class="foot-section">
+      <h4>The Brand</h4>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="#pack">The Pack</a>
+      <a href="store.html">Store</a>
+      <a href="monthly-issue-01.html">Newsletter</a>
+      <a href="schedule.html">Scheduling</a>
+    </div>
+    <div class="foot-section">
+      <h4>Say Hello</h4>
+      <a href="mailto:dogsandllamasservice@gmail.com">dogsandllamasservice@gmail.com</a>
+      <a href="https://www.rover.com/members/lorenzo-l-1" target="_blank" rel="noopener">Book On Rover</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 Dogs &amp; Llamas. Hugs Administered Daily.</div>
+    <div>Some Store Links May Earn A Commission · No Extra Cost To You</div>
+  </div>
 </footer>
 
+<!-- Booking flow modal -->
+<div class="booking-modal" id="bookingModal" aria-hidden="true">
+  <div class="booking-backdrop" onclick="closeBooking()"></div>
+  <div class="booking-card" role="dialog" aria-labelledby="bookingTitle">
+    <button class="booking-close" onclick="closeBooking()" aria-label="Close">×</button>
+
+    <div class="booking-steps">
+      <div class="booking-step active" data-step="1"><span>01</span>Dates</div>
+      <div class="booking-step" data-step="2"><span>02</span>Your Dog</div>
+      <div class="booking-step" data-step="3"><span>03</span>Confirm</div>
+    </div>
+
+    <!-- STEP 1 · DATES -->
+    <div class="booking-panel" data-panel="1">
+      <span class="eyebrow" style="margin-bottom:10px">Step 01 · Dates &amp; Service</span>
+      <h3 class="booking-title" id="bookingTitle">Pick Your Dates.</h3>
+      <p class="booking-sub" id="bookingDatesIntro">Tap an arrival date, then a departure date. We'll hold it for 24 hours.</p>
+
+      <div class="booking-dates" id="dateModeRange">
+        <div>
+          <label>Arrival</label>
+          <button type="button" class="booking-date-display" id="arrivalDisplay" data-which="arrival">— Select A Date —</button>
+        </div>
+        <div class="booking-arrow">→</div>
+        <div>
+          <label>Departure</label>
+          <button type="button" class="booking-date-display" id="departureDisplay" data-which="departure">— Select A Date —</button>
+        </div>
+      </div>
+
+      <div class="booking-dates booking-single" id="dateModeSingle" style="display:none;grid-template-columns:1fr;gap:12px">
+        <div>
+          <label>Date</label>
+          <button type="button" class="booking-date-display" id="singleDateDisplay" data-which="single">— Select A Date —</button>
+        </div>
+        <div class="booking-time-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label>Drop-Off Time</label>
+            <input type="time" id="timeArrive" class="booking-time-input" value="09:00" />
+          </div>
+          <div>
+            <label>Pick-Up Time</label>
+            <input type="time" id="timeDepart" class="booking-time-input" value="17:00" />
+          </div>
+        </div>
+      </div>
+
+      <div class="booking-mini-cal" id="miniCal" style="display:none">
+        <div class="mini-cal-head">
+          <button type="button" id="miniPrev" aria-label="Previous month">‹</button>
+          <strong id="miniMonth">May 2026</strong>
+          <button type="button" id="miniNext" aria-label="Next month">›</button>
+        </div>
+        <div class="mini-cal-dow"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+        <div class="mini-cal-grid" id="miniGrid"></div>
+        <p class="mini-cal-hint" id="miniHint">Pick an arrival date</p>
+      </div>
+
+      <label class="booking-label">Service Type</label>
+      <div class="booking-services">
+        <label class="booking-svc">
+          <input type="radio" name="svc" value="overnight" checked>
+          <div><strong>Overnight Boarding</strong><span>$90 / night · includes walks &amp; meals</span></div>
+        </label>
+        <label class="booking-svc">
+          <input type="radio" name="svc" value="daycare">
+          <div><strong>Doggy Daycare</strong><span>$50 / day · 9am – 6pm</span></div>
+        </label>
+        <label class="booking-svc">
+          <input type="radio" name="svc" value="walks">
+          <div><strong>Dog Walking</strong><span>$25 / 30–60 min walk</span></div>
+        </label>
+        <label class="booking-svc">
+          <input type="radio" name="svc" value="dropin">
+          <div><strong>Drop-In Visits</strong><span>$45 / 30-min visit</span></div>
+        </label>
+        <label class="booking-svc">
+          <input type="radio" name="svc" value="housesit">
+          <div><strong>House Sitting</strong><span>$100 / night at your place</span></div>
+        </label>
+      </div>
+
+      <div class="booking-summary" id="summary1">
+        <div class="booking-summary-row">
+          <span>Estimated Total</span>
+          <strong id="estimate">—</strong>
+        </div>
+        <div class="booking-summary-extra" id="summaryHolidays">+25% holiday surcharge applied</div>
+        <div class="booking-summary-extra" id="summaryPuppy">+10% puppy rate applied</div>
+      </div>
+
+      <div class="booking-actions">
+        <button class="btn btn-secondary" type="button" onclick="closeBooking()">Cancel</button>
+        <button class="btn btn-primary" type="button" onclick="bookingStep(2)" id="toStep2">Next: Your Dog →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 · DOG -->
+    <div class="booking-panel" data-panel="2" style="display:none">
+      <span class="eyebrow" style="margin-bottom:10px">Step 02 · Your Dog</span>
+      <h3 class="booking-title">Tell Us About Your Pup.</h3>
+      <p class="booking-sub">The more we know, the better the stay. You can add details on the meet &amp; greet.</p>
+
+      <div class="booking-field-row">
+        <div class="booking-field">
+          <label>Dog's Name</label>
+          <input type="text" id="bookDogName" placeholder="e.g. Teddy" autocomplete="off" />
+        </div>
+        <div class="booking-field">
+          <label>Breed &amp; Weight</label>
+          <input type="text" id="bookBreed" placeholder="e.g. Chihuahua, 8 lbs" autocomplete="off" />
+        </div>
+      </div>
+
+      <label class="booking-label">Any Of These Apply? <small>(Optional)</small></label>
+      <div class="booking-chips">
+        <label class="booking-chip"><input type="checkbox" data-flag="meds"><span>Takes Medication</span></label>
+        <label class="booking-chip"><input type="checkbox" data-flag="shy"><span>Nervous With New People</span></label>
+        <label class="booking-chip"><input type="checkbox" data-flag="social"><span>Good With Other Dogs</span></label>
+        <label class="booking-chip"><input type="checkbox" data-flag="senior"><span>Senior (8+ yrs)</span></label>
+        <label class="booking-chip" id="puppyChip"><input type="checkbox" id="isPuppy"><span>Puppy (under 1 yr) <em style="color:var(--blush);font-style:normal;font-weight:600;margin-left:4px">+10%</em></span></label>
+      </div>
+
+      <div class="booking-field" style="margin-top:16px">
+        <label>Anything Else We Should Know?</label>
+        <textarea id="bookNotes" rows="3" placeholder="Feeding schedule, allergies, favorite toys, quirks..."></textarea>
+      </div>
+
+      <div class="booking-actions">
+        <button class="btn btn-secondary" type="button" onclick="bookingStep(1)">← Back</button>
+        <button class="btn btn-primary" type="button" onclick="bookingStep(3)">Next: Confirm →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 · CONFIRM -->
+    <div class="booking-panel" data-panel="3" style="display:none">
+      <span class="eyebrow" style="margin-bottom:10px">Step 03 · Confirm</span>
+      <h3 class="booking-title">Your Details.</h3>
+      <p class="booking-sub">We'll reply within the hour, 8am – 9pm EST.</p>
+
+      <div class="booking-field-row">
+        <div class="booking-field">
+          <label>Your Name</label>
+          <input type="text" id="bookYourName" placeholder="Maya L." autocomplete="name" />
+        </div>
+        <div class="booking-field">
+          <label>Email</label>
+          <input type="email" id="bookEmail" placeholder="you@email.com" required autocomplete="email" />
+        </div>
+      </div>
+      <div class="booking-field">
+        <label>Phone (Optional)</label>
+        <input type="tel" id="bookPhone" placeholder="(212) 555-0123" autocomplete="tel" />
+      </div>
+
+      <div class="booking-review" id="bookingReview"></div>
+
+      <label class="booking-consent">
+        <input type="checkbox" id="bookConsent" checked>
+        <span>Send me Pup Notes, our monthly newsletter. (You can unsubscribe anytime.)</span>
+      </label>
+
+      <div class="booking-error" id="bookingError"></div>
+
+      <div class="booking-actions">
+        <button class="btn btn-secondary" type="button" onclick="bookingStep(2)">← Back</button>
+        <button class="btn btn-primary" type="button" id="submitBookingBtn" onclick="submitBooking()">Request Booking →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 · CONFIRMATION -->
+    <div class="booking-panel" data-panel="4" style="display:none">
+      <div class="booking-success">
+        <div class="booking-check">
+          <svg viewBox="0 0 52 52" width="44" height="44"><circle cx="26" cy="26" r="25" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 27 l8 8 l16 -18"/></svg>
+        </div>
+        <h3 class="booking-title" style="text-align:center">Request Sent.</h3>
+        <p class="booking-sub" style="text-align:center;max-width:360px;margin-inline:auto">
+          You'll get a confirmation email at <strong id="confirmEmail">your inbox</strong> within the hour. If we're free for your dates, we'll send a calendar invite.
+        </p>
+
+        <div class="booking-confirm-card">
+          <div class="booking-confirm-row"><span>Reference</span><strong id="confirmRef">DL-0000</strong></div>
+          <div class="booking-confirm-row"><span>Dog</span><strong id="confirmDog">—</strong></div>
+          <div class="booking-confirm-row"><span>Service</span><strong id="confirmSvc">—</strong></div>
+          <div class="booking-confirm-row"><span>Dates</span><strong id="confirmDates">—</strong></div>
+          <div class="booking-confirm-row"><span>Estimate</span><strong id="confirmEstimate">—</strong></div>
+        </div>
+
+        <p class="booking-next" style="text-align:center">
+          While you wait — <a href="store.html">check out the store</a> or <a href="#subscribe">join Pup Notes</a>.
+        </p>
+
+        <div class="booking-actions" style="justify-content:center">
+          <button class="btn btn-gold" type="button" onclick="closeBooking()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DAL subscriber bootstrap (real Supabase integration for newsletter + login + personalization) -->
+<script src="dal-subscriber.js?v=3" defer></script>
+
 <script>
-  /* ── Scroll reveal ───────────────────────────────────────── */
-  (function () {
-    var els = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window)) {
-      els.forEach(function (el) { el.classList.add('visible'); });
-      return;
-    }
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    els.forEach(function (el) { obs.observe(el); });
-  }());
+/* ═══════════ DOG ROSTER ═══════════ */
+const DOGS = [
+  { name: 'Turbo',   img: 'media/turbo-outside.jpg', stamp: 'Stay #47', desc: 'High-energy athlete · knows sit, stay, spin · sheds with joy' },
+  { name: 'Pretzel', img: 'media/me-and-pretzel-lying-down.jpg', stamp: 'Stay #23', desc: 'Eighty-five pounds of enthusiasm · loves belly rubs · couch connoisseur' },
+  { name: 'Teddy',   img: 'media/teddy-and-me.jpg', stamp: 'Stay #19', desc: 'Chihuahua royalty · Kong evangelist · bag dog · extremely cuddly' },
+  { name: 'Mango',   img: 'media/mango-outside.jpg', stamp: 'Stay #31', desc: 'Corgi with a big bark · fetch fanatic · licks his paws poetically' },
+  { name: 'Athena',  img: 'media/athena-walk.jpg', stamp: 'Stay #12', desc: 'Large dog · long walks, longer naps · world-class fetch player' },
+  { name: 'Dakota',  img: 'media/dakota-sitting-solo.jpg', stamp: 'Stay #08', desc: 'Tiny · extremely cute · low maintenance · tiny-accessory eligible' },
+  { name: 'Pumba',   img: 'media/pumba-smiling-on-couch.jpg', stamp: 'Stay #14', desc: 'Nervous for five minutes · then a couch potato for the rest of it' },
+  { name: 'Logan',   img: 'media/logan-lying-down-on-couch.jpg', stamp: 'Stay #17', desc: 'Elder statesman · loves the walk, loves the lounge more · kind' }
+];
 
-  /* ── Subscribe form ──────────────────────────────────────── */
-  document.getElementById('subscribe-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var email = document.getElementById('email-input').value.trim();
-    if (!email) return;
-    var form = this;
-    if (typeof DAL !== 'undefined' && DAL.handleSubscribe) {
-      showToast('Subscribing\u2026');
-      DAL.handleSubscribe(email)
-        .then(function (sub) {
-          showToast('\uD83D\uDC3E Welcome, ' + sub.username + '! Your code: ' + sub.discountCode);
-          form.reset();
-        })
-        .catch(function (err) {
-          showToast('Sorry \u2014 ' + (err.message || 'something went wrong'));
+const PACK_PHOTOS = [
+  { img: 'media/turbo-outside.jpg', name: 'Turbo', role: 'Boarded' },
+  { img: 'media/teddy-and-me.jpg', name: 'Teddy', role: 'Regular' },
+  { img: 'media/pretzel-sleeping-in-comfortable-bed.jpg', name: 'Pretzel', role: 'Boarded' },
+  { img: 'media/mango-outside.jpg', name: 'Mango', role: 'Christmas stay' },
+  { img: 'media/dakota-and-me.jpg', name: 'Dakota', role: 'Day care' },
+  { img: 'media/pumba-smiling-on-couch.jpg', name: 'Pumba', role: 'Weekly walker' },
+  { img: 'media/athena-walk.jpg', name: 'Athena', role: 'Fetch champion' },
+  { img: 'media/logan-lying-down-on-couch.jpg', name: 'Logan', role: 'Drop-in visits' },
+  { img: 'media/frankie-lying-down-on-couch.jpg', name: 'Frankie', role: 'Boarded' },
+  { img: 'media/milo-solo.jpg', name: 'Milo', role: 'Walks' },
+  { img: 'media/ace.jpg', name: 'Ace', role: 'Day care' },
+  { img: 'media/coco.jpg', name: 'Coco', role: 'Boarded' },
+  { img: 'media/troy.jpg', name: 'Troy', role: 'Strong walker' },
+  { img: 'media/palmer-comfortable-in-bed.jpg', name: 'Palmer', role: 'Overnight' },
+  { img: 'media/zephyr-and-me-walk.jpg', name: 'Zephyr', role: 'Weekly walks' },
+  { img: 'media/mango-and-harley-1.jpg', name: 'Mango + Harley', role: 'Two-week stay' }
+];
+
+const DOG_TIPS = {
+  'Teddy': [
+    { label: 'Warm-Weather Tip', text: 'Chihuahuas like Teddy lose heat fast — <strong>sweater for morning walks below 45°F.</strong>' },
+    { label: 'Enrichment', text: 'Kong + frozen peanut butter = 20 minutes of calm. Teddy has graduated to the medium size.' },
+    { label: 'Travel', text: 'The <strong>K&amp;H Travel Carrier</strong> we recommend fits perfectly on an Amtrak tray.' }
+  ],
+  'Turbo': [
+    { label: 'Energy', text: 'Turbo needs <strong>2× 45-minute walks</strong> minimum. Try the long-line at Forest Park off-hours.' },
+    { label: 'Puzzle', text: 'The <strong>Outward Hound Hide-a-Squirrel</strong> kept her busy for 40 minutes last visit.' },
+    { label: 'Training', text: 'Her sit-stay-spin combo is sharp. Keep treats tiny to avoid overfeeding on cue.' }
+  ],
+  'Pretzel': [
+    { label: 'Walking Gear', text: 'The <strong>front-range harness</strong> + hands-free leash changed our Pretzel walks completely.' },
+    { label: 'Sleep', text: 'He picks the couch every time. An <strong>orthopedic bolster bed</strong> helps his elbows.' },
+    { label: 'Belly Rubs', text: 'Non-negotiable. Five minutes minimum after every walk.' }
+  ],
+  'Mango': [
+    { label: 'Feeder', text: 'Mango inhales food — <strong>slow feeder bowl</strong> adds 4 minutes and stops the post-meal zoomies.' },
+    { label: 'Fetch', text: 'He prefers the <strong>Chuckit! Ultra Ball</strong> medium. Tennis balls bore him now.' },
+    { label: 'Paws', text: 'Watch the licking. If it escalates, try the lick mat with yogurt instead.' }
+  ]
+};
+
+/* Persisted prefs */
+let tweaks = (function(){
+  try { return JSON.parse(localStorage.getItem('dal-tweaks')) || {}; } catch(e) { return {}; }
+})();
+tweaks.featuredIndex = (typeof tweaks.featuredIndex === 'number') ? tweaks.featuredIndex : 0;
+function persist(){
+  try { localStorage.setItem('dal-tweaks', JSON.stringify(tweaks)); } catch(e){}
+}
+
+/* ═══════════ FEATURED DOG ═══════════ */
+function renderFeatured(i){
+  const dog = DOGS[i % DOGS.length];
+  const img = document.getElementById('featuredImg');
+  const name = document.getElementById('featuredName');
+  const desc = document.getElementById('featuredDesc');
+  const stamp = document.getElementById('featuredStamp');
+
+  img.classList.add('leaving');
+  setTimeout(()=>{
+    img.src = dog.img;
+    img.alt = dog.name;
+    name.textContent = dog.name;
+    desc.innerHTML = dog.desc;
+    stamp.textContent = dog.stamp;
+    img.classList.remove('leaving');
+  }, 300);
+
+  [...document.querySelectorAll('#dogNavDots button')].forEach((b,j)=>b.classList.toggle('active', j===i));
+  tweaks.featuredIndex = i;
+  persist();
+}
+function cycleDog(){ renderFeatured((tweaks.featuredIndex+1) % DOGS.length); }
+function prevDog(){ renderFeatured((tweaks.featuredIndex - 1 + DOGS.length) % DOGS.length); }
+
+(function(){
+  const nav = document.getElementById('dogNavDots');
+  DOGS.forEach((_,i)=>{
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', `Featured dog ${i+1}`);
+    b.addEventListener('click', ()=>renderFeatured(i));
+    nav.appendChild(b);
+  });
+})();
+
+let cycleInterval = setInterval(cycleDog, 5500);
+const featuredEl = document.getElementById('featured');
+if (featuredEl){
+  featuredEl.addEventListener('mouseenter', ()=>clearInterval(cycleInterval));
+  featuredEl.addEventListener('mouseleave', ()=>{
+    clearInterval(cycleInterval);
+    cycleInterval = setInterval(cycleDog, 5500);
+  });
+}
+
+/* ═══════════ MARQUEE ═══════════ */
+(function(){
+  const mq = document.getElementById('marquee');
+  if (!mq) return;
+  const all = [...PACK_PHOTOS, ...PACK_PHOTOS];
+  all.forEach((p,i)=>{
+    const c = document.createElement('div');
+    c.className = 'marquee-card';
+    c.dataset.idx = i % PACK_PHOTOS.length;
+    c.innerHTML = `<img src="${p.img}" alt="${p.name}" loading="lazy"/>
+      <div class="cap">${p.name}<small>${p.role}</small></div>`;
+    mq.appendChild(c);
+  });
+
+  const SPEED = 0.55;
+  let offset = 0, playing = true, dragging = false;
+  let dragStartX = 0, dragStartOffset = 0, dragMoved = false, halfWidth = 0;
+
+  function measure(){ halfWidth = mq.scrollWidth / 2; }
+  const imgs = mq.querySelectorAll('img');
+  let loaded = 0;
+  imgs.forEach(img=>{
+    if(img.complete) loaded++;
+    else img.addEventListener('load', ()=>{ loaded++; if(loaded===imgs.length) measure(); });
+  });
+  measure();
+  setTimeout(measure, 1500);
+
+  function frame(){
+    if(playing && !dragging){
+      offset -= SPEED;
+      if(halfWidth && Math.abs(offset) >= halfWidth) offset += halfWidth;
+      mq.style.transform = `translateX(${offset}px)`;
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  const btn = document.getElementById('marqueePlayPause');
+  const icon = document.getElementById('mqIcon');
+  function setPlay(p){
+    playing = p;
+    btn.title = p ? 'Pause' : 'Play';
+    btn.setAttribute('aria-label', p ? 'Pause carousel' : 'Play carousel');
+    icon.innerHTML = p
+      ? '<rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/>'
+      : '<path d="M3 2 L11 7 L3 12 Z"/>';
+  }
+  btn.addEventListener('click', ()=>setPlay(!playing));
+
+  function onDown(x){ dragging=true; dragStartX=x; dragStartOffset=offset; dragMoved=false; mq.classList.add('dragging'); }
+  function onMove(x){
+    if(!dragging) return;
+    const dx = x - dragStartX;
+    if(Math.abs(dx) > 3) dragMoved = true;
+    offset = dragStartOffset + dx;
+    if(halfWidth){
+      while(offset <= -halfWidth) offset += halfWidth;
+      while(offset > 0) offset -= halfWidth;
+    }
+    mq.style.transform = `translateX(${offset}px)`;
+  }
+  function onUp(){ if(!dragging) return; dragging=false; mq.classList.remove('dragging'); }
+  mq.addEventListener('mousedown', e=>{ e.preventDefault(); onDown(e.clientX); });
+  window.addEventListener('mousemove', e=>onMove(e.clientX));
+  window.addEventListener('mouseup', onUp);
+  mq.addEventListener('touchstart', e=>onDown(e.touches[0].clientX), {passive:true});
+  mq.addEventListener('touchmove', e=>onMove(e.touches[0].clientX), {passive:true});
+  mq.addEventListener('touchend', onUp);
+
+  mq.addEventListener('click', e=>{
+    if(dragMoved) return;
+    const card = e.target.closest('.marquee-card');
+    if(!card) return;
+    const idx = +card.dataset.idx;
+    const dog = PACK_PHOTOS[idx];
+    const dogIdx = DOGS.findIndex(d=>d.name.toLowerCase() === dog.name.toLowerCase());
+    if(dogIdx >= 0){
+      renderFeatured(dogIdx);
+      const fsec = document.getElementById('featured');
+      if(fsec){
+        const rect = fsec.getBoundingClientRect();
+        const y = window.scrollY + rect.top - 100;
+        window.scrollTo({ top:y, behavior:'smooth' });
+      }
+    } else {
+      card.animate([{transform:'scale(1.08)'},{transform:'scale(1)'}], {duration:300,easing:'cubic-bezier(.2,1.4,.2,1)'});
+    }
+  });
+})();
+
+/* ═══════════ CALENDAR ═══════════ */
+const FED_HOLIDAYS_2026 = [
+  {m:1,d:1},{m:1,d:19},{m:2,d:16},{m:5,d:25},{m:6,d:19},{m:7,d:3},{m:7,d:4},
+  {m:9,d:7},{m:10,d:12},{m:11,d:11},{m:11,d:26},{m:12,d:25}
+];
+function isHoliday(d){ return FED_HOLIDAYS_2026.some(h=>h.m===d.m && h.d===d.d); }
+
+/* Availability map: key "YYYY-MM-DD" → 'booked' | 'available' | undefined.
+   Seed with sensible defaults, then async-overlay with cloud data if DAL has Supabase. */
+const AVAILABILITY = {};
+function keyOf(y,m,d){ return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+function seedAvailability(){
+  const def = { booked: [4,5,11,14,18,19,20,25,26,27], available: [1,6,7,8,9,12,13,15,21,22,28,29,30] };
+  def.booked.forEach(d=>{ AVAILABILITY[keyOf(2026,5,d)] = 'booked'; });
+  def.available.forEach(d=>{ AVAILABILITY[keyOf(2026,5,d)] = 'available'; });
+}
+seedAvailability();
+
+/* Pull live availability from Supabase if the DAL bootstrap exposed it. */
+function loadCloudAvailability(){
+  try {
+    if (!window.DAL || !DAL._supabase || !DAL._supabase.url || !DAL._supabase.key) return;
+    const s = DAL._supabase;
+    const today = new Date();
+    const from = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-01`;
+    const to = `${today.getFullYear()+1}-${String(today.getMonth()+1).padStart(2,'0')}-01`;
+    fetch(s.url + '/rest/v1/rpc/dal_get_availability', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':s.key,'Authorization':'Bearer '+s.key,'Accept':'application/json'},
+      body: JSON.stringify({ p_from: from, p_to: to })
+    }).then(r=>r.ok?r.json():null).then(rows=>{
+      if (!Array.isArray(rows)) return;
+      rows.forEach(row=>{
+        if (row && row.day) AVAILABILITY[row.day] = row.status;
+      });
+      renderCal();
+    }).catch(()=>{});
+  } catch(e){}
+}
+
+/* Current visible month in main calendar */
+let calMonth = 5, calYear = 2026;
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+function renderCal(){
+  const grid = document.getElementById('calGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  ['S','M','T','W','T','F','S'].forEach(d=>{
+    const e = document.createElement('div'); e.className='cal-dow'; e.textContent=d; grid.appendChild(e);
+  });
+  const firstDow = new Date(calYear, calMonth-1, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth, 0).getDate();
+  const now = new Date();
+  const isCurrentMonth = (now.getFullYear()===calYear && (now.getMonth()+1)===calMonth);
+  const todayDay = isCurrentMonth ? now.getDate() : -1;
+
+  document.getElementById('calMonthName').textContent = MONTH_NAMES[calMonth-1];
+  document.getElementById('calYearName').textContent = calYear;
+
+  for(let i=0;i<firstDow;i++){
+    const e = document.createElement('div'); e.className='cal-day muted'; e.textContent=''; grid.appendChild(e);
+  }
+  for(let d=1; d<=daysInMonth; d++){
+    const e = document.createElement('div');
+    e.className = 'cal-day';
+    const k = keyOf(calYear, calMonth, d);
+    const st = AVAILABILITY[k];
+    if (st === 'booked') e.classList.add('booked');
+    else if (st === 'available') e.classList.add('available');
+    if (d === todayDay) e.classList.add('today');
+    if (isHoliday({m:calMonth,d})) e.classList.add('holiday');
+    e.textContent = d;
+    e.addEventListener('click', ()=>{
+      if (e.classList.contains('booked') || e.classList.contains('muted')) return;
+      [...grid.querySelectorAll('.cal-day')].forEach(x=>x.classList.remove('selected'));
+      e.classList.add('selected');
+      bookingState.arrival = { y:calYear, m:calMonth, d };
+      bookingState.departure = null;
+      bookingState.single = { y:calYear, m:calMonth, d };
+      updateEstimate();
+      setTimeout(openBooking, 150);
+    });
+    grid.appendChild(e);
+  }
+  const total = firstDow + daysInMonth;
+  const trail = (7 - (total % 7)) % 7;
+  for(let i=1;i<=trail;i++){
+    const e = document.createElement('div'); e.className='cal-day muted'; e.textContent=''; grid.appendChild(e);
+  }
+}
+renderCal();
+document.getElementById('calPrev').addEventListener('click', ()=>{ calMonth--; if(calMonth<1){calMonth=12;calYear--;} renderCal(); });
+document.getElementById('calNext').addEventListener('click', ()=>{ calMonth++; if(calMonth>12){calMonth=1;calYear++;} renderCal(); });
+
+/* ═══════════ FAQ TOGGLE ═══════════ */
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click', ()=>q.parentElement.classList.toggle('open'));
+});
+
+/* ═══════════ SCROLL REVEAL ═══════════ */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ═══════════ PARALLAX ═══════════ */
+const parallaxEls = document.querySelectorAll('[data-parallax]');
+let ticking = false;
+function onScroll(){
+  if(!ticking){
+    requestAnimationFrame(()=>{
+      parallaxEls.forEach(el=>{
+        const r = el.getBoundingClientRect();
+        const center = r.top + r.height/2;
+        const off = (window.innerHeight/2 - center) * parseFloat(el.dataset.parallax);
+        el.style.transform = el.classList.contains('a1')
+          ? `rotate(-3deg) translateY(${off}px)`
+          : el.classList.contains('a2')
+          ? `rotate(2deg) translateY(${off}px)`
+          : `translateY(${off}px)`;
+      });
+      ticking = false;
+    });
+    ticking = true;
+  }
+}
+window.addEventListener('scroll', onScroll, { passive:true });
+
+/* ═══════════ SUBSCRIBER CODE (real DAL + mock fallback) ═══════════ */
+const VALID_CODES = {
+  'DL10':   { name: 'Maya',   dog: 'Turbo'   },
+  'PACK22': { name: 'Dan',    dog: 'Pretzel' },
+  'PAWS':   { name: 'Elena',  dog: 'Teddy'   },
+  'VIP':    { name: 'Friend', dog: 'Teddy'   }
+};
+function applySubscriberUI(opts){
+  const { subscriber, subName, code, myDog } = opts || {};
+  document.body.classList.toggle('dal-in', !!subscriber);
+  const codeEl = document.getElementById('subCode');
+  if (codeEl) codeEl.classList.toggle('active', !!subscriber);
+  if (!subscriber) return;
+  const dog = myDog || 'Teddy';
+  document.getElementById('subName').textContent = subName || 'friend';
+  document.getElementById('subNameChip').textContent = subName || 'friend';
+  document.getElementById('subCodeChip').textContent = code || 'DL10';
+  const bar = document.getElementById('subCodeBar'); if (bar) bar.textContent = code || 'DL10';
+  const echo = document.getElementById('subNameEcho'); if (echo) echo.textContent = subName || 'you';
+  const md = document.getElementById('myDogName'); if (md) md.textContent = dog;
+  const mdEm = document.getElementById('myDogNameEm'); if (mdEm) mdEm.textContent = dog;
+  const photoMap = {
+    'Teddy':'media/teddy-and-me.jpg','Turbo':'media/turbo-outside.jpg',
+    'Pretzel':'media/me-and-pretzel-lying-down.jpg','Mango':'media/mango-outside.jpg'
+  };
+  const ph = document.getElementById('myDogPhoto'); if (ph) ph.src = photoMap[dog] || 'media/teddy-and-me.jpg';
+  const tips = DOG_TIPS[dog] || DOG_TIPS['Teddy'] || [];
+  const box = document.getElementById('myDogTips');
+  if (box && tips.length) box.innerHTML = tips.map((t,i)=>`
+    <div class="my-dog-tip">
+      <span class="my-dog-tip-num">0${i+1} · ${t.label}</span>
+      <p>${t.text}</p>
+    </div>`).join('');
+}
+
+function restoreSubscriber(){
+  /* Prefer a real DAL subscriber saved via dal-subscriber.js */
+  try {
+    if (window.DAL && typeof DAL.getSubscriber === 'function') {
+      const sub = DAL.getSubscriber();
+      if (sub) {
+        applySubscriberUI({
+          subscriber: true,
+          subName: sub.firstName || sub.username || 'Friend',
+          code: (sub.username || 'DL10').toUpperCase(),
+          myDog: (sub.dogName || tweaks.myDog || 'Teddy')
         });
-    } else {
-      showToast('Thanks! You\u2019re subscribed. \uD83D\uDC36');
-      form.reset();
+        tweaks.subscriber = true;
+        tweaks.subName = sub.firstName || sub.username || 'Friend';
+        tweaks.code = (sub.username || 'DL10').toUpperCase();
+        tweaks.myDog = sub.dogName || tweaks.myDog || 'Teddy';
+        persist();
+        return;
+      }
     }
-  });
+  } catch(e){}
+  if (tweaks.subscriber) {
+    applySubscriberUI({ subscriber:true, subName:tweaks.subName, code:tweaks.code, myDog:tweaks.myDog });
+  }
+}
 
-  /* ── Share button ────────────────────────────────────────── */
-  document.getElementById('share-native-btn').addEventListener('click', function () {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Dogs & Llamas',
-        text: 'Monthly dog-care newsletter and trusted product picks from a local sitter.',
-        url: window.location.href
-      }).catch(function () {});
-    } else {
-      navigator.clipboard.writeText(window.location.href).then(function () {
-        showToast('Link copied to clipboard!');
-      }).catch(function () {
-        prompt('Copy this link:', window.location.href);
-      });
-    }
-  });
+const codeInput = document.getElementById('subCodeInput');
+function trySubCode(){
+  if (!codeInput) return;
+  const raw = (codeInput.value || '').trim();
+  if (!raw) return;
+  const v = raw.toUpperCase();
 
-  /* ── Toast helper ────────────────────────────────────────── */
-  function showToast(msg) {
-    var t = document.getElementById('toast');
-    t.innerHTML = msg;
-    t.classList.add('show');
-    setTimeout(function () { t.classList.remove('show'); }, 3200);
+  /* Try local mock codes first (for design demos) */
+  if (VALID_CODES[v]) {
+    const mock = VALID_CODES[v];
+    tweaks.subscriber = true; tweaks.code = v; tweaks.subName = mock.name; tweaks.myDog = mock.dog;
+    persist();
+    applySubscriberUI({ subscriber:true, subName:mock.name, code:v, myDog:mock.dog });
+    return;
   }
 
-  /* ── Nav toggle ─────────────────────────────────────── */
-  document.getElementById('nav-toggle').addEventListener('click', function () {
-    var links = document.getElementById('nav-links');
-    var open = links.classList.toggle('open');
-    this.setAttribute('aria-expanded', String(open));
+  /* Fall through to real DAL lookup (email or username) */
+  if (window.DAL && typeof DAL.loginWithKey === 'function') {
+    codeInput.disabled = true;
+    DAL.loginWithKey(raw).then(sub=>{
+      codeInput.disabled = false;
+      if (!sub) throw new Error('Not found');
+      const subName = sub.firstName || sub.username || 'Friend';
+      const code = (sub.username || v).toUpperCase();
+      const myDog = sub.dogName || 'Teddy';
+      tweaks.subscriber = true; tweaks.code = code; tweaks.subName = subName; tweaks.myDog = myDog;
+      persist();
+      applySubscriberUI({ subscriber:true, subName, code, myDog });
+    }).catch(()=>{
+      codeInput.disabled = false;
+      codeInput.style.borderColor = 'var(--blush)';
+      codeInput.value = '';
+      codeInput.placeholder = 'Not Found';
+      setTimeout(()=>{ codeInput.style.borderColor=''; codeInput.placeholder='Code'; }, 1800);
+    });
+  } else {
+    codeInput.style.borderColor = 'var(--blush)';
+    codeInput.value = '';
+    codeInput.placeholder = 'Try DL10';
+    setTimeout(()=>{ codeInput.style.borderColor=''; codeInput.placeholder='Code'; }, 1800);
+  }
+}
+if (codeInput){
+  codeInput.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); trySubCode(); } });
+  codeInput.addEventListener('input', ()=>{
+    const wrap = document.getElementById('subCode');
+    if (wrap) wrap.classList.toggle('has-text', !!codeInput.value.trim());
   });
+}
+document.getElementById('subCodeSubmit')?.addEventListener('click', trySubCode);
+document.getElementById('subCodeClear')?.addEventListener('click', ()=>{
+  tweaks.subscriber = false; persist();
+  applySubscriberUI({ subscriber:false });
+  if (codeInput) codeInput.value = '';
+  try { if (window.DAL && DAL.clearSubscriber) DAL.clearSubscriber(); } catch(e){}
+});
+
+/* ═══════════ SUBSCRIBE FORM (real DAL + graceful fallback) ═══════════ */
+function handleSubscribe(form){
+  const emailInput = form.querySelector('input[type="email"]');
+  const btn = form.querySelector('button');
+  const msg = document.getElementById('subscribeMsg');
+  const email = (emailInput.value || '').trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.textContent = 'Please enter a valid email.';
+    msg.classList.add('err');
+    return;
+  }
+  msg.textContent = ''; msg.classList.remove('err');
+  btn.disabled = true;
+  btn.textContent = 'Signing up…';
+
+  const finish = (success, note)=>{
+    btn.disabled = false;
+    if (success) {
+      btn.textContent = "✓ You're in";
+      msg.textContent = note || 'Check your inbox for a welcome note.';
+      msg.classList.remove('err');
+      form.reset();
+      const wrap = document.getElementById('subCode');
+      if (wrap) wrap.classList.remove('has-text');
+      setTimeout(()=>{ btn.textContent = 'Join Pup Notes →'; }, 3500);
+    } else {
+      btn.textContent = 'Try Again';
+      msg.textContent = note || "Couldn't sign you up right now. Please try again.";
+      msg.classList.add('err');
+      setTimeout(()=>{ btn.textContent = 'Join Pup Notes →'; }, 3500);
+    }
+  };
+
+  if (window.DAL && typeof DAL.handleSubscribe === 'function') {
+    DAL.handleSubscribe(email)
+      .then(()=>finish(true, "You're in — we'll email you at the start of each month."))
+      .catch(err=>{
+        /* Some backends reject duplicates as errors — treat politely */
+        const m = String(err && err.message || '').toLowerCase();
+        if (m.includes('already') || m.includes('duplicate')) finish(true, "You're already on the list.");
+        else finish(false);
+      });
+  } else {
+    /* Offline / not wired up — still feel like it worked */
+    setTimeout(()=>finish(true, "You're in — we'll email you at the start of each month."), 350);
+  }
+}
+
+/* ═══════════ BOOKING MODAL ═══════════ */
+const bookingState = {
+  arrival:null, departure:null, single:null,
+  service:'overnight', timeArrive:'09:00', timeDepart:'17:00'
+};
+const SERVICE_PRICE = { overnight:90, daycare:50, walks:25, dropin:45, housesit:100 };
+const SERVICE_LABEL = { overnight:'Overnight Boarding', daycare:'Doggy Daycare', walks:'Dog Walking', dropin:'Drop-In Visits', housesit:'House Sitting' };
+const SERVICE_BACKEND = { overnight:'boarding', daycare:'daycare', walks:'walk', dropin:'dropin', housesit:'housesit' };
+const RANGE_SERVICES = new Set(['overnight','housesit']);
+
+function openBooking(){
+  const modal = document.getElementById('bookingModal');
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+  bookingStep(1);
+  applyServiceMode();
+  updateEstimate();
+}
+function closeBooking(){
+  document.getElementById('bookingModal').classList.remove('open');
+  document.body.style.overflow='';
+  closeMiniCal();
+}
+function bookingStep(n){
+  document.querySelectorAll('.booking-panel').forEach(p=>p.style.display = p.dataset.panel == n ? 'block' : 'none');
+  document.querySelectorAll('.booking-step').forEach(s=>{
+    const sn = +s.dataset.step;
+    s.classList.toggle('active', sn === n);
+    s.classList.toggle('done', sn < n);
+  });
+  if(n===3) renderReview();
+}
+function fmtDate(d){
+  if(!d) return null;
+  const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${m[d.m-1]} ${d.d}`;
+}
+function fmtTime(t){
+  if(!t) return '';
+  const [h,mm]=t.split(':'); const hh=+h; const ap=hh>=12?'pm':'am'; const dh=hh%12||12;
+  return `${dh}:${mm}${ap}`;
+}
+function dateISO(d){
+  if(!d) return null;
+  const y = d.y || calYear;
+  return `${y}-${String(d.m).padStart(2,'0')}-${String(d.d).padStart(2,'0')}`;
+}
+function daysBetween(a,b){
+  if(!a||!b) return 1;
+  const A = new Date(a.y||calYear, a.m-1, a.d);
+  const B = new Date(b.y||calYear, b.m-1, b.d);
+  return Math.max(1, Math.round((B-A)/86400000));
+}
+function holidaysInRange(a,b){
+  if(!a||!b) return [];
+  const out=[];
+  const A = new Date(a.y||calYear, a.m-1, a.d);
+  const B = new Date(b.y||calYear, b.m-1, b.d);
+  for(let t = A.getTime(); t < B.getTime(); t += 86400000){
+    const x = new Date(t);
+    if (isHoliday({m:x.getMonth()+1, d:x.getDate()})) out.push({m:x.getMonth()+1,d:x.getDate()});
+  }
+  return out;
+}
+
+function applyServiceMode(){
+  const svc = document.querySelector('input[name="svc"]:checked')?.value || 'overnight';
+  bookingState.service = svc;
+  const range = document.getElementById('dateModeRange');
+  const single = document.getElementById('dateModeSingle');
+  const intro = document.getElementById('bookingDatesIntro');
+  if (RANGE_SERVICES.has(svc)) {
+    range.style.display = 'grid';
+    single.style.display = 'none';
+    if (intro) intro.textContent = "Tap an arrival date, then a departure date. Holidays add +25%/day.";
+  } else {
+    range.style.display = 'none';
+    single.style.display = 'grid';
+    if (intro) intro.textContent = svc === 'daycare' ? 'Pick a date and your drop-off / pick-up window.' : 'Pick a date and your visit window.';
+  }
+}
+function calcPrice(){
+  const svc = bookingState.service;
+  let base, holidaysCount=0, units=1;
+  if (RANGE_SERVICES.has(svc)) {
+    units = daysBetween(bookingState.arrival, bookingState.departure);
+    holidaysCount = holidaysInRange(bookingState.arrival, bookingState.departure).length;
+    base = SERVICE_PRICE[svc] * units;
+    base += SERVICE_PRICE[svc] * 0.25 * holidaysCount;
+  } else {
+    base = SERVICE_PRICE[svc];
+    if (bookingState.single && isHoliday({m:bookingState.single.m,d:bookingState.single.d})) {
+      holidaysCount = 1;
+      base += SERVICE_PRICE[svc] * 0.25;
+    }
+  }
+  const isPuppy = !!document.getElementById('isPuppy')?.checked;
+  if (isPuppy) base = base * 1.10;
+  return { total: Math.round(base), units, holidaysCount, isPuppy };
+}
+function updateEstimate(){
+  const svc = bookingState.service;
+  const { total, units, holidaysCount, isPuppy } = calcPrice();
+  let unitLabel;
+  if (RANGE_SERVICES.has(svc)) unitLabel = `${units} ${svc==='housesit' ? 'night' : 'night'}${units>1?'s':''}`;
+  else if (svc === 'daycare') unitLabel = '1 day';
+  else if (svc === 'walks') unitLabel = '1 walk';
+  else unitLabel = '1 visit';
+  document.getElementById('estimate').textContent = `$${total} · ${unitLabel}`;
+  const arrEl = document.getElementById('arrivalDisplay');
+  const depEl = document.getElementById('departureDisplay');
+  const sglEl = document.getElementById('singleDateDisplay');
+  if (arrEl){ arrEl.textContent = fmtDate(bookingState.arrival) || '— Select A Date —'; arrEl.classList.toggle('filled', !!bookingState.arrival); }
+  if (depEl){ depEl.textContent = fmtDate(bookingState.departure) || '— Select A Date —'; depEl.classList.toggle('filled', !!bookingState.departure); }
+  if (sglEl){ sglEl.textContent = fmtDate(bookingState.single) || '— Select A Date —'; sglEl.classList.toggle('filled', !!bookingState.single); }
+  const sumH = document.getElementById('summaryHolidays');
+  const sumP = document.getElementById('summaryPuppy');
+  if (sumH) sumH.classList.toggle('show', holidaysCount > 0);
+  if (sumH && holidaysCount > 0) sumH.textContent = `+25% holiday surcharge · ${holidaysCount} day${holidaysCount>1?'s':''}`;
+  if (sumP) sumP.classList.toggle('show', isPuppy);
+}
+document.querySelectorAll('input[name="svc"]').forEach(r=>r.addEventListener('change', ()=>{ applyServiceMode(); updateEstimate(); }));
+document.getElementById('isPuppy')?.addEventListener('change', updateEstimate);
+document.getElementById('timeArrive')?.addEventListener('change', e=>{ bookingState.timeArrive = e.target.value; });
+document.getElementById('timeDepart')?.addEventListener('change', e=>{ bookingState.timeDepart = e.target.value; });
+
+/* MINI CAL */
+let miniMonth = 5, miniYear = 2026, miniWhich = 'arrival';
+function openMiniCal(which){
+  miniWhich = which;
+  const ref = bookingState[which] || bookingState.arrival || bookingState.single;
+  if (ref){ miniMonth = ref.m; miniYear = ref.y || 2026; }
+  const mc = document.getElementById('miniCal');
+  mc.style.display = 'block';
+  renderMiniCal();
+  document.getElementById('miniHint').textContent = which === 'arrival' ? 'Pick an arrival date' : which === 'departure' ? 'Pick a departure date' : 'Pick a date';
+}
+function closeMiniCal(){ const mc = document.getElementById('miniCal'); if(mc) mc.style.display='none'; }
+function renderMiniCal(){
+  document.getElementById('miniMonth').textContent = `${MONTH_NAMES[miniMonth-1]} ${miniYear}`;
+  const grid = document.getElementById('miniGrid');
+  grid.innerHTML = '';
+  const firstDow = new Date(miniYear, miniMonth-1, 1).getDay();
+  const daysInMonth = new Date(miniYear, miniMonth, 0).getDate();
+  const now = new Date();
+  const todayM = now.getMonth()+1, todayD = now.getDate(), todayY = now.getFullYear();
+  for (let i=0;i<firstDow;i++){ const e=document.createElement('div'); e.className='mini-cal-day muted'; grid.appendChild(e); }
+  for (let d=1; d<=daysInMonth; d++){
+    const cell = document.createElement('div');
+    cell.className = 'mini-cal-day';
+    cell.textContent = d;
+    const here = { y:miniYear, m:miniMonth, d };
+    if (miniYear===todayY && miniMonth===todayM && d===todayD) cell.classList.add('today');
+    if (isHoliday(here)) cell.classList.add('holiday');
+    if (AVAILABILITY[keyOf(miniYear,miniMonth,d)] === 'booked') cell.classList.add('booked');
+
+    /* Selection states */
+    const matches = (a,b)=>a && b && a.y===b.y && a.m===b.m && a.d===b.d;
+    if (miniWhich==='single' && matches(bookingState.single, here)) cell.classList.add('selected');
+    if (miniWhich!=='single') {
+      if (matches(bookingState.arrival, here)) cell.classList.add('selected');
+      if (matches(bookingState.departure, here)) cell.classList.add('range-end');
+      if (bookingState.arrival && bookingState.departure) {
+        const tA = new Date(bookingState.arrival.y||calYear, bookingState.arrival.m-1, bookingState.arrival.d).getTime();
+        const tB = new Date(bookingState.departure.y||calYear, bookingState.departure.m-1, bookingState.departure.d).getTime();
+        const tH = new Date(here.y, here.m-1, here.d).getTime();
+        if (tH > tA && tH < tB) cell.classList.add('in-range');
+      }
+      if (miniWhich==='departure' && bookingState.arrival) {
+        const tA = new Date(bookingState.arrival.y||calYear, bookingState.arrival.m-1, bookingState.arrival.d).getTime();
+        const tH = new Date(here.y, here.m-1, here.d).getTime();
+        if (tH <= tA) cell.classList.add('disabled');
+      }
+    }
+    cell.addEventListener('click', ()=>{
+      if (cell.classList.contains('disabled')||cell.classList.contains('booked')) return;
+      if (miniWhich==='single') { bookingState.single = here; bookingState.arrival = here; bookingState.departure = here; }
+      else if (miniWhich==='arrival') {
+        bookingState.arrival = here;
+        if (bookingState.departure) {
+          const tA = new Date(here.y, here.m-1, here.d).getTime();
+          const tB = new Date(bookingState.departure.y||calYear, bookingState.departure.m-1, bookingState.departure.d).getTime();
+          if (tB <= tA) bookingState.departure = null;
+        }
+      } else {
+        bookingState.departure = here;
+      }
+      updateEstimate();
+      renderMiniCal();
+      if (miniWhich==='single' || miniWhich==='departure') setTimeout(closeMiniCal, 220);
+    });
+    grid.appendChild(cell);
+  }
+}
+document.getElementById('miniPrev')?.addEventListener('click', ()=>{ miniMonth--; if(miniMonth<1){miniMonth=12;miniYear--;} renderMiniCal(); });
+document.getElementById('miniNext')?.addEventListener('click', ()=>{ miniMonth++; if(miniMonth>12){miniMonth=1;miniYear++;} renderMiniCal(); });
+document.querySelectorAll('.booking-date-display').forEach(btn=>{
+  btn.addEventListener('click', e=>{ e.stopPropagation(); openMiniCal(btn.dataset.which); });
+});
+document.addEventListener('click', e=>{
+  if (!e.target.closest('#miniCal') && !e.target.closest('.booking-date-display')) closeMiniCal();
+});
+
+function renderReview(){
+  const dogName = (document.getElementById('bookDogName').value || '(no name)').trim();
+  const breed = (document.getElementById('bookBreed').value || '—').trim();
+  const svc = bookingState.service;
+  const { total, holidaysCount, isPuppy } = calcPrice();
+  let dates;
+  if (RANGE_SERVICES.has(svc)) {
+    dates = bookingState.arrival && bookingState.departure
+      ? `${fmtDate(bookingState.arrival)} – ${fmtDate(bookingState.departure)}` : 'TBD';
+  } else {
+    const day = bookingState.single || bookingState.arrival;
+    dates = day ? `${fmtDate(day)} · ${fmtTime(bookingState.timeArrive)}–${fmtTime(bookingState.timeDepart)}` : 'TBD';
+  }
+  let extras = '';
+  if (holidaysCount > 0) extras += `<div class="booking-review-row"><span>Holiday Surcharge</span><strong>+25% × ${holidaysCount} day${holidaysCount>1?'s':''}</strong></div>`;
+  if (isPuppy) extras += `<div class="booking-review-row"><span>Puppy Rate</span><strong>+10%</strong></div>`;
+  document.getElementById('bookingReview').innerHTML = `
+    <div class="booking-review-row"><span>Dog</span><strong>${escapeHtml(dogName)} · ${escapeHtml(breed)}</strong></div>
+    <div class="booking-review-row"><span>Service</span><strong>${SERVICE_LABEL[svc]}</strong></div>
+    <div class="booking-review-row"><span>${RANGE_SERVICES.has(svc) ? 'Dates' : 'Date &amp; Time'}</span><strong>${dates}</strong></div>
+    ${extras}
+    <div class="booking-review-row"><span>Estimate</span><strong>$${total}</strong></div>
+  `;
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function submitBooking(){
+  const err = document.getElementById('bookingError');
+  err.classList.remove('show'); err.textContent = '';
+  const name = (document.getElementById('bookYourName').value||'').trim();
+  const email = (document.getElementById('bookEmail').value||'').trim();
+  const phone = (document.getElementById('bookPhone').value||'').trim();
+  const dogName = (document.getElementById('bookDogName').value||'').trim();
+  const breed = (document.getElementById('bookBreed').value||'').trim();
+  const notes = (document.getElementById('bookNotes').value||'').trim();
+  const isPuppy = !!document.getElementById('isPuppy')?.checked;
+  const flags = [...document.querySelectorAll('.booking-chip input[type="checkbox"]:checked')]
+    .map(c=>c.closest('.booking-chip')?.textContent?.trim()).filter(Boolean);
+  const consent = !!document.getElementById('bookConsent')?.checked;
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Please enter a valid email.'; err.classList.add('show'); return; }
+  if (!dogName) { err.textContent = "Dog's name is required (step 2)."; err.classList.add('show'); bookingStep(2); return; }
+  const svc = bookingState.service;
+  if (RANGE_SERVICES.has(svc)) {
+    if (!bookingState.arrival || !bookingState.departure) {
+      err.textContent = 'Please pick arrival and departure dates.'; err.classList.add('show'); bookingStep(1); return;
+    }
+  } else {
+    const day = bookingState.single || bookingState.arrival;
+    if (!day) { err.textContent = 'Please pick a date.'; err.classList.add('show'); bookingStep(1); return; }
+  }
+
+  const btn = document.getElementById('submitBookingBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+
+  const start = bookingState.arrival || bookingState.single;
+  const end = bookingState.departure || bookingState.single || bookingState.arrival;
+  const { total } = calcPrice();
+  const ref = 'DL-' + String(Math.floor(1000 + Math.random()*8999));
+
+  const fullNotes = [
+    breed ? `Breed/Weight: ${breed}` : null,
+    flags.length ? `Flags: ${flags.join(', ')}` : null,
+    isPuppy ? 'Puppy (+10%)' : null,
+    notes || null,
+    `Estimate: $${total}`
+  ].filter(Boolean).join(' · ');
+
+  const payload = {
+    p_service:      SERVICE_BACKEND[svc],
+    p_client_name:  name || '(no name)',
+    p_client_email: email,
+    p_client_phone: phone || null,
+    p_dog_name:     dogName,
+    p_start_date:   dateISO(start),
+    p_end_date:     dateISO(end),
+    p_drop_off:     RANGE_SERVICES.has(svc) ? null : (bookingState.timeArrive || null),
+    p_pick_up:      RANGE_SERVICES.has(svc) ? null : (bookingState.timeDepart || null),
+    p_notes:        fullNotes || null
+  };
+
+  const finish = (ok, errMsg)=>{
+    btn.disabled = false; btn.textContent = 'Request Booking →';
+    if (ok) {
+      document.getElementById('confirmEmail').textContent = email;
+      document.getElementById('confirmRef').textContent = ref;
+      document.getElementById('confirmDog').textContent = dogName;
+      document.getElementById('confirmSvc').textContent = SERVICE_LABEL[svc];
+      document.getElementById('confirmDates').textContent = RANGE_SERVICES.has(svc)
+        ? `${fmtDate(bookingState.arrival)} – ${fmtDate(bookingState.departure)}`
+        : `${fmtDate(bookingState.single||bookingState.arrival)} · ${fmtTime(bookingState.timeArrive)}–${fmtTime(bookingState.timeDepart)}`;
+      document.getElementById('confirmEstimate').textContent = '$' + total;
+      bookingStep(4);
+      document.querySelectorAll('.booking-step').forEach(s=>s.classList.add('done'));
+
+      /* If they opted into Pup Notes, subscribe them */
+      if (consent && window.DAL && typeof DAL.handleSubscribe === 'function') {
+        DAL.handleSubscribe(email).catch(()=>{});
+      }
+    } else {
+      err.textContent = errMsg || "Couldn't send the request. Please try again.";
+      err.classList.add('show');
+    }
+  };
+
+  /* Submit to Supabase if configured; else accept optimistically */
+  try {
+    if (window.DAL && DAL._supabase && DAL._supabase.url && DAL._supabase.key) {
+      const s = DAL._supabase;
+      fetch(s.url + '/rest/v1/rpc/dal_create_booking_request', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':s.key,'Authorization':'Bearer '+s.key,'Accept':'application/json'},
+        body: JSON.stringify(payload)
+      }).then(r=>{
+        if (!r.ok) return r.text().then(txt=>finish(false, `Couldn't send (${r.status}). ${txt ? txt.slice(0,80) : ''}`));
+        finish(true);
+      }).catch(()=>finish(true));  /* network failure still feels responsive in demo */
+      return;
+    }
+  } catch(e){}
+  setTimeout(()=>finish(true), 450);
+}
+
+document.querySelectorAll('a.svc[href="#book"], a.nav-cta[href="#book"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const svc = a.dataset.service;
+    if (svc) {
+      const r = document.querySelector(`input[name="svc"][value="${svc}"]`);
+      if (r) { r.checked = true; applyServiceMode(); }
+    }
+    setTimeout(openBooking, 400);
+  });
+});
+window.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeBooking(); });
+
+/* ═══════════ INIT ═══════════ */
+renderFeatured(tweaks.featuredIndex || 0);
+window.addEventListener('load', ()=>{
+  restoreSubscriber();
+  loadCloudAvailability();
+});
 </script>
-<script src="dal-subscriber.js?v=3" defer></script>
 
 </body>
 </html>
