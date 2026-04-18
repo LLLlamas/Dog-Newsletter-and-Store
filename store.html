@@ -85,7 +85,7 @@ body.dal-in .dal-bar{display:flex}
 @media (max-width:780px){.sub-code input{width:84px}}
 
 /* HERO */
-.hero{background:radial-gradient(ellipse 700px 500px at 80% 30%, rgba(224,160,47,.2) 0%, transparent 60%),linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);padding:72px 32px 44px;position:relative;overflow:hidden}
+.hero{background:radial-gradient(ellipse 700px 500px at 80% 30%, rgba(224,160,47,.2) 0%, transparent 60%),linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);padding:52px 32px 36px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;opacity:.3;background-image:radial-gradient(circle,rgba(19,42,78,.05) 1px,transparent 1px);background-size:22px 22px}
 .hero-inner{max-width:var(--max);margin:0 auto;position:relative}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:2px;color:var(--navy);text-transform:uppercase;background:var(--gold-pale);padding:7px 14px;border-radius:999px;border:1px solid rgba(224,160,47,.4);margin-bottom:18px}
@@ -135,7 +135,7 @@ body.dal-in .personal-section{display:block}
 .count{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3)}
 
 /* Page wrap */
-.wrap{max-width:var(--max);margin:0 auto;padding:48px 32px 96px;display:grid;grid-template-columns:1fr 320px;gap:44px;align-items:flex-start}
+.wrap{max-width:var(--max);margin:0 auto;padding:32px 32px 96px;display:grid;grid-template-columns:1fr 320px;gap:44px;align-items:flex-start}
 @media (max-width:980px){.wrap{grid-template-columns:1fr}}
 
 /* Sitter note */
@@ -263,6 +263,13 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:12px 24px;border-radius:999px;font-family:var(--font-body);font-size:14px;box-shadow:var(--shadow-lg);opacity:0;transition:all .3s;pointer-events:none;z-index:1000}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* Scroll-to-top */
+.to-top{position:fixed;bottom:22px;right:22px;z-index:190;width:46px;height:46px;border-radius:50%;background:rgba(251,247,238,.9);color:var(--navy);border:1.5px solid var(--gold);box-shadow:0 6px 18px rgba(19,42,78,.18),0 1px 4px rgba(19,42,78,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s ease,transform .3s ease,background .2s,color .2s;backdrop-filter:blur(8px)}
+.to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.to-top:hover{background:var(--gold);color:var(--navy);transform:translateY(-2px)}
+.to-top svg{width:16px;height:16px}
+@media (max-width:640px){.to-top{bottom:16px;right:16px;width:42px;height:42px}}
+
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
 </style>
 </head>
@@ -292,8 +299,9 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
       </div>
     </div>
     <div class="nav-links">
-      <a class="nav-link" href="index.html">Home</a>
       <a class="nav-link" href="index.html#services">Services</a>
+      <a class="nav-link" href="index.html#pack">Our Buddies</a>
+      <a class="nav-link" href="about.html">About</a>
       <a class="nav-link active" href="store.html">Store</a>
       <a class="nav-link" href="monthly-issue-01.html">Newsletter</a>
       <a class="nav-cta" href="index.html#book">Book</a>
@@ -309,8 +317,8 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
     <div class="hero-stats">
       <div class="hero-stat"><span class="n">10 yrs</span><span class="l">Sitter-Tested</span></div>
       <div class="hero-stat"><span class="n">25+</span><span class="l">Dogs Tested On</span></div>
-      <div class="hero-stat"><span class="n">0</span><span class="l">Sponsored Slots</span></div>
       <div class="hero-stat"><span class="n">30</span><span class="l">Picks On The List</span></div>
+      <div class="hero-stat"><span class="n">Queens<br>Manhattan<br>Westchester</span><span class="l">Where We've Sat</span></div>
     </div>
   </div>
 </section>
@@ -346,7 +354,8 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
 <div class="filter-rail">
   <span class="filter-label">Filter By</span>
   <div class="pills" id="filterPills">
-    <button class="pill active" data-filter="all">All Picks <span class="tag" id="countAll"></span></button>
+    <button class="pill active" data-filter="most-purchased">★ Most Purchased</button>
+    <button class="pill" data-filter="all">All Picks <span class="tag" id="countAll"></span></button>
     <button class="pill" data-filter="small-med">Small + Medium <span class="tag">S/M</span></button>
     <button class="pill" data-filter="large-xl">Large + XL <span class="tag">L/XL</span></button>
     <button class="pill" data-filter="puzzle">Puzzles &amp; Enrichment</button>
@@ -450,6 +459,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
     <div class="match-grid" id="matchGrid"></div>
   </div>
 </div>
+
+<button type="button" class="to-top" id="toTop" aria-label="Scroll to top">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13 V3 M3 8 l5 -5 l5 5"/></svg>
+</button>
 
 <div id="toast"></div>
 
@@ -639,12 +652,13 @@ const PRODUCTS = [
 const productsEl = document.getElementById('products');
 const countAllEl = document.getElementById('countAll');
 const countEl = document.getElementById('count');
-let activeFilter = 'all';
+let activeFilter = 'most-purchased';
 let activeCategory = 'all';
 let activeDog = null;
 
 function matchesFilter(p){
   if (activeFilter === 'all') return true;
+  if (activeFilter === 'most-purchased') return p.dogMatch.length >= 4;
   return p.tags.includes(activeFilter);
 }
 function matchesCategory(p){
@@ -937,6 +951,16 @@ function handleSubscribe(form){
 })();
 
 window.addEventListener('load', restoreSubscriber);
+
+/* Scroll-to-top */
+(function(){
+  const btn = document.getElementById('toTop');
+  if (!btn) return;
+  const onScroll = ()=>btn.classList.toggle('show', window.scrollY > 420);
+  window.addEventListener('scroll', onScroll, { passive:true });
+  btn.addEventListener('click', ()=>window.scrollTo({ top:0, behavior:'smooth' }));
+  onScroll();
+})();
 </script>
 </body>
 </html>

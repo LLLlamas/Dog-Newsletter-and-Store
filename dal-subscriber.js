@@ -566,10 +566,18 @@
 
   /* ══════════════════════════════════════════════════════════════
    *  AUTO-INIT on DOM ready
+   *  The old blue login strip ("Enter your code … View generic info")
+   *  is disabled — subscriber login now lives in the site nav, styled
+   *  to match the new design system. The DAL.* API (handleSubscribe,
+   *  loginWithKey, getSubscriber, clearSubscriber, DOG_CONTENT,
+   *  _supabase) is still exposed for page scripts to call.
    * ══════════════════════════════════════════════════════════════ */
   function init() {
-    injectLoginStripStyles();
-    injectLoginStrip();
+    /* Remove any stale login strip injected by older script versions */
+    var stale = document.getElementById('dal-login-strip');
+    if (stale && stale.parentNode) stale.parentNode.removeChild(stale);
+    var staleStyles = document.getElementById('dal-login-strip-styles');
+    if (staleStyles && staleStyles.parentNode) staleStyles.parentNode.removeChild(staleStyles);
     DAL.initPersonalizeButton();
   }
 

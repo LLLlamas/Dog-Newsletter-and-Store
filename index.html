@@ -131,7 +131,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:2px;color:var(--navy);text-transform:uppercase;background:var(--gold-pale);padding:7px 14px;border-radius:999px;border:1px solid rgba(224,160,47,.4)}
 .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
 .hero-title{font-family:var(--font-display);font-weight:500;font-size:clamp(48px, 7vw, 96px);line-height:1;letter-spacing:-.02em;margin:18px 0 0;color:var(--navy)}
-.hero-title em{font-style:italic;color:var(--blush);font-family:var(--font-display);font-weight:400;display:block}
+.hero-title em{font-style:italic;color:var(--blush);font-family:var(--font-display);font-weight:400;display:inline}
+.hero-title .hero-accent{font-style:italic;color:var(--gold);font-family:var(--font-display);font-weight:400;display:inline-block}
+.hero-title .hero-primary{color:var(--navy);display:block;font-weight:500}
 .hero-title .sig{display:inline-block;background:linear-gradient(180deg, transparent 62%, var(--gold-soft) 62%, var(--gold-soft) 88%, transparent 88%);padding:0 4px}
 .hero-sub{font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink-2);margin:28px 0 36px;max-width:440px}
 .hero-meta{display:flex;flex-wrap:wrap;gap:18px 28px;margin-bottom:36px}
@@ -207,24 +209,68 @@ section{padding:100px 32px;position:relative}
 .svc-cta svg{width:14px;height:14px}
 .svc:hover .svc-cta{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 
-/* ═══ MARQUEE ═══ */
-.marquee-section{padding:80px 0;background:var(--grad-navy);color:#fff;overflow:hidden}
+/* ═══ OUR BUDDIES CAROUSEL (hero center + two side cards + arrow nav) ═══ */
+.marquee-section{padding:80px 0 100px;background:var(--grad-navy);color:#fff;overflow:hidden;position:relative}
 .marquee-label{text-align:center;font-family:var(--font-mono);font-size:11.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-soft);margin-bottom:36px;text-shadow:0 1px 0 rgba(10,26,52,.25)}
-.marquee-title{font-family:var(--font-display);font-weight:400;font-size:clamp(36px,5vw,64px);line-height:1.05;text-align:center;max-width:900px;margin:0 auto 60px;padding:0 32px;color:#fff}
+.marquee-title{font-family:var(--font-display);font-weight:400;font-size:clamp(36px,5vw,64px);line-height:1.05;text-align:center;max-width:900px;margin:0 auto 56px;padding:0 32px;color:#fff}
 .marquee-title em{font-style:italic;color:var(--gold-soft)}
-.marquee-wrap{position:relative;overflow:hidden}
-.marquee{display:flex;gap:18px;width:max-content;cursor:grab;will-change:transform;user-select:none}
-.marquee.dragging{cursor:grabbing}
-.marquee.dragging .marquee-card{pointer-events:none}
-.marquee-controls{position:absolute;top:50%;transform:translateY(-50%);right:24px;z-index:5;display:flex;flex-direction:column;gap:8px}
-.marquee-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);background:rgba(10,26,52,.6);backdrop-filter:blur(8px);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.marquee-btn:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
-.marquee-card{flex:0 0 240px;aspect-ratio:3/4;position:relative;border-radius:var(--radius-md);overflow:hidden;background:var(--cream-2);cursor:pointer;box-shadow:var(--shadow-md);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.marquee-card:hover{transform:translateY(-8px) scale(1.02)}
-.marquee-card img{width:100%;height:100%;object-fit:cover}
-.marquee-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent 50%, rgba(0,0,0,.75) 100%)}
-.marquee-card .cap{position:absolute;bottom:14px;left:16px;right:16px;color:#fff;z-index:2;font-family:var(--font-display);font-style:italic;font-size:26px;line-height:1}
-.marquee-card .cap small{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold-soft);font-style:normal;margin-top:4px}
+
+.buddies-stage{position:relative;max-width:1180px;margin:0 auto;padding:0 32px;min-height:560px;display:flex;align-items:center;justify-content:center}
+.buddies-track{position:relative;width:100%;height:540px;display:flex;align-items:center;justify-content:center}
+.buddy-card{position:absolute;top:50%;left:50%;background:var(--cream-2);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-lg);cursor:pointer;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .55s cubic-bezier(.2,.8,.2,1),filter .55s}
+.buddy-card img{width:100%;height:100%;object-fit:cover;display:block}
+.buddy-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent 50%, rgba(0,0,0,.72) 100%);pointer-events:none}
+.buddy-card .cap{position:absolute;bottom:18px;left:20px;right:20px;color:#fff;z-index:2;font-family:var(--font-display);font-style:italic;line-height:1}
+.buddy-card .cap small{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold-soft);font-style:normal;margin-top:6px;font-weight:500}
+
+/* Hero (center) */
+.buddy-card.is-hero{width:340px;height:460px;transform:translate(-50%,-50%) scale(1);opacity:1;z-index:4;filter:none;border:3px solid rgba(224,160,47,.45)}
+.buddy-card.is-hero .cap{font-size:40px}
+
+/* Side cards (left + right) */
+.buddy-card.is-side{width:240px;height:360px;opacity:.78;z-index:2;filter:brightness(.85) saturate(.9)}
+.buddy-card.is-side:hover{opacity:1;filter:none}
+.buddy-card.is-side .cap{font-size:26px}
+.buddy-card.is-left{transform:translate(calc(-50% - 300px),-50%) scale(1);}
+.buddy-card.is-right{transform:translate(calc(-50% + 300px),-50%) scale(1);}
+
+/* Off-stage cards (hidden, positioned just beyond the side cards for smooth transition) */
+.buddy-card.is-off-left{transform:translate(calc(-50% - 520px),-50%) scale(.85);opacity:0;z-index:1;pointer-events:none}
+.buddy-card.is-off-right{transform:translate(calc(-50% + 520px),-50%) scale(.85);opacity:0;z-index:1;pointer-events:none}
+
+/* Arrow nav */
+.buddies-arrow{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);background:rgba(10,26,52,.55);backdrop-filter:blur(10px);color:#fff;font-family:var(--font-mono);font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6;transition:all .2s}
+.buddies-arrow:hover{background:var(--gold);color:var(--navy);border-color:var(--gold);transform:translateY(-50%) scale(1.08)}
+.buddies-prev{left:12px}
+.buddies-next{right:12px}
+
+/* Position dots below the carousel */
+.buddies-dots{display:flex;justify-content:center;gap:8px;margin-top:32px;flex-wrap:wrap;padding:0 32px}
+.buddies-dots button{width:9px;height:9px;border-radius:50%;border:none;background:rgba(255,255,255,.35);padding:0;cursor:pointer;transition:all .2s}
+.buddies-dots button:hover{background:rgba(255,255,255,.7)}
+.buddies-dots button.active{background:var(--gold-soft);width:24px;border-radius:6px}
+
+@media (max-width:900px){
+  .buddy-card.is-hero{width:280px;height:380px}
+  .buddy-card.is-side{width:180px;height:280px}
+  .buddy-card.is-left{transform:translate(calc(-50% - 220px),-50%) scale(1)}
+  .buddy-card.is-right{transform:translate(calc(-50% + 220px),-50%) scale(1)}
+  .buddy-card.is-off-left{transform:translate(calc(-50% - 380px),-50%) scale(.85)}
+  .buddy-card.is-off-right{transform:translate(calc(-50% + 380px),-50%) scale(.85)}
+  .buddies-track{height:420px}
+}
+@media (max-width:640px){
+  .buddy-card.is-hero{width:240px;height:320px}
+  .buddy-card.is-side{width:130px;height:200px;opacity:.55}
+  .buddy-card.is-hero .cap{font-size:30px}
+  .buddy-card.is-side .cap{font-size:18px}
+  .buddy-card.is-left{transform:translate(calc(-50% - 160px),-50%)}
+  .buddy-card.is-right{transform:translate(calc(-50% + 160px),-50%)}
+  .buddy-card.is-off-left{transform:translate(calc(-50% - 280px),-50%) scale(.85)}
+  .buddy-card.is-off-right{transform:translate(calc(-50% + 280px),-50%) scale(.85)}
+  .buddies-track{height:360px}
+  .buddies-arrow{width:42px;height:42px;font-size:18px}
+}
 
 /* ═══ CALENDAR ═══ */
 .cal-section{background:var(--paper)}
@@ -240,25 +286,36 @@ section{padding:100px 32px;position:relative}
 .cal-dow{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-3);text-align:center;padding:6px 0}
 .cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-2);border-radius:var(--radius-sm);transition:all .15s;position:relative;cursor:pointer}
 .cal-day:hover{background:var(--cream-2)}
-.cal-day.muted{color:var(--ink-3);opacity:.4;pointer-events:none;background:transparent}
-.cal-day.booked{background:var(--navy);color:#fff;cursor:not-allowed;border:1px solid var(--navy-deep)}
+/* Leading/trailing days from neighbor months — faded but visible (no longer blank) */
+.cal-day.muted{color:var(--ink-3);opacity:.45;pointer-events:none;background:transparent;font-weight:400}
+/* Booked → filled navy blue */
+.cal-day.booked{background:var(--navy);color:#fff;cursor:not-allowed;border:1px solid var(--navy-deep);font-weight:600}
 .cal-day.booked:hover{background:var(--navy)}
-/* Available days now filled with warm gold tint so they're scannable at a glance */
-.cal-day.available{background:var(--gold-pale);color:var(--navy);font-weight:600;border:1px solid rgba(224,160,47,.45)}
-.cal-day.available:hover{background:var(--gold-soft);border-color:var(--gold)}
-.cal-day.today{background:var(--blush-pale);border:1.5px solid var(--blush);color:#8a3e12;font-weight:700}
-.cal-day.today::before{content:'TODAY';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.8px;color:#8a3e12;font-weight:700}
-/* Holidays keep a distinct dashed-gold treatment (the +25% badge is removed — surcharge applies automatically) */
+/* Available → filled light yellow */
+.cal-day.available{background:var(--gold-pale);color:var(--navy);font-weight:600;border:1px solid rgba(224,160,47,.5)}
+.cal-day.available:hover{background:var(--gold-soft);border-color:var(--gold);transform:scale(1.04)}
+/* Today → always outlined in gold with heavier line (no fill) */
+.cal-day.today{background:transparent;border:2.5px solid var(--gold);color:var(--navy);font-weight:700;box-shadow:0 0 0 3px rgba(224,160,47,.18)}
+.cal-day.today::before{content:'TODAY';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.8px;color:var(--gold);font-weight:700}
+/* Today + Available can coexist → yellow fill keeps, gold outline wins */
+.cal-day.today.available{background:var(--gold-pale);border:2.5px solid var(--gold)}
+.cal-day.today.booked{background:var(--navy);border:2.5px solid var(--gold);color:#fff}
+/* Unavailable → no fill, strikethrough */
+.cal-day.unavailable{background:transparent;color:var(--ink-3);border:1px solid transparent;text-decoration:line-through;text-decoration-color:var(--ink-3);text-decoration-thickness:1.5px;cursor:not-allowed;opacity:.7}
+.cal-day.unavailable:hover{background:transparent}
+/* Holidays → dashed gold border (surcharge applies automatically in booking) */
 .cal-day.holiday{background:linear-gradient(135deg,var(--gold-pale) 0%,rgba(224,160,47,.35) 100%);border:1.5px dashed var(--gold);color:#8a3e12;font-weight:700}
 .cal-day.holiday.booked{background:var(--navy);border:1.5px dashed var(--gold-soft);color:var(--gold-soft)}
-.cal-day.selected{background:var(--gold)!important;color:var(--navy)!important;font-weight:700;border-color:var(--gold)!important}
+.cal-day.selected{background:var(--gold)!important;color:var(--navy)!important;font-weight:700;border:2px solid var(--gold)!important;box-shadow:0 0 0 3px rgba(224,160,47,.3)}
 .cal-legend{display:flex;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);flex-wrap:wrap}
 .cal-legend span{display:inline-flex;align-items:center;gap:6px}
 .cal-legend .dot{width:8px;height:8px;border-radius:50%}
 .cal-legend .dot.g{background:var(--gold)}
 .cal-legend .dot.n{background:var(--navy)}
-.cal-legend .dot.b{background:var(--blush-pale);border:1.5px solid var(--blush)}
+.cal-legend .dot.b{background:transparent;border:2px solid var(--gold);box-shadow:0 0 0 2px rgba(224,160,47,.18)}
 .cal-legend .dot.h{background:var(--gold-pale);border:1.5px dashed var(--gold)}
+.cal-legend .dot.u{background:transparent;border:1px solid var(--ink-3);position:relative}
+.cal-legend .dot.u::after{content:'';position:absolute;top:50%;left:-1px;right:-1px;height:1px;background:var(--ink-3);transform:translateY(-50%)}
 .cal-ctas{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;align-items:center}
 .cal-ctas .btn{padding:12px 20px;font-size:14px;flex:0 0 auto}
 @media (max-width:640px){.cal-ctas{justify-content:center}}
@@ -512,7 +569,7 @@ body.dal-in .dashboard-bar{display:flex !important}
 .my-dog-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent 60%, rgba(10,26,52,.4) 100%)}
 .my-dog-name{position:absolute;bottom:24px;left:24px;color:#fff;font-family:var(--font-display);font-style:italic;font-size:52px;line-height:1}
 .my-dog-greeting{font-family:var(--font-display);font-size:clamp(36px,4vw,56px);line-height:1.05;color:var(--navy);margin:0 0 20px;letter-spacing:-.01em;font-weight:500}
-.my-dog-greeting em{color:var(--blush);font-style:italic}
+.my-dog-greeting em{color:#C25D2F;font-style:italic;background:linear-gradient(180deg, transparent 64%, var(--gold-soft) 64%, var(--gold-soft) 92%, transparent 92%);padding:0 6px}
 .my-dog-tips{display:flex;flex-direction:column;gap:14px;margin-top:28px}
 .my-dog-tip{background:#fff;border-radius:var(--radius-sm);padding:16px 20px;display:flex;gap:14px;align-items:flex-start;border-left:3px solid var(--gold);box-shadow:var(--shadow-sm)}
 .my-dog-tip-num{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.5px;color:var(--blush);flex-shrink:0;margin-top:3px}
@@ -547,6 +604,14 @@ body.dal-in .dashboard-bar{display:flex !important}
   .store-grid{grid-template-columns:1fr}
 }
 
+/* ═══ SCROLL-TO-TOP BUTTON (subtle, gold outlined, fades in after scroll) ═══ */
+.to-top{position:fixed;bottom:22px;right:22px;z-index:190;width:46px;height:46px;border-radius:50%;background:rgba(251,247,238,.9);color:var(--navy);border:1.5px solid var(--gold);box-shadow:0 6px 18px rgba(19,42,78,.18),0 1px 4px rgba(19,42,78,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s ease,transform .3s ease,background .2s,color .2s;backdrop-filter:blur(8px)}
+.to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.to-top:hover{background:var(--gold);color:var(--navy);transform:translateY(-2px)}
+.to-top svg{width:16px;height:16px}
+.to-top .label{display:none}
+@media (max-width:640px){.to-top{bottom:16px;right:16px;width:42px;height:42px}}
+
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}
   .reveal{opacity:1;transform:none}
@@ -560,7 +625,7 @@ body.dal-in .dashboard-bar{display:flex !important}
   <span class="banner-pulse"></span>
   <span>Dogs &amp; Llamas <strong>→</strong> Dog boarding, walking, and care by <strong>Lorenzo &amp; Catalina</strong></span>
   <span style="opacity:.5">·</span>
-  <span>Ten Years Of Pro Dog Care · 25+ Dogs Trusted Us</span>
+  <span>Ten Years Of Pro Dog Care · 25+ Dogs · Queens, Manhattan, Westchester</span>
 </div>
 
 <!-- Subscriber dashboard bar (hidden by default, shown when body.dal-in) -->
@@ -607,17 +672,17 @@ body.dal-in .dashboard-bar{display:flex !important}
     <div class="hero-content">
       <span class="hero-eyebrow reveal"><span class="dot"></span>Rover Star Sitters · Queens NYC</span>
       <h1 class="hero-title reveal reveal-d1">
-        Your Dog's Second<br>
-        <em>Favorite Family.</em>
+        Your Dog's <em class="hero-accent">Second</em><br>
+        <span class="hero-primary">Favorite Family.</span>
       </h1>
       <p class="hero-sub reveal reveal-d2">
-        Boarding, walking, and care by <strong>Lorenzo &amp; Catalina Llamas</strong> — Rover Star Sitters serving Woodside, Sunnyside, Astoria, LIC, and Midtown. Real photos, real backyard, real updates.
+        Boarding, walking, and care by <strong>Lorenzo &amp; Catalina Llamas</strong> — Rover Star Sitters based in a quiet, air-conditioned 2nd-floor apartment in Woodside. We walk long avenues and nearby parks so your pup gets real exercise and social time. Real photos, real updates, real attention.
       </p>
 
       <div class="hero-meta reveal reveal-d3">
         <div>Sitting Since<strong>2016 · 10 Years</strong></div>
         <div>Rover Rating<strong>5.0 ★★★★★</strong></div>
-        <div>Dogs Cared For<strong>25+ Across Queens &amp; NYC</strong></div>
+        <div>Dogs Cared For<strong>25+ · Queens, Manhattan &amp; Westchester</strong></div>
       </div>
 
       <div class="hero-ctas reveal reveal-d3">
@@ -734,19 +799,17 @@ body.dal-in .dashboard-bar{display:flex !important}
   </div>
 </section>
 
-<!-- MARQUEE "OUR BUDDIES" -->
+<!-- OUR BUDDIES CAROUSEL -->
 <section class="marquee-section" id="pack" style="padding-left:0;padding-right:0">
   <p class="marquee-label">◆ &nbsp;Our Buddies · 2016–2026 &nbsp;◆</p>
   <h2 class="marquee-title">Twenty-Five Plus Dogs, Ten Years In.<br>Every One Goes Home <em>Happier Than They Arrived.</em></h2>
-  <p style="text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;color:rgba(255,255,255,.55);text-transform:uppercase;margin:-40px auto 40px;max-width:520px;padding:0 32px">Tap any buddy to see their photo &amp; story</p>
-  <div class="marquee-wrap">
-    <div class="marquee" id="marquee"></div>
-    <div class="marquee-controls">
-      <button class="marquee-btn" id="marqueePlayPause" title="Pause" aria-label="Pause carousel">
-        <svg id="mqIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/></svg>
-      </button>
-    </div>
+  <p style="text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;color:rgba(255,255,255,.55);text-transform:uppercase;margin:-40px auto 40px;max-width:520px;padding:0 32px">Tap the center buddy to see their story</p>
+  <div class="buddies-stage">
+    <button class="buddies-arrow buddies-prev" id="buddiesPrev" aria-label="Previous buddy">‹</button>
+    <div class="buddies-track" id="buddiesTrack"></div>
+    <button class="buddies-arrow buddies-next" id="buddiesNext" aria-label="Next buddy">›</button>
   </div>
+  <div class="buddies-dots" id="buddiesDots"></div>
 </section>
 
 <!-- ABOUT -->
@@ -767,13 +830,13 @@ body.dal-in .dashboard-bar{display:flex !important}
         <span class="eyebrow">The Humans</span>
         <h2 class="section-title" style="margin:0 0 24px">Lorenzo <em>&amp;</em> Catalina.</h2>
         <p>
-          "We've been caring for dogs for a decade — ten years of pickups, backyard play, and real photo updates. Dogs &amp; Llamas is what happened when our apartment became unofficially HQ for everyone's pup."
+          "We've been caring for dogs for a decade — ten years of pickups, long walks, and real photo updates. Dogs &amp; Llamas started when our quiet little apartment became the unofficial hangout for everyone's pup."
         </p>
         <p>
-          Lorenzo handles pickups, walks around the Gantry waterfront, and the long weekend boarding stays. Catalina does daytime drop-ins, backyard play, and the dreaded bath after a muddy Roosevelt Island run. We both write you back within an hour.
+          Lorenzo handles pickups, walks along the Gantry waterfront, and the long weekend boarding stays. Catalina does daytime drop-ins, enrichment play indoors, and the dreaded post-walk wipe-down after a muddy park morning. We both reply within an hour, every time.
         </p>
         <p>
-          Twenty-five-plus dogs across Queens and Midtown. Chihuahuas, pit mixes, corgis, a French Bully who hated being alone, seniors with meds, puppies working on potty training, and a pair of large dogs boarded together for two weeks at Christmas. Everyone leaves the same way: a little tired, a little happier.
+          Home base is a 2nd-floor, air-conditioned apartment in Woodside — calm, cool, and a few steps from long avenues and nearby parks perfect for solo walks or for dogs who love meeting other pups. Twenty-five-plus dogs across Queens, Manhattan, and Westchester: chihuahuas, pit mixes, corgis, a French Bully who hated being alone, seniors with meds, puppies learning to potty, and a pair of large dogs who boarded together for two weeks over Christmas. Everyone leaves the same way — a little tired, a little happier.
         </p>
         <div class="signature">
           Lorenzo &amp; Catalina
@@ -802,6 +865,7 @@ body.dal-in .dashboard-bar{display:flex !important}
           <span><span class="dot n"></span>Booked</span>
           <span><span class="dot b"></span>Today</span>
           <span><span class="dot h"></span>Holiday</span>
+          <span><span class="dot u"></span>Unavailable</span>
         </div>
       </div>
       <div class="reveal reveal-d1">
@@ -1253,6 +1317,12 @@ body.dal-in .dashboard-bar{display:flex !important}
   </div>
 </div>
 
+<!-- Scroll-to-top button (appears after scrolling down) -->
+<button type="button" class="to-top" id="toTop" aria-label="Scroll to top">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13 V3 M3 8 l5 -5 l5 5"/></svg>
+  <span class="label">Top</span>
+</button>
+
 <!-- DAL subscriber bootstrap (real Supabase integration for newsletter + login + personalization) -->
 <script src="dal-subscriber.js?v=3" defer></script>
 
@@ -1394,84 +1464,93 @@ if (featuredEl){
   });
 }
 
-/* ═══════════ MARQUEE ═══════════ */
+/* ═══════════ OUR BUDDIES CAROUSEL ═══════════ */
 (function(){
-  const mq = document.getElementById('marquee');
-  if (!mq) return;
-  const all = [...PACK_PHOTOS, ...PACK_PHOTOS];
-  all.forEach((p,i)=>{
+  const track = document.getElementById('buddiesTrack');
+  const dotsEl = document.getElementById('buddiesDots');
+  const prevBtn = document.getElementById('buddiesPrev');
+  const nextBtn = document.getElementById('buddiesNext');
+  if (!track) return;
+
+  /* Build one card per buddy (no duplication) */
+  PACK_PHOTOS.forEach((p,i)=>{
     const c = document.createElement('div');
-    c.className = 'marquee-card';
-    c.dataset.idx = i % PACK_PHOTOS.length;
-    c.innerHTML = `<img src="${p.img}" alt="${p.name}" loading="lazy"/>
+    c.className = 'buddy-card';
+    c.dataset.idx = i;
+    c.innerHTML = `<img src="${p.img}" alt="${p.name}" loading="${i<3?'eager':'lazy'}"/>
       <div class="cap">${p.name}<small>${p.role}</small></div>`;
-    mq.appendChild(c);
+    c.addEventListener('click', ()=>{
+      if (+c.dataset.idx === heroIdx) {
+        openDogLightbox(p.name, p.img, p.role);
+      } else {
+        goTo(+c.dataset.idx);
+      }
+    });
+    track.appendChild(c);
   });
 
-  const SPEED = 0.55;
-  let offset = 0, playing = true, dragging = false;
-  let dragStartX = 0, dragStartOffset = 0, dragMoved = false, halfWidth = 0;
-
-  function measure(){ halfWidth = mq.scrollWidth / 2; }
-  const imgs = mq.querySelectorAll('img');
-  let loaded = 0;
-  imgs.forEach(img=>{
-    if(img.complete) loaded++;
-    else img.addEventListener('load', ()=>{ loaded++; if(loaded===imgs.length) measure(); });
+  /* Build dot indicators */
+  PACK_PHOTOS.forEach((_,i)=>{
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', `Go to buddy ${i+1}`);
+    b.addEventListener('click', ()=>goTo(i));
+    dotsEl.appendChild(b);
   });
-  measure();
-  setTimeout(measure, 1500);
 
-  function frame(){
-    if(playing && !dragging){
-      offset -= SPEED;
-      if(halfWidth && Math.abs(offset) >= halfWidth) offset += halfWidth;
-      mq.style.transform = `translateX(${offset}px)`;
+  const N = PACK_PHOTOS.length;
+  let heroIdx = 0;
+  const cards = [...track.querySelectorAll('.buddy-card')];
+  const dots = [...dotsEl.querySelectorAll('button')];
+
+  function normalize(i){ return ((i % N) + N) % N; }
+  function position(i){
+    const diff = normalize(i - heroIdx);
+    if (diff === 0) return 'is-hero';
+    if (diff === 1) return 'is-side is-right';
+    if (diff === N-1) return 'is-side is-left';
+    if (diff === 2) return 'is-off-right';
+    if (diff === N-2) return 'is-off-left';
+    return 'is-off-right';   // hidden, stacked right
+  }
+  function render(){
+    cards.forEach((c,i)=>{
+      c.className = 'buddy-card ' + position(i);
+    });
+    dots.forEach((d,i)=>d.classList.toggle('active', i === heroIdx));
+  }
+  function goTo(i){ heroIdx = normalize(i); render(); }
+  function next(){ goTo(heroIdx + 1); }
+  function prev(){ goTo(heroIdx - 1); }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  /* Keyboard arrows when the carousel is focused */
+  document.addEventListener('keydown', e=>{
+    const sec = document.getElementById('pack');
+    if (!sec) return;
+    const rect = sec.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (!inView) return;
+    if (e.key === 'ArrowRight') next();
+    else if (e.key === 'ArrowLeft') prev();
+  });
+
+  /* Swipe on touch */
+  let startX = 0, startY = 0, tracking = false;
+  track.addEventListener('touchstart', e=>{ startX = e.touches[0].clientX; startY = e.touches[0].clientY; tracking = true; }, {passive:true});
+  track.addEventListener('touchend',   e=>{
+    if (!tracking) return;
+    tracking = false;
+    const dx = (e.changedTouches[0].clientX - startX);
+    const dy = (e.changedTouches[0].clientY - startY);
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) next(); else prev();
     }
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-
-  const btn = document.getElementById('marqueePlayPause');
-  const icon = document.getElementById('mqIcon');
-  function setPlay(p){
-    playing = p;
-    btn.title = p ? 'Pause' : 'Play';
-    btn.setAttribute('aria-label', p ? 'Pause carousel' : 'Play carousel');
-    icon.innerHTML = p
-      ? '<rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/>'
-      : '<path d="M3 2 L11 7 L3 12 Z"/>';
-  }
-  btn.addEventListener('click', ()=>setPlay(!playing));
-
-  function onDown(x){ dragging=true; dragStartX=x; dragStartOffset=offset; dragMoved=false; mq.classList.add('dragging'); }
-  function onMove(x){
-    if(!dragging) return;
-    const dx = x - dragStartX;
-    if(Math.abs(dx) > 3) dragMoved = true;
-    offset = dragStartOffset + dx;
-    if(halfWidth){
-      while(offset <= -halfWidth) offset += halfWidth;
-      while(offset > 0) offset -= halfWidth;
-    }
-    mq.style.transform = `translateX(${offset}px)`;
-  }
-  function onUp(){ if(!dragging) return; dragging=false; mq.classList.remove('dragging'); }
-  mq.addEventListener('mousedown', e=>{ e.preventDefault(); onDown(e.clientX); });
-  window.addEventListener('mousemove', e=>onMove(e.clientX));
-  window.addEventListener('mouseup', onUp);
-  mq.addEventListener('touchstart', e=>onDown(e.touches[0].clientX), {passive:true});
-  mq.addEventListener('touchmove', e=>onMove(e.touches[0].clientX), {passive:true});
-  mq.addEventListener('touchend', onUp);
-
-  mq.addEventListener('click', e=>{
-    if(dragMoved) return;
-    const card = e.target.closest('.marquee-card');
-    if(!card) return;
-    const idx = +card.dataset.idx;
-    const packDog = PACK_PHOTOS[idx];
-    openDogLightbox(packDog.name, packDog.img, packDog.role);
   });
+
+  render();
 })();
 
 /* ═══════════ DOG LIGHTBOX ═══════════ */
@@ -1519,9 +1598,22 @@ function isHoliday(d){ return FED_HOLIDAYS_2026.some(h=>h.m===d.m && h.d===d.d);
 const AVAILABILITY = {};
 function keyOf(y,m,d){ return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
 function seedAvailability(){
-  const def = { booked: [4,5,11,14,18,19,20,25,26,27], available: [1,6,7,8,9,12,13,15,21,22,28,29,30] };
-  def.booked.forEach(d=>{ AVAILABILITY[keyOf(2026,5,d)] = 'booked'; });
-  def.available.forEach(d=>{ AVAILABILITY[keyOf(2026,5,d)] = 'available'; });
+  /* Seed: current month (sample mix of booked + available) and May 2026 (shown in design mocks) */
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth() + 1;
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const today = now.getDate();
+  for (let d=1; d<=daysInMonth; d++){
+    if (d < today) continue;                          /* past days stay unavailable */
+    if (d === today) { AVAILABILITY[keyOf(y,m,d)] = 'available'; continue; }
+    /* Simple pseudo-random seed: every 3rd day booked, the rest available */
+    const st = (d % 3 === 0) ? 'booked' : 'available';
+    AVAILABILITY[keyOf(y,m,d)] = st;
+  }
+  /* Legacy May 2026 demo data (kept for the design-spec month) */
+  const may2026 = { booked: [4,5,11,14,18,19,20,25,26,27], available: [1,6,7,8,9,12,13,15,21,22,28,29,30] };
+  may2026.booked.forEach(d=>{ AVAILABILITY[keyOf(2026,5,d)] = 'booked'; });
+  may2026.available.forEach(d=>{ AVAILABILITY[keyOf(2026,5,d)] = 'available'; });
 }
 seedAvailability();
 
@@ -1547,8 +1639,8 @@ function loadCloudAvailability(){
   } catch(e){}
 }
 
-/* Current visible month in main calendar */
-let calMonth = 5, calYear = 2026;
+/* Current visible month defaults to the real current month */
+let calMonth = (new Date()).getMonth() + 1, calYear = (new Date()).getFullYear();
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 function renderCal(){
   const grid = document.getElementById('calGrid');
@@ -1566,21 +1658,28 @@ function renderCal(){
   document.getElementById('calMonthName').textContent = MONTH_NAMES[calMonth-1];
   document.getElementById('calYearName').textContent = calYear;
 
-  for(let i=0;i<firstDow;i++){
-    const e = document.createElement('div'); e.className='cal-day muted'; e.textContent=''; grid.appendChild(e);
+  /* Leading days from the previous month — fill with real numbers, muted (unclickable) */
+  const prevMonthDays = new Date(calYear, calMonth-1, 0).getDate();
+  for (let i=firstDow-1; i>=0; i--){
+    const e = document.createElement('div');
+    e.className = 'cal-day muted';
+    e.textContent = prevMonthDays - i;
+    grid.appendChild(e);
   }
-  for(let d=1; d<=daysInMonth; d++){
+  /* Current month days */
+  for (let d=1; d<=daysInMonth; d++){
     const e = document.createElement('div');
     e.className = 'cal-day';
     const k = keyOf(calYear, calMonth, d);
     const st = AVAILABILITY[k];
     if (st === 'booked') e.classList.add('booked');
     else if (st === 'available') e.classList.add('available');
+    else e.classList.add('unavailable');
     if (d === todayDay) e.classList.add('today');
     if (isHoliday({m:calMonth,d})) e.classList.add('holiday');
     e.textContent = d;
     e.addEventListener('click', ()=>{
-      if (e.classList.contains('booked') || e.classList.contains('muted')) return;
+      if (e.classList.contains('booked') || e.classList.contains('muted') || e.classList.contains('unavailable')) return;
       [...grid.querySelectorAll('.cal-day')].forEach(x=>x.classList.remove('selected'));
       e.classList.add('selected');
       bookingState.arrival = { y:calYear, m:calMonth, d };
@@ -1591,10 +1690,14 @@ function renderCal(){
     });
     grid.appendChild(e);
   }
+  /* Trailing days from the next month — fill to complete a 7-column grid */
   const total = firstDow + daysInMonth;
   const trail = (7 - (total % 7)) % 7;
-  for(let i=1;i<=trail;i++){
-    const e = document.createElement('div'); e.className='cal-day muted'; e.textContent=''; grid.appendChild(e);
+  for (let i=1; i<=trail; i++){
+    const e = document.createElement('div');
+    e.className = 'cal-day muted';
+    e.textContent = i;
+    grid.appendChild(e);
   }
 }
 renderCal();
@@ -2146,6 +2249,20 @@ document.querySelectorAll('a.svc[href="#book"], a.nav-cta[href="#book"]').forEac
   });
 });
 window.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeBooking(); });
+
+/* ═══════════ SCROLL-TO-TOP ═══════════ */
+(function(){
+  const btn = document.getElementById('toTop');
+  if (!btn) return;
+  function onScroll(){
+    btn.classList.toggle('show', window.scrollY > 420);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  btn.addEventListener('click', ()=>{
+    window.scrollTo({ top:0, behavior:'smooth' });
+  });
+  onScroll();
+})();
 
 /* ═══════════ INIT ═══════════ */
 renderFeatured(tweaks.featuredIndex || 0);

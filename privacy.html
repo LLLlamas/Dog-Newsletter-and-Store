@@ -297,5 +297,24 @@
 </script>
 <script src="dal-subscriber.js?v=3" defer></script>
 
+<style>
+.to-top-btn{position:fixed;bottom:22px;right:22px;z-index:190;width:46px;height:46px;border-radius:50%;background:rgba(251,247,238,.94);color:#132A4E;border:1.5px solid #E0A02F;box-shadow:0 6px 18px rgba(19,42,78,.2),0 1px 4px rgba(19,42,78,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s,transform .3s,background .2s;backdrop-filter:blur(8px)}
+.to-top-btn.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.to-top-btn:hover{background:#E0A02F}
+.to-top-btn svg{width:16px;height:16px}
+@media (max-width:640px){.to-top-btn{bottom:16px;right:16px;width:42px;height:42px}}
+</style>
+<button type="button" class="to-top-btn" id="toTop" aria-label="Scroll to top">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13 V3 M3 8 l5 -5 l5 5"/></svg>
+</button>
+<script>
+(function(){
+  var btn = document.getElementById('toTop'); if (!btn) return;
+  function onScroll(){ btn.classList.toggle('show', window.scrollY > 420); }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  btn.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+  onScroll();
+})();
+</script>
 </body>
 </html>
