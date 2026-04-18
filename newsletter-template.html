@@ -7,9 +7,12 @@
 
   <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║      DOGS & LLAMAS — MONTHLY NEWSLETTER TEMPLATE            ║
-  ║      Update the MONTHLY CONFIG block below each month.      ║
-  ║      Everything else stays the same.                        ║
+  ║      DOGS & LLAMAS — MONTHLY NEWSLETTER TEMPLATE             ║
+  ║      Update the MONTHLY CONFIG block below each month.       ║
+  ║      Everything else stays the same.                         ║
+  ║                                                              ║
+  ║      Palette: warm navy + sun gold + cream + blush           ║
+  ║      Fonts:   Georgia (headings) + Arial (body) — email-safe ║
   ╚══════════════════════════════════════════════════════════════╝
 
   HOW TO USE THIS TEMPLATE EACH MONTH
@@ -21,15 +24,17 @@
 
   3. Find every ← EDIT comment inside the body and swap in your content.
 
-  4. Optional sections (photo, product, testimonial) are clearly marked.
-     Delete or comment out any you don't need this month.
+  4. Optional sections (photo, product, testimonial, personalized pick) are
+     clearly marked. Delete or comment out any you don't need this month.
 
   5. Paste the HTML into Mailchimp / beehiiv's Custom HTML block to send.
      OR link to the .html file directly from index.html's archive list.
 
-  COUPON CODES (honor-system, mention when booking on Rover):
-    Newsletter subscriber discount → PUPS10  (10% off next sit)
-    Store purchase discount        → SHOP10  (10% off next sit)
+  COUPON CODES (honor-system, mention when booking direct or on Rover):
+    Newsletter subscriber discount → PUPS10  (10% off next stay)
+    Store purchase discount        → SHOP10  (10% off next stay)
+    Site-wide returning client     → logged-in subscribers get 10% off
+                                      automatically in the booking modal.
   -->
 
   <!-- ══════════════════════════════════════════════════════
@@ -40,7 +45,7 @@
   <!--
     MONTH_LABEL:      May 2026
     ISSUE_NUMBER:     02
-    SUBJECT_LINE:     Pup Notes: May openings + a tip for spring shedding season
+    SUBJECT_LINE:     Pup Notes: May openings + a tip for spring shedding
     PREHEADER_TEXT:   New spots open for May — plus one thing that actually helps with shedding.
   -->
 
@@ -49,23 +54,23 @@
     GREETING:         Hi [First Name],
     OPENING:          Hope you and your pup are enjoying the longer evenings. Quick update from me — plus one tip that comes up a lot this time of year.
     AVAILABILITY:     I have spots open for weekend stays and drop-ins through most of May. Memorial Day weekend is filling up, so if you have travel coming up, reach out early.
-    DOG_TIP:          Spring shedding is normal — but brushing 3–4 times a week during peak shed season makes a real difference. A deshedding brush (like the Furminator) pulls out the loose undercoat before it ends up on your furniture, and most dogs genuinely enjoy the routine.
+    DOG_TIP:          Spring shedding is normal — but brushing 3–4 times a week during peak shed season makes a real difference. A deshedding brush (like the FURminator) pulls out the loose undercoat before it ends up on your furniture, and most dogs genuinely enjoy the routine.
     LOYALTY_PERK:     Subscribers still get first notice whenever I open spots. If you've been thinking about booking, replying to this email is the fastest way in.
     CTA:              Know someone who needs a reliable sitter this summer? I'd love an introduction. And if you'd like to rebook, I'd love to care for [Dog Name] again.
-    SIGNOFF_NAME:     [Your Name]
-    BOOKING_NOTE:     Message me on Rover anytime — [Rover profile link]
+    SIGNOFF_NAME:     Lorenzo & Catalina
+    BOOKING_NOTE:     Message me on Rover anytime — rover.com/members/lorenzo-l-1
   -->
 
   <!-- OPTIONAL: TESTIMONIAL (delete the section below if not using this month) -->
   <!--
     TESTIMONIAL_QUOTE:  We always feel completely at ease leaving Biscuit. The photo updates are such a nice touch.
     TESTIMONIAL_CLIENT: Sarah M.
-    TESTIMONIAL_DOG:    Owner of Biscuit
+    TESTIMONIAL_DOG:    Biscuit's Owner
   -->
 
   <!-- OPTIONAL: PRODUCT SPOTLIGHT (delete the section below if not using this month) -->
   <!--
-    PRODUCT_NAME:       Furminator Deshedding Tool
+    PRODUCT_NAME:       FURminator Deshedding Tool
     PRODUCT_NOTE:       Worth having before a stay — cuts down on loose fur dramatically.
     PRODUCT_LINK:       https://www.amazon.com/s?k=Furminator+Deshedding+Tool&tag=[YOUR-AFFILIATE-TAG]
     PRODUCT_IS_AFFILIATE: yes   ← change to "no" to hide the disclosure line
@@ -93,14 +98,15 @@
     body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
     img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
-    body { margin: 0; padding: 0; background-color: #F2F5FB; font-family: Arial, Helvetica, sans-serif; }
+    body { margin: 0; padding: 0; background-color: #F6EFE3; font-family: Arial, Helvetica, sans-serif; }
 
-    a { color: #1B4F8C; }
+    a { color: #132A4E; }
 
     @media only screen and (max-width: 600px) {
       .email-wrapper  { width: 100% !important; }
-      .email-body     { padding: 24px 20px !important; }
-      .header-title   { font-size: 22px !important; }
+      .email-body     { padding: 28px 22px !important; }
+      .email-header   { padding: 26px 24px !important; }
+      .header-title   { font-size: 34px !important; }
       .section-label  { font-size: 10px !important; }
       .body-text      { font-size: 15px !important; }
       .photo-cell     { width: 80px !important; height: 80px !important; }
@@ -115,121 +121,159 @@
 </div>
 
 <!-- ── OUTER WRAPPER ──────────────────────────────────────────────── -->
-<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F6EFE3;">
 <tr><td align="center" style="padding:32px 16px;">
 
   <!-- ── EMAIL CARD ──────────────────────────────────────────────── -->
-  <table class="email-wrapper" border="0" cellpadding="0" cellspacing="0" width="560"
-         style="background-color:#FFFFFF;border-radius:8px;overflow:hidden;">
+  <table class="email-wrapper" border="0" cellpadding="0" cellspacing="0" width="600"
+         style="background-color:#FBF7EE;border-radius:12px;overflow:hidden;
+                border:1px solid #D6CDB9;box-shadow:0 20px 50px rgba(19,42,78,0.15);">
 
     <!-- ▓▓ HEADER ▓▓ -->
     <tr>
-      <td style="background-color:#1B4F8C;background-image:linear-gradient(150deg, #0A1E3D 0%, #1B4F8C 55%, #2B6CB0 100%);padding:32px 40px;text-align:center;">
-        <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:11px;
-                  letter-spacing:2px;text-transform:uppercase;color:#F5CC4A;">
-          Monthly Dog-Care Update
-        </p>
+      <td class="email-header"
+          style="background-color:#132A4E;background-image:linear-gradient(135deg, #0A1A34 0%, #132A4E 45%, #25437B 100%);padding:32px 40px 28px;border-bottom:4px solid #E0A02F;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td style="font-family:'Courier New',monospace;font-size:10.5px;
+                       letter-spacing:1.5px;text-transform:uppercase;color:#F3CB6A;">
+              Pup Notes &bull; Issue #[ISSUE_NUMBER]   <!-- ← EDIT -->
+            </td>
+            <td align="right" style="font-family:'Courier New',monospace;font-size:10.5px;
+                       letter-spacing:1.5px;text-transform:uppercase;color:#F3CB6A;">
+              [MONTH_LABEL]   <!-- ← EDIT -->
+            </td>
+          </tr>
+        </table>
         <h1 class="header-title"
-            style="margin:0;font-family:Georgia, 'Times New Roman', serif;font-size:28px;
-                   font-weight:600;color:#ffffff;line-height:1.2;letter-spacing:-0.3px;">
-          Dogs &amp; Llamas
+            style="margin:14px 0 6px;font-family:Georgia, 'Times New Roman', serif;font-size:44px;
+                   font-weight:500;color:#ffffff;line-height:1.02;letter-spacing:-0.5px;">
+          Dogs <span style="color:#F3CB6A;font-style:italic;font-weight:400;">&amp;</span> Llamas
         </h1>
-        <p style="margin:8px 0 0;font-family:Arial, Helvetica, sans-serif;font-size:13px;
-                  color:rgba(255,255,255,0.85);font-style:italic;">
-          [MONTH_LABEL] &bull; Issue #[ISSUE_NUMBER]   <!-- ← EDIT -->
+        <p style="margin:4px 0 0;font-family:'Courier New',monospace;font-size:11px;
+                  letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.6);">
+          From Lorenzo &amp; Catalina &bull; Woodside, Queens
         </p>
       </td>
     </tr>
 
     <!-- ▓▓ BODY ▓▓ -->
     <tr>
-      <td class="email-body" style="padding:36px 40px;">
+      <td class="email-body" style="padding:38px 44px;">
 
         <!-- Greeting -->
         <p class="body-text"
-           style="margin:0 0 20px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                  line-height:1.7;color:#1A1D26;">
+           style="margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-size:28px;
+                  line-height:1.2;color:#132A4E;font-weight:500;">
           [GREETING]   <!-- ← EDIT: e.g. Hi [First Name], -->
         </p>
 
         <!-- Opening paragraph -->
         <p class="body-text"
-           style="margin:0 0 32px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                  line-height:1.7;color:#1A1D26;">
+           style="margin:0 0 30px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
+                  line-height:1.7;color:#43413B;">
           [OPENING]   <!-- ← EDIT -->
         </p>
 
         <!-- ── SECTION: Availability ────────────────────────────── -->
         <p class="section-label"
-           style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:11px;
-                  font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;
-                  color:#1B4F8C;">
-          Current Availability
+           style="margin:0 0 8px;font-family:'Courier New',monospace;font-size:10.5px;
+                  font-weight:bold;letter-spacing:2px;text-transform:uppercase;
+                  color:#E69A6F;">
+          &#9670; Current Availability
         </p>
-        <p class="body-text"
-           style="margin:0 0 32px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                  line-height:1.7;color:#1A1D26;
-                  border-left:4px solid #D4A017;padding-left:16px;">
-          [AVAILABILITY]   <!-- ← EDIT -->
-        </p>
+        <h2 style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:22px;
+                   color:#132A4E;font-weight:500;line-height:1.25;">
+          What's open this month.
+        </h2>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 32px;">
+          <tr>
+            <td style="background:linear-gradient(135deg,#F8E9C4 0%,#F6EFE3 100%);
+                       border:1px solid rgba(224,160,47,0.4);border-radius:10px;
+                       padding:18px 22px;">
+              <p class="body-text"
+                 style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:15.5px;
+                        line-height:1.65;color:#43413B;">
+                [AVAILABILITY]   <!-- ← EDIT -->
+              </p>
+              <p style="margin:14px 0 0;">
+                <a href="https://llllamas.github.io/Dog-Newsletter-and-Store/index.html#book"
+                   style="display:inline-block;background-color:#132A4E;color:#ffffff;
+                          font-family:Arial,sans-serif;font-size:13px;font-weight:bold;
+                          text-decoration:none;padding:10px 20px;border-radius:999px;
+                          letter-spacing:0.4px;">
+                  Check the calendar &rarr;
+                </a>
+              </p>
+            </td>
+          </tr>
+        </table>
 
         <!-- ── SECTION: Dog Tip ──────────────────────────────────── -->
         <p class="section-label"
-           style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:11px;
-                  font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;
-                  color:#1B4F8C;">
-          Dog Tip of the Month
+           style="margin:0 0 8px;font-family:'Courier New',monospace;font-size:10.5px;
+                  font-weight:bold;letter-spacing:2px;text-transform:uppercase;
+                  color:#E69A6F;">
+          &#9670; Dog Tip Of The Month
         </p>
-        <p class="body-text"
-           style="margin:0 0 32px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                  line-height:1.7;color:#1A1D26;">
-          [DOG_TIP]   <!-- ← EDIT -->
-        </p>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 32px;">
+          <tr>
+            <td style="background-color:#ffffff;border-left:4px solid #E0A02F;
+                       border-radius:0 12px 12px 0;padding:18px 22px;
+                       box-shadow:0 2px 8px rgba(19,42,78,0.05);">
+              <p class="body-text"
+                 style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:15.5px;
+                        line-height:1.7;color:#43413B;">
+                [DOG_TIP]   <!-- ← EDIT -->
+              </p>
+            </td>
+          </tr>
+        </table>
 
         <!-- ╔══════════════════════════════════════════════════════╗
-             ║  OPTIONAL: PERSONALIZED DOG PICK                    ║
-             ║  One specific product, for one specific dog.        ║
-             ║  Send a version of this email to that client only,  ║
-             ║  or include it in a general issue when relevant.    ║
-             ║                                                     ║
-             ║  HOW TO USE:                                        ║
-             ║  1. Uncomment this block (remove the <!-- and -->)  ║
-             ║  2. Fill in DOG_PICK_* values from config above     ║
-             ║  3. Make it genuinely personal — 1–2 sentences why  ║
-             ║     THIS product makes sense for THIS specific dog  ║
-             ║  4. To hide it entirely: leave it commented out     ║
+             ║  OPTIONAL: PERSONALIZED DOG PICK                     ║
+             ║  One specific product, for one specific dog.         ║
+             ║  Send a version of this email to that client only,   ║
+             ║  or include it in a general issue when relevant.     ║
+             ║                                                      ║
+             ║  HOW TO USE:                                         ║
+             ║  1. Uncomment this block (remove the <!-- and -->)   ║
+             ║  2. Fill in DOG_PICK_* values from config above      ║
+             ║  3. Make it genuinely personal — 1–2 sentences why   ║
+             ║     THIS product makes sense for THIS specific dog   ║
+             ║  4. To hide it entirely: leave it commented out      ║
              ╚══════════════════════════════════════════════════════╝ -->
         <!--
         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                style="margin:0 0 32px;">
           <tr>
-            <td style="background-color:#E4F0FB;border-radius:8px;padding:20px 24px;
-                       border-left:4px solid #1B4F8C;">
-              <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:10px;
+            <td style="background-color:#132A4E;color:#ffffff;border-radius:14px;
+                       padding:24px 28px;">
+              <p style="margin:0 0 4px;font-family:'Courier New',monospace;font-size:10px;
                         font-weight:bold;letter-spacing:2px;text-transform:uppercase;
-                        color:#1B4F8C;">
-                Just for [DOG_PICK_DOG_NAME]   ← EDIT
+                        color:#F3CB6A;">
+                &#9733; Just for [DOG_PICK_DOG_NAME]
               </p>
-              <p style="margin:0 0 10px;font-family:Arial, Helvetica, sans-serif;font-size:17px;
-                        font-weight:bold;color:#1A1D26;line-height:1.4;">
-                [DOG_PICK_PRODUCT_NAME]   ← EDIT
+              <p style="margin:0 0 10px;font-family:Georgia,'Times New Roman',serif;font-size:22px;
+                        font-weight:500;color:#ffffff;line-height:1.25;">
+                [DOG_PICK_PRODUCT_NAME]
               </p>
               <p class="body-text"
-                 style="margin:0 0 14px;font-family:Arial, Helvetica, sans-serif;font-size:15px;
-                        line-height:1.7;color:#4C5470;">
-                [DOG_PICK_REASON]   ← EDIT: why this product makes sense for this specific dog
+                 style="margin:0 0 16px;font-family:Arial, Helvetica, sans-serif;font-size:14.5px;
+                        line-height:1.7;color:rgba(255,255,255,0.85);">
+                [DOG_PICK_REASON]
               </p>
-              <a href="[DOG_PICK_PRODUCT_LINK]"   ← EDIT
+              <a href="[DOG_PICK_PRODUCT_LINK]"
                  target="_blank" rel="noopener noreferrer sponsored"
-                 style="display:inline-block;background-color:#1B4F8C;color:#ffffff;
+                 style="display:inline-block;background-color:#E0A02F;color:#132A4E;
                         font-family:Arial,sans-serif;font-size:13px;font-weight:bold;
-                        text-decoration:none;padding:9px 20px;border-radius:4px;
-                        letter-spacing:0.5px;">
+                        text-decoration:none;padding:10px 22px;border-radius:999px;
+                        letter-spacing:0.4px;">
                 See it on Amazon &rarr;
               </a>
               Affiliate disclosure — only show if DOG_PICK_IS_AFFILIATE = yes:
-              <p style="margin:10px 0 0;font-family:Arial,sans-serif;font-size:11px;
-                        color:#8C94B0;font-style:italic;">
+              <p style="margin:12px 0 0;font-family:Arial,sans-serif;font-size:11px;
+                        color:rgba(255,255,255,0.5);font-style:italic;">
                 Paid link — I may earn a small commission if you buy through this link,
                 at no extra cost to you.
               </p>
@@ -240,27 +284,27 @@
 
         <!-- ── SECTION: Loyalty Perk ─────────────────────────────── -->
         <p class="section-label"
-           style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:11px;
-                  font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;
-                  color:#1B4F8C;">
-          Subscriber Perk
+           style="margin:0 0 8px;font-family:'Courier New',monospace;font-size:10.5px;
+                  font-weight:bold;letter-spacing:2px;text-transform:uppercase;
+                  color:#E69A6F;">
+          &#9670; Subscriber Perk
         </p>
         <p class="body-text"
-           style="margin:0 0 32px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                  line-height:1.7;color:#1A1D26;">
+           style="margin:0 0 30px;font-family:Arial, Helvetica, sans-serif;font-size:15.5px;
+                  line-height:1.7;color:#43413B;">
           [LOYALTY_PERK]   <!-- ← EDIT -->
         </p>
 
         <!-- ╔══════════════════════════════════════════════════════╗
-             ║  OPTIONAL: PHOTO STRIP                              ║
-             ║  Delete this entire block if not using this month.  ║
+             ║  OPTIONAL: PHOTO STRIP                               ║
+             ║  Delete this entire block if not using this month.   ║
              ╚══════════════════════════════════════════════════════╝ -->
         <!--
         <p class="section-label"
-           style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:11px;
-                  font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;
-                  color:#1B4F8C;">
-          This Month's Pups
+           style="margin:0 0 8px;font-family:'Courier New',monospace;font-size:10.5px;
+                  font-weight:bold;letter-spacing:2px;text-transform:uppercase;
+                  color:#E69A6F;">
+          &#9670; This Month's Pups
         </p>
         <table border="0" cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
           <tr>
@@ -270,45 +314,51 @@
             <td style="padding-right:8px;">
               <img class="photo-cell" src="[PHOTO_1_URL]" alt="[Dog Name]"
                    width="100" height="100"
-                   style="border-radius:6px;display:block;width:100px;height:100px;object-fit:cover;">
+                   style="border-radius:10px;display:block;width:100px;height:100px;object-fit:cover;">
             </td>
             <td style="padding-right:8px;">
               <img class="photo-cell" src="[PHOTO_2_URL]" alt="[Dog Name]"
                    width="100" height="100"
-                   style="border-radius:6px;display:block;width:100px;height:100px;object-fit:cover;">
+                   style="border-radius:10px;display:block;width:100px;height:100px;object-fit:cover;">
             </td>
             <td>
               <img class="photo-cell" src="[PHOTO_3_URL]" alt="[Dog Name]"
                    width="100" height="100"
-                   style="border-radius:6px;display:block;width:100px;height:100px;object-fit:cover;">
+                   style="border-radius:10px;display:block;width:100px;height:100px;object-fit:cover;">
             </td>
           </tr>
         </table>
-        <p style="font-family:Arial,sans-serif;font-size:11px;color:#8C94B0;margin:-20px 0 32px;">
-          &#x2022; Photos shared with client permission only.
+        <p style="font-family:'Courier New',monospace;font-size:10.5px;letter-spacing:1px;
+                  color:#8A867C;margin:-20px 0 32px;text-transform:uppercase;">
+          &#9670; Photos shared with client permission only.
         </p>
         -->
 
         <!-- ╔══════════════════════════════════════════════════════╗
-             ║  OPTIONAL: TESTIMONIAL                              ║
-             ║  Delete this entire block if not using this month.  ║
+             ║  OPTIONAL: TESTIMONIAL                               ║
+             ║  Delete this entire block if not using this month.   ║
              ╚══════════════════════════════════════════════════════╝ -->
         <!--
         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                style="margin:0 0 32px;">
           <tr>
-            <td style="background-color:#E4F0FB;border-radius:6px;padding:20px 24px;
-                       border-left:3px solid #1B4F8C;">
-              <p style="margin:0 0 10px;font-family:Arial, Helvetica, sans-serif;font-size:15px;
-                        font-style:italic;color:#4C5470;line-height:1.7;">
-                &#x201C;[TESTIMONIAL_QUOTE]&#x201D;
+            <td style="background-color:#ffffff;border-radius:12px;
+                       padding:22px 26px;border:1px solid #D6CDB9;
+                       box-shadow:0 2px 8px rgba(19,42,78,0.05);">
+              <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:32px;
+                        line-height:0.6;color:#E0A02F;font-style:italic;">
+                &#x201C;
               </p>
-              <p style="margin:0;font-family:Arial,sans-serif;font-size:12px;
-                        font-weight:bold;color:#1B4F8C;">
+              <p style="margin:6px 0 14px;font-family:Arial, Helvetica, sans-serif;font-size:15px;
+                        color:#132A4E;line-height:1.6;font-weight:500;">
+                [TESTIMONIAL_QUOTE]
+              </p>
+              <p style="margin:0;font-family:Arial,sans-serif;font-size:12.5px;
+                        font-weight:bold;color:#132A4E;">
                 [TESTIMONIAL_CLIENT]
               </p>
-              <p style="margin:2px 0 0;font-family:Arial, Helvetica, sans-serif;font-size:12px;
-                        color:#999;font-style:italic;">
+              <p style="margin:2px 0 0;font-family:'Courier New',monospace;font-size:10.5px;
+                        letter-spacing:1.2px;color:#8A867C;text-transform:uppercase;">
                 [TESTIMONIAL_DOG]
               </p>
             </td>
@@ -317,28 +367,44 @@
         -->
 
         <!-- ╔══════════════════════════════════════════════════════╗
-             ║  OPTIONAL: PRODUCT SPOTLIGHT                        ║
-             ║  Delete this entire block if not using this month.  ║
-             ║  Only include products you'd genuinely recommend.   ║
+             ║  OPTIONAL: PRODUCT SPOTLIGHT                         ║
+             ║  Delete this entire block if not using this month.   ║
+             ║  Only include products you'd genuinely recommend.    ║
              ╚══════════════════════════════════════════════════════╝ -->
         <!--
         <p class="section-label"
-           style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:11px;
-                  font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;
-                  color:#1B4F8C;">
-          Something Worth Having
+           style="margin:0 0 8px;font-family:'Courier New',monospace;font-size:10.5px;
+                  font-weight:bold;letter-spacing:2px;text-transform:uppercase;
+                  color:#E69A6F;">
+          &#9670; Something Worth Having
         </p>
-        <p class="body-text"
-           style="margin:0 0 6px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                  line-height:1.7;color:#1A1D26;">
-          [PRODUCT_NAME] — [PRODUCT_NOTE]
-          <a href="[PRODUCT_LINK]" style="color:#1B4F8C;">See it on Amazon &rarr;</a>
-        </p>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 10px;">
+          <tr>
+            <td style="background-color:#ffffff;border-radius:12px;border:1px solid #D6CDB9;
+                       padding:18px 22px;">
+              <p style="margin:0 0 4px;font-family:'Courier New',monospace;font-size:10px;
+                        letter-spacing:1.5px;color:#8A867C;text-transform:uppercase;">
+                [PRODUCT_BRAND] &bull; Sitter-Tested
+              </p>
+              <p style="margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:22px;
+                        color:#132A4E;line-height:1.2;font-weight:500;">
+                [PRODUCT_NAME]
+              </p>
+              <p class="body-text"
+                 style="margin:0 0 12px;font-family:Arial, Helvetica, sans-serif;font-size:14.5px;
+                        line-height:1.65;color:#43413B;">
+                [PRODUCT_NOTE]
+              </p>
+              <a href="[PRODUCT_LINK]" style="color:#132A4E;font-weight:bold;text-decoration:underline;">
+                See it on Amazon &rarr;
+              </a>
+            </td>
+          </tr>
+        </table>
         Affiliate disclosure — only show if PRODUCT_IS_AFFILIATE = yes:
-        <p style="margin:0 0 32px;font-family:Arial,sans-serif;font-size:12px;
-                  color:#8C94B0;font-style:italic;">
-          Paid link: I may earn a small commission if you buy through this link,
-          at no extra cost to you.
+        <p style="margin:0 0 32px;font-family:'Courier New',monospace;font-size:10.5px;
+                  letter-spacing:1px;color:#8A867C;font-style:italic;text-transform:uppercase;">
+          &#9670; Paid link: I may earn a small commission if you buy through this link, no extra cost to you.
         </p>
         -->
 
@@ -346,10 +412,11 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                style="margin:0 0 32px;">
           <tr>
-            <td style="background-color:#E4F0FB;border-radius:6px;padding:20px 24px;">
+            <td style="background-color:#132A4E;color:#ffffff;border-radius:12px;
+                       padding:22px 26px;">
               <p class="body-text"
-                 style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                        line-height:1.7;color:#1A1D26;">
+                 style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:15.5px;
+                        line-height:1.7;color:rgba(255,255,255,0.88);">
                 [CTA]   <!-- ← EDIT -->
               </p>
             </td>
@@ -360,20 +427,21 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                style="margin:0 0 32px;">
           <tr>
-            <td style="border:1.5px dashed #F5CC4A;border-radius:6px;
-                       padding:14px 20px;text-align:center;">
-              <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:11px;
-                        font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;
-                        color:#1B4F8C;">
-                Subscriber Perk
+            <td style="border:1.5px dashed #E0A02F;border-radius:12px;
+                       padding:16px 22px;text-align:center;
+                       background:linear-gradient(135deg,#F8E9C4 0%,#F6EFE3 100%);">
+              <p style="margin:0 0 6px;font-family:'Courier New',monospace;font-size:10.5px;
+                        font-weight:bold;letter-spacing:2px;text-transform:uppercase;
+                        color:#E69A6F;">
+                &#9670; Subscriber Perk
               </p>
-              <p style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:14px;
-                        color:#4C5470;line-height:1.6;">
+              <p style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:14.5px;
+                        color:#43413B;line-height:1.6;">
                 Mention <strong
                   style="font-family:'Courier New',monospace;font-size:15px;
-                         letter-spacing:2px;color:#1A1D26;background:#E4F0FB;
-                         padding:1px 8px;border-radius:3px;">PUPS10</strong>
-                when you reach out on Rover for <strong>10% off your next booking</strong>.
+                         letter-spacing:2px;color:#132A4E;background:#E0A02F;
+                         padding:2px 10px;border-radius:4px;font-weight:700;">PUPS10</strong>
+                when you reach out — <strong>10% off your next booking</strong>. Stacks with returning-client rate.
               </p>
             </td>
           </tr>
@@ -381,27 +449,25 @@
 
         <!-- ── SIGN-OFF ───────────────────────────────────────────── -->
         <p class="body-text"
-           style="margin:0 0 4px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                  line-height:1.7;color:#1A1D26;">
-          Warmly,
+           style="margin:0 0 6px;font-family:Arial, Helvetica, sans-serif;font-size:15.5px;
+                  line-height:1.6;color:#43413B;">
+          Thanks for staying in the pack,
         </p>
-        <p class="body-text"
-           style="margin:0 0 4px;font-family:Arial, Helvetica, sans-serif;font-size:16px;
-                  font-weight:bold;color:#1A1D26;">
+        <p style="margin:0 0 2px;font-family:Georgia,'Times New Roman',serif;font-size:26px;
+                  font-style:italic;color:#132A4E;font-weight:400;">
           [SIGNOFF_NAME]   <!-- ← EDIT -->
         </p>
-        <p class="body-text"
-           style="margin:0;font-family:Arial, Helvetica, sans-serif;font-size:14px;
-                  color:#8C94B0;font-style:italic;">
-          [BOOKING_NOTE]   <!-- ← EDIT: e.g. "Message me on Rover anytime" -->
+        <p style="margin:0;font-family:'Courier New',monospace;font-size:10.5px;
+                  letter-spacing:1.3px;color:#8A867C;text-transform:uppercase;">
+          [BOOKING_NOTE]   <!-- ← EDIT: e.g. "Message me on Rover anytime — rover.com/members/lorenzo-l-1" -->
         </p>
 
         <!-- ── SHOP LINK ─────────────────────────────────────────── -->
-        <p style="margin:24px 0 0;font-family:Arial,sans-serif;font-size:12px;
-                  color:#8C94B0;text-align:center;">
-          Looking for dog gear? &rarr;
-          <a href="https://[YOUR-SITE]/store.html"   <!-- ← EDIT: your GitHub Pages URL -->
-             style="color:#1B4F8C;font-weight:bold;">
+        <p style="margin:28px 0 0;font-family:Arial,sans-serif;font-size:12.5px;
+                  color:#8A867C;text-align:center;">
+          Looking for sitter-tested dog gear? &rarr;
+          <a href="https://llllamas.github.io/Dog-Newsletter-and-Store/store.html"
+             style="color:#132A4E;font-weight:bold;text-decoration:underline;">
             Browse the shop
           </a>
         </p>
@@ -411,15 +477,25 @@
 
     <!-- ▓▓ FOOTER ▓▓ -->
     <tr>
-      <td style="background-color:#081529;padding:20px 40px;text-align:center;
-                 border-top:1px solid rgba(255,255,255,0.08);">
-        <p style="margin:0 0 6px;font-family:Arial,sans-serif;font-size:11px;
-                  color:rgba(255,255,255,0.45);line-height:1.6;">
-          You&rsquo;re receiving this because you previously worked with Lorenzo &amp; Catalina Llamas
-          and opted in to the Dogs &amp; Llamas newsletter.
+      <td style="background-color:#0A1A34;padding:22px 40px;text-align:center;">
+        <p style="margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:20px;
+                  color:#ffffff;font-weight:500;">
+          Dogs <span style="color:#F3CB6A;font-style:italic;font-weight:400;">&amp;</span> Llamas
         </p>
-        <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;
-                  color:rgba(255,255,255,0.45);line-height:1.6;">
+        <p style="margin:0 0 6px;font-family:'Courier New',monospace;font-size:10.5px;
+                  letter-spacing:1px;color:rgba(255,255,255,0.5);">
+          Ten Years Of Pro Dog Care &bull; Woodside, Queens
+        </p>
+        <p style="margin:0 0 10px;font-family:Arial,sans-serif;font-size:11px;
+                  color:rgba(255,255,255,0.5);line-height:1.6;">
+          <a href="https://llllamas.github.io/Dog-Newsletter-and-Store/" style="color:#F3CB6A;text-decoration:none;">Home</a> &bull;
+          <a href="https://llllamas.github.io/Dog-Newsletter-and-Store/store.html" style="color:#F3CB6A;text-decoration:none;">Store</a> &bull;
+          <a href="https://llllamas.github.io/Dog-Newsletter-and-Store/index.html#book" style="color:#F3CB6A;text-decoration:none;">Book</a>
+        </p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:10.5px;
+                  color:rgba(255,255,255,0.35);line-height:1.6;">
+          You're receiving this because you previously worked with Lorenzo &amp; Catalina Llamas
+          and opted in to Pup Notes.<br>
           Unsubscribe anytime by replying with "unsubscribe."
           <!-- Required by CAN-SPAM if sending via email platform:
                Add your business name and mailing address here if required by your platform.
@@ -436,21 +512,21 @@
 
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║  MONTHLY CHECKLIST — before you send                        ║
+  ║  MONTHLY CHECKLIST — before you send                         ║
   ╠══════════════════════════════════════════════════════════════╣
-  ║  [ ] Saved as monthly-issue-XX.html                         ║
-  ║  [ ] All ← EDIT comments are filled in                      ║
+  ║  [ ] Saved as monthly-issue-XX.html                          ║
+  ║  [ ] All ← EDIT comments are filled in                       ║
   ║  [ ] MONTH_LABEL and ISSUE_NUMBER updated in header          ║
-  ║  [ ] Preheader text updated (top of body)                   ║
-  ║  [ ] Optional sections (photo / testimonial / product)      ║
-  ║      either filled in OR deleted                            ║
-  ║  [ ] Personalized Dog Pick section: either filled in +      ║
-  ║      uncommented, OR still commented out if not using       ║
-  ║  [ ] DOG_PICK affiliate link replaced with amzn.to link     ║
-  ║  [ ] Coupon code still reads PUPS10                         ║
-  ║  [ ] Shop link points to your live GitHub Pages URL         ║
-  ║  [ ] Tested in Mailchimp / beehiiv preview                  ║
-  ║  [ ] Added to archive list in index.html                    ║
+  ║  [ ] Preheader text updated (top of body)                    ║
+  ║  [ ] Optional sections (photo / testimonial / product)       ║
+  ║      either filled in OR deleted                             ║
+  ║  [ ] Personalized Dog Pick section: either filled in +       ║
+  ║      uncommented, OR still commented out if not using        ║
+  ║  [ ] DOG_PICK affiliate link replaced with amzn.to link      ║
+  ║  [ ] Coupon code still reads PUPS10 (10% off)                ║
+  ║  [ ] Shop link points to live URL                            ║
+  ║  [ ] Tested in Mailchimp / beehiiv preview                   ║
+  ║  [ ] Added to archive list in index.html                     ║
   ╚══════════════════════════════════════════════════════════════╝
 -->
 

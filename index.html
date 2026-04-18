@@ -240,22 +240,28 @@ section{padding:100px 32px;position:relative}
 .cal-dow{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-3);text-align:center;padding:6px 0}
 .cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-2);border-radius:var(--radius-sm);transition:all .15s;position:relative;cursor:pointer}
 .cal-day:hover{background:var(--cream-2)}
-.cal-day.muted{color:var(--ink-3);opacity:.4;pointer-events:none}
-.cal-day.booked{background:var(--navy);color:#fff;cursor:not-allowed}
+.cal-day.muted{color:var(--ink-3);opacity:.4;pointer-events:none;background:transparent}
+.cal-day.booked{background:var(--navy);color:#fff;cursor:not-allowed;border:1px solid var(--navy-deep)}
 .cal-day.booked:hover{background:var(--navy)}
-.cal-day.available::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--gold)}
-.cal-day.today{background:rgba(199,90,79,.12);border:1.5px solid var(--blush);color:var(--blush);font-weight:700}
-.cal-day.today::before{content:'TODAY';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.8px;color:var(--blush);font-weight:700}
-.cal-day.holiday{background:rgba(224,160,47,.18);border:1px dashed var(--gold)}
-.cal-day.holiday::before{content:'+25%';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.5px;color:#8b5a1a;font-weight:700}
-.cal-day.selected{background:var(--gold);color:var(--navy);font-weight:600}
+/* Available days now filled with warm gold tint so they're scannable at a glance */
+.cal-day.available{background:var(--gold-pale);color:var(--navy);font-weight:600;border:1px solid rgba(224,160,47,.45)}
+.cal-day.available:hover{background:var(--gold-soft);border-color:var(--gold)}
+.cal-day.today{background:var(--blush-pale);border:1.5px solid var(--blush);color:#8a3e12;font-weight:700}
+.cal-day.today::before{content:'TODAY';position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.8px;color:#8a3e12;font-weight:700}
+/* Holidays keep a distinct dashed-gold treatment (the +25% badge is removed — surcharge applies automatically) */
+.cal-day.holiday{background:linear-gradient(135deg,var(--gold-pale) 0%,rgba(224,160,47,.35) 100%);border:1.5px dashed var(--gold);color:#8a3e12;font-weight:700}
+.cal-day.holiday.booked{background:var(--navy);border:1.5px dashed var(--gold-soft);color:var(--gold-soft)}
+.cal-day.selected{background:var(--gold)!important;color:var(--navy)!important;font-weight:700;border-color:var(--gold)!important}
 .cal-legend{display:flex;gap:18px;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);flex-wrap:wrap}
 .cal-legend span{display:inline-flex;align-items:center;gap:6px}
 .cal-legend .dot{width:8px;height:8px;border-radius:50%}
 .cal-legend .dot.g{background:var(--gold)}
 .cal-legend .dot.n{background:var(--navy)}
-.cal-legend .dot.b{background:rgba(199,90,79,.5);border:1.5px solid var(--blush)}
-.cal-legend .dot.h{background:rgba(224,160,47,.4);border:1px dashed var(--gold)}
+.cal-legend .dot.b{background:var(--blush-pale);border:1.5px solid var(--blush)}
+.cal-legend .dot.h{background:var(--gold-pale);border:1.5px dashed var(--gold)}
+.cal-ctas{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;align-items:center}
+.cal-ctas .btn{padding:12px 20px;font-size:14px;flex:0 0 auto}
+@media (max-width:640px){.cal-ctas{justify-content:center}}
 
 /* ═══ ABOUT ═══ */
 .about-section{background:var(--cream-2)}
@@ -456,6 +462,36 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:56px 32px 
 .booking-confirm-row strong{color:#fff;font-family:var(--font-sans);font-weight:600;font-size:15px;letter-spacing:.2px;text-align:right}
 .booking-next{font-family:var(--font-body);font-size:14px;color:var(--ink-2);margin:16px 0 0}
 .booking-next a{color:var(--navy);text-decoration:underline;font-weight:500}
+/* ═══ DOG LIGHTBOX (click a marquee card) ═══ */
+.dog-lightbox{position:fixed;inset:0;z-index:998;display:none;align-items:center;justify-content:center;padding:32px 16px}
+.dog-lightbox.open{display:flex;animation:dal-fade-in .25s ease}
+.dog-lightbox-backdrop{position:fixed;inset:0;background:rgba(10,26,52,.78);backdrop-filter:blur(6px)}
+.dog-lightbox-card{position:relative;background:var(--paper);border-radius:var(--radius-lg);max-width:900px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:var(--shadow-lg);border:1px solid var(--rule);animation:dal-fade-up .35s cubic-bezier(.2,.8,.2,1);display:grid;grid-template-columns:1.1fr 1fr;gap:0}
+.dog-lightbox-close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--ink-2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:5}
+.dog-lightbox-close:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.dog-lightbox-photo{background:var(--cream-2);aspect-ratio:4/5;overflow:hidden;position:relative;border-radius:var(--radius-lg) 0 0 var(--radius-lg)}
+.dog-lightbox-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.dog-lightbox-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent 65%, rgba(10,26,52,.45) 100%);pointer-events:none}
+.dog-lightbox-photo .stamp{position:absolute;top:16px;left:16px;font-family:var(--font-mono);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-soft);background:rgba(10,26,52,.55);padding:5px 10px;border-radius:4px;backdrop-filter:blur(6px)}
+.dog-lightbox-body{padding:32px 32px 32px;display:flex;flex-direction:column;gap:16px}
+.dog-lightbox-eyebrow{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.8px;color:var(--blush);text-transform:uppercase;display:inline-flex;align-items:center;gap:10px}
+.dog-lightbox-eyebrow::before{content:'';width:22px;height:1.5px;background:var(--blush)}
+.dog-lightbox-name{font-family:var(--font-display);font-size:clamp(40px,5vw,64px);color:var(--navy);font-weight:500;line-height:1;margin:0;letter-spacing:-.02em}
+.dog-lightbox-name em{font-style:italic;color:var(--blush);font-weight:400}
+.dog-lightbox-desc{font-family:var(--font-body);font-size:15.5px;line-height:1.6;color:var(--ink-2);margin:0}
+.dog-lightbox-review{background:linear-gradient(135deg,var(--gold-pale),var(--cream));border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 20px;margin-top:4px}
+.dog-lightbox-review-mark{font-family:var(--font-display);font-style:italic;font-size:32px;color:var(--gold);line-height:.6}
+.dog-lightbox-review p{font-family:var(--font-body);font-size:14.5px;line-height:1.6;color:var(--navy);margin:4px 0 10px;font-weight:500}
+.dog-lightbox-review-who{font-family:var(--font-sans);font-size:12.5px;font-weight:600;color:var(--navy);display:flex;align-items:center;gap:8px}
+.dog-lightbox-review-who small{font-family:var(--font-mono);font-size:10px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;font-weight:400;margin-left:auto}
+.dog-lightbox-cta{display:flex;gap:10px;margin-top:auto;padding-top:12px;flex-wrap:wrap}
+.dog-lightbox-cta .btn{padding:12px 20px;font-size:14px}
+@media (max-width:720px){
+  .dog-lightbox-card{grid-template-columns:1fr;max-height:95vh}
+  .dog-lightbox-photo{aspect-ratio:4/3;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+  .dog-lightbox-body{padding:24px}
+}
+
 @keyframes dal-fade-in{from{opacity:0}to{opacity:1}}
 @keyframes dal-pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
 @keyframes dal-fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -522,19 +558,18 @@ body.dal-in .dashboard-bar{display:flex !important}
 <!-- Seasonal banner -->
 <div class="banner" id="seasonalBanner">
   <span class="banner-pulse"></span>
-  <span>Memorial Day weekend <strong>→</strong> <strong>3 overnight spots left</strong> · book by May 15</span>
+  <span>Dogs &amp; Llamas <strong>→</strong> Dog boarding, walking, and care by <strong>Lorenzo &amp; Catalina</strong></span>
   <span style="opacity:.5">·</span>
-  <span>Summer holiday waitlist now open</span>
+  <span>Ten Years Of Pro Dog Care · 25+ Dogs Trusted Us</span>
 </div>
 
 <!-- Subscriber dashboard bar (hidden by default, shown when body.dal-in) -->
 <div class="dashboard-bar dashboard" id="dashboardBar">
   <span>◐ Welcome back, <strong id="subName">friend</strong></span>
   <span>·</span>
-  <span>Returning-client perk active</span>
-  <span class="chip" id="subCodeBar">DL10</span>
+  <span>Returning-Client Rate: <strong style="color:var(--gold-soft)">10% off</strong> every direct booking</span>
   <span>·</span>
-  <span>Priority booking unlocked</span>
+  <span>Priority Booking Unlocked</span>
 </div>
 
 <!-- NAV -->
@@ -550,19 +585,17 @@ body.dal-in .dashboard-bar{display:flex !important}
         <button class="sub-code-submit" id="subCodeSubmit" type="button" aria-label="Submit code">Enter</button>
         <div class="sub-code-chip">
           <strong id="subNameChip">Friend</strong>
-          <span class="code" id="subCodeChip">DL10</span>
           <button class="x" id="subCodeClear" title="Sign out" aria-label="Sign out">×</button>
         </div>
       </div>
     </div>
     <div class="nav-links">
       <a class="nav-link" href="#services">Services</a>
-      <a class="nav-link" href="#pack">The Pack</a>
+      <a class="nav-link" href="#pack">Our Buddies</a>
       <a class="nav-link" href="about.html">About</a>
-      <a class="nav-link" href="gallery.html">Gallery</a>
       <a class="nav-link" href="store.html">Store</a>
       <a class="nav-link" href="monthly-issue-01.html">Newsletter</a>
-      <a class="nav-cta" href="#book">Book a Stay →</a>
+      <a class="nav-cta" href="#book">Book</a>
     </div>
   </div>
 </nav>
@@ -582,9 +615,9 @@ body.dal-in .dashboard-bar{display:flex !important}
       </p>
 
       <div class="hero-meta reveal reveal-d3">
-        <div>Since<strong>2022</strong></div>
-        <div>Rover rating<strong>5.0 ★★★★★</strong></div>
-        <div>Dogs cared for<strong>70+ across NYC</strong></div>
+        <div>Sitting Since<strong>2016 · 10 Years</strong></div>
+        <div>Rover Rating<strong>5.0 ★★★★★</strong></div>
+        <div>Dogs Cared For<strong>25+ Across Queens &amp; NYC</strong></div>
       </div>
 
       <div class="hero-ctas reveal reveal-d3">
@@ -616,11 +649,11 @@ body.dal-in .dashboard-bar{display:flex !important}
 <!-- TRUST STRIP -->
 <div class="trust">
   <div class="trust-inner">
-    <div class="trust-stat"><span class="trust-num">70+</span><span class="trust-label">Dogs<br>In The Pack</span></div>
+    <div class="trust-stat"><span class="trust-num">10 yrs</span><span class="trust-label">Pro Dog<br>Sitting</span></div>
+    <span class="trust-sep"></span>
+    <div class="trust-stat"><span class="trust-num">25+</span><span class="trust-label">Dogs<br>Cared For</span></div>
     <span class="trust-sep"></span>
     <div class="trust-stat"><span class="trust-num">5.0</span><span class="trust-label">Rover<br>Rating</span></div>
-    <span class="trust-sep"></span>
-    <div class="trust-stat"><span class="trust-num">24/7</span><span class="trust-label">Photo<br>Updates</span></div>
     <span class="trust-sep"></span>
     <div class="trust-stat"><span class="trust-num">3</span><span class="trust-label">Subway Lines<br>To Our Door</span></div>
     <span class="trust-sep"></span>
@@ -701,10 +734,11 @@ body.dal-in .dashboard-bar{display:flex !important}
   </div>
 </section>
 
-<!-- MARQUEE "THE PACK" -->
+<!-- MARQUEE "OUR BUDDIES" -->
 <section class="marquee-section" id="pack" style="padding-left:0;padding-right:0">
-  <p class="marquee-label">◆ &nbsp;The Pack · 2022–2026 &nbsp;◆</p>
-  <h2 class="marquee-title">Seventy-Plus Dogs. Every One Of Them<br>Goes Home <em>Happier Than They Arrived.</em></h2>
+  <p class="marquee-label">◆ &nbsp;Our Buddies · 2016–2026 &nbsp;◆</p>
+  <h2 class="marquee-title">Twenty-Five Plus Dogs, Ten Years In.<br>Every One Goes Home <em>Happier Than They Arrived.</em></h2>
+  <p style="text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:1.4px;color:rgba(255,255,255,.55);text-transform:uppercase;margin:-40px auto 40px;max-width:520px;padding:0 32px">Tap any buddy to see their photo &amp; story</p>
   <div class="marquee-wrap">
     <div class="marquee" id="marquee"></div>
     <div class="marquee-controls">
@@ -733,13 +767,13 @@ body.dal-in .dashboard-bar{display:flex !important}
         <span class="eyebrow">The Humans</span>
         <h2 class="section-title" style="margin:0 0 24px">Lorenzo <em>&amp;</em> Catalina.</h2>
         <p>
-          "We started Dogs &amp; Llamas in 2022 because our whole apartment revolved around dogs anyway — might as well open the door."
+          "We've been caring for dogs for a decade — ten years of pickups, backyard play, and real photo updates. Dogs &amp; Llamas is what happened when our apartment became unofficially HQ for everyone's pup."
         </p>
         <p>
           Lorenzo handles pickups, walks around the Gantry waterfront, and the long weekend boarding stays. Catalina does daytime drop-ins, backyard play, and the dreaded bath after a muddy Roosevelt Island run. We both write you back within an hour.
         </p>
         <p>
-          We've cared for seventy-plus dogs across Queens and Midtown. Chihuahuas, pit mixes, corgis, a French Bully who hated being alone, and a pair of large dogs boarded together for two weeks at Christmas. Everyone leaves the same way: a little tired, a little happier.
+          Twenty-five-plus dogs across Queens and Midtown. Chihuahuas, pit mixes, corgis, a French Bully who hated being alone, seniors with meds, puppies working on potty training, and a pair of large dogs boarded together for two weeks at Christmas. Everyone leaves the same way: a little tired, a little happier.
         </p>
         <div class="signature">
           Lorenzo &amp; Catalina
@@ -767,7 +801,7 @@ body.dal-in .dashboard-bar{display:flex !important}
           <span><span class="dot g"></span>Available</span>
           <span><span class="dot n"></span>Booked</span>
           <span><span class="dot b"></span>Today</span>
-          <span><span class="dot h"></span>Holiday +25%</span>
+          <span><span class="dot h"></span>Holiday</span>
         </div>
       </div>
       <div class="reveal reveal-d1">
@@ -776,10 +810,10 @@ body.dal-in .dashboard-bar{display:flex !important}
         <p style="font-family:var(--font-body);font-size:16px;line-height:1.6;color:var(--ink-2);margin:20px 0 28px">
           We hold a few priority slots each month for returning and newsletter clients. Tap any open date to start a booking request — or reply directly and we'll work from the waitlist.
         </p>
-        <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="cal-ctas">
           <button type="button" class="btn btn-primary" onclick="openBooking()">Request A Booking <span class="btn-arrow">→</span></button>
-          <a class="btn btn-gold" href="mailto:dogsandllamasservice@gmail.com">Message Us Directly</a>
-          <a class="btn btn-secondary" href="schedule.html">Full Scheduling Calendar</a>
+          <a class="btn btn-gold" href="mailto:dogsandllamasservice@gmail.com">Message Us</a>
+          <a class="btn btn-secondary" href="schedule.html">Full Calendar</a>
         </div>
         <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;margin-top:24px">
           Typical reply time: <strong style="color:var(--navy)">under 1 hour</strong>, 8am–9pm EST
@@ -973,8 +1007,7 @@ body.dal-in .dashboard-bar{display:flex !important}
     <div class="foot-section">
       <h4>The Brand</h4>
       <a href="about.html">About</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="#pack">The Pack</a>
+      <a href="#pack">Our Buddies</a>
       <a href="store.html">Store</a>
       <a href="monthly-issue-01.html">Newsletter</a>
       <a href="schedule.html">Scheduling</a>
@@ -991,6 +1024,32 @@ body.dal-in .dashboard-bar{display:flex !important}
     <div>Some Store Links May Earn A Commission · No Extra Cost To You</div>
   </div>
 </footer>
+
+<!-- Dog lightbox modal -->
+<div class="dog-lightbox" id="dogLightbox" aria-hidden="true">
+  <div class="dog-lightbox-backdrop" onclick="closeDogLightbox()"></div>
+  <div class="dog-lightbox-card" role="dialog" aria-labelledby="dogLightboxName">
+    <button class="dog-lightbox-close" onclick="closeDogLightbox()" aria-label="Close">×</button>
+    <div class="dog-lightbox-photo">
+      <img id="dogLightboxImg" src="" alt="" />
+      <span class="stamp" id="dogLightboxStamp"></span>
+    </div>
+    <div class="dog-lightbox-body">
+      <span class="dog-lightbox-eyebrow">From The Sitter's Journal</span>
+      <h3 class="dog-lightbox-name" id="dogLightboxName"></h3>
+      <p class="dog-lightbox-desc" id="dogLightboxDesc"></p>
+      <div class="dog-lightbox-review" id="dogLightboxReview" style="display:none">
+        <div class="dog-lightbox-review-mark">"</div>
+        <p id="dogLightboxReviewText"></p>
+        <div class="dog-lightbox-review-who"><span id="dogLightboxReviewWho"></span><small id="dogLightboxReviewWhen"></small></div>
+      </div>
+      <div class="dog-lightbox-cta">
+        <button type="button" class="btn btn-primary" onclick="closeDogLightbox();openBooking();">Book A Similar Stay <span class="btn-arrow">→</span></button>
+        <a class="btn btn-secondary" href="store.html">Shop Their Picks</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Booking flow modal -->
 <div class="booking-modal" id="bookingModal" aria-hidden="true">
@@ -1079,8 +1138,9 @@ body.dal-in .dashboard-bar{display:flex !important}
           <span>Estimated Total</span>
           <strong id="estimate">—</strong>
         </div>
-        <div class="booking-summary-extra" id="summaryHolidays">+25% holiday surcharge applied</div>
+        <div class="booking-summary-extra" id="summaryHolidays">+30% holiday surcharge applied</div>
         <div class="booking-summary-extra" id="summaryPuppy">+10% puppy rate applied</div>
+        <div class="booking-summary-extra" id="summaryLoyalty" style="color:var(--navy)">Returning-client rate: −10% (thanks for coming back)</div>
       </div>
 
       <div class="booking-actions">
@@ -1231,6 +1291,30 @@ const PACK_PHOTOS = [
   { img: 'media/zephyr-and-me-walk.jpg',                name: 'Zephyr',         role: 'Weekly Walks' },
   { img: 'media/mango-and-harley-1.jpg',                name: 'Mango + Harley', role: 'Two-Week Christmas Stay' }
 ];
+
+/* Owner reviews pinned to specific dogs — only filled for dogs we have real quotes for */
+const DOG_REVIEWS = {
+  'Turbo': {
+    quote: "Turbo came home tired in a way she never is after daycare — and she actually listened to 'spin' the first morning back. Lorenzo runs her, works her brain, and the training sticks.",
+    who: "Turbo's Family",
+    when: "Regular Boarder · Queens"
+  },
+  'Mango': {
+    quote: "We boarded Mango and Harley together for two full weeks over Christmas. They came back as friends — plus Harley's pee-pad training was suddenly real. Two-week miracle.",
+    who: "Mango & Harley's Family",
+    when: "Two-Week Christmas Stay"
+  },
+  'Harley': {
+    quote: "Harley hates being alone, and he's still young. Dogs & Llamas did two weeks with him and Mango side by side — came home socialized, potty-trained, and a million times more confident.",
+    who: "Harley's Family",
+    when: "Two-Week Christmas Stay"
+  },
+  'Pretzel': {
+    quote: "Pretzel is eighty pounds of couch-claiming sweetness, and he pulls. Lorenzo handled the leash, the strength, and the belly-rub requirements like a pro. We've rebooked every trip since.",
+    who: "Pretzel's Humans",
+    when: "Regular Boarder · LIC"
+  }
+};
 
 /* Personalized tips pulled straight from what Lorenzo has learned with each dog */
 const DOG_TIPS = {
@@ -1385,21 +1469,43 @@ if (featuredEl){
     const card = e.target.closest('.marquee-card');
     if(!card) return;
     const idx = +card.dataset.idx;
-    const dog = PACK_PHOTOS[idx];
-    const dogIdx = DOGS.findIndex(d=>d.name.toLowerCase() === dog.name.toLowerCase());
-    if(dogIdx >= 0){
-      renderFeatured(dogIdx);
-      const fsec = document.getElementById('featured');
-      if(fsec){
-        const rect = fsec.getBoundingClientRect();
-        const y = window.scrollY + rect.top - 100;
-        window.scrollTo({ top:y, behavior:'smooth' });
-      }
-    } else {
-      card.animate([{transform:'scale(1.08)'},{transform:'scale(1)'}], {duration:300,easing:'cubic-bezier(.2,1.4,.2,1)'});
-    }
+    const packDog = PACK_PHOTOS[idx];
+    openDogLightbox(packDog.name, packDog.img, packDog.role);
   });
 })();
+
+/* ═══════════ DOG LIGHTBOX ═══════════ */
+function openDogLightbox(name, imgOverride, roleOverride){
+  const key = (name || '').split('+')[0].trim();
+  const dogRoster = DOGS.find(d=>d.name.toLowerCase() === key.toLowerCase());
+  const review = DOG_REVIEWS[key] || DOG_REVIEWS[name];
+
+  const img = imgOverride || (dogRoster && dogRoster.img) || 'media/turbo-outside.jpg';
+  const desc = (dogRoster && dogRoster.desc) || (roleOverride ? `Part of our pack — ${roleOverride}.` : 'Part of our pack.');
+  const stamp = (dogRoster && dogRoster.stamp) || roleOverride || 'From the pack';
+
+  document.getElementById('dogLightboxImg').src = img;
+  document.getElementById('dogLightboxImg').alt = name;
+  document.getElementById('dogLightboxName').textContent = name;
+  document.getElementById('dogLightboxDesc').textContent = desc;
+  document.getElementById('dogLightboxStamp').textContent = stamp;
+
+  const reviewBox = document.getElementById('dogLightboxReview');
+  if (review) {
+    document.getElementById('dogLightboxReviewText').textContent = review.quote;
+    document.getElementById('dogLightboxReviewWho').textContent = review.who;
+    document.getElementById('dogLightboxReviewWhen').textContent = review.when;
+    reviewBox.style.display = 'block';
+  } else {
+    reviewBox.style.display = 'none';
+  }
+  document.getElementById('dogLightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDogLightbox(){
+  document.getElementById('dogLightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 /* ═══════════ CALENDAR ═══════════ */
 const FED_HOLIDAYS_2026 = [
@@ -1545,8 +1651,6 @@ function applySubscriberUI(opts){
   const dog = myDog || 'Teddy';
   document.getElementById('subName').textContent = subName || 'friend';
   document.getElementById('subNameChip').textContent = subName || 'friend';
-  document.getElementById('subCodeChip').textContent = code || 'DL10';
-  const bar = document.getElementById('subCodeBar'); if (bar) bar.textContent = code || 'DL10';
   const echo = document.getElementById('subNameEcho'); if (echo) echo.textContent = subName || 'you';
   const md = document.getElementById('myDogName'); if (md) md.textContent = dog;
   const mdEm = document.getElementById('myDogNameEm'); if (mdEm) mdEm.textContent = dog;
@@ -1779,27 +1883,32 @@ function applyServiceMode(){
 function calcPrice(){
   const svc = bookingState.service;
   let base, holidaysCount=0, units=1;
+  const HOLIDAY_SURCHARGE = 0.30;   /* 30% extra per holiday day */
+  const RETURNING_DISCOUNT = 0.10;  /* 10% off for logged-in returning clients */
+
   if (RANGE_SERVICES.has(svc)) {
     units = daysBetween(bookingState.arrival, bookingState.departure);
     holidaysCount = holidaysInRange(bookingState.arrival, bookingState.departure).length;
     base = SERVICE_PRICE[svc] * units;
-    base += SERVICE_PRICE[svc] * 0.25 * holidaysCount;
+    base += SERVICE_PRICE[svc] * HOLIDAY_SURCHARGE * holidaysCount;
   } else {
     base = SERVICE_PRICE[svc];
     if (bookingState.single && isHoliday({m:bookingState.single.m,d:bookingState.single.d})) {
       holidaysCount = 1;
-      base += SERVICE_PRICE[svc] * 0.25;
+      base += SERVICE_PRICE[svc] * HOLIDAY_SURCHARGE;
     }
   }
   const isPuppy = !!document.getElementById('isPuppy')?.checked;
   if (isPuppy) base = base * 1.10;
-  return { total: Math.round(base), units, holidaysCount, isPuppy };
+  const isReturning = !!document.body.classList.contains('dal-in');
+  if (isReturning) base = base * (1 - RETURNING_DISCOUNT);
+  return { total: Math.round(base), units, holidaysCount, isPuppy, isReturning };
 }
 function updateEstimate(){
   const svc = bookingState.service;
-  const { total, units, holidaysCount, isPuppy } = calcPrice();
+  const { total, units, holidaysCount, isPuppy, isReturning } = calcPrice();
   let unitLabel;
-  if (RANGE_SERVICES.has(svc)) unitLabel = `${units} ${svc==='housesit' ? 'night' : 'night'}${units>1?'s':''}`;
+  if (RANGE_SERVICES.has(svc)) unitLabel = `${units} night${units>1?'s':''}`;
   else if (svc === 'daycare') unitLabel = '1 day';
   else if (svc === 'walks') unitLabel = '1 walk';
   else unitLabel = '1 visit';
@@ -1812,9 +1921,11 @@ function updateEstimate(){
   if (sglEl){ sglEl.textContent = fmtDate(bookingState.single) || '— Select A Date —'; sglEl.classList.toggle('filled', !!bookingState.single); }
   const sumH = document.getElementById('summaryHolidays');
   const sumP = document.getElementById('summaryPuppy');
+  const sumL = document.getElementById('summaryLoyalty');
   if (sumH) sumH.classList.toggle('show', holidaysCount > 0);
-  if (sumH && holidaysCount > 0) sumH.textContent = `+25% holiday surcharge · ${holidaysCount} day${holidaysCount>1?'s':''}`;
+  if (sumH && holidaysCount > 0) sumH.textContent = `+30% holiday surcharge · ${holidaysCount} day${holidaysCount>1?'s':''}`;
   if (sumP) sumP.classList.toggle('show', isPuppy);
+  if (sumL) sumL.classList.toggle('show', isReturning);
 }
 document.querySelectorAll('input[name="svc"]').forEach(r=>r.addEventListener('change', ()=>{ applyServiceMode(); updateEstimate(); }));
 document.getElementById('isPuppy')?.addEventListener('change', updateEstimate);
@@ -1902,7 +2013,7 @@ function renderReview(){
   const dogName = (document.getElementById('bookDogName').value || '(no name)').trim();
   const breed = (document.getElementById('bookBreed').value || '—').trim();
   const svc = bookingState.service;
-  const { total, holidaysCount, isPuppy } = calcPrice();
+  const { total, holidaysCount, isPuppy, isReturning } = calcPrice();
   let dates;
   if (RANGE_SERVICES.has(svc)) {
     dates = bookingState.arrival && bookingState.departure
@@ -1912,8 +2023,9 @@ function renderReview(){
     dates = day ? `${fmtDate(day)} · ${fmtTime(bookingState.timeArrive)}–${fmtTime(bookingState.timeDepart)}` : 'TBD';
   }
   let extras = '';
-  if (holidaysCount > 0) extras += `<div class="booking-review-row"><span>Holiday Surcharge</span><strong>+25% × ${holidaysCount} day${holidaysCount>1?'s':''}</strong></div>`;
+  if (holidaysCount > 0) extras += `<div class="booking-review-row"><span>Holiday Surcharge</span><strong>+30% × ${holidaysCount} day${holidaysCount>1?'s':''}</strong></div>`;
   if (isPuppy) extras += `<div class="booking-review-row"><span>Puppy Rate</span><strong>+10%</strong></div>`;
+  if (isReturning) extras += `<div class="booking-review-row"><span>Returning-Client Rate</span><strong>−10%</strong></div>`;
   document.getElementById('bookingReview').innerHTML = `
     <div class="booking-review-row"><span>Dog</span><strong>${escapeHtml(dogName)} · ${escapeHtml(breed)}</strong></div>
     <div class="booking-review-row"><span>Service</span><strong>${SERVICE_LABEL[svc]}</strong></div>

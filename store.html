@@ -6,10 +6,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>The Store — Sitter-Tested Dog Gear · Dogs &amp; Llamas</title>
-<meta name="description" content="Dog beds, toys, food, and gear tested on real dogs by a professional sitter in Queens NYC. Honest picks, filtered by size + energy. Not sponsored lists." />
+<meta name="description" content="Dog beds, toys, grooming, walking gear, and food picks tested on real dogs by a professional sitter with ten years of experience. Honest picks matched to your dog. Not sponsored lists." />
 <link rel="canonical" href="https://llllamas.github.io/Dog-Newsletter-and-Store/store.html">
 <meta property="og:title" content="The Store — Sitter-Tested Dog Gear · Dogs & Llamas">
-<meta property="og:description" content="Gear tested on seventy-plus real dogs. Honest picks — not sponsored lists.">
+<meta property="og:description" content="Ten years of pro sitting. Twenty-five-plus dogs. Picks matched to your dog.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://llllamas.github.io/Dog-Newsletter-and-Store/store.html">
 <meta property="og:image" content="https://llllamas.github.io/Dog-Newsletter-and-Store/media/me-and-pretzel-lying-down.jpg">
@@ -30,12 +30,12 @@
   --shadow-sm:0 2px 6px rgba(19,42,78,.06);
   --shadow-md:0 8px 28px rgba(19,42,78,.12);
   --shadow-lg:0 24px 60px rgba(19,42,78,.18);
-  --font-display:'Playfair Display', Georgia, serif;
+  --font-display:'Playfair Display',Georgia,serif;
   --font-sans:'DM Sans',system-ui,sans-serif;
   --font-body:'DM Sans',system-ui,sans-serif;
   --font-mono:'DM Mono',ui-monospace,monospace;
   --grad-navy:linear-gradient(135deg,#0A1A34 0%,#132A4E 45%,#25437B 100%);
-  --max:1240px; --nav-h:72px; --filter-h:62px;
+  --max:1280px; --nav-h:72px; --filter-h:66px;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -43,6 +43,14 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-bo
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer}
+
+.disclosure{background:var(--navy);color:rgba(255,255,255,.75);font-family:var(--font-mono);font-size:11.5px;letter-spacing:.8px;padding:10px 32px;text-align:center}
+.disclosure strong{color:var(--gold-soft);font-weight:500;letter-spacing:1.2px}
+
+body.dal-in .dal-bar{display:flex}
+.dal-bar{display:none;background:linear-gradient(90deg,var(--navy),var(--navy-soft));color:#fff;padding:10px 32px;align-items:center;justify-content:center;gap:16px;font-family:var(--font-mono);font-size:12px;flex-wrap:wrap}
+.dal-bar strong{color:var(--gold-soft);font-weight:500}
+.dal-bar em{font-style:normal;color:#fff;font-weight:600}
 
 .nav{position:sticky;top:0;z-index:200;height:var(--nav-h);background:rgba(251,247,238,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(214,205,185,.5)}
 .nav-inner{max-width:var(--max);margin:0 auto;height:100%;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
@@ -57,6 +65,7 @@ button{font:inherit;cursor:pointer}
 .nav-cta{font-family:var(--font-sans);font-weight:600;font-size:14px;color:#fff;background:var(--grad-navy);padding:10px 22px;border-radius:999px;margin-left:8px;box-shadow:0 2px 0 var(--navy-deep)}
 .nav-cta:hover{background:var(--navy-soft);transform:translateY(-1px)}
 
+/* Subscriber code input */
 .sub-code{display:flex;align-items:center;gap:6px}
 .sub-code-submit{font-family:var(--font-sans);font-weight:600;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;background:var(--navy);color:#fff;border:none;padding:5px 10px;border-radius:999px;cursor:pointer;transition:all .2s;display:none}
 .sub-code.has-text .sub-code-submit{display:inline-flex;animation:dal-pop .25s cubic-bezier(.2,1.4,.2,1)}
@@ -70,98 +79,146 @@ button{font:inherit;cursor:pointer}
 .sub-code-chip{display:none;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.3px;color:var(--navy)}
 .sub-code.active .sub-code-chip{display:inline-flex}
 .sub-code-chip strong{color:var(--blush);font-weight:500;letter-spacing:.5px;font-family:var(--font-sans);text-transform:none;font-size:13px}
-.sub-code-chip .code{background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:1.5px}
 .sub-code-chip .x{background:var(--navy);color:#fff;border:none;width:22px;height:22px;border-radius:50%;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .2s;font-family:var(--font-mono)}
 .sub-code-chip .x:hover{background:var(--blush)}
 @keyframes dal-pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
 @media (max-width:780px){.sub-code input{width:84px}}
 
-.hero{background:radial-gradient(ellipse 700px 500px at 80% 30%, rgba(224,160,47,.2) 0%, transparent 60%),linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);padding:72px 32px 56px;position:relative;overflow:hidden}
+/* HERO */
+.hero{background:radial-gradient(ellipse 700px 500px at 80% 30%, rgba(224,160,47,.2) 0%, transparent 60%),linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);padding:72px 32px 44px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;opacity:.3;background-image:radial-gradient(circle,rgba(19,42,78,.05) 1px,transparent 1px);background-size:22px 22px}
-.hero-inner{max-width:var(--max);margin:0 auto;text-align:center;position:relative}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:2px;color:var(--navy);text-transform:uppercase;background:var(--gold-pale);padding:7px 14px;border-radius:999px;border:1px solid rgba(224,160,47,.4);margin-bottom:20px}
+.hero-inner{max-width:var(--max);margin:0 auto;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:2px;color:var(--navy);text-transform:uppercase;background:var(--gold-pale);padding:7px 14px;border-radius:999px;border:1px solid rgba(224,160,47,.4);margin-bottom:18px}
 .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
-.hero h1{font-family:var(--font-display);font-weight:500;font-size:clamp(48px,6.5vw,84px);line-height:1;letter-spacing:-.02em;color:var(--navy);margin:0 0 24px}
+.hero h1{font-family:var(--font-display);font-weight:500;font-size:clamp(44px,6vw,76px);line-height:1.02;letter-spacing:-.02em;color:var(--navy);margin:0 0 18px;max-width:720px}
 .hero h1 em{font-style:italic;color:var(--blush);font-weight:400}
-.hero p{font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink-2);max-width:560px;margin:0 auto}
-.hero-stats{display:flex;justify-content:center;gap:40px;margin-top:36px;flex-wrap:wrap}
-.hero-stat{text-align:center}
-.hero-stat .n{font-family:var(--font-display);font-size:40px;line-height:1;color:var(--navy);display:block;font-weight:500}
+.hero .lede{font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink-2);max-width:560px;margin:0 0 28px}
+.hero-stats{display:flex;gap:40px;flex-wrap:wrap;margin-top:20px}
+.hero-stat{text-align:left}
+.hero-stat .n{font-family:var(--font-display);font-size:36px;line-height:1;color:var(--navy);display:block;font-weight:500}
 .hero-stat .l{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase;margin-top:6px;display:block}
 
-.disclosure{background:var(--navy);color:rgba(255,255,255,.75);font-family:var(--font-mono);font-size:11.5px;letter-spacing:.8px;padding:10px 32px;text-align:center}
-.disclosure strong{color:var(--gold-soft);font-weight:500;letter-spacing:1.2px}
+/* Personal match callout — prompts anonymous users to drop subscriber code OR pup info */
+.match-bar{background:linear-gradient(135deg,var(--gold-pale),var(--cream));border:1px solid rgba(224,160,47,.4);border-radius:var(--radius-md);padding:22px 26px;max-width:var(--max);margin:-6px auto 0;display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;box-shadow:var(--shadow-sm)}
+.match-bar-icon{width:60px;height:60px;border-radius:50%;background:var(--navy);color:var(--gold-soft);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-style:italic;font-size:30px;flex-shrink:0}
+.match-bar h3{font-family:var(--font-display);font-size:22px;color:var(--navy);margin:0 0 4px;font-weight:500;line-height:1.2}
+.match-bar h3 em{font-style:italic;color:var(--blush);font-weight:400}
+.match-bar p{font-family:var(--font-body);font-size:14px;color:var(--ink-2);margin:0;line-height:1.5}
+.match-bar-cta{display:flex;gap:10px;flex-wrap:wrap}
+.match-bar-cta button,.match-bar-cta a{font-family:var(--font-sans);font-weight:600;font-size:13px;background:var(--navy);color:#fff;border:none;padding:10px 18px;border-radius:999px;box-shadow:0 2px 0 var(--navy-deep);transition:all .18s;cursor:pointer;white-space:nowrap}
+.match-bar-cta button:hover,.match-bar-cta a:hover{background:var(--gold);color:var(--navy);box-shadow:0 2px 0 #b07f1f;transform:translateY(-1px)}
+.match-bar-cta .alt{background:transparent;color:var(--navy);border:1.5px solid var(--navy);box-shadow:none;padding:8.5px 18px}
+.match-bar-cta .alt:hover{background:var(--navy);color:#fff}
+body.dal-in .match-bar{display:none}
+@media (max-width:820px){.match-bar{grid-template-columns:1fr;text-align:center}.match-bar-icon{margin:0 auto}}
 
-.filter-rail{position:sticky;top:var(--nav-h);z-index:90;background:rgba(251,247,238,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule);padding:12px 32px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+/* PERSONALIZED STRIP — only visible when dal-in, shows picks for subscriber's dog */
+.personal-section{display:none;background:linear-gradient(135deg,var(--cream),var(--gold-pale));padding:48px 32px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+body.dal-in .personal-section{display:block}
+.personal-inner{max-width:var(--max);margin:0 auto}
+.personal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.personal-head .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blush);margin-bottom:10px}
+.personal-head .eyebrow::before{content:'';width:22px;height:1.5px;background:var(--blush)}
+.personal-head h2{font-family:var(--font-display);font-size:clamp(32px,4vw,48px);font-weight:500;color:var(--navy);margin:0;line-height:1.1;letter-spacing:-.01em}
+.personal-head h2 em{font-style:italic;color:var(--blush);font-weight:400}
+.personal-head .meta{font-family:var(--font-mono);font-size:11px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase}
+.personal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+
+/* Filter rail */
+.filter-rail{position:sticky;top:var(--nav-h);z-index:90;background:rgba(251,247,238,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule);padding:14px 32px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .filter-label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.4px;color:var(--ink-3);text-transform:uppercase;flex-shrink:0}
 .pills{display:flex;gap:6px;flex-wrap:wrap;flex:1}
-.pill{font-family:var(--font-sans);font-size:13px;font-weight:500;padding:7px 14px;border-radius:999px;border:1.5px solid var(--rule);background:transparent;color:var(--ink-2);white-space:nowrap;transition:all .15s}
+.pill{font-family:var(--font-sans);font-size:13.5px;font-weight:500;padding:8px 16px;border-radius:999px;border:1.5px solid var(--rule);background:transparent;color:var(--ink-2);white-space:nowrap;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
 .pill:hover{border-color:var(--navy);color:var(--navy)}
 .pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pill .tag{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.5px;color:inherit;opacity:.65}
 .count{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3)}
 
-.wrap{max-width:var(--max);margin:0 auto;padding:48px 32px 96px;display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:flex-start}
+/* Page wrap */
+.wrap{max-width:var(--max);margin:0 auto;padding:48px 32px 96px;display:grid;grid-template-columns:1fr 320px;gap:44px;align-items:flex-start}
 @media (max-width:980px){.wrap{grid-template-columns:1fr}}
 
-.note{background:#fff;border-radius:var(--radius-md);border:1px solid var(--rule);box-shadow:var(--shadow-sm);padding:22px 26px;margin-bottom:28px;display:flex;gap:18px;align-items:flex-start}
-.note-avatar{flex-shrink:0;width:56px;height:56px;border-radius:50%;overflow:hidden;background:var(--cream-2);box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--gold)}
+/* Sitter note */
+.note{background:#fff;border-radius:var(--radius-md);border:1px solid var(--rule);box-shadow:var(--shadow-sm);padding:24px 28px;margin-bottom:28px;display:flex;gap:18px;align-items:flex-start}
+.note-avatar{flex-shrink:0;width:60px;height:60px;border-radius:50%;overflow:hidden;background:var(--cream-2);box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--gold)}
 .note-avatar img{width:100%;height:100%;object-fit:cover}
-.note h3{font-family:var(--font-display);font-size:22px;color:var(--navy);margin:0 0 4px;line-height:1.2;font-weight:500}
+.note h3{font-family:var(--font-display);font-size:24px;color:var(--navy);margin:0 0 4px;line-height:1.2;font-weight:500}
 .note h3 em{font-style:italic;color:var(--blush);font-weight:400}
 .note p{font-family:var(--font-body);font-size:14.5px;color:var(--ink-2);line-height:1.6;margin:0}
-.note small{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;margin-top:8px}
+.note small{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;margin-top:10px}
 
+/* Category strip */
 .cat-strip{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--rule)}
-.cat{font-family:var(--font-sans);font-weight:500;font-size:13.5px;padding:8px 16px;border-radius:999px;background:var(--cream-2);color:var(--ink-2);transition:all .15s;border:none}
+.cat{font-family:var(--font-sans);font-weight:500;font-size:13.5px;padding:8px 16px;border-radius:999px;background:var(--cream-2);color:var(--ink-2);transition:all .15s;border:none;cursor:pointer}
 .cat:hover{background:var(--gold-pale);color:var(--navy)}
 .cat.active{background:var(--navy);color:#fff}
 
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-.card{background:#fff;border-radius:var(--radius-md);border:1px solid var(--rule);box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+/* Product grid */
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.card{background:#fff;border-radius:var(--radius-md);border:1px solid var(--rule);box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s;position:relative}
 .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
 .card.hidden{display:none}
+.card.match{border-color:var(--gold);box-shadow:0 0 0 1.5px var(--gold), var(--shadow-md)}
+.card-match-ribbon{display:none;position:absolute;top:0;left:0;right:0;background:linear-gradient(90deg,var(--gold),var(--gold-soft));color:var(--navy);font-family:var(--font-mono);font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;padding:5px 12px;text-align:center;font-weight:700;z-index:3}
+.card.match .card-match-ribbon{display:block}
+.card.match .card-img{padding-top:18px}
 .card-img{aspect-ratio:1.2/1;background:linear-gradient(135deg,var(--cream) 0%,var(--cream-2) 100%);position:relative;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--rule);overflow:hidden}
 .card-glyph{font-family:var(--font-display);font-style:italic;font-size:96px;line-height:1;color:var(--navy);opacity:.22}
 .card-badge{position:absolute;top:12px;left:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;background:var(--navy);color:#fff;padding:4px 10px;border-radius:4px}
 .card-badge.gold{background:var(--gold);color:var(--navy)}
 .card-badge.blush{background:var(--blush);color:#fff}
-.card-dog{position:absolute;bottom:12px;right:12px;width:44px;height:44px;border-radius:50%;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.2);border:2px solid #fff}
+.card-dog{position:absolute;bottom:12px;right:12px;width:46px;height:46px;border-radius:50%;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.2);border:2px solid #fff}
 .card-dog img{width:100%;height:100%;object-fit:cover}
 .card-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
 .card-brand{font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-3);text-transform:uppercase}
 .card-name{font-family:var(--font-display);font-size:22px;color:var(--navy);line-height:1.15;margin:0;font-weight:500}
-.card-desc{font-family:var(--font-body);font-size:13.5px;color:var(--ink-2);line-height:1.55;margin:0;flex:1}
-.card-endorse{background:linear-gradient(135deg,var(--gold-pale) 0%,var(--cream) 100%);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:10px 14px;margin:4px 0 0}
-.card-endorse strong{font-family:var(--font-display);font-style:italic;font-size:15px;color:var(--navy);display:block;line-height:1.2;font-weight:500}
+.card-desc{font-family:var(--font-body);font-size:13.5px;color:var(--ink-2);line-height:1.55;margin:0}
+.card-endorse{background:linear-gradient(135deg,var(--gold-pale) 0%,var(--cream) 100%);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:10px 14px;margin:2px 0 0}
+.card-endorse strong{font-family:var(--font-display);font-style:italic;font-size:15px;color:var(--navy);display:block;line-height:1.25;font-weight:500}
 .card-endorse small{font-family:var(--font-mono);font-size:10px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;display:block;margin-top:3px}
-.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
 .card-tag{font-family:var(--font-mono);font-size:9.5px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;border:1px solid var(--rule);padding:3px 8px;border-radius:4px}
-.card-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px dashed var(--rule)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px dashed var(--rule);margin-top:auto}
 .card-price{font-family:var(--font-display);font-size:22px;color:var(--navy);line-height:1;font-weight:500}
 .card-price small{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--ink-3);text-transform:uppercase;display:block;margin-top:2px}
 .btn-buy{font-family:var(--font-sans);font-weight:600;font-size:13.5px;background:var(--navy);color:#fff;padding:10px 18px;border-radius:999px;display:inline-flex;align-items:center;gap:8px;transition:all .2s;box-shadow:0 2px 0 var(--navy-deep);border:none;cursor:pointer}
 .btn-buy:hover{background:var(--gold);color:var(--navy);box-shadow:0 2px 0 #b07f1f;transform:translateY(-1px)}
 
+/* Side — dog gallery (click a dog → filter picks) */
 .side-picks{position:sticky;top:calc(var(--nav-h) + var(--filter-h) + 20px)}
 .side-picks h4{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--ink-3);text-transform:uppercase;margin:0 0 14px;font-weight:500;display:flex;align-items:center;gap:10px}
 .side-picks h4::before{content:'';width:18px;height:1.5px;background:var(--gold)}
-.pick{background:#fff;border-radius:var(--radius-sm);padding:14px;display:flex;gap:12px;align-items:flex-start;border:1px solid var(--rule);margin-bottom:10px;transition:transform .2s,box-shadow .2s}
-.pick:hover{transform:translateX(-3px);box-shadow:var(--shadow-sm)}
-.pick-photo{flex-shrink:0;width:52px;height:52px;border-radius:8px;overflow:hidden}
-.pick-photo img{width:100%;height:100%;object-fit:cover}
-.pick-dog{font-family:var(--font-mono);font-size:9.5px;letter-spacing:1.3px;color:var(--blush);text-transform:uppercase}
-.pick-name{font-family:var(--font-sans);font-weight:600;font-size:13.5px;color:var(--navy);line-height:1.3;margin:2px 0 3px}
-.pick-reason{font-family:var(--font-body);font-size:12px;color:var(--ink-2);line-height:1.5;margin:0}
-.pick-cta{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.2px;color:var(--gold);text-transform:uppercase;margin-top:6px;display:inline-block}
-.pick-cta:hover{color:#b07f1f}
+.dog-picks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+.dog-pick{background:#fff;border-radius:var(--radius-sm);padding:10px;display:flex;flex-direction:column;gap:8px;border:1.5px solid var(--rule);transition:all .2s;cursor:pointer;text-align:left}
+.dog-pick:hover{border-color:var(--navy);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.dog-pick.active{background:var(--navy);border-color:var(--navy)}
+.dog-pick.active .dog-pick-name{color:#fff}
+.dog-pick.active .dog-pick-note{color:var(--gold-soft)}
+.dog-pick-photo{width:100%;aspect-ratio:1;border-radius:8px;overflow:hidden}
+.dog-pick-photo img{width:100%;height:100%;object-fit:cover}
+.dog-pick-name{font-family:var(--font-sans);font-weight:600;font-size:12.5px;color:var(--navy);line-height:1.2}
+.dog-pick-note{font-family:var(--font-mono);font-size:9.5px;letter-spacing:1px;color:var(--blush);text-transform:uppercase}
+.side-picks .clear{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.2px;color:var(--ink-3);text-transform:uppercase;text-align:center;padding:8px 0;cursor:pointer;display:block;width:100%;border:none;background:transparent}
+.side-picks .clear:hover{color:var(--navy)}
+.side-picks .clear.shown{background:var(--gold-pale);border-radius:999px;color:var(--navy);font-weight:600}
 
-.sub-strip{background:linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);color:#fff;padding:64px 32px;position:relative;overflow:hidden}
+.subscribe-perk{background:linear-gradient(135deg,var(--navy),var(--navy-deep));color:#fff;padding:22px;border-radius:var(--radius-md);margin-top:24px;position:relative;overflow:hidden}
+.subscribe-perk::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 300px 200px at 30% 50%,rgba(224,160,47,.25),transparent 60%)}
+.subscribe-perk-chip{font-family:var(--font-mono);font-size:10px;letter-spacing:1.8px;color:var(--gold-soft);text-transform:uppercase;position:relative}
+.subscribe-perk h5{font-family:var(--font-display);font-size:20px;color:#fff;margin:8px 0 8px;line-height:1.25;font-weight:500;position:relative}
+.subscribe-perk h5 em{color:var(--gold-soft);font-style:italic;font-weight:400}
+.subscribe-perk p{font-family:var(--font-body);font-size:13px;color:rgba(255,255,255,.75);margin:0 0 14px;line-height:1.55;position:relative}
+.subscribe-perk a{display:inline-block;font-family:var(--font-sans);font-weight:600;font-size:12.5px;background:var(--gold);color:var(--navy);padding:9px 18px;border-radius:999px;position:relative;transition:all .2s}
+.subscribe-perk a:hover{background:var(--gold-soft);transform:translateY(-1px)}
+
+/* Subscribe strip */
+.sub-strip{background:linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);color:#fff;padding:72px 32px;position:relative;overflow:hidden}
 .sub-strip::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 500px 400px at 20% 50%, rgba(224,160,47,.2) 0%, transparent 60%)}
-.sub-inner{max-width:780px;margin:0 auto;text-align:center;position:relative}
-.sub-strip h2{font-family:var(--font-display);font-size:clamp(36px,5vw,56px);color:#fff;margin:0 0 14px;line-height:1.05;letter-spacing:-.02em;font-weight:500}
+.sub-inner{max-width:820px;margin:0 auto;text-align:center;position:relative}
+.sub-strip h2{font-family:var(--font-display);font-size:clamp(36px,5vw,60px);color:#fff;margin:0 0 14px;line-height:1.05;letter-spacing:-.02em;font-weight:500}
 .sub-strip h2 em{color:var(--gold-soft);font-style:italic;font-weight:400}
-.sub-strip p{font-family:var(--font-body);font-size:16px;color:rgba(255,255,255,.8);max-width:520px;margin:0 auto 28px;line-height:1.6}
-.sub-form{display:flex;flex-wrap:wrap;gap:10px;max-width:460px;margin:0 auto}
+.sub-strip p{font-family:var(--font-body);font-size:16px;color:rgba(255,255,255,.8);max-width:540px;margin:0 auto 28px;line-height:1.6}
+.sub-form{display:flex;flex-wrap:wrap;gap:10px;max-width:480px;margin:0 auto}
 .sub-form input{flex:1;min-width:200px;padding:15px 22px;border-radius:999px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:#fff;font-family:var(--font-body);font-size:15px;outline:none}
 .sub-form input::placeholder{color:rgba(255,255,255,.5)}
 .sub-form input:focus{border-color:var(--gold-soft)}
@@ -170,10 +227,11 @@ button{font:inherit;cursor:pointer}
 .sub-msg{margin-top:16px;font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--gold-soft);min-height:1.2em}
 .sub-msg.err{color:var(--blush)}
 
+/* Footer */
 footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 28px}
 .foot{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1)}
-.foot-brand{font-family:var(--font-display);font-size:30px;color:#fff}
-.foot-brand .amp{color:var(--gold-soft);font-style:italic}
+.foot-brand{font-family:var(--font-display);font-size:30px;color:#fff;font-weight:500}
+.foot-brand .amp{color:var(--gold-soft);font-style:italic;font-weight:400}
 .foot h4{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold-soft);margin:0 0 14px;font-weight:500}
 .foot a{display:block;font-size:14px;color:rgba(255,255,255,.7);padding:4px 0}
 .foot a:hover{color:var(--gold-soft)}
@@ -183,12 +241,26 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
 .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.2,.8,.2,1)}
 .reveal.in{opacity:1;transform:none}
 
-body.dal-in .dal-bar{display:flex}
-.dal-bar{display:none;background:linear-gradient(90deg,var(--navy),var(--navy-soft));color:#fff;padding:10px 32px;align-items:center;justify-content:center;gap:16px;font-family:var(--font-mono);font-size:12px;flex-wrap:wrap}
-.dal-bar strong{color:var(--gold-soft);font-weight:500}
-.dal-chip{background:var(--gold);color:var(--navy);font-weight:700;letter-spacing:1.5px;padding:2px 10px;border-radius:4px}
+/* Match modal (anonymous users pick their dog's profile) */
+.match-modal{position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;padding:32px 16px}
+.match-modal.open{display:flex;animation:dal-fade-in .25s ease}
+.match-modal .bd{position:fixed;inset:0;background:rgba(10,26,52,.6);backdrop-filter:blur(6px)}
+.match-modal .card-wrap{position:relative;background:var(--paper);border-radius:var(--radius-lg);max-width:540px;width:100%;padding:32px 36px;box-shadow:var(--shadow-lg);border:1px solid var(--rule);animation:dal-fade-up .3s cubic-bezier(.2,.8,.2,1)}
+.match-modal h3{font-family:var(--font-display);font-size:28px;color:var(--navy);margin:0 0 6px;font-weight:500;line-height:1.15}
+.match-modal h3 em{color:var(--blush);font-style:italic;font-weight:400}
+.match-modal p{font-family:var(--font-body);font-size:14.5px;color:var(--ink-2);margin:0 0 20px;line-height:1.55}
+.match-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);background:#fff;color:var(--ink-2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.match-close:hover{background:var(--navy);color:#fff}
+.match-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;max-height:360px;overflow-y:auto;padding-right:6px}
+.match-opt{background:#fff;border:1.5px solid var(--rule);border-radius:var(--radius-sm);padding:8px;text-align:center;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:6px;align-items:center}
+.match-opt:hover{border-color:var(--navy);transform:translateY(-2px)}
+.match-opt img{width:56px;height:56px;border-radius:50%;object-fit:cover}
+.match-opt .n{font-family:var(--font-sans);font-weight:600;font-size:12.5px;color:var(--navy);line-height:1}
+.match-opt .s{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;color:var(--ink-3);text-transform:uppercase}
+@keyframes dal-fade-in{from{opacity:0}to{opacity:1}}
+@keyframes dal-fade-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:12px 24px;border-radius:999px;font-family:var(--font-body);font-size:14px;box-shadow:var(--shadow-lg);opacity:0;transition:all .3s;pointer-events:none;z-index:999}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:12px 24px;border-radius:999px;font-family:var(--font-body);font-size:14px;box-shadow:var(--shadow-lg);opacity:0;transition:all .3s;pointer-events:none;z-index:1000}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
@@ -196,15 +268,14 @@ body.dal-in .dal-bar{display:flex}
 </head>
 <body>
 
-<div class="disclosure">◆ &nbsp;Some store links may earn a commission at no extra cost — I only recommend gear I've used with dogs I've cared for. &nbsp;<strong>Honest Picks. Not Sponsored Lists.</strong></div>
+<div class="disclosure">◆ &nbsp;Some store links may earn a commission at no extra cost — I only recommend gear I've used with real dogs. &nbsp;<strong>Ten Years Of Sitter-Tested Picks.</strong></div>
 
 <div class="dal-bar">
   <span>◐ Welcome back, <strong id="subName">friend</strong></span>
   <span>·</span>
-  <span>Your loyalty perk</span>
-  <span class="dal-chip" id="subCodeBar">DL10</span>
+  <span>Showing picks for <em id="subDog">your dog</em></span>
   <span>·</span>
-  <span>Personalized picks unlocked</span>
+  <span>Returning-Client Rate: <strong>10% off</strong> every booking</span>
 </div>
 
 <nav class="nav">
@@ -216,7 +287,6 @@ body.dal-in .dal-bar{display:flex}
         <button class="sub-code-submit" id="subCodeSubmit" type="button">Enter</button>
         <div class="sub-code-chip">
           <strong id="subNameChip">Friend</strong>
-          <span class="code" id="subCodeChip">DL10</span>
           <button class="x" id="subCodeClear" title="Sign out">×</button>
         </div>
       </div>
@@ -226,38 +296,66 @@ body.dal-in .dal-bar{display:flex}
       <a class="nav-link" href="index.html#services">Services</a>
       <a class="nav-link active" href="store.html">Store</a>
       <a class="nav-link" href="monthly-issue-01.html">Newsletter</a>
-      <a class="nav-cta" href="index.html#book">Book A Stay →</a>
+      <a class="nav-cta" href="index.html#book">Book</a>
     </div>
   </div>
 </nav>
 
 <section class="hero">
   <div class="hero-inner">
-    <span class="hero-eyebrow"><span class="dot"></span>The Dogs &amp; Llamas Store · Sitter-Tested</span>
+    <span class="hero-eyebrow"><span class="dot"></span>The Store · Sitter-Tested Over Ten Years</span>
     <h1>Gear We've <em>Watched Dogs Actually Love.</em></h1>
-    <p>Every item here passed through our apartment. Tested by seventy-plus dogs — every size, energy level, and attitude — and only the ones worth recommending made the list.</p>
+    <p class="lede">Every item here passed through our apartment. Ten years of pro sitting, twenty-five-plus dogs tested, and only the ones worth recommending made the list. Tell us your dog's profile and we'll match the picks to them.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="n">24</span><span class="l">Picks Tested</span></div>
-      <div class="hero-stat"><span class="n">70+</span><span class="l">Dogs Tested On</span></div>
+      <div class="hero-stat"><span class="n">10 yrs</span><span class="l">Sitter-Tested</span></div>
+      <div class="hero-stat"><span class="n">25+</span><span class="l">Dogs Tested On</span></div>
       <div class="hero-stat"><span class="n">0</span><span class="l">Sponsored Slots</span></div>
-      <div class="hero-stat"><span class="n">4 yrs</span><span class="l">Of Pro Sitting</span></div>
+      <div class="hero-stat"><span class="n">30</span><span class="l">Picks On The List</span></div>
     </div>
   </div>
 </section>
 
+<!-- Match your dog bar — replaced by personalized section when logged in -->
+<div class="match-bar" id="matchBar">
+  <div class="match-bar-icon">"</div>
+  <div>
+    <h3>Let Us <em>Match Picks To Your Dog.</em></h3>
+    <p>Tell us about your pup (size, energy, quirks) and we'll sort the store around dogs we've cared for that match them.</p>
+  </div>
+  <div class="match-bar-cta">
+    <button type="button" onclick="openMatchModal()">Match My Dog →</button>
+    <a href="index.html#subscribe" class="alt">Have A Code?</a>
+  </div>
+</div>
+
+<!-- PERSONAL section — only visible for logged-in subscribers -->
+<section class="personal-section" id="personalSection">
+  <div class="personal-inner">
+    <div class="personal-head">
+      <div>
+        <span class="eyebrow">Picked For <span id="personalFor">Your Dog</span></span>
+        <h2>What We'd Pack For <em id="personalDog">Your Pup</em>.</h2>
+      </div>
+      <span class="meta">Based On Our Real Stays · <span id="personalMatchLabel">Match Profile</span></span>
+    </div>
+    <div class="personal-grid" id="personalGrid"></div>
+  </div>
+</section>
+
+<!-- Filter rail -->
 <div class="filter-rail">
   <span class="filter-label">Filter By</span>
-  <div class="pills" id="sizePills">
-    <button class="pill active" data-filter="all">All Picks</button>
-    <button class="pill" data-filter="small">Small Dogs</button>
-    <button class="pill" data-filter="medium">Medium</button>
-    <button class="pill" data-filter="large">Large</button>
-    <button class="pill" data-filter="puzzle">Puzzles</button>
-    <button class="pill" data-filter="walk">Walking</button>
-    <button class="pill" data-filter="comfort">Comfort</button>
+  <div class="pills" id="filterPills">
+    <button class="pill active" data-filter="all">All Picks <span class="tag" id="countAll"></span></button>
+    <button class="pill" data-filter="small-med">Small + Medium <span class="tag">S/M</span></button>
+    <button class="pill" data-filter="large-xl">Large + XL <span class="tag">L/XL</span></button>
+    <button class="pill" data-filter="puzzle">Puzzles &amp; Enrichment</button>
+    <button class="pill" data-filter="walk">Walking &amp; Outdoor</button>
+    <button class="pill" data-filter="comfort">Beds &amp; Comfort</button>
+    <button class="pill" data-filter="hygiene">Hygiene &amp; Grooming</button>
     <button class="pill" data-filter="travel">Travel</button>
   </div>
-  <span class="count" id="count">Showing All</span>
+  <span class="count" id="count"></span>
 </div>
 
 <div class="wrap">
@@ -266,66 +364,34 @@ body.dal-in .dal-bar{display:flex}
       <div class="note-avatar"><img src="media/me-and-pretzel-lying-down.jpg" alt="Lorenzo" /></div>
       <div>
         <h3>A Note From <em>Lorenzo</em></h3>
-        <p>I only put things on this page after I've used them with a real dog in my home. Every pick includes which of my boarding regulars loved it — so you can match by size and personality, not marketing copy. If something stops working, I take it off the list.</p>
+        <p>Ten years of dog-sitting. Twenty-five-plus dogs through our apartment. I only put things on this page after I've used them with a real dog, and every pick includes <em>which</em> of my boarding regulars loved it — so you can match by size and personality, not marketing copy. If something stops working, I take it off the list.</p>
         <small>★ Updated Monthly · Last Refresh April 2026</small>
       </div>
     </div>
 
-    <div class="cat-strip">
-      <button class="cat active">All Categories</button>
-      <button class="cat">Beds &amp; Comfort</button>
-      <button class="cat">Toys &amp; Enrichment</button>
-      <button class="cat">Walking &amp; Gear</button>
-      <button class="cat">Grooming</button>
-      <button class="cat">Food &amp; Feeders</button>
-      <button class="cat">Travel</button>
+    <div class="cat-strip" id="catStrip">
+      <button class="cat active" data-cat="all">All Categories</button>
+      <button class="cat" data-cat="comfort">Beds &amp; Comfort</button>
+      <button class="cat" data-cat="puzzle">Toys &amp; Enrichment</button>
+      <button class="cat" data-cat="walk">Walking &amp; Harness</button>
+      <button class="cat" data-cat="hygiene">Hygiene &amp; Grooming</button>
+      <button class="cat" data-cat="food">Food &amp; Feeders</button>
+      <button class="cat" data-cat="travel">Travel</button>
     </div>
 
     <div class="products" id="products"></div>
   </div>
 
   <aside class="side-picks">
-    <h4>Endorsed By Real Dogs</h4>
-    <div class="pick">
-      <div class="pick-photo"><img src="media/teddy.jpg" alt=""/></div>
-      <div>
-        <span class="pick-dog">Teddy Picks</span>
-        <div class="pick-name">KONG Classic (Med)</div>
-        <p class="pick-reason">Frozen peanut butter inside. 20 quiet minutes, every time.</p>
-        <a class="pick-cta" href="#">See Pick →</a>
-      </div>
-    </div>
-    <div class="pick">
-      <div class="pick-photo"><img src="media/athena-walk.jpg" alt=""/></div>
-      <div>
-        <span class="pick-dog">Athena Picks</span>
-        <div class="pick-name">Chuckit! Ultra Ball</div>
-        <p class="pick-reason">Bouncy, durable, fits the launcher. Fetch demon's pick.</p>
-        <a class="pick-cta" href="#">See Pick →</a>
-      </div>
-    </div>
-    <div class="pick">
-      <div class="pick-photo"><img src="media/pumba-smiling-on-couch.jpg" alt=""/></div>
-      <div>
-        <span class="pick-dog">Pumba Picks</span>
-        <div class="pick-name">Lickimat Soother</div>
-        <p class="pick-reason">Calms nervous arrivals within minutes. Yogurt + freeze.</p>
-        <a class="pick-cta" href="#">See Pick →</a>
-      </div>
-    </div>
-    <div class="pick">
-      <div class="pick-photo"><img src="media/turbo-outside.jpg" alt=""/></div>
-      <div>
-        <span class="pick-dog">Turbo Picks</span>
-        <div class="pick-name">Ruffwear Harness</div>
-        <p class="pick-reason">Finally stopped the pull. Two leash points, front + back.</p>
-        <a class="pick-cta" href="#">See Pick →</a>
-      </div>
-    </div>
-    <div style="background:linear-gradient(135deg,var(--gold-pale),var(--cream));padding:18px;border-radius:var(--radius-sm);margin-top:20px;border:1px solid rgba(224,160,47,.3)">
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--blush);text-transform:uppercase;margin-bottom:6px">★ Subscriber Perk</div>
-      <div style="font-family:var(--font-display);font-size:18px;color:var(--navy);line-height:1.25;margin-bottom:6px;font-weight:500">Tell me about your dog — I'll suggest the right gear.</div>
-      <a href="index.html#subscribe" style="font-family:var(--font-sans);font-weight:600;font-size:12px;color:var(--navy);text-decoration:underline">Subscribe To Pup Notes →</a>
+    <h4>Shop By Dog</h4>
+    <div class="dog-picks" id="dogPicks"></div>
+    <button class="clear" id="dogClear">Clear Dog Filter</button>
+
+    <div class="subscribe-perk">
+      <div class="subscribe-perk-chip">★ Subscriber Perk</div>
+      <h5>Tell Me About Your Dog — <em>I'll Pick The Right Gear.</em></h5>
+      <p>Subscribers get personalized picks when you log in. Ten years of sitting notes, matched to a dog like yours.</p>
+      <a href="index.html#subscribe">Join Pup Notes →</a>
     </div>
   </aside>
 </div>
@@ -346,14 +412,14 @@ body.dal-in .dal-bar{display:flex}
   <div class="foot">
     <div>
       <div class="foot-brand">Dogs <span class="amp">&amp;</span> Llamas</div>
-      <p style="font-family:var(--font-body);font-size:13px;color:rgba(255,255,255,.55);margin:12px 0 0;max-width:260px;line-height:1.6">Professional dog care in Queens NYC. Lorenzo &amp; Catalina — Rover Star Sitters since 2022.</p>
+      <p style="font-family:var(--font-body);font-size:13px;color:rgba(255,255,255,.55);margin:12px 0 0;max-width:260px;line-height:1.6">Professional dog care in Queens NYC. Lorenzo &amp; Catalina — ten years of pro sitting since 2016.</p>
     </div>
     <div>
       <h4>Store</h4>
-      <a href="#">All Picks</a>
-      <a href="#">Toys</a>
-      <a href="#">Comfort</a>
-      <a href="#">Walking</a>
+      <a href="?f=all">All Picks</a>
+      <a href="?f=comfort">Comfort</a>
+      <a href="?f=walk">Walking</a>
+      <a href="?f=hygiene">Hygiene</a>
     </div>
     <div>
       <h4>Services</h4>
@@ -374,72 +440,247 @@ body.dal-in .dal-bar{display:flex}
   </div>
 </footer>
 
+<!-- Match-my-dog modal -->
+<div class="match-modal" id="matchModal" aria-hidden="true">
+  <div class="bd" onclick="closeMatchModal()"></div>
+  <div class="card-wrap">
+    <button class="match-close" onclick="closeMatchModal()" aria-label="Close">×</button>
+    <h3>Pick A Dog <em>Like Yours.</em></h3>
+    <p>We've had twenty-five-plus dogs through our place over ten years. Pick the one that sounds most like your pup and we'll surface the gear that worked for them.</p>
+    <div class="match-grid" id="matchGrid"></div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script src="dal-subscriber.js?v=3" defer></script>
 <script>
-const PRODUCTS = [
-  { glyph:'K', brand:'KONG', name:'Classic Rubber Toy', desc:'The workhorse. Stuff with peanut butter, freeze overnight. Twenty minutes of quiet.',
-    endorse:'Teddy approved.', after:'After 14 boarding stays', dog:'media/teddy.jpg', price:'$14',
-    tags:['small','medium','large','puzzle','comfort'], badge:'Sitter Pick', badgeClass:'gold' },
-  { glyph:'B', brand:'Chuckit!', name:'Ultra Ball 3-Pack', desc:'Bouncy, durable, fits the launcher. Survived Athena. That says it all.',
-    endorse:'Athena approved.', after:'Never stops fetching', dog:'media/athena-walk.jpg', price:'$12',
-    tags:['medium','large','walk'], badge:'Most Gifted', badgeClass:'' },
-  { glyph:'L', brand:'Lickimat', name:'Soother Slow Feeder', desc:'Smear with yogurt or wet food. Ten quiet, focused minutes — great for nervous new arrivals.',
-    endorse:'Pumba approved.', after:'Anxiety ↓ fast', dog:'media/pumba-smiling-on-couch.jpg', price:'$9',
-    tags:['small','medium','large','comfort','puzzle'], badge:'Best Value', badgeClass:'blush' },
-  { glyph:'H', brand:'Ruffwear', name:'Front-Range Harness', desc:'The harness that ended Turbo\'s pulling. Two leash clips, padded chest. Worth the price.',
-    endorse:'Turbo approved.', after:'Graduated from prong', dog:'media/turbo-outside.jpg', price:'$52',
-    tags:['medium','large','walk'], badge:'Walking Essential', badgeClass:'gold' },
-  { glyph:'O', brand:'Outward Hound', name:'Hide-a-Squirrel Puzzle', desc:'Plush squirrels in a plush trunk. Mental workout for the high-energy crew. Not chew-proof.',
-    endorse:'Turbo approved.', after:'40-min focus', dog:'media/turbo-outside.jpg', price:'$18',
-    tags:['small','medium','puzzle'], badge:'Rainy-Day', badgeClass:'' },
-  { glyph:'F', brand:'Furbo', name:'Treat-Tossing Camera', desc:'I use this for drop-in follow-ups and reassurance. Barking alerts are clutch.',
-    endorse:'Every boarding parent approved.', after:'Peace of mind', dog:'media/pretzel-sleeping.jpg', price:'$169',
-    tags:['small','medium','large','comfort'], badge:'Premium Pick', badgeClass:'gold' },
-  { glyph:'B', brand:'Big Barker', name:'Orthopedic Bolster Bed', desc:'For large dogs and seniors. 10-year guarantee. Pretzel claimed it in one afternoon.',
-    endorse:'Pretzel approved.', after:'Elbows thank you', dog:'media/pretzel-sleeping-in-comfortable-bed.jpg', price:'$229',
-    tags:['large','comfort'], badge:'Senior-Friendly', badgeClass:'blush' },
-  { glyph:'S', brand:'Snuggle Puppy', name:'Heartbeat Comfort Toy', desc:'Battery-powered heartbeat. Saved Harley\'s first night. Sounds absurd; works.',
-    endorse:'Harley approved.', after:'First-night anxiety', dog:'media/frankie-lying-down-on-couch.jpg', price:'$34',
-    tags:['small','medium','comfort','travel'], badge:'New-Puppy Pick', badgeClass:'' },
-  { glyph:'C', brand:'Chewy', name:'Himalayan Yak Chew', desc:'Long-lasting, low-odor, single-ingredient. The "bone" I let every dog have unsupervised.',
-    endorse:'Troy approved.', after:'30-min chew time', dog:'media/troy.jpg', price:'$14',
-    tags:['medium','large','comfort'], badge:'Vet-Safe', badgeClass:'gold' },
-  { glyph:'P', brand:'PetSafe', name:'Gentle Spray Leash Cover', desc:'For sweaty NYC summers. Keeps leashes cool on hot pavement walks.',
-    endorse:'Zephyr approved.', after:'Cooler hands', dog:'media/zephyr-and-me-walk.jpg', price:'$11',
-    tags:['small','medium','walk','travel'], badge:'Summer Gear', badgeClass:'' },
-  { glyph:'K', brand:'K&H', name:'Travel Carrier Tote', desc:'Teddy-sized. Fits an Amtrak tray. Fleece interior. Don\'t buy it bigger than your dog.',
-    endorse:'Teddy approved.', after:'Train-reviewed', dog:'media/teddy-and-me.jpg', price:'$42',
-    tags:['small','travel'], badge:'Travel Pick', badgeClass:'gold' },
-  { glyph:'M', brand:'MalsiPree', name:'Portable Water Bottle', desc:'Flip-up bowl, one-handed. Essential for long summer walks — especially after Turbo\'s zoomies.',
-    endorse:'Athena approved.', after:'No more thirst', dog:'media/athena-walk.jpg', price:'$13',
-    tags:['small','medium','large','walk','travel'], badge:'Everyday Carry', badgeClass:'' }
+/* ═══════════ DOG ROSTER — full 14 dogs from our notes ═══════════ */
+const DOGS = [
+  { name:'Turbo',   size:'medium', energy:'high',   img:'media/turbo-outside.jpg',                 note:'High-energy + pulls' },
+  { name:'Pretzel', size:'xl',     energy:'high',   img:'media/pretzel-sleeping.jpg',              note:'80 lb puller' },
+  { name:'Teddy',   size:'small',  energy:'low',    img:'media/teddy.jpg',                         note:'Chihuahua · cuddly' },
+  { name:'Mango',   size:'medium', energy:'medium', img:'media/mango-outside.jpg',                 note:'Corgi · big eater' },
+  { name:'Athena',  size:'large',  energy:'medium', img:'media/athena-walk.jpg',                   note:'Fetch champion' },
+  { name:'Dakota',  size:'small',  energy:'low',    img:'media/dakota-sitting-solo.jpg',           note:'Tiny · low maintenance' },
+  { name:'Pumba',   size:'medium', energy:'low',    img:'media/pumba-smiling-on-couch.jpg',        note:'Nervous at first' },
+  { name:'Logan',   size:'large',  energy:'medium', img:'media/logan-lying-down-on-couch.jpg',     note:'Senior · mellow' },
+  { name:'Troy',    size:'xl',     energy:'high',   img:'media/troy.jpg',                          note:'Escape artist' },
+  { name:'Palmer',  size:'small',  energy:'low',    img:'media/palmer-comfortable-in-bed.jpg',     note:'Long-haired · quiet' },
+  { name:'Zephyr',  size:'small',  energy:'medium', img:'media/zephyr-and-me-walk.jpg',            note:'Sheds · barker' },
+  { name:'Harley',  size:'medium', energy:'medium', img:'media/mango-and-harley-1.jpg',            note:'Young Frenchie' },
+  { name:'Frankie', size:'small',  energy:'low',    img:'media/frankie-lying-down-on-couch.jpg',   note:'White · low-maint.' },
+  { name:'Milo',    size:'small',  energy:'low',    img:'media/milo-solo.jpg',                     note:'Licks · cuddly' }
 ];
 
-const io = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: .1 });
+/* ═══════════ PRODUCTS — 30 picks across simplified taxonomy ═══════════
+   tags: size (small-med / large-xl), category (puzzle/walk/comfort/hygiene/travel/food),
+   dogMatch: array of dog names who actually used & liked this item
+*/
+const PRODUCTS = [
+  /* ——————————— PUZZLES & ENRICHMENT ——————————— */
+  { glyph:'K', brand:'KONG',          name:'Classic Rubber Toy',         desc:'The workhorse. Stuff with peanut butter, freeze overnight — buys 20 quiet minutes with any chewer.',
+    endorse:"Teddy's go-to. Teddy graduated to the medium size.", dog:'media/teddy.jpg', price:'$14',
+    tags:['small-med','large-xl','puzzle','comfort'], badge:'Sitter Pick', badgeClass:'gold',
+    dogMatch:['Teddy','Pumba','Turbo','Pretzel','Harley','Frankie'] },
 
-function render(list){
-  const box = document.getElementById('products');
-  box.innerHTML = list.map(p=>`
-    <article class="card reveal" data-tags="${p.tags.join(',')}">
+  { glyph:'O', brand:'Outward Hound', name:'Hide-a-Squirrel Puzzle',     desc:'Plush squirrels in a plush trunk. Mental workout for high-energy brain dogs. Not chew-proof — supervise.',
+    endorse:"Turbo approved. 40 minutes of focus on visit #3.", dog:'media/turbo-outside.jpg', price:'$18',
+    tags:['small-med','puzzle'], badge:'Rainy-Day', badgeClass:'',
+    dogMatch:['Turbo','Mango'] },
+
+  { glyph:'L', brand:'Lickimat',      name:'Soother Slow Feeder',        desc:'Smear with yogurt or wet food, freeze for 20 minutes. Settles nervous arrivals almost instantly.',
+    endorse:"Pumba approved. First-day anxiety gone in minutes.", dog:'media/pumba-smiling-on-couch.jpg', price:'$9',
+    tags:['small-med','large-xl','puzzle','comfort'], badge:'Best Value', badgeClass:'blush',
+    dogMatch:['Pumba','Harley','Milo','Dakota'] },
+
+  { glyph:'W', brand:'West Paw',      name:'Qwizl Treat-Dispensing Toy', desc:'Tougher than KONG for real chewers. Holds a bully stick vertically so it lasts longer.',
+    endorse:"Pretzel approved. Survives his jaw.", dog:'media/pretzel-sleeping.jpg', price:'$22',
+    tags:['large-xl','puzzle'], badge:'Heavy-Chewer', badgeClass:'',
+    dogMatch:['Pretzel','Troy','Athena'] },
+
+  { glyph:'N', brand:'Nina Ottosson', name:'Dog Twister Puzzle (Lvl 3)', desc:'Slide-and-flip puzzle with treat compartments. Teaches a bored dog patience in 15 minutes.',
+    endorse:"Mango approved. Solved level 3 on stay #4.", dog:'media/mango-outside.jpg', price:'$26',
+    tags:['small-med','large-xl','puzzle'], badge:'Smart-Dog', badgeClass:'',
+    dogMatch:['Mango','Athena','Turbo'] },
+
+  { glyph:'B', brand:'Chuckit!',      name:'Ultra Ball (3-pack)',         desc:'Bouncy, durable, fits the launcher. Survived Athena and Pretzel. That says it all.',
+    endorse:"Athena approved. Fetch demon approved.", dog:'media/athena-walk.jpg', price:'$12',
+    tags:['small-med','large-xl','puzzle','walk'], badge:'Most Gifted', badgeClass:'',
+    dogMatch:['Athena','Mango','Pretzel'] },
+
+  /* ——————————— WALKING & OUTDOOR ——————————— */
+  { glyph:'H', brand:'Ruffwear',      name:'Front-Range Harness',        desc:'The harness we use on Turbo and Pretzel. Padded chest, two leash clips, no choking. Worth the price.',
+    endorse:"Turbo + Pretzel approved. Pull-fix certified.", dog:'media/turbo-outside.jpg', price:'$52',
+    tags:['small-med','large-xl','walk'], badge:'Walking Essential', badgeClass:'gold',
+    dogMatch:['Turbo','Pretzel','Troy','Athena','Mango'] },
+
+  { glyph:'P', brand:'PetSafe',       name:'Gentle Leader Head Collar',  desc:"For the real pullers who'd drag you across Queens. Think of it as training wheels, not a muzzle.",
+    endorse:"Troy approved. We use this when Troy walks the neighborhood.", dog:'media/troy.jpg', price:'$21',
+    tags:['large-xl','walk'], badge:'Pull-Correction', badgeClass:'',
+    dogMatch:['Troy','Pretzel'] },
+
+  { glyph:'M', brand:'MalsiPree',     name:'Portable Water Bottle',      desc:"Flip-up bowl, one-handed operation. Essential for long summer walks in Queens — especially after Turbo's zoomies.",
+    endorse:"Athena approved. No more thirsty fetch sessions.", dog:'media/athena-walk.jpg', price:'$13',
+    tags:['small-med','large-xl','walk','travel'], badge:'Everyday Carry', badgeClass:'',
+    dogMatch:['Athena','Turbo','Mango','Pretzel'] },
+
+  { glyph:'R', brand:'Rexing',        name:'GPS Tracker Collar Clip',    desc:"Live location plus walk history. We clip this on any dog we board who has escape tendencies (cough, Troy).",
+    endorse:"Troy approved. Caught him before the corner once.", dog:'media/troy.jpg', price:'$38',
+    tags:['small-med','large-xl','walk','travel'], badge:'Safety Pick', badgeClass:'gold',
+    dogMatch:['Troy','Turbo'] },
+
+  { glyph:'F', brand:'Flexi',         name:'Retractable Leash (16 ft)',  desc:"Only for dogs with solid recall. Great for Dakota and Palmer on Gantry walks — they roam without us jogging.",
+    endorse:"Dakota approved. Small-dog sweet spot.", dog:'media/dakota-sitting-solo.jpg', price:'$27',
+    tags:['small-med','walk'], badge:'For Small Dogs', badgeClass:'',
+    dogMatch:['Dakota','Palmer','Teddy','Zephyr','Frankie'] },
+
+  { glyph:'C', brand:'Coastal Pet',   name:'Reflective Nylon Leash (6 ft)', desc:"Basic, tough, visible at dusk. We use this on every dog boarding. Nothing fancy — just right.",
+    endorse:"Every boarding dog approved.", dog:'media/logan-lying-down-on-couch.jpg', price:'$11',
+    tags:['small-med','large-xl','walk'], badge:'Basics', badgeClass:'',
+    dogMatch:['Logan','Frankie','Milo','Pumba'] },
+
+  /* ——————————— BEDS & COMFORT ——————————— */
+  { glyph:'B', brand:'Big Barker',    name:'Orthopedic Bolster Bed',     desc:"For large dogs and seniors. 10-year guarantee. Pretzel claimed it in one afternoon and never gave it back.",
+    endorse:"Pretzel approved. His elbows thank you.", dog:'media/pretzel-sleeping-in-comfortable-bed.jpg', price:'$229',
+    tags:['large-xl','comfort'], badge:'Senior-Friendly', badgeClass:'blush',
+    dogMatch:['Pretzel','Logan','Athena'] },
+
+  { glyph:'S', brand:'Snuggle Puppy', name:'Heartbeat Comfort Toy',      desc:"Battery-powered heartbeat + warmth pack. Saved Harley's first solo night. Sounds absurd; works.",
+    endorse:"Harley approved. First-night anxiety buster.", dog:'media/frankie-lying-down-on-couch.jpg', price:'$34',
+    tags:['small-med','comfort','travel'], badge:'New-Puppy Pick', badgeClass:'',
+    dogMatch:['Harley','Milo','Frankie','Dakota','Pumba'] },
+
+  { glyph:'F', brand:'FurHaven',      name:'Plush Orthopedic Sofa Bed',  desc:"Mid-tier bed that looks like furniture. Teddy takes the small version as his own. Machine-washable cover.",
+    endorse:"Teddy + Palmer approved. Tiny-dog luxury.", dog:'media/teddy.jpg', price:'$69',
+    tags:['small-med','comfort'], badge:'Best Value', badgeClass:'blush',
+    dogMatch:['Teddy','Palmer','Dakota','Milo','Zephyr'] },
+
+  { glyph:'T', brand:'The Company Store', name:'Cooling Pet Mat',       desc:"Self-cooling gel pad for August. Hot dogs settle faster — literal temperature drop, no batteries.",
+    endorse:"Mango approved. Corgi belly cools fast.", dog:'media/mango-outside.jpg', price:'$32',
+    tags:['small-med','large-xl','comfort'], badge:'Summer Gear', badgeClass:'',
+    dogMatch:['Mango','Pretzel','Athena'] },
+
+  { glyph:'P', brand:'Pet Craft',     name:'Calming Donut Bed',          desc:"Bolster sides + plush center — nervous dogs curl into the shape. Pumba went from pacing to napping in 5 minutes.",
+    endorse:"Pumba approved. Anxiety-dog staple.", dog:'media/pumba-smiling-on-couch.jpg', price:'$38',
+    tags:['small-med','comfort'], badge:'Anxiety Pick', badgeClass:'gold',
+    dogMatch:['Pumba','Dakota','Teddy','Milo','Palmer'] },
+
+  /* ——————————— HYGIENE & GROOMING ——————————— */
+  { glyph:'V', brand:'Virbac',        name:'Epi-Otic Ear Cleaner',       desc:"Vet-grade ear wash. Floppy-eared dogs (Logan, Harley) need this twice a month. Gentle, no stinging.",
+    endorse:"Logan + Harley approved.", dog:'media/logan-lying-down-on-couch.jpg', price:'$18',
+    tags:['small-med','large-xl','hygiene'], badge:'Vet-Grade', badgeClass:'gold',
+    dogMatch:['Logan','Harley','Athena'] },
+
+  { glyph:'F', brand:'FURminator',    name:'Deshedding Tool (M/L)',      desc:"For the heavy shedders (Turbo, Troy, Zephyr). Ten-minute session = two handfuls less fur on your couch.",
+    endorse:"Turbo + Zephyr approved. Shed levels ↓.", dog:'media/turbo-outside.jpg', price:'$44',
+    tags:['small-med','large-xl','hygiene'], badge:'Shedder-Essential', badgeClass:'',
+    dogMatch:['Turbo','Troy','Zephyr','Mango'] },
+
+  { glyph:'T', brand:'TropiClean',    name:'No-Rinse Bath Spray',        desc:"Between-bath freshener. Muddy Roosevelt Island walk? Spray, rub, towel — done. We use it on everyone.",
+    endorse:"Every muddy-dog approved.", dog:'media/pretzel-sleeping.jpg', price:'$12',
+    tags:['small-med','large-xl','hygiene'], badge:'Between-Baths', badgeClass:'',
+    dogMatch:['Pretzel','Turbo','Athena','Mango','Logan'] },
+
+  { glyph:'A', brand:'Arm & Hammer',  name:'Enzymatic Dog Toothpaste',   desc:"Beef-flavor, no-rinse. Daily teeth brushing adds years. Start seniors on it if you haven't already.",
+    endorse:"Logan approved. Senior-teeth upkeep.", dog:'media/logan-lying-down-on-couch.jpg', price:'$8',
+    tags:['small-med','large-xl','hygiene'], badge:'Daily Habit', badgeClass:'',
+    dogMatch:['Logan','Teddy','Palmer','Dakota','Frankie'] },
+
+  { glyph:'N', brand:'Nail Clipper',  name:'Boshel Nail Trimmer + File', desc:"Quick-sensor blade means fewer nicks. We use this on boarding dogs whose owners ask for a quick trim.",
+    endorse:"Small-dog crew approved.", dog:'media/teddy.jpg', price:'$16',
+    tags:['small-med','hygiene'], badge:'Salon-Grade', badgeClass:'',
+    dogMatch:['Teddy','Dakota','Palmer','Milo','Frankie','Zephyr'] },
+
+  { glyph:'P', brand:'Paw Plunger',   name:'Muddy Paw Cleaner',          desc:"A cup of soapy water and silicone bristles. Dip-swirl-lift before the dog walks on your rug. Life-changer.",
+    endorse:"Every rainy-day dog approved.", dog:'media/pretzel-sleeping.jpg', price:'$19',
+    tags:['small-med','large-xl','hygiene'], badge:'Life-Saver', badgeClass:'gold',
+    dogMatch:['Pretzel','Athena','Mango','Turbo','Troy'] },
+
+  { glyph:'W', brand:'Wahl',          name:'Oatmeal Shampoo (Gallon)',   desc:"Gentle, no-fragrance, sensitive skin friendly. The bath Palmer tolerates without drama.",
+    endorse:"Palmer approved. Low-irritation pick.", dog:'media/palmer-comfortable-in-bed.jpg', price:'$24',
+    tags:['small-med','large-xl','hygiene'], badge:'Sensitive-Skin', badgeClass:'blush',
+    dogMatch:['Palmer','Dakota','Pumba','Teddy'] },
+
+  /* ——————————— TRAVEL ——————————— */
+  { glyph:'K', brand:'K&H',           name:'Travel Carrier Tote',        desc:"Teddy-sized. Fits an Amtrak tray. Fleece interior, side ventilation. Don't buy it bigger than your dog.",
+    endorse:"Teddy approved. Train-reviewed.", dog:'media/teddy-and-me.jpg', price:'$42',
+    tags:['small-med','travel'], badge:'Travel Pick', badgeClass:'gold',
+    dogMatch:['Teddy','Dakota','Palmer','Milo'] },
+
+  { glyph:'S', brand:'Sherpa',        name:'Deluxe Airline Carrier',     desc:"Airline-approved (most carriers). We've used this for Zephyr and Dakota on Amtrak + JetBlue. Fleece removable, washable.",
+    endorse:"Zephyr + Dakota approved.", dog:'media/zephyr-and-me-walk.jpg', price:'$68',
+    tags:['small-med','travel'], badge:'Flight-Ready', badgeClass:'',
+    dogMatch:['Zephyr','Dakota','Teddy','Palmer'] },
+
+  { glyph:'R', brand:'Ruffwear',      name:'Approach Hiking Pack',       desc:"Let your dog carry their own water + snacks on day hikes. Athena owns the trail with this on.",
+    endorse:"Athena approved. Bear Mountain regulars.", dog:'media/athena-walk.jpg', price:'$89',
+    tags:['large-xl','walk','travel'], badge:'Adventure Dog', badgeClass:'',
+    dogMatch:['Athena','Mango','Pretzel'] },
+
+  /* ——————————— FOOD & FEEDERS ——————————— */
+  { glyph:'S', brand:'Outward Hound', name:'Fun Feeder Slow Bowl',       desc:"For fast eaters. Mango inhales his food — this bowl adds 4 minutes and stops the post-meal zoomies.",
+    endorse:"Mango approved. No more vacuum-seal eating.", dog:'media/mango-outside.jpg', price:'$11',
+    tags:['small-med','large-xl','food','puzzle'], badge:'Fast-Eater Fix', badgeClass:'gold',
+    dogMatch:['Mango','Pretzel','Turbo','Athena'] },
+
+  { glyph:'C', brand:'Chewy',         name:'Himalayan Yak Chew',         desc:"Long-lasting, low-odor, single-ingredient. The 'bone' I let every dog have unsupervised.",
+    endorse:"Troy approved. 30 quiet minutes.", dog:'media/troy.jpg', price:'$14',
+    tags:['small-med','large-xl','food','comfort'], badge:'Vet-Safe', badgeClass:'gold',
+    dogMatch:['Troy','Pretzel','Athena','Mango','Turbo'] },
+
+  { glyph:'W', brand:'The Honest Kitchen', name:'Dehydrated Food Topper', desc:"A little sprinkle of real food turns kibble into something worth finishing. Picky-eater lifeline.",
+    endorse:"Teddy approved. Chihuahua-approved only.", dog:'media/teddy-and-me.jpg', price:'$26',
+    tags:['small-med','large-xl','food'], badge:'Picky-Eater', badgeClass:'blush',
+    dogMatch:['Teddy','Dakota','Palmer','Frankie'] }
+];
+
+/* ═══════════ RENDER ═══════════ */
+const productsEl = document.getElementById('products');
+const countAllEl = document.getElementById('countAll');
+const countEl = document.getElementById('count');
+let activeFilter = 'all';
+let activeCategory = 'all';
+let activeDog = null;
+
+function matchesFilter(p){
+  if (activeFilter === 'all') return true;
+  return p.tags.includes(activeFilter);
+}
+function matchesCategory(p){
+  if (activeCategory === 'all') return true;
+  return p.tags.includes(activeCategory);
+}
+function matchesDog(p){
+  if (!activeDog) return true;
+  return p.dogMatch.some(d=>d.toLowerCase() === activeDog.toLowerCase());
+}
+function shouldShow(p){
+  return matchesFilter(p) && matchesCategory(p) && matchesDog(p);
+}
+
+function card(p){
+  const isMatch = activeDog && p.dogMatch.some(d=>d.toLowerCase() === activeDog.toLowerCase());
+  const tagsToShow = p.tags.filter(t=>!['all'].includes(t)).slice(0,3);
+  const dogCount = p.dogMatch.length;
+  return `
+    <article class="card ${isMatch?'match':''}" data-name="${p.name}">
+      <div class="card-match-ribbon">◆ Matches ${activeDog || ''}</div>
       <div class="card-img">
         <span class="card-glyph">${p.glyph}</span>
         <span class="card-badge ${p.badgeClass}">${p.badge}</span>
         <div class="card-dog"><img src="${p.dog}" alt=""/></div>
       </div>
       <div class="card-body">
-        <span class="card-brand">${p.brand}</span>
+        <span class="card-brand">${p.brand} · ${dogCount} dog${dogCount===1?'':'s'} loved it</span>
         <h3 class="card-name">${p.name}</h3>
         <p class="card-desc">${p.desc}</p>
         <div class="card-endorse">
           <strong>${p.endorse}</strong>
-          <small>${p.after}</small>
+          <small>${p.dogMatch.slice(0,4).join(' · ')}${p.dogMatch.length>4 ? ' · +'+(p.dogMatch.length-4)+' more' : ''}</small>
         </div>
         <div class="card-tags">
-          ${p.tags.slice(0,3).map(t=>`<span class="card-tag">${t}</span>`).join('')}
+          ${tagsToShow.map(t=>`<span class="card-tag">${t.replace('-',' + ')}</span>`).join('')}
         </div>
         <div class="card-footer">
           <div class="card-price">${p.price}<small>On Amazon</small></div>
@@ -447,44 +688,125 @@ function render(list){
         </div>
       </div>
     </article>
-  `).join('');
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  `;
 }
+
+function render(){
+  const visible = PRODUCTS.filter(shouldShow);
+  productsEl.innerHTML = visible.map(card).join('');
+  countAllEl.textContent = `(${PRODUCTS.length})`;
+  countEl.textContent = `Showing ${visible.length}`;
+}
+render();
+
+/* Filter pills */
+document.querySelectorAll('#filterPills .pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    document.querySelectorAll('#filterPills .pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    activeFilter = p.dataset.filter;
+    render();
+  });
+});
+
+/* Category strip */
+document.querySelectorAll('#catStrip .cat').forEach(c=>{
+  c.addEventListener('click', ()=>{
+    document.querySelectorAll('#catStrip .cat').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    activeCategory = c.dataset.cat;
+    render();
+  });
+});
+
+/* Shop by dog — sidebar */
+const dogPicksEl = document.getElementById('dogPicks');
+dogPicksEl.innerHTML = DOGS.slice(0,8).map(d=>`
+  <button class="dog-pick" data-dog="${d.name}" type="button">
+    <div class="dog-pick-photo"><img src="${d.img}" alt="${d.name}" loading="lazy"/></div>
+    <div>
+      <span class="dog-pick-name">${d.name}</span>
+      <div class="dog-pick-note">${d.note}</div>
+    </div>
+  </button>
+`).join('');
+document.querySelectorAll('.dog-pick').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const name = b.dataset.dog;
+    if (activeDog === name) {
+      activeDog = null;
+      b.classList.remove('active');
+    } else {
+      document.querySelectorAll('.dog-pick').forEach(x=>x.classList.remove('active'));
+      activeDog = name;
+      b.classList.add('active');
+    }
+    document.getElementById('dogClear').classList.toggle('shown', !!activeDog);
+    document.getElementById('dogClear').textContent = activeDog ? `Showing picks for ${activeDog} · Clear ×` : 'Clear Dog Filter';
+    render();
+  });
+});
+document.getElementById('dogClear').addEventListener('click', ()=>{
+  activeDog = null;
+  document.querySelectorAll('.dog-pick').forEach(x=>x.classList.remove('active'));
+  document.getElementById('dogClear').classList.remove('shown');
+  document.getElementById('dogClear').textContent = 'Clear Dog Filter';
+  render();
+});
+
+/* Match modal — anonymous users pick a dog like theirs */
+const matchGrid = document.getElementById('matchGrid');
+matchGrid.innerHTML = DOGS.map(d=>`
+  <button class="match-opt" data-dog="${d.name}" type="button">
+    <img src="${d.img}" alt=""/>
+    <span class="n">${d.name}</span>
+    <span class="s">${d.size} · ${d.energy}</span>
+  </button>
+`).join('');
+function openMatchModal(){ document.getElementById('matchModal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMatchModal(){ document.getElementById('matchModal').classList.remove('open'); document.body.style.overflow=''; }
+matchGrid.addEventListener('click', e=>{
+  const b = e.target.closest('.match-opt');
+  if (!b) return;
+  const name = b.dataset.dog;
+  closeMatchModal();
+  activeDog = name;
+  document.querySelectorAll('.dog-pick').forEach(x=>x.classList.toggle('active', x.dataset.dog===name));
+  document.getElementById('dogClear').classList.add('shown');
+  document.getElementById('dogClear').textContent = `Showing picks for ${name} · Clear ×`;
+  render();
+  const wrap = document.querySelector('.wrap');
+  if (wrap){
+    const y = window.scrollY + wrap.getBoundingClientRect().top - 120;
+    window.scrollTo({top:y, behavior:'smooth'});
+  }
+  toast(`Matched to ${name} — showing gear ${name} loved`);
+});
 
 function toast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 1800);
+  setTimeout(()=>t.classList.remove('show'), 2400);
 }
 
-render(PRODUCTS);
+/* ═══════════ PERSONALIZED GRID (subscriber only) ═══════════ */
+function renderPersonal(dogName){
+  const el = document.getElementById('personalGrid');
+  const dog = DOGS.find(d=>d.name.toLowerCase() === String(dogName||'').toLowerCase());
+  const label = dog ? `${dog.size.toUpperCase()} · ${dog.energy.toUpperCase()}-ENERGY` : 'BASED ON YOUR PROFILE';
+  document.getElementById('personalMatchLabel').textContent = label;
+  document.getElementById('personalFor').textContent = dogName || 'Your Dog';
+  document.getElementById('personalDog').textContent = dogName || 'Your Pup';
+  const picks = PRODUCTS.filter(p=>p.dogMatch.some(d=>d.toLowerCase() === String(dogName||'').toLowerCase())).slice(0,4);
+  if (!picks.length) {
+    el.innerHTML = `<p style="font-family:var(--font-body);font-size:15px;color:var(--ink-2);grid-column:1/-1;padding:24px;text-align:center;background:#fff;border-radius:var(--radius-sm);border:1px dashed var(--rule)">We don't have personalized picks for this dog yet — pick a similar dog on the right to match them.</p>`;
+    return;
+  }
+  el.innerHTML = picks.map(card).join('');
+}
 
-document.querySelectorAll('#sizePills .pill').forEach(p=>{
-  p.addEventListener('click', ()=>{
-    document.querySelectorAll('#sizePills .pill').forEach(x=>x.classList.remove('active'));
-    p.classList.add('active');
-    const f = p.dataset.filter;
-    const cards = document.querySelectorAll('.card');
-    let shown = 0;
-    cards.forEach(c=>{
-      const tags = c.dataset.tags.split(',');
-      const ok = f === 'all' || tags.includes(f);
-      c.classList.toggle('hidden', !ok);
-      if(ok) shown++;
-    });
-    document.getElementById('count').textContent = `Showing ${shown}`;
-  });
-});
-
-document.querySelectorAll('.cat').forEach(c=>{
-  c.addEventListener('click', ()=>{
-    document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));
-    c.classList.add('active');
-  });
-});
-
-/* Subscriber code (mirrors index.html) */
+/* ═══════════ SUBSCRIBER CODE (nav) ═══════════ */
 const VALID_CODES = {
   'DL10':   { name: 'Maya',   dog: 'Turbo'   },
   'PACK22': { name: 'Dan',    dog: 'Pretzel' },
@@ -495,24 +817,24 @@ let tweaks = (function(){ try { return JSON.parse(localStorage.getItem('dal-twea
 function persist(){ try { localStorage.setItem('dal-tweaks', JSON.stringify(tweaks)); } catch(e){} }
 
 function applySubscriberUI(opts){
-  const { subscriber, subName, code } = opts || {};
+  const { subscriber, subName, myDog } = opts || {};
   document.body.classList.toggle('dal-in', !!subscriber);
   const codeEl = document.getElementById('subCode');
   if (codeEl) codeEl.classList.toggle('active', !!subscriber);
   if (!subscriber) return;
   document.getElementById('subName').textContent = subName || 'friend';
   document.getElementById('subNameChip').textContent = subName || 'friend';
-  document.getElementById('subCodeChip').textContent = code || 'DL10';
-  const bar = document.getElementById('subCodeBar'); if (bar) bar.textContent = code || 'DL10';
+  document.getElementById('subDog').textContent = myDog || 'your dog';
+  renderPersonal(myDog || 'Teddy');
 }
 function restoreSubscriber(){
   try {
     if (window.DAL && typeof DAL.getSubscriber === 'function') {
       const sub = DAL.getSubscriber();
-      if (sub) { applySubscriberUI({ subscriber:true, subName: sub.firstName || sub.username || 'Friend', code: (sub.username || 'DL10').toUpperCase() }); return; }
+      if (sub) { applySubscriberUI({ subscriber:true, subName: sub.firstName || sub.username || 'Friend', myDog: sub.dogName || tweaks.myDog }); return; }
     }
   } catch(e){}
-  if (tweaks.subscriber) applySubscriberUI({ subscriber:true, subName:tweaks.subName, code:tweaks.code });
+  if (tweaks.subscriber) applySubscriberUI({ subscriber:true, subName:tweaks.subName, myDog:tweaks.myDog });
 }
 const codeInput = document.getElementById('subCodeInput');
 function trySubCode(){
@@ -524,7 +846,7 @@ function trySubCode(){
     const m = VALID_CODES[v];
     tweaks.subscriber = true; tweaks.code = v; tweaks.subName = m.name; tweaks.myDog = m.dog;
     persist();
-    applySubscriberUI({ subscriber:true, subName:m.name, code:v });
+    applySubscriberUI({ subscriber:true, subName:m.name, myDog:m.dog });
     return;
   }
   if (window.DAL && typeof DAL.loginWithKey === 'function') {
@@ -534,9 +856,10 @@ function trySubCode(){
       if (!sub) throw new Error('Not found');
       const subName = sub.firstName || sub.username || 'Friend';
       const code = (sub.username || v).toUpperCase();
-      tweaks.subscriber = true; tweaks.code = code; tweaks.subName = subName;
+      const myDog = sub.dogName || 'Teddy';
+      tweaks.subscriber = true; tweaks.code = code; tweaks.subName = subName; tweaks.myDog = myDog;
       persist();
-      applySubscriberUI({ subscriber:true, subName, code });
+      applySubscriberUI({ subscriber:true, subName, myDog });
     }).catch(()=>{
       codeInput.disabled = false;
       codeInput.style.borderColor = 'var(--blush)';
@@ -566,6 +889,7 @@ document.getElementById('subCodeClear')?.addEventListener('click', ()=>{
   try { if (window.DAL && DAL.clearSubscriber) DAL.clearSubscriber(); } catch(e){}
 });
 
+/* Subscribe form */
 function handleSubscribe(form){
   const emailInput = form.querySelector('input[type="email"]');
   const btn = form.querySelector('button');
@@ -601,6 +925,16 @@ function handleSubscribe(form){
     setTimeout(()=>finish(true, "You're in — thank you."), 350);
   }
 }
+
+/* URL-param preselect (for footer links like ?f=walk) */
+(function(){
+  const p = new URLSearchParams(window.location.search);
+  const f = p.get('f');
+  if (f) {
+    const btn = document.querySelector(`#filterPills .pill[data-filter="${f}"]`);
+    if (btn) btn.click();
+  }
+})();
 
 window.addEventListener('load', restoreSubscriber);
 </script>
