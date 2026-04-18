@@ -6,7 +6,8 @@
       "WebFetch(domain:claude.ai)",
       "Bash(mkdir -p \"/tmp/dogs-design\")",
       "Bash(tar -xzf \"/c/Users/fines/Downloads/Dogs and Llamas-handoff.tar.gz\" -C \"/tmp/dogs-design\")",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }

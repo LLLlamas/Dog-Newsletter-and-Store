@@ -1,118 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Welcome to Dogs &amp; Llamas</title>
-  <style>
-    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-    body { margin: 0; padding: 0; background-color: #F2F5FB; font-family: Arial, Helvetica, sans-serif; }
-    @media only screen and (max-width: 600px) {
-      .email-wrapper { width: 100% !important; }
-      .email-body { padding: 24px 20px !important; }
-      .email-header { padding: 28px 24px !important; }
-      .header-title { font-size: 24px !important; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Welcome to Pup Notes — Dogs &amp; Llamas</title>
+<meta name="description" content="Welcome to Pup Notes — the Dogs & Llamas monthly newsletter.">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#132A4E; --navy-deep:#0A1A34; --gold:#E0A02F; --gold-soft:#F3CB6A; --gold-pale:#F8E9C4;
+  --blush:#E69A6F; --cream:#F6EFE3; --paper:#FBF7EE; --ink:#171716; --ink-2:#43413B; --ink-3:#8A867C; --rule:#D6CDB9;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --font-mono:'DM Mono',ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);padding:40px 16px;font-family:var(--font-body);color:var(--ink)}
+.env{max-width:560px;margin:0 auto;background:var(--paper);border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(19,42,78,.15);border:1px solid var(--rule)}
+.mast{background:var(--navy);padding:32px 32px 28px;border-bottom:4px solid var(--gold);text-align:center}
+.mast-brand{font-family:var(--font-display);font-size:28px;color:#fff;margin:0 0 4px;font-weight:500}
+.mast-brand .amp{color:var(--gold-soft);font-style:italic;font-weight:400}
+.mast-sub{font-family:var(--font-mono);font-size:10.5px;letter-spacing:2px;color:var(--gold-soft);text-transform:uppercase}
+.hero-img{aspect-ratio:16/10;overflow:hidden}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.body{padding:36px 32px 8px}
+.body h1{font-family:var(--font-display);font-size:38px;line-height:1.1;color:var(--navy);margin:0 0 16px;font-weight:500}
+.body h1 em{color:var(--blush);font-style:italic;font-weight:400}
+.body p{font-family:var(--font-body);font-size:16px;line-height:1.7;color:var(--ink-2);margin:0 0 14px}
+.body p strong{color:var(--navy)}
+.what{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:22px 26px;margin:20px 0}
+.what h3{font-family:var(--font-display);font-style:italic;font-size:20px;color:var(--navy);margin:0 0 12px;font-weight:500}
+.what ul{margin:0;padding:0;list-style:none}
+.what li{font-family:var(--font-body);font-size:14.5px;color:var(--ink-2);line-height:1.6;padding:8px 0 8px 26px;position:relative;border-top:1px dashed var(--rule)}
+.what li:first-child{border-top:none}
+.what li::before{content:'◆';position:absolute;left:0;top:8px;color:var(--gold);font-size:11px}
+.cta{background:linear-gradient(135deg,var(--gold-pale),var(--cream));border:1px solid rgba(224,160,47,.4);border-radius:12px;padding:22px;margin:20px 0;text-align:center}
+.cta h3{font-family:var(--font-display);font-size:22px;color:var(--navy);margin:0 0 10px;font-weight:500}
+.cta h3 em{color:var(--blush);font-style:italic;font-weight:400}
+.cta p{font-size:14px;margin:0 0 14px}
+.cta a{display:inline-block;background:var(--navy);color:#fff;font-weight:600;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none}
+.cta a:hover{background:var(--gold);color:var(--navy)}
+.signoff{padding:10px 32px 32px}
+.signature{font-family:var(--font-display);font-style:italic;font-size:26px;color:var(--navy);margin:18px 0 2px;font-weight:400}
+.signature-meta{font-family:var(--font-mono);font-size:10px;letter-spacing:1.3px;color:var(--ink-3);text-transform:uppercase}
+.foot{background:var(--navy-deep);color:rgba(255,255,255,.6);padding:24px 32px;text-align:center;font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px}
+.foot a{color:var(--gold-soft);text-decoration:none}
+.foot p{margin:4px 0}
+@media (max-width:520px){.body,.signoff{padding-left:22px;padding-right:22px}.mast{padding:24px 22px}}
+</style>
 </head>
 <body>
+<div class="env">
+  <div class="mast">
+    <div class="mast-brand">Dogs <span class="amp">&amp;</span> Llamas</div>
+    <div class="mast-sub">Pup Notes · You're In ★</div>
+  </div>
+  <div class="hero-img"><img src="media/me-and-pretzel-lying-down.jpg" alt="Lorenzo and Pretzel" /></div>
+  <div class="body">
+    <h1>Welcome To <em>The Pack.</em></h1>
+    <p>Hi friend — thanks for joining Pup Notes. I'm keeping this simple: <strong>once a month</strong>, I'll send a short note with availability, a seasonal dog tip, and the occasional sitter-tested product I've actually been using.</p>
+    <p>No hard sells. No seven-part sequences. Just a few paragraphs from someone who has cared for seventy-plus dogs across Queens.</p>
 
-<div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
-  So glad you&rsquo;re here &mdash; here&rsquo;s what to expect from Dogs &amp; Llamas. &#847;&zwnj;&nbsp;
+    <div class="what">
+      <h3>Here's what to expect.</h3>
+      <ul>
+        <li>One email per month, around the first weekend</li>
+        <li>Current availability — subscribers see it before Rover does</li>
+        <li>A seasonal care tip from the front lines (hot paws, thunder, holiday fireworks)</li>
+        <li>Returning-client perks, referral thank-yous, and priority weekend slots</li>
+        <li>A product spotlight, only if I've used it on a real dog</li>
+      </ul>
+    </div>
+
+    <div class="cta">
+      <h3>While You're Here — <em>Book A Stay?</em></h3>
+      <p>I'd love to care for your pup again anytime.</p>
+      <a href="index.html#book">Check Availability →</a>
+    </div>
+
+    <p>Reply to this email with your dog's name and size and I'll personalize future issues around their needs. You can unsubscribe anytime — no hard feelings.</p>
+  </div>
+  <div class="signoff">
+    <div class="signature">— Lorenzo</div>
+    <div class="signature-meta">Lorenzo &amp; Catalina · Woodside, Queens</div>
+  </div>
+  <div class="foot">
+    <p><a href="index.html">Visit the site</a> · <a href="store.html">Store</a> · <a href="#">Unsubscribe</a></p>
+    <p>© 2026 Dogs &amp; Llamas · dogsandllamasservice@gmail.com</p>
+  </div>
 </div>
-
-<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#F2F5FB;">
-  <tr>
-    <td align="center" style="padding: 32px 16px;">
-
-      <table class="email-wrapper" border="0" cellpadding="0" cellspacing="0" width="560" style="background-color:#FFFFFF; border-radius:10px; overflow:hidden; box-shadow:0 4px 20px rgba(27,79,140,0.08);">
-
-        <!-- HEADER -->
-        <tr>
-          <td class="email-header" style="background-color:#1B4F8C; background-image:linear-gradient(150deg, #0A1E3D 0%, #1B4F8C 55%, #2B6CB0 100%); padding:36px 40px; text-align:center;">
-            <p style="margin:0 0 8px 0; font-family:Arial, Helvetica, sans-serif; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:#F5CC4A; font-weight:600;">Welcome</p>
-            <h1 class="header-title" style="margin:0; font-family:Georgia, 'Times New Roman', serif; font-size:28px; font-weight:600; color:#FFFFFF; line-height:1.2; letter-spacing:-0.3px;">
-              Dogs &amp; Llamas
-            </h1>
-            <p style="margin:10px 0 0 0; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.55;">
-              Glad to have you here.
-            </p>
-          </td>
-        </tr>
-
-        <!-- BODY -->
-        <tr>
-          <td class="email-body" style="padding:36px 40px;">
-
-            <p style="margin:0 0 20px 0; font-family:Arial, Helvetica, sans-serif; font-size:15.5px; line-height:1.72; color:#1A1D26;">
-              Hi [Client Name],
-            </p>
-
-            <p style="margin:0 0 20px 0; font-family:Arial, Helvetica, sans-serif; font-size:15.5px; line-height:1.72; color:#4C5470;">
-              Thanks so much for joining our dog-care update list. We&rsquo;re keeping this simple and low-key &mdash; once in a while we&rsquo;ll send a short note with availability updates, a useful dog tip, and occasional perks for repeat clients.
-            </p>
-
-            <p style="margin:0 0 28px 0; font-family:Arial, Helvetica, sans-serif; font-size:15.5px; line-height:1.72; color:#4C5470;">
-              We loved caring for [Dog Name], and we&rsquo;d be happy to help again anytime &mdash; whether that&rsquo;s a weekend stay, a drop-in, or regular walks.
-            </p>
-
-            <!-- What to expect box -->
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px 0;">
-              <tr>
-                <td style="background-color:#E4F0FB; border-radius:8px; padding:22px 26px; border-left:4px solid #D4A017;">
-                  <p style="margin:0 0 12px 0; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:#1B4F8C;">What to expect</p>
-                  <p style="margin:0 0 8px 0; font-family:Arial, Helvetica, sans-serif; font-size:14.5px; line-height:1.65; color:#1A1D26;">
-                    &bull;&nbsp; Availability updates before we share them broadly
-                  </p>
-                  <p style="margin:0 0 8px 0; font-family:Arial, Helvetica, sans-serif; font-size:14.5px; line-height:1.65; color:#1A1D26;">
-                    &bull;&nbsp; One useful dog-care tip per issue
-                  </p>
-                  <p style="margin:0 0 8px 0; font-family:Arial, Helvetica, sans-serif; font-size:14.5px; line-height:1.65; color:#1A1D26;">
-                    &bull;&nbsp; Occasional perks and priority access for repeat clients
-                  </p>
-                  <p style="margin:0; font-family:Arial, Helvetica, sans-serif; font-size:14.5px; line-height:1.65; color:#1A1D26;">
-                    &bull;&nbsp; No spam, no pressure &mdash; one email a month at most
-                  </p>
-                </td>
-              </tr>
-            </table>
-
-            <p style="margin:0 0 26px 0; font-family:Arial, Helvetica, sans-serif; font-size:15.5px; line-height:1.72; color:#4C5470;">
-              You can always reply directly if you want to check on dates, upcoming travel, walks, or drop-ins. We read every reply.
-            </p>
-
-            <p style="margin:0 0 4px 0; font-family:Arial, Helvetica, sans-serif; font-size:15.5px; line-height:1.72; color:#4C5470;">
-              Talk soon,
-            </p>
-            <p style="margin:0 0 2px 0; font-family:Georgia, 'Times New Roman', serif; font-size:17px; font-weight:600; color:#1A1D26;">
-              Lorenzo &amp; Catalina Llamas
-            </p>
-            <p style="margin:0; font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#8C94B0;">
-              Rover Star Sitters &bull; <a href="https://www.rover.com/sit/lorenl45629" style="color:#2B6CB0; text-decoration:none;">rover.com/sit/lorenl45629</a>
-            </p>
-
-          </td>
-        </tr>
-
-        <!-- FOOTER -->
-        <tr>
-          <td style="background-color:#081529; padding:24px 40px; text-align:center; border-top:1px solid rgba(255,255,255,0.08);">
-            <p style="margin:0 0 6px 0; font-family:Arial, Helvetica, sans-serif; font-size:11.5px; color:rgba(255,255,255,0.45); line-height:1.7;">
-              You&rsquo;re receiving this because you opted in to Dogs &amp; Llamas.
-            </p>
-            <p style="margin:0; font-family:Arial, Helvetica, sans-serif; font-size:11.5px; color:rgba(255,255,255,0.4); line-height:1.7;">
-              Unsubscribe anytime by replying with &ldquo;unsubscribe.&rdquo;
-            </p>
-          </td>
-        </tr>
-
-      </table>
-
-    </td>
-  </tr>
-</table>
-
 </body>
 </html>
