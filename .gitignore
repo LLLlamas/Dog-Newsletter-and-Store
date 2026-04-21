@@ -11,3 +11,6 @@ desktop.ini
 
 # Supabase local
 .supabase/
+
+# Local Codex agent skills
+.agents/

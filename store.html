@@ -80,6 +80,9 @@ body.dal-in .dal-bar{display:flex}
 .nav-link:hover,.nav-link.active{color:var(--navy);background:var(--cream-2)}
 .nav-cta{font-family:var(--font-sans);font-weight:600;font-size:14px;color:#fff;background:var(--grad-navy);padding:10px 22px;border-radius:999px;margin-left:8px;box-shadow:0 2px 0 var(--navy-deep)}
 .nav-cta:hover{background:var(--navy-soft);transform:translateY(-1px)}
+.nav-toggle{display:none;background:none;border:none;color:var(--navy);font-size:24px;line-height:1;padding:6px 8px;border-radius:10px;cursor:pointer;transition:background .18s,color .18s}
+.nav-toggle:hover{background:var(--cream-2);color:var(--navy)}
+.nav-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 /* Subscriber code input */
 .sub-code{display:flex;align-items:center;gap:6px}
@@ -143,6 +146,12 @@ body.dal-in .dal-bar{display:flex}
   .hero-stats{justify-content:center}
   .hero-stat{text-align:center}
   .hero-spotlight{margin:0 auto;transform:rotate(0);max-width:340px}
+  .nav-inner{position:relative;padding:0 24px}
+  .nav-toggle{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .nav-links{display:none;position:absolute;top:calc(100% + 10px);left:24px;right:24px;flex-direction:column;align-items:stretch;gap:6px;padding:16px;border:1px solid rgba(214,205,185,.9);border-radius:24px;background:rgba(251,247,238,.96);box-shadow:var(--shadow-md);backdrop-filter:blur(18px) saturate(1.05);-webkit-backdrop-filter:blur(18px) saturate(1.05)}
+  .nav-links.open{display:flex}
+  .nav-link,.nav-cta{width:100%;margin:0;text-align:center;justify-content:center}
+  .nav-cta{padding:12px 18px}
 }
 
 /* Personal match callout — prompts anonymous users to drop subscriber code OR pup info */
@@ -316,6 +325,12 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
 .to-top:hover{background:var(--gold);color:var(--navy);transform:translateY(-2px)}
 .to-top svg{width:16px;height:16px}
 @media (max-width:640px){.to-top{bottom:16px;right:16px;width:42px;height:42px}}
+@media (max-width:640px){
+  .nav-inner{padding:0 18px}
+  .nav-links{left:18px;right:18px}
+  .brand{font-size:22px}
+  .brand .amp{font-size:26px}
+}
 
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
 </style>
@@ -345,7 +360,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
         </div>
       </div>
     </div>
-    <div class="nav-links">
+    <div class="nav-links" id="navLinks">
       <a class="nav-link" href="index.html#services">Services</a>
       <a class="nav-link" href="index.html#pack">Our Buddies</a>
       <a class="nav-link" href="about.html">About</a>
@@ -353,6 +368,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:48px 32px 
       <a class="nav-link" href="monthly-issue-01.html">Newsletter</a>
       <a class="nav-cta" href="index.html#book">Book</a>
     </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
   </div>
 </nav>
 
@@ -740,10 +756,15 @@ function shouldShow(p){
   return matchesFilter(p) && matchesCategory(p) && matchesDog(p);
 }
 
+function amazonSearchUrl(p){
+  return `https://www.amazon.com/s?k=${encodeURIComponent(`${p.brand} ${p.name}`)}`;
+}
+
 function card(p){
   const isMatch = activeDog && p.dogMatch.some(d=>d.toLowerCase() === activeDog.toLowerCase());
   const tagsToShow = p.tags.filter(t=>!['all'].includes(t)).slice(0,3);
   const dogCount = p.dogMatch.length;
+  const url = amazonSearchUrl(p);
   return `
     <article class="card ${isMatch?'match':''}" data-name="${p.name}">
       <div class="card-match-ribbon">◆ Matches ${activeDog || ''}</div>
@@ -765,7 +786,7 @@ function card(p){
         </div>
         <div class="card-footer">
           <div class="card-price">${p.price}<small>On Amazon</small></div>
-          <button class="btn-buy" type="button" onclick="toast('Opening Amazon…')">Buy <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></button>
+          <a class="btn-buy" href="${url}" target="_blank" rel="noopener noreferrer sponsored">View <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></a>
         </div>
       </div>
     </article>
@@ -1015,6 +1036,22 @@ function handleSubscribe(form){
     const btn = document.querySelector(`#filterPills .pill[data-filter="${f}"]`);
     if (btn) btn.click();
   }
+})();
+
+(function(){
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  if (!toggle || !links) return;
+  const closeMenu = ()=>{
+    links.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  };
+  toggle.addEventListener('click', ()=>{
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+  window.addEventListener('resize', ()=>{ if (window.innerWidth > 980) closeMenu(); });
 })();
 
 window.addEventListener('load', restoreSubscriber);
