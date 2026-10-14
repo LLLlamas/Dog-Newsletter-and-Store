@@ -6,12 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>About Lorenzo &amp; Catalina — Dogs &amp; Llamas · Queens NYC</title>
-<meta name="description" content="Meet Lorenzo & Catalina Llamas — ten years of professional dog sitting across Queens, Manhattan, and Westchester. 25+ dogs, Rover Star Sitters, and a calm 2nd-floor apartment in Woodside.">
+<meta name="description" content="Meet Lorenzo & Catalina Llamas. We've been caring for dogs since 2016 from our quiet, air-conditioned apartment in Woodside, Queens. 25+ dogs, 5.0 on Rover, Rover Star Sitters.">
 <meta name="keywords" content="dog sitter Woodside Queens, pet sitter Sunnyside NYC, Rover Star Sitter Queens, Lorenzo Llamas dog sitter, about Dogs and Llamas, professional dog care NYC">
 <link rel="canonical" href="https://llllamas.github.io/Dog-Newsletter-and-Store/about.html">
 
 <meta property="og:title" content="About Lorenzo & Catalina — Dogs & Llamas · Queens NYC">
-<meta property="og:description" content="Ten years of pro dog sitting. 25+ dogs across Queens, Manhattan, and Westchester.">
+<meta property="og:description" content="Dog sitting in Woodside, Queens since 2016. 25+ dogs, 5.0 on Rover.">
 <meta property="og:image" content="https://llllamas.github.io/Dog-Newsletter-and-Store/media/me-and-pretzel-lying-down.jpg">
 <meta property="og:url" content="https://llllamas.github.io/Dog-Newsletter-and-Store/about.html">
 <meta property="og:type" content="website">
@@ -81,12 +81,14 @@ button{font:inherit;cursor:pointer}
 .nav-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 /* Subscriber code */
-.sub-code{display:flex;align-items:center;gap:6px}
+.sub-code{display:flex;align-items:center;gap:6px;position:relative}
+.sub-code-msg{position:absolute;top:calc(100% + 8px);left:0;width:max-content;max-width:min(320px,calc(100vw - 36px));line-height:1.4;background:var(--navy);color:#fff;font-family:var(--font-sans);font-size:12.5px;padding:7px 12px;border-radius:10px;box-shadow:var(--shadow-md);opacity:0;pointer-events:none;transition:opacity .2s;z-index:250}
+.sub-code-msg.show{opacity:1}
 .sub-code-submit{font-family:var(--font-sans);font-weight:600;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;background:var(--navy);color:#fff;border:none;padding:5px 10px;border-radius:999px;cursor:pointer;transition:all .2s;display:none}
 .sub-code.has-text .sub-code-submit{display:inline-flex}
 .sub-code-submit:hover{background:var(--gold);color:var(--navy)}
 .sub-code.active .sub-code-submit{display:none}
-.sub-code input{font-family:var(--font-mono);font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;background:rgba(214,205,185,.35);border:1.5px solid var(--rule);color:var(--navy);padding:7px 12px;border-radius:999px;width:108px;outline:none;transition:all .2s}
+.sub-code input{font-family:var(--font-mono);font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;background:rgba(214,205,185,.35);border:1.5px solid var(--rule);color:var(--navy);padding:7px 12px;border-radius:999px;width:124px;outline:none;transition:all .2s}
 .sub-code input::placeholder{color:var(--ink-3);letter-spacing:1.5px;text-transform:uppercase}
 .sub-code input:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(224,160,47,.15)}
 .sub-code.active{background:linear-gradient(90deg,var(--gold-pale),var(--cream));padding:4px 4px 4px 12px;border-radius:999px;border:1px solid rgba(224,160,47,.4)}
@@ -267,9 +269,8 @@ body.dal-in .dashboard-bar{display:flex}
 <body>
 
 <div class="dashboard-bar">
-  <span>◐ Welcome back, <strong id="subName">friend</strong></span>
-  <span>·</span>
-  <span>Returning-Client Rate: <strong style="color:var(--gold-soft)">10% off</strong></span>
+  <span>Welcome back, <strong id="subName">friend</strong>.</span>
+  <span>Your 10% Pup Notes rate is applied automatically when you book with us directly.</span>
 </div>
 
 <!-- NAV -->
@@ -278,11 +279,12 @@ body.dal-in .dashboard-bar{display:flex}
     <div class="brand-group">
       <a href="index.html" class="brand"><span class="brand-dot"></span>Dogs <span class="amp">&amp;</span> Llamas</a>
       <div class="sub-code" id="subCode">
-        <input type="text" id="subCodeInput" placeholder="Code" maxlength="20" aria-label="Subscriber code" />
-        <button class="sub-code-submit" id="subCodeSubmit" type="button">Enter</button>
+        <input type="text" id="subCodeInput" placeholder="Client code" maxlength="60" aria-label="Pup Notes client code or email" title="Already on Pup Notes? Enter your code or email to see your rate" />
+        <button class="sub-code-submit" id="subCodeSubmit" type="button" aria-label="Submit code">Enter</button>
+        <span class="sub-code-msg" id="subCodeMsg" role="status" aria-live="polite"></span>
         <div class="sub-code-chip">
           <strong id="subNameChip">Friend</strong>
-          <button class="x" id="subCodeClear" title="Sign out">×</button>
+          <button class="x" id="subCodeClear" title="Sign out" aria-label="Sign out">×</button>
         </div>
       </div>
     </div>
@@ -302,22 +304,22 @@ body.dal-in .dashboard-bar{display:flex}
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-content">
-      <span class="hero-eyebrow reveal"><span class="dot"></span>Meet Your Sitters · Queens NYC</span>
+      <span class="hero-eyebrow reveal"><span class="dot"></span>Meet your sitters</span>
       <h1 class="reveal reveal-d1">
         Lorenzo <span class="accent">&amp;</span><br>
         <em>Catalina Llamas.</em>
       </h1>
       <p class="hero-sub reveal reveal-d2">
-        Ten years of professional dog sitting. Twenty-five-plus dogs across <strong>Queens, Manhattan, and Westchester</strong>. We run a small, photo-first operation out of our calm 2nd-floor apartment in Woodside — a place dogs settle into fast.
+        We've been looking after other people's dogs since 2016. It's just the two of us, in our quiet second-floor apartment in Woodside, so your dog gets our full attention and you get plenty of photos.
       </p>
       <div class="hero-meta reveal reveal-d3">
-        <div>Sitting Since<strong>2016 · 10 Years</strong></div>
-        <div>Rover Rating<strong>5.0 ★★★★★</strong></div>
-        <div>Dogs Cared For<strong>25+</strong></div>
+        <div>Caring for dogs<strong>since 2016</strong></div>
+        <div>On Rover<strong>5.0 ★ Star Sitters</strong></div>
+        <div>Dogs we've cared for<strong>25+</strong></div>
       </div>
       <div class="hero-ctas reveal reveal-d3">
-        <a class="btn btn-primary" href="index.html#book">Book A Stay <span class="btn-arrow">→</span></a>
-        <a class="btn btn-secondary" href="https://www.rover.com/members/lorenzo-l-1" target="_blank" rel="noopener">View Rover Profile ↗</a>
+        <a class="btn btn-primary" href="index.html#book">Book a stay <span class="btn-arrow">→</span></a>
+        <a class="btn btn-secondary" href="https://www.rover.com/members/lorenzo-l-1" target="_blank" rel="noopener">Our Rover profile ↗</a>
       </div>
     </div>
 
@@ -327,11 +329,11 @@ body.dal-in .dashboard-bar{display:flex}
       </div>
       <div class="hero-photo-tag">
         <h3 class="hero-photo-name">Turbo</h3>
-        <p class="hero-photo-desc">Regular · Our Most-Boarded Buddy</p>
+        <p class="hero-photo-desc">One of our regulars</p>
       </div>
       <div class="hero-badge">
         <div class="hero-badge-spin">
-          <svg viewBox="0 0 120 120"><defs><path id="txt-about" d="M 60,60 m -42,0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0"/></defs><text><textPath href="#txt-about" style="font-family:'DM Mono';font-size:10.5px;letter-spacing:1.5px;fill:var(--navy)">★ Rover Star Sitter · Since 2016 ★ Rover Star Sitter · Since 2016 ·</textPath></text></svg>
+          <svg viewBox="0 0 120 120"><defs><path id="txt-about" d="M 60,60 m -42,0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0"/></defs><text><textPath href="#txt-about" style="font-family:'DM Mono';font-size:10.5px;letter-spacing:1.5px;fill:var(--navy)">★ Rover Star Sitters · Woodside, Queens ★ Rover Star Sitters ·</textPath></text></svg>
           <span class="star">★</span>
         </div>
       </div>
@@ -342,15 +344,13 @@ body.dal-in .dashboard-bar{display:flex}
 <!-- TRUST STRIP -->
 <div class="trust">
   <div class="trust-inner">
-    <div class="trust-stat"><span class="trust-num">10 yrs</span><span class="trust-label">Pro Dog<br>Sitting</span></div>
+    <div class="trust-stat"><span class="trust-num">2016</span><span class="trust-label">Caring for<br>dogs since</span></div>
     <span class="trust-sep"></span>
-    <div class="trust-stat"><span class="trust-num">25+</span><span class="trust-label">Dogs<br>Cared For</span></div>
+    <div class="trust-stat"><span class="trust-num">25+</span><span class="trust-label">Dogs we've<br>looked after</span></div>
     <span class="trust-sep"></span>
-    <div class="trust-stat"><span class="trust-num">5.0</span><span class="trust-label">Rover<br>Rating</span></div>
+    <div class="trust-stat"><span class="trust-num">5.0</span><span class="trust-label">Rating<br>on Rover</span></div>
     <span class="trust-sep"></span>
-    <div class="trust-stat"><span class="trust-num">3 Boros</span><span class="trust-label">Queens · Manhattan<br>Westchester</span></div>
-    <span class="trust-sep"></span>
-    <div class="trust-stat"><span class="trust-num">∞</span><span class="trust-label">Belly Rubs<br>Per Day</span></div>
+    <div class="trust-stat"><span class="trust-num">2</span><span class="trust-label">Of us, and<br>that's it</span></div>
   </div>
 </div>
 
@@ -363,20 +363,20 @@ body.dal-in .dashboard-bar{display:flex}
         <div class="story-photo a2"><img src="media/teddy-and-me.jpg" alt="Lorenzo and Teddy"/></div>
       </div>
       <div class="story-body reveal reveal-d1">
-        <span class="eyebrow">Our Story</span>
-        <h2 class="section-title" style="margin:0 0 24px">A Decade Of Dogs, <em>One Pup At A Time.</em></h2>
+        <span class="eyebrow">Our story</span>
+        <h2 class="section-title" style="margin:0 0 24px">About ten years of dogs, <em>one at a time.</em></h2>
         <p>
-          "Ten years ago our apartment quietly filled with other people's dogs — and we realized we never wanted it any other way."
+          We started caring for other people's dogs in 2016, and our apartment has rarely been without one since. We wouldn't have it any other way.
         </p>
         <p>
-          Lorenzo handles pickups, long walks along the Gantry waterfront and Long Island City, and the heavy boarding weekends. Catalina does daytime drop-ins, indoor enrichment play, and the patient wipe-down after a muddy park morning. We both reply within an hour, every time.
+          Lorenzo usually does pickups, the long walks out to Gantry Plaza and around Long Island City, and the busy boarding weekends. Catalina does a lot of the daytime drop-ins, the indoor games, and the patient towel-off after a muddy morning at the park. Whoever has your dog is the one texting you back, and we try to reply within the hour.
         </p>
         <p>
-          Twenty-five-plus dogs have come through our door over the last decade. Chihuahuas, pit mixes, corgis, a French bully who hated being alone, seniors with meds, puppies in the middle of potty training, and a pair of large dogs boarded together for two weeks over Christmas. Every one of them left the same way — a little tired, a little happier.
+          More than 25 dogs have stayed with us since then, and we've cared for dogs from Queens to Westchester: Chihuahuas, pit mixes, corgis, a French bulldog who hated being alone, seniors on meds, puppies in the middle of potty training, and a pair of big dogs who spent two weeks with us over Christmas. Most of them went home a little tired and, we like to think, a little happier.
         </p>
         <div class="signature">
           Lorenzo &amp; Catalina
-          <small>Woodside, Queens · Rover ★ Sitters · Since 2016</small>
+          <small>Woodside, Queens · Rover Star Sitters</small>
         </div>
       </div>
     </div>
@@ -388,43 +388,43 @@ body.dal-in .dashboard-bar{display:flex}
   <div class="section-inner">
     <div class="section-header">
       <div>
-        <span class="eyebrow">What Every Stay Includes</span>
-        <h2 class="section-title reveal">The Things We <em>Never Skip.</em></h2>
+        <span class="eyebrow">What every stay includes</span>
+        <h2 class="section-title reveal">The things we <em>never skip.</em></h2>
       </div>
       <p class="section-sub reveal reveal-d1">
-        Ten years of boarding has taught us which details actually matter — and which ones are marketing. Here's what actually matters.
+        After years of having dogs stay with us, this is the short list we keep coming back to.
       </p>
     </div>
     <div class="values-grid">
       <div class="value-card reveal">
         <div class="value-glyph">P</div>
-        <h3>Photo Updates All Day</h3>
-        <p>Morning walk, backyard nap, silly-face moment — you'll hear from us multiple times a day. The goal is for you to actually relax while you're away.</p>
+        <h3>Photos throughout the day</h3>
+        <p>The morning walk, the afternoon nap, the silly face at dinner. You'll hear from us several times a day, so you can actually relax while you're away.</p>
       </div>
       <div class="value-card reveal reveal-d1">
         <div class="value-glyph">R</div>
-        <h3>Real Exercise, Real Rest</h3>
-        <p>Long walks along quiet avenues or local parks, indoor enrichment (Kongs, puzzles, lick mats), and an air-conditioned apartment to truly crash in after.</p>
+        <h3>Proper walks, real rest</h3>
+        <p>Long walks on quiet avenues or in the park, some indoor games (Kongs, puzzles, lick mats), and a cool apartment to crash in afterward.</p>
       </div>
       <div class="value-card reveal reveal-d2">
         <div class="value-glyph">M</div>
-        <h3>Meds, Routines, Quirks</h3>
-        <p>Pills, injections (insulin included), post-surgery care, elder routines, and every specific peanut-butter brand — we keep notes and photograph doses.</p>
+        <h3>Meds, routines, and quirks</h3>
+        <p>Pills, insulin shots, post-surgery care, a senior's slower routine, the one peanut butter they'll take a pill in. We write it all down and send you a photo of each dose.</p>
       </div>
       <div class="value-card reveal">
         <div class="value-glyph">S</div>
-        <h3>Socialization That Fits</h3>
-        <p>Most dogs love meeting other pups on walks — we plan routes along bigger avenues for those. The nervous ones get quiet side streets and small-group time.</p>
+        <h3>Social time that fits your dog</h3>
+        <p>Dogs who love saying hi get the busier avenues. Nervous dogs get quiet side streets and plenty of space. We go with what your dog is comfortable with.</p>
       </div>
       <div class="value-card reveal reveal-d1">
         <div class="value-glyph">1</div>
-        <h3>One-Hour Reply, 8a–9p</h3>
-        <p>Booking questions, mid-stay photos, last-minute changes — we're not running a call center, so you'll hear back fast from whoever has your pup.</p>
+        <h3>Quick replies, 8am to 9pm</h3>
+        <p>Questions before booking, a check-in mid-stay, a last-minute change of plans. There's no call center here, just one of us, and we usually answer within the hour.</p>
       </div>
       <div class="value-card reveal reveal-d2">
         <div class="value-glyph">★</div>
-        <h3>Rover-Verified Trust</h3>
-        <p>Every Rover booking includes the Rover Guarantee (up to $25K in vet coverage). For direct returning clients, we keep it flexible and personal.</p>
+        <h3>Book here or on Rover</h3>
+        <p>You can request a stay right here on our site, or book through Rover if you'd rather have their booking tools and the Rover Guarantee. Either way, it's the two of us looking after your dog.</p>
       </div>
     </div>
   </div>
@@ -435,10 +435,10 @@ body.dal-in .dashboard-bar{display:flex}
   <div class="section-inner">
     <div class="home-wrap">
       <div class="reveal">
-        <span class="eyebrow">Home Base</span>
-        <h2 class="section-title">Calm, <em>Cool, Close To Everything.</em></h2>
+        <span class="eyebrow">Our place</span>
+        <h2 class="section-title">Quiet, cool, <em>and close to the park.</em></h2>
         <p style="font-family:var(--font-body);font-size:16px;line-height:1.7;color:rgba(255,255,255,.82);margin:20px 0 0;max-width:520px">
-          Our place is a quiet, air-conditioned 2nd-floor apartment in Woodside — a few steps from the 7/LIRR and a short walk to long avenues and nearby parks. Dogs who love saying hi get big social routes; dogs who need their space get quiet side streets.
+          We live in a quiet, air-conditioned second-floor apartment in Woodside, a few steps from the 7 train and the LIRR and a short walk from the park. It's a home, not a facility, so dogs tend to settle in quickly.
         </p>
         <div class="home-features">
           <div class="home-feature">Quiet, <strong style="color:#fff">2nd-floor</strong> apartment</div>
@@ -446,9 +446,9 @@ body.dal-in .dashboard-bar{display:flex}
           <div class="home-feature">Steps from the <strong style="color:#fff">7 train + LIRR</strong></div>
           <div class="home-feature">Long avenues for <strong style="color:#fff">real walks</strong></div>
           <div class="home-feature">Nearby <strong style="color:#fff">parks</strong> for off-leash play</div>
-          <div class="home-feature">Photo updates <strong style="color:#fff">multiple times daily</strong></div>
+          <div class="home-feature">Photo updates <strong style="color:#fff">several times a day</strong></div>
           <div class="home-feature">Routes picked for <strong style="color:#fff">your dog's social style</strong></div>
-          <div class="home-feature"><strong style="color:#fff">25+ dogs</strong> of every size have settled in</div>
+          <div class="home-feature"><strong style="color:#fff">25+ dogs</strong> of all sizes have stayed with us</div>
         </div>
       </div>
       <div class="home-photo reveal reveal-d1">
@@ -462,15 +462,15 @@ body.dal-in .dashboard-bar{display:flex}
 <section class="rover-section">
   <div class="section-inner">
     <div class="rover-card reveal">
-      <span class="eyebrow" style="justify-content:center">Booking On Rover</span>
-      <h2>Real Reviews. <em>Verified Profile.</em></h2>
-      <p>Read reviews from real past clients, see our verified background check, and send a booking request — all in one place. Rover bookings include up to $25,000 in vet coverage through the Rover Guarantee.</p>
+      <span class="eyebrow" style="justify-content:center">Prefer Rover?</span>
+      <h2>Read our reviews <em>on Rover.</em></h2>
+      <p>Our Rover profile has reviews from past clients and our background check. You're welcome to book there, or request a stay directly on our site. Pup Notes subscribers get 10% off when they book with us directly.</p>
       <span class="stars">★ ★ ★ ★ ★</span>
       <div class="hero-ctas" style="justify-content:center;gap:10px;flex-wrap:wrap">
-        <a class="btn btn-primary" href="https://www.rover.com/members/lorenzo-l-1" target="_blank" rel="noopener">View Our Rover Profile ↗</a>
-        <a class="btn btn-gold" href="mailto:dogsandllamasservice@gmail.com">Or Message Us Directly</a>
+        <a class="btn btn-primary" href="https://www.rover.com/members/lorenzo-l-1" target="_blank" rel="noopener">See us on Rover ↗</a>
+        <a class="btn btn-gold" href="index.html#book">Book with us directly</a>
       </div>
-      <p class="rating-line">Typical reply time: <strong>under 1 hour</strong>, 8am–9pm EST</p>
+      <p class="rating-line">Questions? Email <a href="mailto:dogsandllamasservice@gmail.com"><strong>dogsandllamasservice@gmail.com</strong></a>. We usually reply within the hour, 8am to 9pm.</p>
     </div>
   </div>
 </section>
@@ -480,7 +480,7 @@ body.dal-in .dashboard-bar{display:flex}
   <div class="foot-inner">
     <div>
       <div class="foot-brand">Dogs <span class="amp">&amp;</span> Llamas</div>
-      <p class="foot-tagline">Professional dog boarding, walking, and care across Queens, Manhattan &amp; Westchester. Lorenzo &amp; Catalina Llamas, Rover Star Sitters since 2016.</p>
+      <p class="foot-tagline">Dog boarding, walking, and sitting in Woodside, Queens. Run by Lorenzo &amp; Catalina Llamas, Rover Star Sitters.</p>
     </div>
     <div class="foot-section">
       <h4>Services</h4>
@@ -491,12 +491,12 @@ body.dal-in .dashboard-bar{display:flex}
       <a href="index.html#services">House Sitting</a>
     </div>
     <div class="foot-section">
-      <h4>The Brand</h4>
+      <h4>More</h4>
       <a href="about.html">About</a>
       <a href="index.html#pack">Our Buddies</a>
       <a href="store.html">Store</a>
       <a href="monthly-issue-01.html">Newsletter</a>
-      <a href="schedule.html">Scheduling</a>
+      <a href="schedule.html">Full calendar</a>
     </div>
     <div class="foot-section">
       <h4>Say Hello</h4>
@@ -506,8 +506,8 @@ body.dal-in .dashboard-bar{display:flex}
     </div>
   </div>
   <div class="foot-bottom">
-    <div>© 2026 Dogs &amp; Llamas · Hugs Administered Daily.</div>
-    <div>Serving Queens, Manhattan &amp; Westchester</div>
+    <div>© 2026 Dogs &amp; Llamas · Woodside, Queens</div>
+    <div>Some store links may earn us a commission, at no cost to you.</div>
   </div>
 </footer>
 
@@ -515,7 +515,7 @@ body.dal-in .dashboard-bar{display:flex}
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13 V3 M3 8 l5 -5 l5 5"/></svg>
 </button>
 
-<script src="dal-subscriber.js?v=3" defer></script>
+<script src="dal-subscriber.js?v=4" defer></script>
 <script>
 /* Reveal on scroll */
 const io = new IntersectionObserver(entries=>{
@@ -533,16 +533,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   onScroll();
 })();
 
-/* Subscriber code (nav) — mirrors index.html */
-const VALID_CODES = {
-  'DL10':   { name: 'Maya',   dog: 'Turbo'   },
-  'PACK22': { name: 'Dan',    dog: 'Pretzel' },
-  'PAWS':   { name: 'Elena',  dog: 'Teddy'   },
-  'VIP':    { name: 'Friend', dog: 'Teddy'   }
-};
-let tweaks = (function(){ try { return JSON.parse(localStorage.getItem('dal-tweaks')) || {}; } catch(e){ return {}; } })();
-function persist(){ try { localStorage.setItem('dal-tweaks', JSON.stringify(tweaks)); } catch(e){} }
-
+/* Subscriber code (nav) — looks the code/email up via DAL.loginWithKey */
 function applySubscriberUI(opts){
   const { subscriber, subName } = opts || {};
   document.body.classList.toggle('dal-in', !!subscriber);
@@ -556,46 +547,36 @@ function restoreSubscriber(){
   try {
     if (window.DAL && typeof DAL.getSubscriber === 'function') {
       const sub = DAL.getSubscriber();
-      if (sub) { applySubscriberUI({ subscriber:true, subName: sub.firstName || sub.username || 'Friend' }); return; }
+      if (sub) applySubscriberUI({ subscriber:true, subName: sub.firstName || sub.username || 'Friend' });
     }
   } catch(e){}
-  if (tweaks.subscriber) applySubscriberUI({ subscriber:true, subName:tweaks.subName });
 }
 const codeInput = document.getElementById('subCodeInput');
+function codeError(msg){
+  if (!codeInput) return;
+  codeInput.disabled = false;
+  codeInput.style.borderColor = 'var(--blush)';
+  const tip = document.getElementById('subCodeMsg');
+  if (tip) { tip.textContent = msg; tip.classList.add('show'); }
+  codeInput.focus();
+  setTimeout(()=>{ codeInput.style.borderColor=''; if (tip) tip.classList.remove('show'); }, 3200);
+}
 function trySubCode(){
   if (!codeInput) return;
   const raw = (codeInput.value || '').trim();
   if (!raw) return;
-  const v = raw.toUpperCase();
-  if (VALID_CODES[v]) {
-    const m = VALID_CODES[v];
-    tweaks.subscriber = true; tweaks.code = v; tweaks.subName = m.name; tweaks.myDog = m.dog;
-    persist();
-    applySubscriberUI({ subscriber:true, subName:m.name });
+  if (!(window.DAL && typeof DAL.loginWithKey === 'function')) {
+    codeError("Sorry, sign-in isn't working right now. Try again soon.");
     return;
   }
-  if (window.DAL && typeof DAL.loginWithKey === 'function') {
-    codeInput.disabled = true;
-    DAL.loginWithKey(raw).then(sub=>{
-      codeInput.disabled = false;
-      if (!sub) throw new Error('Not found');
-      const subName = sub.firstName || sub.username || 'Friend';
-      tweaks.subscriber = true; tweaks.code = (sub.username || v).toUpperCase(); tweaks.subName = subName;
-      persist();
-      applySubscriberUI({ subscriber:true, subName });
-    }).catch(()=>{
-      codeInput.disabled = false;
-      codeInput.style.borderColor = 'var(--blush)';
-      codeInput.value = '';
-      codeInput.placeholder = 'Not Found';
-      setTimeout(()=>{ codeInput.style.borderColor=''; codeInput.placeholder='Code'; }, 1800);
-    });
-  } else {
-    codeInput.style.borderColor = 'var(--blush)';
-    codeInput.value = '';
-    codeInput.placeholder = 'Try DL10';
-    setTimeout(()=>{ codeInput.style.borderColor=''; codeInput.placeholder='Code'; }, 1800);
-  }
+  codeInput.disabled = true;
+  DAL.loginWithKey(raw).then(sub=>{
+    codeInput.disabled = false;
+    if (!sub) throw new Error('Not found');
+    applySubscriberUI({ subscriber:true, subName: sub.firstName || sub.username || 'Friend' });
+  }).catch(()=>{
+    codeError("We couldn't find that code. Try the email you signed up with.");
+  });
 }
 if (codeInput){
   codeInput.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); trySubCode(); } });
@@ -606,7 +587,8 @@ if (codeInput){
 }
 document.getElementById('subCodeSubmit')?.addEventListener('click', trySubCode);
 document.getElementById('subCodeClear')?.addEventListener('click', ()=>{
-  tweaks.subscriber = false; persist();
+  /* keep other saved prefs; just mark signed out (shared with index.html) */
+  try { const t = JSON.parse(localStorage.getItem('dal-tweaks')) || {}; t.subscriber = false; localStorage.setItem('dal-tweaks', JSON.stringify(t)); } catch(e){}
   applySubscriberUI({ subscriber:false });
   if (codeInput) codeInput.value = '';
   try { if (window.DAL && DAL.clearSubscriber) DAL.clearSubscriber(); } catch(e){}

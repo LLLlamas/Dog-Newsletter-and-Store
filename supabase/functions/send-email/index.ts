@@ -29,6 +29,9 @@ type Payload = {
   to: Addr[];
   subject: string;
   htmlContent: string;
+  // Optional explicit Reply-To (e.g. the client on owner notifications).
+  // When absent or invalid, Reply-To falls back to `sender`.
+  reply_to?: Addr | null;
 };
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -51,7 +54,8 @@ function safeEqual(a: string, b: string): boolean {
 
 function formatAddress(a: Addr): string {
   const email = (a.email || "").trim();
-  const name = (a.name || "").trim();
+  // Strip CR/LF so a user-supplied display name can't inject headers.
+  const name = (a.name || "").replace(/[\r\n]+/g, " ").trim();
   if (!email) return "";
   if (!name) return email;
   // Quote the display name to handle commas/special chars safely.
@@ -142,7 +146,13 @@ Deno.serve(async (req: Request) => {
     name: fromDisplay || undefined,
     email: gmailUser,
   });
-  const replyToAddr = formatAddress(body.sender);
+  // If the caller supplied a valid reply_to (owner notifications set it to
+  // the client), use that; otherwise keep the previous behavior.
+  const replyToAddr =
+    body.reply_to && typeof body.reply_to === "object" &&
+      isValidEmail(body.reply_to.email)
+      ? formatAddress(body.reply_to)
+      : formatAddress(body.sender);
   const toAddrs = body.to.map(formatAddress).filter(Boolean).join(", ");
 
   try {

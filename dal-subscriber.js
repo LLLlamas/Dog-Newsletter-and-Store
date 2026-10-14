@@ -70,19 +70,19 @@
       name: 'Turbo',
       emoji: '\u26A1',
       greeting: 'Hi, Turbo fam',
-      breed: 'Mini Australian Shepherd',
+      breed: '',
       /* Personalized content slots — referenced via [data-dal-slot="key"] */
       'hero-title':  "Turbo's Corner",
-      'hero-sub':    "High-energy mini Aussie life: food, barking, outdoors, and agility.",
-      'issue-title': "April 2026 \u2014 Agility & Food Puzzles",
-      'issue-desc':  "Turbo's chapter: backyard agility drills for high-drive herders, food-puzzle upgrades that actually challenge her, and how to read a 'bark-at-everything' trigger stack before it snowballs.",
-      'issue-body-1': "High-drive Aussies like Turbo need more than walks \u2014 they need jobs. This month we break down a 20-minute weave/jump/tunnel circuit you can build from traffic cones and a pool noodle.",
-      'issue-body-2': "Food tip: Turbo is food-motivated enough that we swap 30% of her kibble into a puzzle feeder. It cuts barking at windows by roughly half because her brain has somewhere to go.",
-      'issue-body-3': "Outdoor watch: mini Aussies overheat faster than they let on. If you're on a fetch-heavy trail, rotate 5 minutes of fetch with 2 minutes of shade and water.",
+      'hero-sub':    "High-energy dog life: food, outdoors, and plenty to think about.",
+      'issue-title': "This month \u2014 Agility & Food Puzzles",
+      'issue-desc':  "Turbo's chapter: simple agility drills for high-energy dogs, food-puzzle upgrades that actually challenge her, and how to read a 'bark-at-everything' trigger stack before it snowballs.",
+      'issue-body-1': "High-energy dogs like Turbo need more than walks \u2014 they need jobs. This month we break down a 20-minute weave/jump/tunnel circuit you can build from traffic cones and a pool noodle.",
+      'issue-body-2': "Food tip: Turbo is food-motivated enough that we swap 30% of her kibble into a puzzle feeder. She barks at the window a lot less when her brain has somewhere to go.",
+      'issue-body-3': "Outdoor watch: busy dogs overheat faster than they let on. If you're on a fetch-heavy trail, rotate 5 minutes of fetch with 2 minutes of shade and water.",
       'tip-eyebrow': "Turbo's Top Tips",
       'tip-title':   "This month with Turbo",
       'tip-1':       "Turbo is seriously food-motivated \u2014 use freeze-dried liver to shape new behaviors in days, not weeks.",
-      'tip-2':       "Mini Aussies love to bark at movement. Redirect with a firm 'quiet' cue plus an instant chew reward.",
+      'tip-2':       "If your dog barks at movement, redirect with a calm 'quiet' cue plus an instant chew reward.",
       'tip-3':       "30 minutes of agility burns more than an hour of walking. Set up backyard weave poles with traffic cones.",
       'pick-label':  "Turbo's pick this month",
       'pick-name':   "Chuckit! Sport 26L Launcher",
@@ -96,15 +96,15 @@
       breed: 'Husky',
       'hero-title':  "Troy's Corner",
       'hero-sub':    "Big husky life: endurance, cold-weather play, and that glorious double coat.",
-      'issue-title': "April 2026 \u2014 Blow-Coat Season & Endurance",
-      'issue-desc':  "Troy's chapter: spring undercoat grooming that actually works, cooling strategies for warm days, long-trail endurance plans, and how to read husky vocalizations.",
-      'issue-body-1': "Huskies like Troy hit their spring 'blow-coat' around now. A 10-minute daily undercoat rake keeps your floors clean AND keeps Troy from overheating as the weeks warm up.",
+      'issue-title': "This month \u2014 Coat Care & Endurance",
+      'issue-desc':  "Troy's chapter: undercoat grooming that actually works, cooling strategies for warm days, long-trail endurance plans, and how to read husky vocalizations.",
+      'issue-body-1': "Huskies like Troy blow their undercoat a couple of times a year. During those weeks, a 10-minute daily undercoat rake keeps your floors clean and keeps Troy comfortable.",
       'issue-body-2': "Endurance tip: Troy can run for hours. Build up slowly with a 3-2-1 pattern (3 min trot, 2 min walk, 1 min rest) and always end before he wants to stop.",
       'issue-body-3': "Vocal watch: husky 'talking' isn't stress. It's genetic. Reward calm quiet-time with scatter feeding rather than trying to suppress the chatter entirely.",
       'tip-eyebrow': "Troy's Top Tips",
       'tip-title':   "This month with Troy",
       'tip-1':       "Huskies crave mental work \u2014 frozen KONG plus scatter feeding prevents the boredom-digging cycle.",
-      'tip-2':       "Spring blow-coat: a daily undercoat rake saves your floors and keeps Troy cool as the days warm up.",
+      'tip-2':       "Blow-coat season: a daily undercoat rake saves your floors and keeps Troy comfortable.",
       'tip-3':       "Huskies are born escape artists. Reinforce your fence with dig-stop wire before off-leash yard time.",
       'pick-label':  "Troy's pick this month",
       'pick-name':   "Chris Christensen Big G Slicker Brush",
@@ -197,8 +197,8 @@
 
   /*
    * DAL.handleSubscribe(email)  →  Promise<subscriberData>
-   * Called from the subscribe forms. Tries Supabase first,
-   * falls back to localStorage-only if not configured / offline.
+   * Called from the subscribe forms. Saves to Supabase. Resolves on success
+   * (including "already subscribed"); rejects on any other failure.
    */
   DAL.handleSubscribe = function (email) {
     email = String(email || '').trim().toLowerCase();
@@ -217,19 +217,26 @@
         return data;
       })
       .catch(function (err) {
-        console.warn('[DAL] Supabase unavailable, saving locally only:', err.message);
-        var uname = deriveUsername(email);
-        var data = {
-          email: email,
-          username: uname,
-          discountCode: uname.toUpperCase(),
-          dogName: '', dogBreed: '', dogSize: '', dogTraits: [], dogEmoji: '',
-          isNew: true,
-          subscribedAt: new Date().toISOString()
-        };
-        DAL.saveSubscriberLocal(data);
-        DAL.initPersonalizeButton();
-        return data;
+        var m = String((err && err.message) || '');
+        /* Already on the list → treat as success (no new row needed). */
+        if (/duplicate|already|23505|\b409\b/i.test(m)) {
+          var uname = deriveUsername(email);
+          var data = {
+            email: email,
+            username: uname,
+            discountCode: uname.toUpperCase(),
+            dogName: '', dogBreed: '', dogSize: '', dogTraits: [], dogEmoji: '',
+            isNew: false,
+            subscribedAt: new Date().toISOString()
+          };
+          DAL.saveSubscriberLocal(data);
+          DAL.initPersonalizeButton();
+          return data;
+        }
+        /* Anything else (offline, not configured, server error) is a real
+           failure — reject so the form can tell the visitor it didn't work. */
+        console.warn('[DAL] Subscribe failed:', m);
+        throw err;
       });
   };
 
