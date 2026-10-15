@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Stay Report — Dogs &amp; Llamas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<!--
+  END-OF-STAY REPORT CARD
+  ───────────────────────
+  How to use:
+    1. Copy this file into reports/ (that folder is git-ignored, so client
+       details never get published), e.g. reports/angie-oct-2026.html
+    2. Put that stay's photos next to it (e.g. reports/angie/1.jpg).
+    3. Fill in the STAY object in the <script> at the bottom. Leave a field
+       empty ('' or []) and its section disappears.
+    4. Open it on your phone → screenshot, or Print → Save as PDF,
+       and text/email it to the owner on the last day.
+-->
+<style>
+:root{
+  --navy:#132A4E; --navy-deep:#0A1A34; --gold:#E0A02F; --gold-soft:#F3CB6A; --gold-pale:#F8E9C4;
+  --blush:#E69A6F; --cream:#F6EFE3; --paper:#FBF7EE; --ink:#171716; --ink-2:#43413B; --ink-3:#8A867C; --rule:#D6CDB9;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);padding:28px 12px;font-family:var(--font-body);color:var(--ink)}
+.card{max-width:560px;margin:0 auto;background:var(--paper);border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(19,42,78,.15);border:1px solid var(--rule)}
+.mast{background:var(--navy);padding:22px 26px;border-bottom:4px solid var(--gold);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-family:var(--font-display);font-size:22px;color:#fff;font-weight:500}
+.brand .amp{color:var(--gold-soft);font-style:italic;font-weight:400}
+.mast small{color:var(--gold-soft);font-size:12.5px;text-align:right}
+.hero{position:relative;aspect-ratio:4/3;background:var(--cream);overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-cap{position:absolute;left:0;right:0;bottom:0;padding:40px 24px 18px;background:linear-gradient(180deg,transparent,rgba(10,26,52,.75));color:#fff}
+.hero-cap h1{font-family:var(--font-display);font-style:italic;font-weight:500;font-size:40px;line-height:1;margin:0}
+.hero-cap p{margin:6px 0 0;font-size:14px;opacity:.9}
+.sec{padding:22px 26px 6px}
+.sec h2{font-family:var(--font-display);font-weight:500;font-size:22px;color:var(--navy);margin:0 0 12px}
+.sec h2 em{color:var(--blush);font-style:italic;font-weight:400}
+.sec p{font-size:15.5px;line-height:1.65;color:var(--ink-2);margin:0 0 12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 8px}
+.stat{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:12px 10px;text-align:center}
+.stat b{display:block;font-family:var(--font-display);font-size:28px;color:var(--navy);font-weight:500;line-height:1.1}
+.stat span{font-size:12px;color:var(--ink-3)}
+.days{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.days th{background:var(--gold-pale);color:var(--navy);font-weight:600;text-align:left;padding:9px 10px;font-size:12.5px}
+.days td{padding:10px;border-top:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+.days td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.list{margin:0;padding:0;list-style:none}
+.list li{font-size:15px;color:var(--ink-2);line-height:1.55;padding:9px 0 9px 22px;position:relative;border-top:1px dashed var(--rule)}
+.list li:first-child{border-top:none}
+.list li::before{content:'';position:absolute;left:2px;top:17px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.photos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photos figure{margin:0;border-radius:10px;overflow:hidden;background:var(--cream);aspect-ratio:1}
+.photos img{width:100%;height:100%;object-fit:cover;display:block}
+.next{margin:18px 26px 6px;background:linear-gradient(135deg,var(--gold-pale),var(--cream));border:1px solid rgba(224,160,47,.4);border-radius:12px;padding:18px 20px}
+.next h3{font-family:var(--font-display);font-weight:500;font-size:20px;color:var(--navy);margin:0 0 6px}
+.next p{font-size:14.5px;line-height:1.6;color:var(--ink-2);margin:0}
+.bill{margin:16px 26px 0;font-size:14px;color:var(--ink-2)}
+.bill div{display:flex;justify-content:space-between;padding:6px 0;border-top:1px dashed var(--rule)}
+.bill div:last-child{font-weight:600;color:var(--navy);font-size:15.5px}
+.sign{padding:20px 26px 24px}
+.sign .name{font-family:var(--font-display);font-style:italic;font-size:24px;color:var(--navy)}
+.sign p{font-size:13px;color:var(--ink-3);margin:4px 0 0}
+.foot{background:var(--navy-deep);color:rgba(255,255,255,.65);padding:16px 26px;text-align:center;font-size:12px}
+.foot a{color:var(--gold-soft);text-decoration:none}
+.hide{display:none!important}
+@media print{body{background:#fff;padding:0}.card{box-shadow:none;border:none}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="mast">
+    <div class="brand">Dogs <span class="amp">&amp;</span> Llamas</div>
+    <small id="dates"></small>
+  </div>
+
+  <div class="hero" id="heroWrap">
+    <img id="heroImg" alt="" />
+    <div class="hero-cap">
+      <h1 id="dogName"></h1>
+      <p id="heroLine"></p>
+    </div>
+  </div>
+
+  <div class="sec" id="noteSec">
+    <h2>Hi <span id="ownerName"></span>,</h2>
+    <p id="note"></p>
+  </div>
+
+  <div class="sec" id="statsSec">
+    <h2>The week <em>in numbers</em></h2>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <div class="sec" id="daysSec">
+    <h2>Day <em>by day</em></h2>
+    <table class="days"><thead><tr><th>Day</th><th>Walks</th><th>Highlight</th></tr></thead><tbody id="days"></tbody></table>
+  </div>
+
+  <div class="sec" id="lovedSec">
+    <h2>What <span class="dn"></span> <em>loved</em></h2>
+    <ul class="list" id="loved"></ul>
+  </div>
+
+  <div class="sec" id="learnedSec">
+    <h2>Notes for <em>next time</em></h2>
+    <p style="font-size:14px;color:var(--ink-3)">Things we picked up so the next visit is even smoother. Tell us if we got anything wrong.</p>
+    <ul class="list" id="learned"></ul>
+  </div>
+
+  <div class="sec" id="photosSec">
+    <h2>A few <em>favorites</em></h2>
+    <div class="photos" id="photos"></div>
+  </div>
+
+  <div class="next" id="nextBox">
+    <h3 id="nextTitle"></h3>
+    <p id="nextText"></p>
+  </div>
+
+  <div class="bill" id="billBox"></div>
+
+  <div class="sign">
+    <div class="name">Lorenzo &amp; Catalina</div>
+    <p>Thank you for trusting us with <span class="dn"></span>.</p>
+  </div>
+  <div class="foot">
+    <a href="https://llllamas.github.io/Dog-Newsletter-and-Store/">llllamas.github.io/Dog-Newsletter-and-Store</a> · dogsandllamasservice@gmail.com
+  </div>
+</div>
+
+<script>
+/* ════════════ FILL THIS IN ════════════ */
+const STAY = {
+  dog:       'Buddy',
+  owner:     'Owner',
+  dates:     'Mon Oct 19 – Fri Oct 23',
+  heroImg:   '',                       // e.g. 'angie/1.jpg'
+  heroLine:  '5 days of daycare with Dogs & Llamas',
+  note:      'A short, personal paragraph about how the stay went.',
+  stats: [                            // up to 3 is best
+    { n: '10', label: 'walks' },
+    { n: '5',  label: 'happy days' },
+    { n: '40+', label: 'photos sent' }
+  ],
+  days: [                             // [day, walks, highlight]
+    ['Mon', '2', 'Settled in fast.']
+  ],
+  loved:   ['Something they loved'],
+  learned: ['Something useful for next time'],
+  photos:  [],                        // e.g. ['angie/2.jpg','angie/3.jpg']
+  next: {
+    title: 'See you next time?',
+    text:  'Reply to this message anytime to book. Holiday dates go first.'
+  },
+  bill: [                             // [label, amount]; last row is the total
+  ]
+};
+/* ═══════════════════════════════════════ */
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const show = (id, on) => $(id).classList.toggle('hide', !on);
+
+document.title = `${STAY.dog}'s stay — Dogs & Llamas`;
+$('dates').textContent = STAY.dates;
+$('dogName').textContent = STAY.dog;
+$('heroLine').textContent = STAY.heroLine;
+document.querySelectorAll('.dn').forEach(e => e.textContent = STAY.dog);
+if (STAY.heroImg) { $('heroImg').src = STAY.heroImg; $('heroImg').alt = STAY.dog; }
+else {
+  /* No photo yet: show the name on a navy band instead */
+  $('heroWrap').style.aspectRatio = 'auto';
+  $('heroImg').classList.add('hide');
+  $('heroWrap').querySelector('.hero-cap').style.position = 'static';
+  $('heroWrap').querySelector('.hero-cap').style.background = 'var(--navy)';
+}
+
+$('ownerName').textContent = STAY.owner;
+$('note').textContent = STAY.note; show('noteSec', !!STAY.note);
+
+$('stats').innerHTML = STAY.stats.map(s => `<div class="stat"><b>${esc(s.n)}</b><span>${esc(s.label)}</span></div>`).join('');
+show('statsSec', STAY.stats.length);
+
+$('days').innerHTML = STAY.days.map(d => `<tr><td>${esc(d[0])}</td><td>${esc(d[1])}</td><td>${esc(d[2])}</td></tr>`).join('');
+show('daysSec', STAY.days.length);
+
+$('loved').innerHTML = STAY.loved.map(x => `<li>${esc(x)}</li>`).join('');      show('lovedSec', STAY.loved.length);
+$('learned').innerHTML = STAY.learned.map(x => `<li>${esc(x)}</li>`).join('');  show('learnedSec', STAY.learned.length);
+
+$('photos').innerHTML = STAY.photos.map(p => `<figure><img src="${esc(p)}" alt="${esc(STAY.dog)}" onerror="const f=this.parentNode,g=f.parentNode;f.remove();if(!g.children.length)document.getElementById('photosSec').classList.add('hide')"></figure>`).join('');
+show('photosSec', STAY.photos.length);
+
+$('nextTitle').textContent = STAY.next.title; $('nextText').textContent = STAY.next.text;
+show('nextBox', !!STAY.next.title);
+
+$('billBox').innerHTML = STAY.bill.map(b => `<div><span>${esc(b[0])}</span><span>${esc(b[1])}</span></div>`).join('');
+show('billBox', STAY.bill.length);
+</script>
+</body>
+</html>

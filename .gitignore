@@ -14,3 +14,6 @@ desktop.ini
 
 # Local Codex agent skills
 .agents/
+
+# Client stay reports (personal info, never publish)
+reports/
