@@ -1015,16 +1015,16 @@
 <!-- ADMIN FAB -->
 <button class="admin-fab" id="admin-fab" title="Sitter login" aria-label="Admin settings">&#9965;</button>
 
-<!-- ADMIN PIN MODAL -->
-<div class="modal-overlay" id="pin-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<!-- ADMIN LOGIN MODAL (magic link) -->
+<div class="modal-overlay" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal">
     <h3 id="modal-title">Sitter Access</h3>
-    <p>Enter your 4-digit PIN to edit the calendar.</p>
-    <input type="password" id="pin-input" maxlength="4" placeholder="••••" autocomplete="off" aria-label="PIN">
-    <p class="modal-error" id="pin-error">Incorrect PIN. Try again.</p>
+    <p>Enter your email and we&rsquo;ll send you a one-time sign-in link.</p>
+    <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" inputmode="email" aria-label="Email">
+    <p class="modal-error" id="login-msg"></p>
     <div class="modal-btns">
       <button class="btn-modal-cancel" id="modal-cancel-btn">Cancel</button>
-      <button class="btn-modal-ok" id="modal-ok-btn">Enter</button>
+      <button class="btn-modal-ok" id="modal-ok-btn">Send link</button>
     </div>
   </div>
 </div>
@@ -1085,9 +1085,13 @@
   var STORAGE_KEY  = 'dal_schedule';
   var MONTHS_AHEAD = 3;
 
-  /* Admin PIN — kept in memory only after a successful Supabase verify.
-     Required to write changes to the cloud. */
-  var ADMIN_PIN_MEM = null;
+  /* Admin session — Supabase Auth magic-link login. Holds
+     {access_token, refresh_token, expires_at}; mirrored to localStorage so a
+     reload keeps you signed in. Every admin RPC sends the access token and the
+     database checks the email against public.admins (dal_is_admin). */
+  var AUTH_STORE    = 'dal_admin_session';
+  var ADMIN_SESSION = null;
+  var refreshing    = null;
 
   /* ── Helpers ─────────────────────────────────── */
   function padZ(n) { return String(n).padStart(2,'0'); }
@@ -1191,34 +1195,126 @@
 
   function cloudWriteAvailability(key, entry) {
     var s = supa();
-    if (!s || !ADMIN_PIN_MEM) return Promise.resolve(false);
-    return fetch(s.url + '/rest/v1/rpc/dal_set_availability', {
-      method:  'POST',
-      headers: supaHeaders(s),
-      body: JSON.stringify({
-        p_pin:      ADMIN_PIN_MEM,
+    if (!s || !ADMIN_SESSION) return Promise.resolve(false);
+    return adminRpc('dal_set_availability', {
         p_date:     key,
         p_status:   entry.status,
         p_dog_name: entry.dogName || null,
         p_drop_off: entry.dropOff || null,
         p_pick_up:  entry.pickUp  || null
-      })
-    }).then(function (r) { return r.ok; })
+      }).then(function (r) { return r.ok; })
       .catch(function () { return false; });
   }
 
-  function cloudVerifyPin(pin) {
+  /* ── Admin auth (Supabase Auth, magic link) ───── */
+  function nowSec() { return Math.floor(Date.now() / 1000); }
+
+  function storeSession(sess) {
+    ADMIN_SESSION = sess;
+    try {
+      if (sess) localStorage.setItem(AUTH_STORE, JSON.stringify(sess));
+      else localStorage.removeItem(AUTH_STORE);
+    } catch (e) { /* storage blocked — session lasts until reload */ }
+  }
+
+  function loadStoredSession() {
+    try {
+      var j = JSON.parse(localStorage.getItem(AUTH_STORE));
+      return (j && j.access_token && j.refresh_token) ? j : null;
+    } catch (e) { return null; }
+  }
+
+  function makeSession(j) {
+    return {
+      access_token:  j.access_token,
+      refresh_token: j.refresh_token,
+      expires_at:    nowSec() + (parseInt(j.expires_in, 10) || 3600)
+    };
+  }
+
+  /* Returns a valid access token, refreshing it first when <60s remain. */
+  function freshAdminToken() {
     var s = supa();
-    if (!s) return Promise.resolve(false);
-    return fetch(s.url + '/rest/v1/rpc/dal_verify_admin_pin', {
+    if (!s || !ADMIN_SESSION) return Promise.reject(new Error('not signed in'));
+    if (ADMIN_SESSION.expires_at - 60 > nowSec()) return Promise.resolve(ADMIN_SESSION.access_token);
+    if (!refreshing) {
+      refreshing = fetch(s.url + '/auth/v1/token?grant_type=refresh_token', {
+        method:  'POST',
+        headers: supaHeaders(s),
+        body: JSON.stringify({ refresh_token: ADMIN_SESSION.refresh_token })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('session expired');
+        return r.json();
+      }).then(function (j) {
+        storeSession(makeSession(j));
+        refreshing = null;
+        return ADMIN_SESSION.access_token;
+      }).catch(function (err) {
+        refreshing = null;
+        storeSession(null);
+        throw err;
+      });
+    }
+    return refreshing;
+  }
+
+  /* POST an admin RPC with the signed-in user's token. Resolves to the fetch Response. */
+  function adminRpc(name, args) {
+    var s = supa();
+    return freshAdminToken().then(function (tok) {
+      return fetch(s.url + '/rest/v1/rpc/' + name, {
+        method:  'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'apikey':        s.key,
+          'Authorization': 'Bearer ' + tok,
+          'Accept':        'application/json'
+        },
+        body: JSON.stringify(args || {})
+      });
+    });
+  }
+
+  /* True when the signed-in email is on the admins allowlist. */
+  function cloudIsAdmin() {
+    return adminRpc('dal_is_admin').then(function (r) {
+      return r.ok ? r.json() : false;
+    }).then(function (v) { return v === true; })
+      .catch(function () { return false; });
+  }
+
+  /* Ask Supabase to email a magic link. Resolves 'sent' | 'rate' | 'error'.
+     Unknown emails also resolve 'sent' (don't reveal who is an admin). */
+  function sendMagicLink(email) {
+    var s = supa();
+    if (!s) return Promise.resolve('error');
+    var back = location.origin + location.pathname;
+    return fetch(s.url + '/auth/v1/otp?redirect_to=' + encodeURIComponent(back), {
       method:  'POST',
       headers: supaHeaders(s),
-      body: JSON.stringify({ p_pin: pin })
+      body: JSON.stringify({ email: email, create_user: false })
     }).then(function (r) {
-      if (!r.ok) return false;
-      return r.json();
-    }).then(function (result) { return result === true; })
-      .catch(function () { return false; });
+      if (r.status === 429) return 'rate';
+      if (r.status >= 500)  return 'error';
+      return 'sent';
+    }).catch(function () { return 'error'; });
+  }
+
+  /* On return from the email link the tokens arrive in the URL hash. */
+  function consumeAuthHash() {
+    var h = location.hash;
+    if (!h || h.length < 2) return null;
+    var p = new URLSearchParams(h.slice(1));
+    var isTokens = p.has('access_token') && p.has('refresh_token');
+    var isError  = p.has('error_description') || (p.has('error') && p.has('error_code'));
+    if (!isTokens && !isError) return null;
+    history.replaceState(null, '', location.pathname + location.search);
+    if (isError) return { error: p.get('error_description') || p.get('error') };
+    return { session: makeSession({
+      access_token:  p.get('access_token'),
+      refresh_token: p.get('refresh_token'),
+      expires_in:    p.get('expires_in')
+    }) };
   }
 
   /* ── Calendar rendering ──────────────────────── */
@@ -1480,24 +1576,28 @@
 
   /* ── Admin auth ──────────────────────────────── */
   var adminFab    = document.getElementById('admin-fab');
-  var pinModal    = document.getElementById('pin-modal');
-  var pinInput    = document.getElementById('pin-input');
-  var pinError    = document.getElementById('pin-error');
+  var loginModal  = document.getElementById('login-modal');
+  var loginEmail  = document.getElementById('login-email');
+  var loginMsg    = document.getElementById('login-msg');
   var modalOk     = document.getElementById('modal-ok-btn');
   var modalCancel = document.getElementById('modal-cancel-btn');
   var exitAdmin   = document.getElementById('exit-admin-btn');
 
+  function setLoginMsg(text, good) {
+    loginMsg.textContent = text;
+    loginMsg.style.color = good ? '#1B4F8C' : '';
+    loginMsg.classList.toggle('show', !!text);
+  }
+
   adminFab.addEventListener('click', function() {
     if (document.body.classList.contains('admin-mode')) { return; }
-    pinInput.value = '';
-    pinError.classList.remove('show');
-    pinModal.classList.add('open');
-    setTimeout(function() { pinInput.focus(); }, 80);
+    setLoginMsg('');
+    loginModal.classList.add('open');
+    setTimeout(function() { loginEmail.focus(); }, 80);
   });
 
-  function unlockAdmin(pin) {
-    ADMIN_PIN_MEM = pin;
-    pinModal.classList.remove('open');
+  function unlockAdmin() {
+    loginModal.classList.remove('open');
     document.body.classList.add('admin-mode');
     adminFab.textContent = '\u2713';
     adminFab.style.background = '#1B4F8C';
@@ -1508,50 +1608,53 @@
     loadAwaitingPayment();
   }
 
-  function rejectPin() {
-    pinError.classList.add('show');
-    pinError.textContent = 'Incorrect PIN. Try again.';
-    pinInput.value = '';
-    pinInput.focus();
-  }
-
-  function tryPin() {
-    var entered = pinInput.value.trim();
-    if (!entered) { rejectPin(); return; }
-
-    pinError.classList.remove('show');
+  function trySendLink() {
+    var email = loginEmail.value.trim().toLowerCase();
+    if (!email || email.indexOf('@') < 1) { setLoginMsg('Enter your email address.'); return; }
     modalOk.disabled = true;
-    pinError.textContent = 'Checking\u2026';
-    pinError.classList.add('show');
-
-    cloudVerifyPin(entered).then(function (ok) {
+    setLoginMsg('Sending\u2026');
+    sendMagicLink(email).then(function (res) {
       modalOk.disabled = false;
-      if (ok) {
-        pinError.classList.remove('show');
-        unlockAdmin(entered);
-      } else if (!supa()) {
-        /* No cloud configured — fall back to local-only mode with default PIN '1234' */
-        if (entered === '1234') {
-          pinError.classList.remove('show');
-          showToast('Offline mode \u2014 changes saved locally only');
-          unlockAdmin(entered);
-        } else {
-          rejectPin();
-        }
-      } else {
-        rejectPin();
-      }
+      if (res === 'sent')      setLoginMsg('Check your email for the sign-in link (open it on this device).', true);
+      else if (res === 'rate') setLoginMsg('Too many tries \u2014 wait a minute and try again.');
+      else                     setLoginMsg('Couldn\u2019t send the link. Try again.');
     });
   }
 
-  modalOk.addEventListener('click', tryPin);
-  pinInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryPin(); });
-  modalCancel.addEventListener('click', function() { pinModal.classList.remove('open'); });
-  pinModal.addEventListener('click', function(e) { if (e.target === pinModal) pinModal.classList.remove('open'); });
+  /* Verify a freshly stored session really is an admin, then unlock. */
+  function resumeAdminSession(announceFailure) {
+    cloudIsAdmin().then(function (ok) {
+      if (ok) { unlockAdmin(); return; }
+      storeSession(null);
+      if (announceFailure) showToast('\u26A0 That account isn\u2019t an admin');
+    });
+  }
+
+  function bootAdminSession() {
+    if (!supa()) return;
+    var hit = consumeAuthHash();
+    if (hit && hit.error) { showToast('\u26A0 Sign-in link failed: ' + hit.error); return; }
+    if (hit && hit.session) { storeSession(hit.session); resumeAdminSession(true); return; }
+    var saved = loadStoredSession();
+    if (saved) { storeSession(saved); resumeAdminSession(false); }
+  }
+
+  modalOk.addEventListener('click', trySendLink);
+  loginEmail.addEventListener('keydown', function(e) { if (e.key === 'Enter') trySendLink(); });
+  modalCancel.addEventListener('click', function() { loginModal.classList.remove('open'); });
+  loginModal.addEventListener('click', function(e) { if (e.target === loginModal) loginModal.classList.remove('open'); });
 
   exitAdmin.addEventListener('click', function() {
+    var s = supa(), tok = ADMIN_SESSION && ADMIN_SESSION.access_token;
+    if (s && tok) {
+      /* Best-effort server-side sign-out of this session */
+      fetch(s.url + '/auth/v1/logout?scope=local', {
+        method: 'POST',
+        headers: { 'apikey': s.key, 'Authorization': 'Bearer ' + tok }
+      }).catch(function () {});
+    }
+    storeSession(null);
     document.body.classList.remove('admin-mode');
-    ADMIN_PIN_MEM = null;
     adminFab.textContent = '\u2699';
     adminFab.style.background = '';
     adminFab.style.color = '';
@@ -1873,14 +1976,10 @@
 
   function loadPendingRequests() {
     var s = supa();
-    if (!s || !ADMIN_PIN_MEM) return;
+    if (!s || !ADMIN_SESSION) return;
     reqCount.textContent = 'Loading\u2026';
     reqList.innerHTML = '';
-    fetch(s.url + '/rest/v1/rpc/dal_list_booking_requests', {
-      method:  'POST',
-      headers: supaHeaders(s),
-      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_status: 'pending' })
-    }).then(function (r) { return r.ok ? r.json() : null; })
+    adminRpc('dal_list_booking_requests', { p_status: 'pending' }).then(function (r) { return r.ok ? r.json() : null; })
       .then(function (rows) {
         if (!rows) {
           reqCount.textContent = 'Couldn\u2019t load requests.';
@@ -1941,14 +2040,10 @@
 
   function decideRequest(id, action, card) {
     var s = supa();
-    if (!s || !ADMIN_PIN_MEM) return;
+    if (!s || !ADMIN_SESSION) return;
     var btns = card.querySelectorAll('button');
     btns.forEach(function (b) { b.disabled = true; });
-    fetch(s.url + '/rest/v1/rpc/dal_decide_booking_request', {
-      method:  'POST',
-      headers: supaHeaders(s),
-      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_id: id, p_action: action })
-    }).then(function (r) { return r.ok; })
+    adminRpc('dal_decide_booking_request', { p_id: id, p_action: action }).then(function (r) { return r.ok; })
       .then(function (ok) {
         if (!ok) {
           btns.forEach(function (b) { b.disabled = false; });
@@ -1999,14 +2094,10 @@
 
   function loadAwaitingPayment() {
     var s = supa();
-    if (!s || !ADMIN_PIN_MEM) return;
+    if (!s || !ADMIN_SESSION) return;
     payCount.textContent = 'Loading\u2026';
     payList.innerHTML = '';
-    fetch(s.url + '/rest/v1/rpc/dal_list_awaiting_payment', {
-      method:  'POST',
-      headers: supaHeaders(s),
-      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM })
-    }).then(function (r) { return r.ok ? r.json() : null; })
+    adminRpc('dal_list_awaiting_payment', {}).then(function (r) { return r.ok ? r.json() : null; })
       .then(function (rows) {
         if (!rows) {
           payCount.textContent = 'Couldn\u2019t load payment queue.';
@@ -2071,17 +2162,13 @@
 
   function markBookingPaid(id, card) {
     var s = supa();
-    if (!s || !ADMIN_PIN_MEM) return;
+    if (!s || !ADMIN_SESSION) return;
     var btnMark   = card.querySelector('.btn-pay-mark');
     var btnCancel = card.querySelector('.btn-pay-cancel');
     btnMark.disabled = true;
     if (btnCancel) btnCancel.disabled = true;
     btnMark.textContent = 'Sending confirmation\u2026';
-    fetch(s.url + '/rest/v1/rpc/dal_mark_booking_paid', {
-      method:  'POST',
-      headers: supaHeaders(s),
-      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_id: id })
-    }).then(function (r) { return r.ok; })
+    adminRpc('dal_mark_booking_paid', { p_id: id }).then(function (r) { return r.ok; })
       .then(function (ok) {
         if (!ok) {
           btnMark.disabled = false;
@@ -2115,14 +2202,10 @@
 
   function sendFollowUp(id, btn) {
     var s = supa();
-    if (!s || !ADMIN_PIN_MEM) return;
+    if (!s || !ADMIN_SESSION) return;
     btn.disabled = true;
     btn.textContent = 'Sending\u2026';
-    fetch(s.url + '/rest/v1/rpc/dal_send_followup', {
-      method:  'POST',
-      headers: supaHeaders(s),
-      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_id: id })
-    }).then(function (r) { return r.ok; })
+    adminRpc('dal_send_followup', { p_id: id }).then(function (r) { return r.ok; })
       .then(function (ok) {
         if (!ok) {
           btn.disabled = false;
@@ -2143,17 +2226,13 @@
 
   function cancelBookingPayment(id, card) {
     var s = supa();
-    if (!s || !ADMIN_PIN_MEM) return;
+    if (!s || !ADMIN_SESSION) return;
     var btnMark   = card.querySelector('.btn-pay-mark');
     var btnCancel = card.querySelector('.btn-pay-cancel');
     if (btnMark)   btnMark.disabled = true;
     btnCancel.disabled = true;
     btnCancel.textContent = 'Cancelling\u2026';
-    fetch(s.url + '/rest/v1/rpc/dal_cancel_booking_request', {
-      method:  'POST',
-      headers: supaHeaders(s),
-      body: JSON.stringify({ p_pin: ADMIN_PIN_MEM, p_id: id })
-    }).then(function (r) { return r.ok; })
+    adminRpc('dal_cancel_booking_request', { p_id: id }).then(function (r) { return r.ok; })
       .then(function (ok) {
         if (!ok) {
           if (btnMark)   btnMark.disabled = false;
@@ -2188,6 +2267,7 @@
     cloudFetchAvailability().then(function (ok) {
       if (ok) renderCalendars();
     });
+    bootAdminSession();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', syncFromCloud);
