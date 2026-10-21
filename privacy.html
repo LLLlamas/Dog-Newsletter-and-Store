@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+  <title>Privacy Policy &mdash; Dogs &amp; Llamas</title>
+  <meta name="description" content="Privacy policy for Dogs &amp; Llamas &mdash; Lorenzo &amp; Catalina Llamas, Rover Star Sitters. What data we collect, how it&rsquo;s used, and how to opt out.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:          #F2F5FB;
+      --bg-2:        #E4EAFA;
+      --surface:     #FFFFFF;
+      --blue:        #1B4F8C;
+      --blue-mid:    #2B6CB0;
+      --blue-light:  #6BA3D6;
+      --blue-pale:   #E4F0FB;
+      --yellow:      #D4A017;
+      --yellow-light:#F5CC4A;
+      --yellow-pale: #FEF9E7;
+      --text:        #1A1D26;
+      --text-2:      #4C5470;
+      --text-3:      #8C94B0;
+      --border:      #CCDAEF;
+      --shadow-sm:   0 2px 8px rgba(27,79,140,.08);
+      --shadow-md:   0 6px 24px rgba(27,79,140,.12);
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   20px;
+      --radius-full: 99px;
+      --font-head:   'Playfair Display', Georgia, serif;
+      --font-body:   'DM Sans', system-ui, sans-serif;
+      --nav-h:       62px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; padding: 0; background: var(--bg); font-family: var(--font-body); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    /* ── NAV (shared pattern) ───────────────────── */
+    nav { position: sticky; top: 0; z-index: 200; height: var(--nav-h); background: var(--blue); padding: 0 36px; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: 0 2px 12px rgba(0,0,0,.18); }
+    .nav-brand { font-family: var(--font-head); font-style: italic; font-size: 19px; color: #fff; text-decoration: none; flex-shrink: 0; }
+    .nav-brand .amp { color: var(--yellow-light); font-style: normal; margin: 0 2px; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-link { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: rgba(255,255,255,.75); text-decoration: none; letter-spacing: .3px; padding: 6px 10px; border-radius: var(--radius-full); transition: background .15s, color .15s; white-space: nowrap; }
+    .nav-link:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .nav-link.active { background: rgba(255,255,255,.18); color: #fff; }
+    .nav-cta { font-family: var(--font-body); font-size: 13px; font-weight: 600; background: var(--yellow); color: #fff; text-decoration: none; padding: 8px 20px; border-radius: var(--radius-full); letter-spacing: .3px; transition: background .15s; white-space: nowrap; margin-left: 6px; }
+    .nav-cta:hover { background: #b88a12; }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; color: rgba(255,255,255,.85); font-size: 22px; padding: 4px 8px; line-height: 1; }
+
+    /* ── HEADER STRIP ───────────────────────────── */
+    .header-strip {
+      background: linear-gradient(150deg, #0A1E3D 0%, #1B4F8C 55%, #2B6CB0 100%);
+      color: #fff; padding: 56px 36px 44px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .header-strip::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
+    .eyebrow { position: relative; font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--yellow-light); margin: 0 0 10px; }
+    .header-strip h1 { position: relative; font-family: var(--font-head); font-size: 42px; font-weight: 600; color: #fff; margin: 0 0 8px; line-height: 1.1; letter-spacing: -0.5px; }
+    .updated { position: relative; font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.55); margin: 0; letter-spacing: .4px; }
+
+    /* ── PAGE BODY ──────────────────────────────── */
+    .page-wrap { max-width: 720px; margin: 0 auto; padding: 56px 28px 80px; }
+    .page-wrap p {
+      font-family: var(--font-body); font-size: 15.5px; line-height: 1.78;
+      color: var(--text-2); margin: 0 0 18px;
+    }
+    .page-wrap h2 {
+      font-family: var(--font-body); font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--blue);
+      margin: 42px 0 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .page-wrap h2::after { content: ''; flex: 0 0 28px; height: 2px; background: var(--yellow); border-radius: 2px; }
+    .page-wrap ul { padding-left: 22px; margin: 0 0 18px; }
+    .page-wrap li { font-family: var(--font-body); font-size: 15.5px; line-height: 1.78; color: var(--text-2); margin-bottom: 6px; }
+    .page-wrap a { color: var(--blue-mid); text-decoration: none; border-bottom: 1px solid var(--blue-light); }
+    .page-wrap a:hover { color: var(--blue); border-bottom-color: var(--blue); }
+    .page-wrap code { background: var(--blue-pale); color: var(--blue); padding: 2px 8px; border-radius: 4px; font-size: 13.5px; }
+    .page-wrap strong { color: var(--text); font-weight: 600; }
+
+    .intro-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 4px solid var(--yellow);
+      border-radius: var(--radius-md); padding: 22px 26px;
+      box-shadow: var(--shadow-sm); margin-bottom: 36px;
+    }
+    .intro-card p { margin: 0; color: var(--text); font-size: 15.5px; font-family: var(--font-body); line-height: 1.7; }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 48px 0 32px; }
+    .note { font-family: var(--font-body); font-size: 13px; color: var(--text-3); line-height: 1.7; }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer { background: #081529; padding: 44px 36px 36px; text-align: center; }
+    .footer-brand { font-family: var(--font-head); font-size: 22px; font-style: italic; color: rgba(255,255,255,.9); margin: 0 0 16px; }
+    .footer-brand .amp { color: var(--yellow-light); font-style: normal; }
+    footer p { font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.4); margin: 0 0 5px; line-height: 1.7; }
+    footer a { color: rgba(255,255,255,.6); text-decoration: none; border-bottom: none; }
+    footer a:hover { color: #fff; text-decoration: underline; }
+    .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); }
+    .footer-links a { font-family: var(--font-body); font-size: 12.5px; color: rgba(255,255,255,.5); transition: color .14s; }
+    .footer-links a:hover { color: #fff; }
+
+    /* ── SUBSCRIBER PERSONALIZE BUTTON ─────────────── */
+    .dal-personalize-btn {
+      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      background: rgba(212,160,23,.14); color: var(--yellow-light);
+      border: 1px solid rgba(212,160,23,.28);
+      padding: 5px 14px; border-radius: 99px;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      transition: background .14s, border-color .14s;
+    }
+    .dal-personalize-btn:hover     { background: rgba(212,160,23,.28); border-color: rgba(212,160,23,.55); }
+    .dal-personalize-btn.dal-active{ background: rgba(212,160,23,.38); border-color: var(--yellow-light); color: #fff; }
+
+    /* ── MICRO-INTERACTIONS ─────────────────────── */
+    @keyframes dal-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dal-wiggle  { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3.5deg); } 50% { transform: rotate(3.5deg); } 75% { transform: rotate(-2deg); } }
+
+    main, .page-wrap { animation: dal-fade-up .55s ease-out both; }
+    .nav-brand { display: inline-block; }
+    .nav-brand:hover { animation: dal-wiggle .5s ease-in-out; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 14px; right: 14px; bottom: 0;
+      height: 2px; background: var(--yellow-light); border-radius: 2px;
+      transform: scaleX(0); transform-origin: center;
+      transition: transform .26s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      main, .page-wrap, .nav-brand { animation: none !important; }
+      .nav-link::after { display: none !important; }
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 720px) {
+      nav { padding: 0 18px; height: 56px; }
+      .nav-toggle { display: block; }
+      .nav-links { display: none; position: absolute; top: 56px; left: 0; right: 0; background: #1B4F8C; flex-direction: column; padding: 10px 18px 16px; gap: 2px; border-bottom: 2px solid rgba(255,255,255,.1); z-index: 199; }
+      .nav-links.open { display: flex; }
+      .nav-link { display: block; padding: 10px 14px; border-radius: 8px; width: 100%; }
+      .nav-cta { margin: 8px 0 0; text-align: center; display: block; }
+      .header-strip { padding: 44px 20px 36px; }
+      .header-strip h1 { font-size: 32px; }
+      .page-wrap { padding: 40px 18px 60px; }
+      .page-wrap p, .page-wrap li { font-size: 15px; }
+      .intro-card { padding: 18px 20px; }
+      footer { padding: 36px 20px 28px; }
+    }
+    @media (max-width: 420px) {
+      .header-strip h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────────────────────── -->
+<nav>
+  <a href="index.html" class="nav-brand">Dogs <span class="amp">&amp;</span> Llamas</a>
+  <button class="dal-personalize-btn" id="dal-personalize-btn" type="button"
+          style="display:none"
+          onclick="DAL && DAL.onPersonalizeBtnClick()"
+          title="Toggle personalized view"
+          aria-label="Toggle personalized view">
+    &#128062;&nbsp;<span class="dal-btn-label">you</span>
+  </button>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html#pack" class="nav-link">Our Buddies</a>
+    <a href="schedule.html" class="nav-link">Schedule</a>
+    <a href="about.html"    class="nav-link">About</a>
+    <a href="store.html"    class="nav-link">Shop</a>
+    <a href="index.html#book" class="nav-cta">Book</a>
+  </div>
+</nav>
+<div id="dal-live-region" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);"></div>
+
+<!-- ── HEADER ────────────────────────────────────────── -->
+<header class="header-strip">
+  <p class="eyebrow">Legal</p>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: April 2026</p>
+</header>
+
+<!-- ── BODY ──────────────────────────────────────────── -->
+<main class="page-wrap">
+
+  <div class="intro-card">
+    <p>Dogs &amp; Llamas is a personal dog-sitting newsletter and product resource run by a husband-and-wife team &mdash; Lorenzo &amp; Catalina Llamas. This page explains what information is collected, how it&rsquo;s used, and how you can opt out any time.</p>
+  </div>
+
+  <h2>Information Collected</h2>
+  <p>
+    If you subscribe to the newsletter, your email address is stored with the email
+    platform used to send it (e.g., Mailchimp or beehiiv). No other personal data
+    is collected by this website.
+  </p>
+  <p>
+    This site does not use tracking pixels, analytics scripts, advertising cookies, or
+    any third-party trackers. There are no cookies set by this site directly. The
+    schedule page stores your admin preferences in your own browser&rsquo;s
+    <code>localStorage</code> only &mdash; nothing is sent off your device.
+  </p>
+
+  <h2>How Your Email Is Used</h2>
+  <ul>
+    <li>To send the Dogs &amp; Llamas newsletter (monthly at most)</li>
+    <li>To notify you of availability openings before they&rsquo;re shared elsewhere</li>
+    <li>To share occasional subscriber perks and dog-care tips</li>
+  </ul>
+  <p>Your email is never sold, shared with advertisers, or used for any other purpose.</p>
+
+  <h2>Affiliate Links</h2>
+  <p>
+    The <a href="store.html">Curated Top Picks</a> page contains Amazon affiliate
+    links. If you click a link and make a purchase, this site may earn a small
+    commission at no extra cost to you. This is disclosed on every page that contains
+    affiliate links.
+  </p>
+  <p>
+    Clicking an affiliate link will take you to Amazon&rsquo;s website, which has its own
+    privacy policy and may set its own cookies. Dogs &amp; Llamas has no control over
+    Amazon&rsquo;s data practices.
+  </p>
+
+  <h2>Rover Bookings</h2>
+  <p>
+    All dog-sitting bookings are handled through Rover.com and governed by
+    <a href="https://www.rover.com/terms/" target="_blank" rel="noopener noreferrer">Rover&rsquo;s Terms of Service</a>
+    and <a href="https://www.rover.com/privacy-statement/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+    Dogs &amp; Llamas does not store booking, payment, or review data &mdash; all of that
+    lives on Rover.
+  </p>
+
+  <h2>Unsubscribing</h2>
+  <p>
+    You can unsubscribe from the newsletter at any time by replying to any email with
+    the word &ldquo;unsubscribe,&rdquo; or by clicking the unsubscribe link in the footer of
+    any newsletter. Your address will be removed promptly.
+  </p>
+
+  <h2>External Links</h2>
+  <p>
+    Links to Amazon, Rover, and other external sites open in a new tab with
+    <code>rel="noopener noreferrer"</code> set for your security. This site is not
+    responsible for the content or privacy practices of external sites.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about this privacy policy? Reach out on
+    <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">my Rover profile</a>
+    or reply to any newsletter email.
+  </p>
+
+  <hr class="divider">
+
+  <p class="note">
+    This is a personal, non-commercial newsletter. No legal boilerplate was generated
+    by AI or auto-filled &mdash; this policy reflects actual practices.
+  </p>
+
+</main>
+
+<!-- ── FOOTER ───────────────────────────────────────── -->
+<footer>
+  <p class="footer-brand">Dogs <span class="amp">&amp;</span> Llamas</p>
+  <p>Lorenzo &amp; Catalina Llamas &bull; Rover Star Sitters</p>
+  <p>All bookings through <a href="https://www.rover.com/sit/lorenl45629" target="_blank" rel="noopener noreferrer">Rover.com</a>.</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="index.html#pack">Our Buddies</a>
+    <a href="about.html">About</a>
+    <a href="store.html">Shop</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+  <p style="margin-top:16px;color:rgba(255,255,255,.2);font-size:11.5px;">&copy; 2026 Dogs &amp; Llamas. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('nav-toggle').addEventListener('click', function () {
+    var links = document.getElementById('nav-links');
+    var open = links.classList.toggle('open');
+    this.setAttribute('aria-expanded', String(open));
+  });
+</script>
+<script src="js/dal-subscriber.js?v=3" defer></script>
+
+<style>
+.to-top-btn{position:fixed;bottom:22px;right:22px;z-index:190;width:46px;height:46px;border-radius:50%;background:rgba(251,247,238,.94);color:#132A4E;border:1.5px solid #E0A02F;box-shadow:0 6px 18px rgba(19,42,78,.2),0 1px 4px rgba(19,42,78,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s,transform .3s,background .2s;backdrop-filter:blur(8px)}
+.to-top-btn.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.to-top-btn:hover{background:#E0A02F}
+.to-top-btn svg{width:16px;height:16px}
+@media (max-width:640px){.to-top-btn{bottom:16px;right:16px;width:42px;height:42px}}
+</style>
+<button type="button" class="to-top-btn" id="toTop" aria-label="Scroll to top">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13 V3 M3 8 l5 -5 l5 5"/></svg>
+</button>
+<script>
+(function(){
+  var btn = document.getElementById('toTop'); if (!btn) return;
+  function onScroll(){ btn.classList.toggle('show', window.scrollY > 420); }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  btn.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+  onScroll();
+})();
+</script>
+</body>
+</html>
