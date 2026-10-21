@@ -43,10 +43,10 @@
     ],
     "founder": { "@type": "Person", "name": "Lorenzo Llamas" },
     "makesOffer": [
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Overnight Dog Boarding" }, "price": "90.00", "priceCurrency": "USD", "unitText": "per night" },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Doggy Day Care" }, "price": "50.00", "priceCurrency": "USD", "unitText": "per day" },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dog Walking" }, "price": "25.00", "priceCurrency": "USD", "unitText": "per walk" },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Drop-In Visits" }, "price": "45.00", "priceCurrency": "USD", "unitText": "per visit" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Overnight Dog Boarding" }, "price": "85.00", "priceCurrency": "USD", "unitText": "per night" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Doggy Day Care" }, "price": "55.00", "priceCurrency": "USD", "unitText": "per day" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dog Walking" }, "price": "30.00", "priceCurrency": "USD", "unitText": "per walk" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Drop-In Visits" }, "price": "50.00", "priceCurrency": "USD", "unitText": "per visit" },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "House Sitting" }, "price": "100.00", "priceCurrency": "USD", "unitText": "per night" }
     ]
   }
@@ -794,28 +794,28 @@ body.dal-in .dashboard-bar{display:flex !important}
         <div class="svc-num">01</div>
         <div class="svc-name">Overnight <em>Boarding</em></div>
         <div class="svc-desc">Your dog stays in our home. Full attention, backyard play, long walks, and photo updates throughout the day.</div>
-        <div class="svc-price">$90<small>Per Night</small></div>
+        <div class="svc-price">$85<small>Per Night</small></div>
         <span class="svc-cta">Book Overnight <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
       </a>
       <a class="svc reveal" href="#book" data-service="daycare">
         <div class="svc-num">02</div>
         <div class="svc-name">Doggy <em>Daycare</em></div>
         <div class="svc-desc">Same-day drop-off and pickup. Your dog hangs out with us, gets walks, play, and company while you're at work.</div>
-        <div class="svc-price">$50<small>Per Day</small></div>
+        <div class="svc-price">$55<small>Per Day</small></div>
         <span class="svc-cta">Book A Day <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
       </a>
       <a class="svc reveal" href="#book" data-service="walks">
         <div class="svc-num">03</div>
         <div class="svc-name">Dog <em>Walking</em></div>
-        <div class="svc-desc">30–60 minute walks in your neighborhood. Photo updates, GPS route, and a short note after every walk.</div>
-        <div class="svc-price">$25<small>Per Walk</small></div>
+        <div class="svc-desc">30-minute walks in your neighborhood. Photo updates, GPS route, and a short note after every walk.</div>
+        <div class="svc-price">$30<small>Per Walk</small></div>
         <span class="svc-cta">Book A Walk <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
       </a>
       <a class="svc reveal" href="#book" data-service="dropin">
         <div class="svc-num">04</div>
         <div class="svc-name">Drop-In <em>Visits</em></div>
         <div class="svc-desc">We come to your place for 30 minutes. Feeding, potty break, a quick walk or play, and a photo update.</div>
-        <div class="svc-price">$45<small>Per Visit</small></div>
+        <div class="svc-price">$50<small>Per Visit</small></div>
         <span class="svc-cta">Book A Visit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h8M8 4l4 4-4 4"/></svg></span>
       </a>
       <a class="svc reveal" href="#book" data-service="housesit">
@@ -1207,19 +1207,19 @@ body.dal-in .dashboard-bar{display:flex !important}
       <div class="booking-services">
         <label class="booking-svc">
           <input type="radio" name="svc" value="overnight" checked>
-          <div><strong>Overnight Boarding</strong><span>$90 / night · includes walks &amp; meals</span></div>
+          <div><strong>Overnight Boarding</strong><span>$85 / night · includes walks &amp; meals</span></div>
         </label>
         <label class="booking-svc">
           <input type="radio" name="svc" value="daycare">
-          <div><strong>Doggy Daycare</strong><span>$50 / day · 9am – 6pm</span></div>
+          <div><strong>Doggy Daycare</strong><span>$55 / day · 9am – 6pm</span></div>
         </label>
         <label class="booking-svc">
           <input type="radio" name="svc" value="walks">
-          <div><strong>Dog Walking</strong><span>$25 / 30–60 min walk</span></div>
+          <div><strong>Dog Walking</strong><span>$30 / 30-min walk</span></div>
         </label>
         <label class="booking-svc">
           <input type="radio" name="svc" value="dropin">
-          <div><strong>Drop-In Visits</strong><span>$45 / 30-min visit</span></div>
+          <div><strong>Drop-In Visits</strong><span>$50 / 30-min visit</span></div>
         </label>
         <label class="booking-svc">
           <input type="radio" name="svc" value="housesit">
@@ -1937,7 +1937,7 @@ const bookingState = {
   arrival:null, departure:null, single:null,
   service:'overnight', timeArrive:'09:00', timeDepart:'17:00'
 };
-const SERVICE_PRICE = { overnight:90, daycare:50, walks:25, dropin:45, housesit:100 };
+const SERVICE_PRICE = { overnight:85, daycare:55, walks:30, dropin:50, housesit:100 };
 const SERVICE_LABEL = { overnight:'Overnight Boarding', daycare:'Doggy Daycare', walks:'Dog Walking', dropin:'Drop-In Visits', housesit:'House Sitting' };
 const SERVICE_BACKEND = { overnight:'boarding', daycare:'daycare', walks:'walking', dropin:'dropin', housesit:'housesitting' };
 const RANGE_SERVICES = new Set(['overnight','housesit']);
